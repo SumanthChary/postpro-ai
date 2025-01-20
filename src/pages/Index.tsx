@@ -1,12 +1,48 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, CheckIcon } from "lucide-react";
+import PricingSection from "@/components/PricingSection";
+import { useToast } from "@/components/ui/use-toast";
 
 const Index = () => {
   const [post, setPost] = useState("");
+  const [isEnhancing, setIsEnhancing] = useState(false);
+  const [showPricing, setShowPricing] = useState(false);
+  const { toast } = useToast();
+
+  const handleEnhancePost = async () => {
+    if (!post.trim()) {
+      toast({
+        title: "Please enter some text",
+        description: "Your post content cannot be empty",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsEnhancing(true);
+    try {
+      // Simulate AI enhancement for now
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      const enhancedPost = `${post}\n\n#innovation #growth #success`;
+      setPost(enhancedPost);
+      toast({
+        title: "Post Enhanced!",
+        description: "Your post has been optimized for better engagement",
+      });
+    } catch (error) {
+      toast({
+        title: "Enhancement failed",
+        description: "Please try again later",
+        variant: "destructive",
+      });
+    } finally {
+      setIsEnhancing(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-custom-bg">
@@ -17,7 +53,11 @@ const Index = () => {
             ProfilePerfect AI
           </div>
           <div className="space-x-4">
-            <Button variant="ghost" className="text-custom-text hover:text-forest">
+            <Button 
+              variant="ghost" 
+              className="text-custom-text hover:text-forest"
+              onClick={() => setShowPricing(true)}
+            >
               Pricing
             </Button>
             <Button className="bg-forest hover:bg-forest/90 text-white">
@@ -65,12 +105,20 @@ const Index = () => {
             />
             
             <div className="flex justify-end space-x-3">
-              <Button variant="outline" className="text-custom-text border-forest hover:bg-forest/5">
+              <Button 
+                variant="outline" 
+                className="text-custom-text border-forest hover:bg-forest/5"
+                onClick={() => setPost("")}
+              >
                 Reset
               </Button>
-              <Button className="bg-gradient-to-r from-linkedin to-forest text-white hover:opacity-90">
+              <Button 
+                className="bg-gradient-to-r from-linkedin to-forest text-white hover:opacity-90"
+                onClick={handleEnhancePost}
+                disabled={isEnhancing}
+              >
                 <RocketIcon className="w-4 h-4 mr-2" />
-                Enhance Post
+                {isEnhancing ? "Enhancing..." : "Enhance Post"}
               </Button>
             </div>
           </div>
@@ -101,6 +149,18 @@ const Index = () => {
           </Card>
         </div>
       </main>
+
+      {/* Pricing Dialog */}
+      <Dialog open={showPricing} onOpenChange={setShowPricing}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-center mb-4">
+              Choose Your Perfect Plan
+            </DialogTitle>
+          </DialogHeader>
+          <PricingSection />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
