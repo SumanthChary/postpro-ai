@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { LinkedinIcon, TwitterIcon, SparklesIcon, RocketIcon } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -9,16 +9,18 @@ const Index = () => {
   const [post, setPost] = useState("");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
+    <div className="min-h-screen bg-custom-bg">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold gradient-text">ProfilePerfect AI</div>
+          <div className="text-2xl font-bold bg-gradient-to-r from-linkedin via-forest to-warm bg-clip-text text-transparent">
+            ProfilePerfect AI
+          </div>
           <div className="space-x-4">
-            <Button variant="ghost" className="text-gray-600 hover:text-gray-900">
+            <Button variant="ghost" className="text-custom-text hover:text-forest">
               Pricing
             </Button>
-            <Button className="bg-black hover:bg-black/90 text-white">
+            <Button className="bg-forest hover:bg-forest/90 text-white">
               Get Started
             </Button>
           </div>
@@ -30,10 +32,12 @@ const Index = () => {
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h1 className="text-5xl font-bold mb-6 tracking-tight">
             Transform Your{" "}
-            <span className="gradient-text">Social Media Presence</span>
+            <span className="bg-gradient-to-r from-linkedin via-forest to-warm bg-clip-text text-transparent">
+              Social Media Presence
+            </span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-            Enhance your LinkedIn & Twitter posts with AI magic. Create content that
+          <p className="text-xl text-custom-text mb-8 leading-relaxed">
+            Enhance your LinkedIn, Twitter & Instagram posts with AI magic. Create content that
             captivates and converts.
           </p>
         </div>
@@ -43,12 +47,13 @@ const Index = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
-                <SparklesIcon className="w-5 h-5 text-yellow-500" />
-                <h2 className="text-lg font-semibold">Post Enhancer</h2>
+                <SparklesIcon className="w-5 h-5 text-warm" />
+                <h2 className="text-lg font-semibold text-custom-text">Post Enhancer</h2>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex space-x-3">
                 <LinkedinIcon className="w-5 h-5 text-linkedin" />
                 <TwitterIcon className="w-5 h-5 text-twitter" />
+                <InstagramIcon className="w-5 h-5 text-instagram" />
               </div>
             </div>
             
@@ -56,14 +61,14 @@ const Index = () => {
               value={post}
               onChange={(e) => setPost(e.target.value)}
               placeholder="Paste your post here to enhance it with AI..."
-              className="min-h-[200px] text-base resize-none rounded-xl border-gray-200 focus:border-gray-300 focus:ring-gray-200 transition-all duration-200"
+              className="min-h-[200px] text-base resize-none rounded-[10px] border-gray-200 focus:border-forest focus:ring-forest transition-all duration-200"
             />
             
             <div className="flex justify-end space-x-3">
-              <Button variant="outline" className="text-gray-600">
+              <Button variant="outline" className="text-custom-text border-forest hover:bg-forest/5">
                 Reset
               </Button>
-              <Button className="bg-gradient-to-r from-linkedin to-twitter text-white hover:opacity-90">
+              <Button className="bg-gradient-to-r from-linkedin to-forest text-white hover:opacity-90">
                 <RocketIcon className="w-4 h-4 mr-2" />
                 Enhance Post
               </Button>
@@ -72,19 +77,26 @@ const Index = () => {
         </Card>
 
         {/* Tips Section */}
-        <div className="max-w-2xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="max-w-2xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="p-6 border-0 bg-white/70 backdrop-blur-sm hover:shadow-md transition-all duration-200">
             <LinkedinIcon className="w-8 h-8 text-linkedin mb-4" />
-            <h3 className="text-lg font-semibold mb-2">LinkedIn Optimization</h3>
-            <p className="text-gray-600">
-              Perfect your professional presence with AI-enhanced posts that engage your network
+            <h3 className="text-lg font-semibold mb-2 text-custom-text">LinkedIn Optimization</h3>
+            <p className="text-custom-text/80">
+              Perfect your professional presence with AI-enhanced posts
             </p>
           </Card>
           <Card className="p-6 border-0 bg-white/70 backdrop-blur-sm hover:shadow-md transition-all duration-200">
             <TwitterIcon className="w-8 h-8 text-twitter mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Twitter Enhancement</h3>
-            <p className="text-gray-600">
-              Craft engaging tweets that capture attention and drive meaningful engagement
+            <h3 className="text-lg font-semibold mb-2 text-custom-text">Twitter Enhancement</h3>
+            <p className="text-custom-text/80">
+              Craft engaging tweets that capture attention
+            </p>
+          </Card>
+          <Card className="p-6 border-0 bg-white/70 backdrop-blur-sm hover:shadow-md transition-all duration-200">
+            <InstagramIcon className="w-8 h-8 text-instagram mb-4" />
+            <h3 className="text-lg font-semibold mb-2 text-custom-text">Instagram Growth</h3>
+            <p className="text-custom-text/80">
+              Create captivating content that drives engagement
             </p>
           </Card>
         </div>

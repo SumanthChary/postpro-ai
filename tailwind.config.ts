@@ -21,30 +21,31 @@ export default {
       colors: {
         linkedin: "#0A66C2",
         twitter: "#1DA1F2",
+        instagram: "#E4405F",
+        forest: "#057642",
+        warm: "#FFB800",
+        "custom-bg": "#F4F6F8",
+        "custom-text": "#1D2226",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#F4F6F8",
+        foreground: "#1D2226",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--foreground))",
+          DEFAULT: "#0A66C2",
+          foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#057642",
+          foreground: "#FFFFFF",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#FFB800",
+          foreground: "#1D2226",
+        },
+        muted: {
+          DEFAULT: "#F4F6F8",
+          foreground: "#1D2226",
         },
       },
       borderRadius: {
