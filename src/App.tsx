@@ -15,7 +15,7 @@ const App = () => (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <BrowserRouter>
+          <BrowserRouter basename="/">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/enhance" element={<Enhance />} />
