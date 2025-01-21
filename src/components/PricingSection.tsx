@@ -1,63 +1,92 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, Infinity, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const PricingSection = () => {
+  const navigate = useNavigate();
+  
   const plans = [
     {
       name: "Free",
       price: "0",
-      period: "",
+      period: "forever",
       features: [
-        "2 AI Post Enhancements",
-        "Basic Analytics",
-        "Standard Support",
+        "3 LinkedIn posts optimization per week",
+        "Basic tone analysis",
+        "Simple hashtag suggestions",
+        "Character counter",
+        "Standard templates (5 templates)",
+        "Basic analytics",
       ],
-      comingSoon: [],
+      comingSoon: [
+        "AI Profile Enhancer (Preview)",
+        "Personal branding tools",
+        "Achievement highlighter",
+        "Professional bio generator",
+      ],
       cta: "Start Free",
       popular: false,
     },
     {
       name: "Pro",
-      price: "24",
-      period: "month",
-      subtext: "or $6/week",
+      price: "4.99",
+      period: "week",
+      subtext: "14-day trial available • Limited time: $3.99 first month",
       features: [
-        "Unlimited Post Enhancements",
-        "AI Post Creator",
-        "Advanced Analytics",
-        "Priority Support",
-        "Custom Hashtag Suggestions",
-        "Engagement Analytics",
+        "15 posts per week",
+        "LinkedIn optimization",
+        "AI Post Writer",
+        "Advanced tone analysis",
+        "Engagement predictions",
+        "Premium templates (20+)",
+        "Posting time optimizer",
+        "Basic analytics dashboard",
+        "Email support",
+        "Save 3 custom templates",
+        "Referral program (Get 1 month free)",
       ],
       comingSoon: [
-        "AI Image Generation",
-        "Scheduled Posts",
-        "Team Collaboration",
+        "AI Profile Enhancer (Preview)",
+        "Personal branding tools",
+        "Achievement highlighter",
+        "Professional bio generator",
       ],
       cta: "Start Pro Plan",
       popular: true,
     },
     {
       name: "Annual",
-      price: "289",
+      price: "299",
       period: "year",
+      subtext: "Save over 50% compared to weekly pricing!",
       features: [
-        "Everything in Pro",
-        "2 Months Free",
-        "Early Access to New Features",
-        "Dedicated Account Manager",
-        "Custom Branding",
+        "Massive cost savings",
+        "All features unlocked",
+        "No usage limits",
+        "Premium support",
+        "Early access to new features",
+        "Unlimited LinkedIn posts",
+        "All social media platforms support",
+        "Advanced tone & sentiment analysis",
+        "Premium hashtag research",
+        "Custom CTA generator",
+        "Bulk post scheduling",
       ],
       comingSoon: [
-        "API Access",
-        "White Label Solution",
-        "Custom AI Training",
+        "AI Profile Enhancer (Preview)",
+        "Personal branding tools",
+        "Achievement highlighter",
+        "Professional bio generator",
       ],
       cta: "Start Annual",
       popular: false,
     },
   ];
+
+  const handleLearnMore = () => {
+    navigate("/features");
+  };
 
   return (
     <div className="py-8">
@@ -66,12 +95,12 @@ const PricingSection = () => {
           <Card
             key={plan.name}
             className={`p-6 flex flex-col ${
-              plan.popular ? "border-linkedin shadow-lg relative" : ""
+              plan.popular ? "border-electric-purple shadow-lg relative" : ""
             }`}
           >
             {plan.popular && (
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-linkedin text-white px-4 py-1 rounded-full text-sm font-medium">
+                <span className="bg-electric-purple text-white px-4 py-1 rounded-full text-sm font-medium">
                   Most Popular
                 </span>
               </div>
@@ -92,20 +121,20 @@ const PricingSection = () => {
               <div className="space-y-3">
                 {plan.features.map((feature) => (
                   <div key={feature} className="flex items-start">
-                    <Check className="w-5 h-5 text-linkedin mr-2 mt-0.5 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
                     <span>{feature}</span>
                   </div>
                 ))}
               </div>
               {plan.comingSoon && plan.comingSoon.length > 0 && (
                 <div className="space-y-3">
-                  <p className="text-sm font-semibold text-warm flex items-center gap-2">
+                  <p className="text-sm font-semibold text-coral-red flex items-center gap-2">
                     <Sparkles className="w-4 h-4" />
                     Coming Soon
                   </p>
                   {plan.comingSoon.map((feature) => (
                     <div key={feature} className="flex items-start opacity-60">
-                      <Check className="w-5 h-5 text-warm mr-2 mt-0.5 flex-shrink-0" />
+                      <Check className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
                       <span>{feature}</span>
                     </div>
                   ))}
@@ -113,13 +142,22 @@ const PricingSection = () => {
               )}
             </div>
             <Button
-              className={plan.popular ? "bg-linkedin hover:bg-linkedin/90" : ""}
+              className={plan.popular ? "bg-electric-purple hover:bg-electric-purple/90" : ""}
               variant={plan.popular ? "default" : "outline"}
             >
               {plan.cta}
             </Button>
           </Card>
         ))}
+      </div>
+      <div className="text-center mt-8">
+        <Button 
+          variant="outline" 
+          onClick={handleLearnMore}
+          className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90"
+        >
+          Learn More About Features
+        </Button>
       </div>
     </div>
   );

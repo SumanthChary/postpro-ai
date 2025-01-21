@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import Enhance from "./pages/Enhance";
+import Features from "./pages/Features";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/enhance" element={<Enhance />} />
+              <Route path="/features" element={<Features />} />
             </Routes>
             <Toaster />
             <Sonner />
