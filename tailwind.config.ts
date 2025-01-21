@@ -19,11 +19,10 @@ export default {
     },
     extend: {
       colors: {
-        linkedin: "#0A66C2",
-        twitter: "#1DA1F2",
-        instagram: "#E4405F",
-        forest: "#057642",
-        warm: "#FFB800",
+        "electric-purple": "#8E44AD",
+        "coral-red": "#FF5733",
+        "light-lavender": "#EAE2F8",
+        "bright-teal": "#1ABC9C",
         "custom-bg": "#F4F6F8",
         "custom-text": "#1D2226",
         border: "hsl(var(--border))",
@@ -32,21 +31,25 @@ export default {
         background: "#F4F6F8",
         foreground: "#1D2226",
         primary: {
-          DEFAULT: "#0A66C2",
+          DEFAULT: "#8E44AD",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#057642",
-          foreground: "#FFFFFF",
+          DEFAULT: "#EAE2F8",
+          foreground: "#1D2226",
         },
         accent: {
-          DEFAULT: "#FFB800",
-          foreground: "#1D2226",
+          DEFAULT: "#FF5733",
+          foreground: "#FFFFFF",
         },
-        muted: {
-          DEFAULT: "#F4F6F8",
-          foreground: "#1D2226",
+        highlight: {
+          DEFAULT: "#1ABC9C",
+          foreground: "#FFFFFF",
         },
+      },
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"],
+        opensans: ["Open Sans", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
