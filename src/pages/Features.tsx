@@ -3,18 +3,22 @@ import { Card } from "@/components/ui/card";
 import { 
   Sparkles, 
   BarChart, 
-  Tools, 
+  Wrench, 
   Headphones, 
-  Gift, 
+  Gift,
   Smartphone,
   Sun,
   Moon,
-  Click,
+  MousePointer,
   Eye,
-  SwitchCamera
+  ArrowRightLeft,
+  CheckCircle
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Features = () => {
+  const navigate = useNavigate();
+
   const featureSections = [
     {
       title: "Advanced Post Enhancement",
@@ -44,7 +48,7 @@ const Features = () => {
     },
     {
       title: "Advanced Tools",
-      icon: Tools,
+      icon: Wrench,
       features: [
         "100+ premium templates",
         "Custom template creation",
@@ -82,9 +86,9 @@ const Features = () => {
     { icon: Smartphone, text: "Mobile responsive design" },
     { icon: Sun, text: "Light mode" },
     { icon: Moon, text: "Dark mode" },
-    { icon: Click, text: "One-click enhancement" },
+    { icon: MousePointer, text: "One-click enhancement" },
     { icon: Eye, text: "Real-time preview" },
-    { icon: SwitchCamera, text: "Easy platform switching" },
+    { icon: ArrowRightLeft, text: "Easy platform switching" },
   ];
 
   return (
@@ -106,7 +110,7 @@ const Features = () => {
             <ul className="space-y-3">
               {section.features.map((feature) => (
                 <li key={feature} className="flex items-start">
-                  <Check className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
                   <span>{feature}</span>
                 </li>
               ))}

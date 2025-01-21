@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Check, Infinity, Sparkles } from "lucide-react";
+import { CheckCircle, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const PricingSection = () => {
@@ -119,9 +119,9 @@ const PricingSection = () => {
             </div>
             <div className="space-y-6 mb-8 flex-grow">
               <div className="space-y-3">
-                {plan.features.map((feature) => (
+                {plan.features.slice(0, 6).map((feature) => (
                   <div key={feature} className="flex items-start">
-                    <Check className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
                     <span>{feature}</span>
                   </div>
                 ))}
@@ -132,9 +132,9 @@ const PricingSection = () => {
                     <Sparkles className="w-4 h-4" />
                     Coming Soon
                   </p>
-                  {plan.comingSoon.map((feature) => (
+                  {plan.comingSoon.slice(0, 2).map((feature) => (
                     <div key={feature} className="flex items-start opacity-60">
-                      <Check className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
                       <span>{feature}</span>
                     </div>
                   ))}
