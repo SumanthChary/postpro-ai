@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle, Sparkles } from "lucide-react";
+import { CheckCircle, Sparkles, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const PricingSection = () => {
@@ -19,18 +19,12 @@ const PricingSection = () => {
         "Standard templates (5 templates)",
         "Basic analytics",
       ],
-      comingSoon: [
-        "AI Profile Enhancer (Preview)",
-        "Personal branding tools",
-        "Achievement highlighter",
-        "Professional bio generator",
-      ],
       cta: "Start Free",
       popular: false,
     },
     {
       name: "Pro",
-      price: "4.99",
+      price: "6.99",
       period: "week",
       subtext: "14-day trial available • Limited time: $3.99 first month",
       features: [
@@ -40,14 +34,10 @@ const PricingSection = () => {
         "Advanced tone analysis",
         "Engagement predictions",
         "Premium templates (20+)",
-        "Posting time optimizer",
-        "Basic analytics dashboard",
-        "Email support",
-        "Save 3 custom templates",
-        "Referral program (Get 1 month free)",
+        "AI Image Generator",
       ],
       comingSoon: [
-        "AI Profile Enhancer (Preview)",
+        "CTA Generator",
         "Personal branding tools",
         "Achievement highlighter",
         "Professional bio generator",
@@ -68,13 +58,10 @@ const PricingSection = () => {
         "Early access to new features",
         "Unlimited LinkedIn posts",
         "All social media platforms support",
-        "Advanced tone & sentiment analysis",
-        "Premium hashtag research",
-        "Custom CTA generator",
-        "Bulk post scheduling",
+        "AI Image Generator",
       ],
       comingSoon: [
-        "AI Profile Enhancer (Preview)",
+        "CTA Generator",
         "Personal branding tools",
         "Achievement highlighter",
         "Professional bio generator",
@@ -105,6 +92,14 @@ const PricingSection = () => {
                 </span>
               </div>
             )}
+            <div className="relative">
+              <button 
+                className="absolute right-0 top-0 text-gray-400 hover:text-gray-600"
+                onClick={() => navigate("/")}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
             <div className="mb-8">
               <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
               <div className="flex items-end mb-2">
@@ -141,23 +136,23 @@ const PricingSection = () => {
                 </div>
               )}
             </div>
-            <Button
-              className={plan.popular ? "bg-electric-purple hover:bg-electric-purple/90" : ""}
-              variant={plan.popular ? "default" : "outline"}
-            >
-              {plan.cta}
-            </Button>
+            <div className="space-y-4">
+              <Button
+                className={plan.popular ? "bg-electric-purple hover:bg-electric-purple/90 w-full" : "w-full"}
+                variant={plan.popular ? "default" : "outline"}
+              >
+                {plan.cta}
+              </Button>
+              <Button 
+                variant="ghost" 
+                onClick={handleLearnMore}
+                className="w-full text-sm text-gray-600 hover:text-electric-purple"
+              >
+                Learn More About Features
+              </Button>
+            </div>
           </Card>
         ))}
-      </div>
-      <div className="text-center mt-8">
-        <Button 
-          variant="outline" 
-          onClick={handleLearnMore}
-          className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90"
-        >
-          Learn More About Features
-        </Button>
       </div>
     </div>
   );
