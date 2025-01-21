@@ -14,8 +14,7 @@ const PricingSection = () => {
       features: [
         "3 LinkedIn posts optimization per week",
         "Basic tone analysis",
-        "Simple hashtag suggestions",
-        "Character counter",
+        "Real-Time Trend Hashtags",
         "Standard templates (5 templates)",
         "Basic analytics",
       ],
@@ -23,50 +22,43 @@ const PricingSection = () => {
       popular: false,
     },
     {
-      name: "Pro",
+      name: "Creator Plan",
       price: "6.99",
       period: "week",
       subtext: "14-day trial available • Limited time: $3.99 first month",
       features: [
-        "15 posts per week",
-        "LinkedIn optimization",
+        "Unlimited Post Enhancements",
         "AI Post Writer",
         "Advanced tone analysis",
         "Engagement predictions",
         "Premium templates (20+)",
-        "AI Image Generator",
       ],
       comingSoon: [
-        "CTA Generator",
-        "Personal branding tools",
-        "Achievement highlighter",
-        "Professional bio generator",
+        "AI Profile Enhancer",
+        "AI Visuals Generator",
+        "Cross-Platform Sharing",
+        "Teams collaboration",
       ],
-      cta: "Start Pro Plan",
+      cta: "Start Creator Plan",
       popular: true,
     },
     {
-      name: "Annual",
+      name: "Business Plan",
       price: "299",
       period: "year",
       subtext: "Save over 50% compared to weekly pricing!",
       features: [
-        "Massive cost savings",
-        "All features unlocked",
-        "No usage limits",
-        "Premium support",
+        "All Creator Features",
+        "Premium Support",
         "Early access to new features",
-        "Unlimited LinkedIn posts",
-        "All social media platforms support",
-        "AI Image Generator",
       ],
       comingSoon: [
-        "CTA Generator",
-        "Personal branding tools",
-        "Achievement highlighter",
-        "Professional bio generator",
+        "API integration",
+        "Personal Branding Tools",
+        "Priority customer support",
+        "Dedicated account manager",
       ],
-      cta: "Start Annual",
+      cta: "Start Business Plan",
       popular: false,
     },
   ];
@@ -114,7 +106,7 @@ const PricingSection = () => {
             </div>
             <div className="space-y-6 mb-8 flex-grow">
               <div className="space-y-3">
-                {plan.features.slice(0, 6).map((feature) => (
+                {plan.features.map((feature) => (
                   <div key={feature} className="flex items-start">
                     <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
                     <span>{feature}</span>
@@ -127,7 +119,7 @@ const PricingSection = () => {
                     <Sparkles className="w-4 h-4" />
                     Coming Soon
                   </p>
-                  {plan.comingSoon.slice(0, 2).map((feature) => (
+                  {plan.comingSoon.map((feature) => (
                     <div key={feature} className="flex items-start opacity-60">
                       <CheckCircle className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
                       <span>{feature}</span>
