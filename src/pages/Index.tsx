@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon } from "lucide-react";
 import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/components/ui/use-toast";
 import Testimonials from "@/components/Testimonials";
@@ -57,7 +57,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-custom-bg">
-      {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
@@ -174,6 +173,52 @@ const Index = () => {
             </div>
           </div>
         </Card>
+
+        {/* Templates Section */}
+        <div className="mt-16 max-w-2xl mx-auto">
+          <h2 className="text-2xl font-montserrat font-bold text-center mb-8 bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
+            Available Templates
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card className="p-6 hover:shadow-lg transition-shadow duration-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <FileTextIcon className="w-6 h-6 text-electric-purple" />
+                <h3 className="text-lg font-montserrat font-bold">Basic Templates</h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Access our collection of basic templates designed for essential social media posts.
+              </p>
+              <a 
+                href="https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-electric-purple hover:text-electric-purple/80 font-semibold"
+              >
+                View Templates
+                <RocketIcon className="w-4 h-4 ml-2" />
+              </a>
+            </Card>
+
+            <Card className="p-6 hover:shadow-lg transition-shadow duration-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <FileTextIcon className="w-6 h-6 text-bright-teal" />
+                <h3 className="text-lg font-montserrat font-bold">Pro Templates</h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Explore our premium templates with advanced features for professional content.
+              </p>
+              <a 
+                href="https://docs.google.com/document/d/1zYLfdY80N8P7YrdSmGCUwNdoyQBIug_qR1FiA1V_bDY/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-bright-teal hover:text-bright-teal/80 font-semibold"
+              >
+                View Templates
+                <RocketIcon className="w-4 h-4 ml-2" />
+              </a>
+            </Card>
+          </div>
+        </div>
 
         {/* Testimonials Section */}
         <Testimonials />
