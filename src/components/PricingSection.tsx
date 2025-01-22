@@ -133,6 +133,7 @@ const PricingSection = () => {
               <Button
                 className={plan.popular ? "bg-electric-purple hover:bg-electric-purple/90 w-full" : "w-full"}
                 variant={plan.popular ? "default" : "outline"}
+                onClick={() => navigate("/subscription")}
               >
                 {plan.cta}
               </Button>

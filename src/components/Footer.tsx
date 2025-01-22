@@ -1,4 +1,5 @@
 import { Twitter, Linkedin, Instagram, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -12,15 +13,15 @@ const Footer = () => {
           <div>
             <h4 className="font-montserrat font-bold text-lg mb-4">Quick Links</h4>
             <ul className="space-y-2 font-opensans">
-              <li><a href="#" className="hover:text-bright-teal transition-colors">Home</a></li>
-              <li><a href="#" className="hover:text-bright-teal transition-colors">Features</a></li>
-              <li><a href="#" className="hover:text-bright-teal transition-colors">Pricing</a></li>
+              <li><Link to="/" className="hover:text-bright-teal transition-colors">Home</Link></li>
+              <li><Link to="/features" className="hover:text-bright-teal transition-colors">Features</Link></li>
+              <li><Link to="/pricing" className="hover:text-bright-teal transition-colors">Pricing</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-montserrat font-bold text-lg mb-4">Contact</h4>
             <ul className="space-y-2 font-opensans">
-              <li><a href="mailto:support@postpro.ai" className="hover:text-bright-teal transition-colors">support@postpro.ai</a></li>
+              <li><a href="mailto:sumanthchary.business@gmail.com" className="hover:text-bright-teal transition-colors">sumanthchary.business@gmail.com</a></li>
             </ul>
           </div>
           <div>

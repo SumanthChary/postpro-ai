@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import Enhance from "./pages/Enhance";
 import Features from "./pages/Features";
+import Subscription from "./pages/Subscription";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/enhance" element={<Enhance />} />
               <Route path="/features" element={<Features />} />
+              <Route path="/subscription" element={<Subscription />} />
             </Routes>
             <Toaster />
             <Sonner />
