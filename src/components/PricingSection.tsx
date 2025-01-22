@@ -38,6 +38,7 @@ const PricingSection = () => {
         "AI Visuals Generator",
         "Cross-Platform Sharing",
         "Teams collaboration",
+        "CTA Generator"
       ],
       cta: "Start Creator Plan",
       popular: true,
