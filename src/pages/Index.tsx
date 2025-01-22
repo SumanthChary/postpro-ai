@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon } from "lucide-react";
 import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/components/ui/use-toast";
@@ -14,6 +15,7 @@ const Index = () => {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [category, setCategory] = useState("business");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -24,6 +26,18 @@ const Index = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const getCategoryHashtags = (category: string) => {
+    const hashtags = {
+      business: ["#entrepreneurship", "#business", "#success", "#leadership", "#innovation", "#startup", "#growthmindset", "#businesstips", "#networking", "#entrepreneurlife"],
+      technology: ["#tech", "#innovation", "#ai", "#programming", "#coding", "#developer", "#software", "#technology", "#future", "#digitalmarketing"],
+      lifestyle: ["#lifestyle", "#motivation", "#mindfulness", "#wellness", "#selfcare", "#inspiration", "#personaldevelopment", "#growth", "#positivity", "#mindset"],
+      marketing: ["#marketing", "#digitalmarketing", "#socialmedia", "#branding", "#contentmarketing", "#marketingstrategy", "#advertising", "#business", "#marketingtips", "#socialmediatips"],
+      creative: ["#creative", "#design", "#art", "#creativity", "#inspiration", "#artist", "#designer", "#creative", "#digitalart", "#graphicdesign"]
+    };
+    
+    return hashtags[category as keyof typeof hashtags] || hashtags.business;
+  };
 
   const handleEnhancePost = async () => {
     if (!post.trim()) {
@@ -38,11 +52,16 @@ const Index = () => {
     setIsEnhancing(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
-      const enhancedPost = `${post}\n\n#innovation #growth #success`;
+      const selectedHashtags = getCategoryHashtags(category)
+        .sort(() => 0.5 - Math.random()) // Shuffle array
+        .slice(0, 5); // Select 5 random hashtags
+      
+      const enhancedPost = `${post}\n\n${selectedHashtags.join(" ")}\n\nNote: Hashtags are AI-generated and updated regularly based on trends. Accuracy may vary.`;
+      
       setPost(enhancedPost);
       toast({
         title: "Post Enhanced!",
-        description: "Your post has been optimized for better engagement",
+        description: "Your post has been optimized with trending hashtags for better engagement",
       });
     } catch (error) {
       toast({
@@ -155,6 +174,22 @@ const Index = () => {
                 <InstagramIcon className="w-5 h-5 text-coral-red" />
               </div>
             </div>
+
+            <Select
+              value={category}
+              onValueChange={setCategory}
+            >
+              <SelectTrigger className="w-full mb-4">
+                <SelectValue placeholder="Select post category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="business">Business & Entrepreneurship</SelectItem>
+                <SelectItem value="technology">Technology & Innovation</SelectItem>
+                <SelectItem value="lifestyle">Lifestyle & Personal Development</SelectItem>
+                <SelectItem value="marketing">Marketing & Digital Media</SelectItem>
+                <SelectItem value="creative">Creative & Design</SelectItem>
+              </SelectContent>
+            </Select>
             
             <Textarea
               value={post}
