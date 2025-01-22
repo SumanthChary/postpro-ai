@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon } from "lucide-react";
 import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/components/ui/use-toast";
 import Testimonials from "@/components/Testimonials";
@@ -53,6 +53,15 @@ const Index = () => {
     } finally {
       setIsEnhancing(false);
     }
+  };
+
+  const handleProTemplatesClick = () => {
+    setShowPricing(true);
+    toast({
+      title: "Pro Templates Locked",
+      description: "Subscribe to our Pro Plan to access premium templates",
+      variant: "default",
+    });
   };
 
   return (
@@ -199,7 +208,13 @@ const Index = () => {
               </a>
             </Card>
 
-            <Card className="p-6 hover:shadow-lg transition-shadow duration-200">
+            <Card className="p-6 hover:shadow-lg transition-shadow duration-200 relative">
+              <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] rounded-lg flex items-center justify-center">
+                <div className="bg-white/90 p-4 rounded-lg shadow-lg flex items-center space-x-2">
+                  <LockIcon className="w-5 h-5 text-coral-red" />
+                  <span className="font-semibold text-coral-red">Pro Plan Required</span>
+                </div>
+              </div>
               <div className="flex items-center space-x-3 mb-4">
                 <FileTextIcon className="w-6 h-6 text-bright-teal" />
                 <h3 className="text-lg font-montserrat font-bold">Pro Templates</h3>
@@ -207,15 +222,13 @@ const Index = () => {
               <p className="text-gray-600 mb-4">
                 Explore our premium templates with advanced features for professional content.
               </p>
-              <a 
-                href="https://docs.google.com/document/d/1zYLfdY80N8P7YrdSmGCUwNdoyQBIug_qR1FiA1V_bDY/edit?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button 
+                onClick={handleProTemplatesClick}
                 className="inline-flex items-center text-bright-teal hover:text-bright-teal/80 font-semibold"
               >
                 View Templates
                 <RocketIcon className="w-4 h-4 ml-2" />
-              </a>
+              </button>
             </Card>
           </div>
         </div>
