@@ -57,7 +57,7 @@ const PricingSection = () => {
     },
     {
       name: "Business Plan",
-      price: "299",
+      price: "369.99",
       period: "year",
       subtext: "Save over 50% compared to weekly pricing!",
       features: [
