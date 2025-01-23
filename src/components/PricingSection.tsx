@@ -23,8 +23,18 @@ const PricingSection = () => {
     },
     {
       name: "Creator Plan",
-      price: "6.99",
-      period: "week",
+      variants: [
+        {
+          price: "6.99",
+          period: "week",
+          savings: null,
+        },
+        {
+          price: "25",
+          period: "month",
+          savings: "Save 10% compared to weekly",
+        }
+      ],
       subtext: "14-day trial available • Limited time: $3.99 first month",
       features: [
         "Unlimited Post Enhancements",
@@ -99,12 +109,28 @@ const PricingSection = () => {
             </div>
             <div className="mb-8">
               <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-              <div className="flex items-end mb-2">
-                <span className="text-4xl font-bold">${plan.price}</span>
-                {plan.period && (
-                  <span className="text-gray-600 ml-2">/{plan.period}</span>
-                )}
-              </div>
+              {'variants' in plan ? (
+                <div className="space-y-4">
+                  {plan.variants.map((variant, index) => (
+                    <div key={variant.period} className="border-b last:border-b-0 pb-4 last:pb-0">
+                      <div className="flex items-end mb-2">
+                        <span className="text-4xl font-bold">${variant.price}</span>
+                        <span className="text-gray-600 ml-2">/{variant.period}</span>
+                      </div>
+                      {variant.savings && (
+                        <p className="text-sm text-green-600">{variant.savings}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-end mb-2">
+                  <span className="text-4xl font-bold">${plan.price}</span>
+                  {plan.period && (
+                    <span className="text-gray-600 ml-2">/{plan.period}</span>
+                  )}
+                </div>
+              )}
               {plan.subtext && (
                 <p className="text-sm text-gray-500">{plan.subtext}</p>
               )}
