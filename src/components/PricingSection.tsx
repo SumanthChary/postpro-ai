@@ -41,7 +41,7 @@ const PricingSection = () => {
         "AI Post Writer",
         "Advanced tone analysis",
         "Engagement predictions",
-        "Premium templates (20+)",
+        "Premium templates (20+ templates)",
       ],
       comingSoon: [
         "AI Profile Enhancer",
@@ -62,6 +62,8 @@ const PricingSection = () => {
         "All Creator Features",
         "Premium Support",
         "Early access to new features",
+        "Premium templates (20+ templates)",
+        "Advanced analytics dashboard",
       ],
       comingSoon: [
         "API integration",
@@ -80,6 +82,10 @@ const PricingSection = () => {
 
   const handleLearnMore = () => {
     navigate("/features");
+  };
+
+  const handleTemplates = () => {
+    window.open("https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing", "_blank");
   };
 
   return (
@@ -169,10 +175,10 @@ const PricingSection = () => {
               </Button>
               <Button 
                 variant="ghost" 
-                onClick={handleLearnMore}
+                onClick={plan.name === "Free" ? handleLearnMore : handleTemplates}
                 className="w-full text-sm text-gray-600 hover:text-electric-purple"
               >
-                Learn More About Features
+                {plan.name === "Free" ? "Learn More About Features" : "View Templates"}
               </Button>
             </div>
           </Card>
