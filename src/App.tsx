@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Enhance from "./pages/Enhance";
 import Features from "./pages/Features";
 import Subscription from "./pages/Subscription";
+import Payment from "./pages/Payment";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
               <Route path="/enhance" element={<Enhance />} />
               <Route path="/features" element={<Features />} />
               <Route path="/subscription" element={<Subscription />} />
+              <Route path="/payment" element={<Payment />} />
             </Routes>
             <Toaster />
             <Sonner />
