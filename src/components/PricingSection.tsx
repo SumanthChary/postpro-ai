@@ -25,11 +25,13 @@ const PricingSection = () => {
       name: "Creator Plan",
       variants: [
         {
+          name: "Weekly",
           price: "6.99",
           period: "week",
           savings: null,
         },
         {
+          name: "Influencer Plan",
           price: "25",
           period: "month",
           savings: "Save 10% compared to weekly",
@@ -119,6 +121,9 @@ const PricingSection = () => {
                 <div className="space-y-4">
                   {plan.variants.map((variant, index) => (
                     <div key={variant.period} className="border-b last:border-b-0 pb-4 last:pb-0">
+                      <div className="flex items-end mb-2">
+                        <span className="text-sm font-medium text-gray-600 mb-1">{variant.name}</span>
+                      </div>
                       <div className="flex items-end mb-2">
                         <span className="text-4xl font-bold">${variant.price}</span>
                         <span className="text-gray-600 ml-2">/{variant.period}</span>
