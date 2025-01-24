@@ -56,7 +56,7 @@ const Index = () => {
         .sort(() => 0.5 - Math.random()) // Shuffle array
         .slice(0, 5); // Select 5 random hashtags
       
-      const enhancedPost = `${post}\n\n${selectedHashtags.join(" ")}\n\nNote: Hashtags are AI-generated and updated regularly based on trends. Accuracy may vary.`;
+      const enhancedPost = `${post}\n\n${selectedHashtags.join(" ")}`;
       
       setPost(enhancedPost);
       toast({
