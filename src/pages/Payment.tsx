@@ -4,12 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { 
-  CreditCard, 
-  Wallet2, 
+  Wallet, 
   AlertCircle,
-  PaypalIcon,
-  CreditCardIcon,
-  SmartphoneIcon
+  CreditCard,
+  Smartphone
 } from "lucide-react";
 import {
   Dialog,
@@ -53,19 +51,19 @@ const Payment = () => {
     {
       id: "paypal",
       name: "PayPal",
-      icon: <PaypalIcon className="w-6 h-6" />,
+      icon: <Wallet className="w-6 h-6" />,
       description: "Pay securely using your PayPal account",
     },
     {
       id: "googlepay",
       name: "Google Pay",
-      icon: <SmartphoneIcon className="w-6 h-6" />,
+      icon: <Smartphone className="w-6 h-6" />,
       description: "Quick payment with Google Pay",
     },
     {
       id: "card",
       name: "Credit/Debit Card",
-      icon: <CreditCardIcon className="w-6 h-6" />,
+      icon: <CreditCard className="w-6 h-6" />,
       description: "Pay with your credit or debit card",
     },
   ];
