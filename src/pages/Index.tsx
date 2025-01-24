@@ -234,9 +234,8 @@ const Index = () => {
               <img 
                 src="/lovable-uploads/76f00aba-ea4e-40ad-af9f-0bf66d3ee4d5.png" 
                 alt="Buy Me a Coffee" 
-                className="h-8 mr-2"
+                className="h-8"
               />
-              Buy me a coffee
             </a>
           </div>
         </div>
