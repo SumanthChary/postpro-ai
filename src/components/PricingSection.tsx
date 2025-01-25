@@ -57,9 +57,9 @@ const PricingSection = () => {
     },
     {
       name: "Business Plan",
-      price: "369.99",
+      price: "99",
       period: "year",
-      subtext: "Save over 50% compared to weekly pricing!",
+      subtext: "Special 1st year pricing - Save $270.99 (73% off regular price)",
       features: [
         "All Creator Features",
         "Premium Support",
@@ -143,7 +143,7 @@ const PricingSection = () => {
                 </div>
               )}
               {plan.subtext && (
-                <p className="text-sm text-gray-500">{plan.subtext}</p>
+                <p className="text-sm text-green-600 font-medium">{plan.subtext}</p>
               )}
             </div>
             <div className="space-y-6 mb-8 flex-grow">
