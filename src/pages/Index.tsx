@@ -137,14 +137,23 @@ const Index = () => {
                 Pricing
               </Button>
               {session ? (
-                <Button
-                  variant="outline"
-                  onClick={handleSignOut}
-                  className="font-opensans"
-                >
-                  <LogOutIcon className="w-4 h-4 mr-2" />
-                  Sign Out
-                </Button>
+                <>
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate("/profile")}
+                    className="font-opensans"
+                  >
+                    Profile
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={handleSignOut}
+                    className="font-opensans"
+                  >
+                    <LogOutIcon className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </>
               ) : (
                 <Button
                   className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white font-opensans"
@@ -183,17 +192,29 @@ const Index = () => {
                   Pricing
                 </Button>
                 {session ? (
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      handleSignOut();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full font-opensans"
-                  >
-                    <LogOutIcon className="w-4 h-4 mr-2" />
-                    Sign Out
-                  </Button>
+                  <>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        navigate("/profile");
+                        setMobileMenuOpen(false);
+                      }}
+                      className="w-full font-opensans"
+                    >
+                      Profile
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        handleSignOut();
+                        setMobileMenuOpen(false);
+                      }}
+                      className="w-full font-opensans"
+                    >
+                      <LogOutIcon className="w-4 h-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </>
                 ) : (
                   <Button
                     className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white w-full font-opensans"
