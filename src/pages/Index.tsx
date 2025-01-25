@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon, LogOutIcon } from "lucide-react";
 import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/components/ui/use-toast";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [post, setPost] = useState("");
@@ -16,16 +18,36 @@ const Index = () => {
   const [showPricing, setShowPricing] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [category, setCategory] = useState("business");
+  const [session, setSession] = useState<any>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Show pricing modal after 30 seconds
-    const timer = setTimeout(() => {
-      setShowPricing(true);
-    }, 30000);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
 
-    return () => clearTimeout(timer);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate("/auth");
+    } catch (error: any) {
+      toast({
+        title: "Error signing out",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
 
   const getCategoryHashtags = (category: string) => {
     const hashtags = {
@@ -40,6 +62,16 @@ const Index = () => {
   };
 
   const handleEnhancePost = async () => {
+    if (!session) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to enhance your posts",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
     if (!post.trim()) {
       toast({
         title: "Please enter some text",
@@ -53,8 +85,8 @@ const Index = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       const selectedHashtags = getCategoryHashtags(category)
-        .sort(() => 0.5 - Math.random()) // Shuffle array
-        .slice(0, 5); // Select 5 random hashtags
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 5);
       
       const enhancedPost = `${post}\n\n${selectedHashtags.join(" ")}`;
       
@@ -104,9 +136,23 @@ const Index = () => {
               >
                 Pricing
               </Button>
-              <Button className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white font-opensans">
-                Get Started
-              </Button>
+              {session ? (
+                <Button
+                  variant="outline"
+                  onClick={handleSignOut}
+                  className="font-opensans"
+                >
+                  <LogOutIcon className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              ) : (
+                <Button
+                  className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white font-opensans"
+                  onClick={() => navigate("/auth")}
+                >
+                  Sign In
+                </Button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -136,9 +182,29 @@ const Index = () => {
                 >
                   Pricing
                 </Button>
-                <Button className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white w-full font-opensans">
-                  Get Started
-                </Button>
+                {session ? (
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      handleSignOut();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full font-opensans"
+                  >
+                    <LogOutIcon className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                ) : (
+                  <Button
+                    className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white w-full font-opensans"
+                    onClick={() => {
+                      navigate("/auth");
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Sign In
+                  </Button>
+                )}
               </div>
             </div>
           )}
