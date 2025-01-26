@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { AlertCircle, Wallet2 } from "lucide-react";
+import { AlertCircle, CreditCard } from "lucide-react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -14,55 +14,64 @@ const Payment = () => {
   const location = useLocation();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [user, setUser] = useState<any>(null);
   
   const planDetails = location.state?.plan || {
     name: "Creator Plan",
-    price: "6.99",
-    period: "week"
+    price: "25",
+    period: "month"
   };
 
-  const handlePayPalApprove = async (data: any, actions: any) => {
-    setIsProcessing(true);
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, []);
+
+  const handlePaymentSuccess = async (orderId: string) => {
     try {
-      const order = await actions.order.capture();
-      
-      // Call our Supabase Edge Function to handle the payment
-      const { data: paymentResult, error } = await supabase.functions.invoke('handle-payment', {
-        body: {
-          orderId: order.id,
-          subscriptionTier: planDetails.name,
-        },
-      });
+      const { error } = await supabase
+        .from('payments')
+        .insert([
+          {
+            user_id: user?.id,
+            amount: parseFloat(planDetails.price),
+            currency: 'USD',
+            payment_method: 'paypal',
+            status: 'completed',
+            transaction_id: orderId,
+            subscription_tier: planDetails.name
+          }
+        ]);
 
       if (error) throw error;
 
       toast({
         title: "Payment Successful!",
-        description: "Your subscription has been activated.",
+        description: `You are now subscribed to the ${planDetails.name}`,
         duration: 5000,
       });
 
-      // Redirect to dashboard or home page
-      navigate("/");
+      navigate("/enhance");
     } catch (error: any) {
-      console.error('Payment error:', error);
+      console.error('Payment recording error:', error);
       toast({
-        title: "Payment Failed",
-        description: error.message || "There was an error processing your payment.",
+        title: "Error Recording Payment",
+        description: error.message,
         variant: "destructive",
       });
-    } finally {
-      setIsProcessing(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-custom-bg py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Complete Your Purchase</h1>
+          <h1 className="text-3xl font-bold text-custom-text mb-2">Complete Your Purchase</h1>
           <p className="text-gray-600">
-            You're subscribing to {planDetails.name} at ${planDetails.price}/{planDetails.period}
+            {planDetails.name} - ${planDetails.price}/{planDetails.period}
           </p>
         </div>
 
@@ -73,7 +82,7 @@ const Payment = () => {
                 <AlertCircle className="h-5 w-5 text-yellow-400" />
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-yellow-800">
-                    Payment Information
+                    Secure Payment
                   </h3>
                   <div className="mt-2 text-sm text-yellow-700">
                     <p>
@@ -105,7 +114,12 @@ const Payment = () => {
                       }]
                     });
                   }}
-                  onApprove={handlePayPalApprove}
+                  onApprove={async (data, actions) => {
+                    if (actions.order) {
+                      const order = await actions.order.capture();
+                      await handlePaymentSuccess(order.id);
+                    }
+                  }}
                   onError={(err) => {
                     console.error('PayPal error:', err);
                     toast({
@@ -117,6 +131,28 @@ const Payment = () => {
                   disabled={isProcessing}
                 />
               </PayPalScriptProvider>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">Or pay with card</span>
+                </div>
+              </div>
+
+              <Button
+                className="w-full bg-electric-purple hover:bg-electric-purple/90"
+                onClick={() => {
+                  toast({
+                    title: "Coming Soon",
+                    description: "Card payments will be available shortly.",
+                  });
+                }}
+              >
+                <CreditCard className="mr-2 h-4 w-4" />
+                Pay with Card
+              </Button>
             </div>
 
             <Button
