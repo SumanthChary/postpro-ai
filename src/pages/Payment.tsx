@@ -87,13 +87,15 @@ const Payment = () => {
 
             <div className="space-y-4">
               <PayPalScriptProvider options={{ 
-                "client-id": PAYPAL_CLIENT_ID,
+                clientId: PAYPAL_CLIENT_ID,
                 currency: "USD",
+                intent: "CAPTURE"
               }}>
                 <PayPalButtons
                   style={{ layout: "vertical" }}
                   createOrder={(data, actions) => {
                     return actions.order.create({
+                      intent: "CAPTURE",
                       purchase_units: [{
                         amount: {
                           value: planDetails.price,
