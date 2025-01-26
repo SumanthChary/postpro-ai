@@ -1,18 +1,61 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { CheckCircle, CreditCard } from "lucide-react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { supabase } from "@/integrations/supabase/client";
+
+const PAYPAL_CLIENT_ID = "AUAlOzak-yTYorC9Iz4-u4VFApYVxgbvNGHZvTxqfCxPnzoJoyI6-bqCfEtJAwXbfRBlmuxPuLdOkO_j";
 
 const Subscription = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSubscribe = (plan: string) => {
-    toast({
-      title: "Coming Soon",
-      description: "Payment integration will be available shortly. Thank you for your interest!",
-    });
+  const handlePaymentSuccess = async (orderId: string) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session?.user) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to make a payment",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('payments')
+        .insert([
+          {
+            user_id: session.user.id,
+            amount: 25.00,
+            currency: 'USD',
+            payment_method: 'paypal',
+            status: 'completed',
+            transaction_id: orderId,
+            subscription_tier: 'Creator Plan'
+          }
+        ]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Payment Successful!",
+        description: "You are now subscribed to the Creator Plan",
+      });
+      
+      navigate("/enhance");
+    } catch (error: any) {
+      console.error('Payment recording error:', error);
+      toast({
+        title: "Error Recording Payment",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -42,13 +85,41 @@ const Subscription = () => {
               <span>Premium Templates (20+)</span>
             </li>
           </ul>
-          <Button 
-            className="w-full bg-electric-purple hover:bg-electric-purple/90"
-            onClick={() => handleSubscribe('creator')}
-          >
-            <CreditCard className="w-4 h-4 mr-2" />
-            Subscribe Now
-          </Button>
+          <PayPalScriptProvider options={{ 
+            clientId: PAYPAL_CLIENT_ID,
+            currency: "USD",
+            intent: "CAPTURE"
+          }}>
+            <PayPalButtons
+              style={{ layout: "vertical" }}
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  intent: "CAPTURE",
+                  purchase_units: [{
+                    amount: {
+                      value: "25.00",
+                      currency_code: "USD"
+                    },
+                    description: "Creator Plan Subscription"
+                  }]
+                });
+              }}
+              onApprove={async (data, actions) => {
+                if (actions.order) {
+                  const order = await actions.order.capture();
+                  await handlePaymentSuccess(order.id);
+                }
+              }}
+              onError={(err) => {
+                console.error('PayPal error:', err);
+                toast({
+                  title: "Payment Error",
+                  description: "There was an error processing your payment. Please try again.",
+                  variant: "destructive",
+                });
+              }}
+            />
+          </PayPalScriptProvider>
         </Card>
 
         <Card className="p-8 hover:shadow-lg transition-all duration-300">
@@ -73,7 +144,12 @@ const Subscription = () => {
           </ul>
           <Button 
             className="w-full bg-electric-purple hover:bg-electric-purple/90"
-            onClick={() => handleSubscribe('business')}
+            onClick={() => {
+              toast({
+                title: "Coming Soon",
+                description: "Business Plan payments will be available shortly.",
+              });
+            }}
           >
             <CreditCard className="w-4 h-4 mr-2" />
             Subscribe Now
