@@ -12,11 +12,14 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon, LogOutIcon, UserIcon, ChevronDownIcon } from "lucide-react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/hooks/use-toast";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
+
+const PAYPAL_CLIENT_ID = "AUAlOzak-yTYorC9Iz4-u4VFApYVxgbvNGHZvTxqfCxPnzoJoyI6-bqCfEtJAwXbfRBlmuxPuLdOkO_j";
 
 const Index = () => {
   const [post, setPost] = useState("");
@@ -143,6 +146,48 @@ const Index = () => {
       description: "Subscribe to our Pro Plan to access premium templates",
       variant: "default",
     });
+  };
+
+  const handlePaymentSuccess = async (orderId: string) => {
+    if (!session?.user) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to make a payment",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('payments')
+        .insert([
+          {
+            user_id: session.user.id,
+            amount: 25.00,
+            currency: 'USD',
+            payment_method: 'paypal',
+            status: 'completed',
+            transaction_id: orderId,
+            subscription_tier: 'Creator Plan'
+          }
+        ]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Payment Successful!",
+        description: "You are now subscribed to the Creator Plan",
+      });
+    } catch (error: any) {
+      console.error('Payment recording error:', error);
+      toast({
+        title: "Error Recording Payment",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -358,6 +403,52 @@ const Index = () => {
               />
             </a>
           </div>
+        </div>
+
+        {/* PayPal Integration Section */}
+        <div className="max-w-2xl mx-auto mt-16">
+          <Card className="p-6">
+            <h3 className="text-xl font-montserrat font-bold mb-4 text-center">
+              Upgrade to Creator Plan
+            </h3>
+            <p className="text-gray-600 mb-6 text-center font-opensans">
+              Get access to premium features for just $25/month
+            </p>
+            <PayPalScriptProvider options={{ 
+              clientId: PAYPAL_CLIENT_ID,
+              currency: "USD",
+              intent: "capture"
+            }}>
+              <PayPalButtons
+                style={{ layout: "vertical" }}
+                createOrder={(data, actions) => {
+                  return actions.order.create({
+                    purchase_units: [{
+                      amount: {
+                        value: "25.00",
+                        currency_code: "USD"
+                      },
+                      description: "Creator Plan Subscription"
+                    }]
+                  });
+                }}
+                onApprove={async (data, actions) => {
+                  if (actions.order) {
+                    const order = await actions.order.capture();
+                    await handlePaymentSuccess(order.id);
+                  }
+                }}
+                onError={(err) => {
+                  console.error('PayPal error:', err);
+                  toast({
+                    title: "Payment Error",
+                    description: "There was an error processing your payment. Please try again.",
+                    variant: "destructive",
+                  });
+                }}
+              />
+            </PayPalScriptProvider>
+          </Card>
         </div>
 
         {/* Templates Section */}
