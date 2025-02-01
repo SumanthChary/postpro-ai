@@ -19,39 +19,58 @@ serve(async (req) => {
       throw new Error('Text is required');
     }
 
-    console.log('Sending request to OpenAI with text:', text);
+    console.log('Processing text correction request:', { textLength: text.length });
+
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    if (!openAIApiKey) {
+      throw new Error('OpenAI API key is not configured');
+    }
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-3.5-turbo',
         messages: [
           {
             role: 'system',
-            content: 'You are a helpful assistant that corrects spelling and grammar mistakes. Return only the corrected text without any explanations.'
+            content: 'You are a helpful assistant that corrects spelling and grammar mistakes. Return only the corrected text without any explanations or quotes.'
           },
           {
             role: 'user',
-            content: `Please correct any spelling or grammar mistakes in this text: "${text}"`
+            content: `Please correct any spelling or grammar mistakes in this text: ${text}`
           }
         ],
+        temperature: 0.3, // Lower temperature for more consistent corrections
       }),
     });
 
-    const data = await response.json();
-    console.log('OpenAI API response:', data);
-
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      console.error('Unexpected API response structure:', data);
-      throw new Error('Invalid response from OpenAI API');
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('OpenAI API error:', errorData);
+      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
     }
 
-    const correctedText = data.choices[0].message.content.replace(/^["']|["']$/g, '');
-    console.log('Corrected text:', correctedText);
+    const data = await response.json();
+    console.log('OpenAI API response structure:', {
+      hasChoices: !!data.choices,
+      choicesLength: data.choices?.length,
+      hasMessage: !!data.choices?.[0]?.message,
+    });
+
+    if (!data.choices?.[0]?.message?.content) {
+      console.error('Unexpected API response structure:', data);
+      throw new Error('Invalid response structure from OpenAI API');
+    }
+
+    const correctedText = data.choices[0].message.content;
+    console.log('Successfully processed correction:', {
+      originalLength: text.length,
+      correctedLength: correctedText.length,
+    });
 
     return new Response(
       JSON.stringify({ correctedText }),
