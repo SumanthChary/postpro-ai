@@ -9,35 +9,6 @@ const corsHeaders = {
 // Utility function for delay
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Retry function with exponential backoff
-async function fetchWithRetry(url: string, options: RequestInit, maxRetries = 3) {
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      const response = await fetch(url, options);
-      
-      if (response.status === 429) {
-        const retryAfter = response.headers.get('Retry-After');
-        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.min(1000 * Math.pow(2, i), 10000);
-        console.log(`Rate limited. Waiting ${waitTime}ms before retry ${i + 1}/${maxRetries}`);
-        await sleep(waitTime);
-        continue;
-      }
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      return response;
-    } catch (error) {
-      if (i === maxRetries - 1) throw error;
-      const waitTime = Math.min(1000 * Math.pow(2, i), 10000);
-      console.log(`Request failed. Waiting ${waitTime}ms before retry ${i + 1}/${maxRetries}`);
-      await sleep(waitTime);
-    }
-  }
-  throw new Error('Max retries reached');
-}
-
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -45,43 +16,49 @@ serve(async (req) => {
   }
 
   try {
-    const { text } = await req.json();
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    if (!openAIApiKey) {
+      throw new Error('OpenAI API key is not configured');
+    }
 
+    const { text } = await req.json();
     if (!text) {
       throw new Error('Text is required');
     }
 
     console.log('Processing text correction request:', { textLength: text.length });
 
-    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
-    if (!openAIApiKey) {
-      throw new Error('OpenAI API key is not configured');
-    }
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openAIApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant that corrects spelling and grammar mistakes. Return only the corrected text without any explanations or quotes.'
+          },
+          {
+            role: 'user',
+            content: `Please correct any spelling or grammar mistakes in this text: ${text}`
+          }
+        ],
+        temperature: 0.3,
+      }),
+    });
 
-    const response = await fetchWithRetry(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${openAIApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a helpful assistant that corrects spelling and grammar mistakes. Return only the corrected text without any explanations or quotes.'
-            },
-            {
-              role: 'user',
-              content: `Please correct any spelling or grammar mistakes in this text: ${text}`
-            }
-          ],
-          temperature: 0.3,
-        }),
-      }
-    );
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('OpenAI API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData
+      });
+      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+    }
 
     const data = await response.json();
     console.log('OpenAI API response structure:', {
@@ -105,14 +82,18 @@ serve(async (req) => {
       JSON.stringify({ correctedText }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
+
   } catch (error) {
     console.error('Error in correct-text function:', error);
     
     let errorMessage = 'An error occurred while processing your request';
     let status = 500;
 
-    if (error.message.includes('429')) {
-      errorMessage = 'Service is currently busy. Please try again in a few moments.';
+    if (error.message.includes('401')) {
+      errorMessage = 'Invalid OpenAI API key. Please check your API key configuration.';
+      status = 401;
+    } else if (error.message.includes('429')) {
+      errorMessage = 'OpenAI API rate limit exceeded. Please try again later.';
       status = 429;
     }
 
