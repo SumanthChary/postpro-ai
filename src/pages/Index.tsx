@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon, LogOutIcon, UserIcon, ChevronDownIcon } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon, LogOutIcon, UserIcon, ChevronDownIcon, Wand2Icon } from "lucide-react";
 import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/hooks/use-toast";
 import Testimonials from "@/components/Testimonials";
@@ -113,22 +113,41 @@ const Index = () => {
 
     setIsEnhancing(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // First, correct any spelling or grammar mistakes
+      const correctionResponse = await supabase.functions.invoke('correct-text', {
+        body: { text: post }
+      });
+
+      if (correctionResponse.error) {
+        throw new Error('Failed to correct text');
+      }
+
+      const correctedText = correctionResponse.data.correctedText;
+
+      // If the text was corrected, show a toast
+      if (correctedText !== post) {
+        toast({
+          title: "Text corrected",
+          description: "Spelling and grammar have been improved",
+        });
+      }
+
+      // Add hashtags to the corrected text
       const selectedHashtags = getCategoryHashtags(category)
         .sort(() => 0.5 - Math.random())
         .slice(0, 5);
       
-      const enhancedPost = `${post}\n\n${selectedHashtags.join(" ")}`;
+      const enhancedPost = `${correctedText}\n\n${selectedHashtags.join(" ")}`;
       
       setPost(enhancedPost);
       toast({
         title: "Post Enhanced!",
         description: "Your post has been optimized with trending hashtags for better engagement",
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Enhancement failed",
-        description: "Please try again later",
+        description: error.message || "Please try again later",
         variant: "destructive",
       });
     } finally {
