@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon, LogOutIcon, UserIcon, ChevronDownIcon } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon, LogOutIcon, ChevronDownIcon } from "lucide-react";
 import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/hooks/use-toast";
 import Testimonials from "@/components/Testimonials";
@@ -25,6 +26,7 @@ const Index = () => {
   const [category, setCategory] = useState("business");
   const [session, setSession] = useState<any>(null);
   const [username, setUsername] = useState<string>("");
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ const Index = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session?.user) {
-        fetchUsername(session.user.id);
+        fetchUserProfile(session.user.id);
       }
     });
 
@@ -41,40 +43,29 @@ const Index = () => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (session?.user) {
-        fetchUsername(session.user.id);
+        fetchUserProfile(session.user.id);
       } else {
         setUsername("");
+        setAvatarUrl("");
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchUsername = async (userId: string) => {
+  const fetchUserProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase
         .from("profiles")
-        .select("username")
+        .select("username, avatar_url")
         .eq("id", userId)
         .single();
 
       if (error) throw error;
       setUsername(data.username || "User");
+      setAvatarUrl(data.avatar_url || "");
     } catch (error: any) {
-      console.error("Error fetching username:", error.message);
-    }
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await supabase.auth.signOut();
-      navigate("/auth");
-    } catch (error: any) {
-      toast({
-        title: "Error signing out",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.error("Error fetching user profile:", error.message);
     }
   };
 
@@ -111,7 +102,6 @@ const Index = () => {
     }
 
     try {
-      // Add hashtags to the post
       const selectedHashtags = getCategoryHashtags(category)
         .sort(() => 0.5 - Math.random())
         .slice(0, 5);
@@ -141,6 +131,19 @@ const Index = () => {
     });
   };
 
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate("/auth");
+    } catch (error: any) {
+      toast({
+        title: "Error signing out",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-custom-bg">
       <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
@@ -166,14 +169,20 @@ const Index = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="font-opensans">
-                      <UserIcon className="w-4 h-4 mr-2" />
+                      <Avatar className="w-6 h-6 mr-2">
+                        <AvatarImage src={avatarUrl} alt={username} />
+                        <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
+                      </Avatar>
                       {username}
                       <ChevronDownIcon className="w-4 h-4 ml-2" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => navigate("/profile")}>
-                      <UserIcon className="w-4 h-4 mr-2" />
+                      <Avatar className="w-4 h-4 mr-2">
+                        <AvatarImage src={avatarUrl} alt={username} />
+                        <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
+                      </Avatar>
                       Profile
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleSignOut}>
@@ -229,7 +238,10 @@ const Index = () => {
                       }}
                       className="w-full font-opensans"
                     >
-                      <UserIcon className="w-4 h-4 mr-2" />
+                      <Avatar className="w-4 h-4 mr-2">
+                        <AvatarImage src={avatarUrl} alt={username} />
+                        <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
+                      </Avatar>
                       Profile
                     </Button>
                     <Button
