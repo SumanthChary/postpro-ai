@@ -414,7 +414,7 @@ const Index = () => {
 
       {/* Pricing Dialog */}
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-montserrat font-extrabold text-center mb-4">
               Choose Your Perfect Plan

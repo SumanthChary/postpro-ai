@@ -95,42 +95,47 @@ const Payment = () => {
             </div>
 
             <div className="space-y-4">
-              <PayPalScriptProvider options={{ 
-                clientId: PAYPAL_CLIENT_ID,
-                currency: "USD",
-                intent: "CAPTURE"
-              }}>
-                <PayPalButtons
-                  style={{ layout: "vertical" }}
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                      intent: "CAPTURE",
-                      purchase_units: [{
-                        amount: {
-                          value: planDetails.price,
-                          currency_code: "USD"
-                        },
-                        description: `${planDetails.name} Subscription`
-                      }]
-                    });
-                  }}
-                  onApprove={async (data, actions) => {
-                    if (actions.order) {
-                      const order = await actions.order.capture();
-                      await handlePaymentSuccess(order.id);
-                    }
-                  }}
-                  onError={(err) => {
-                    console.error('PayPal error:', err);
-                    toast({
-                      title: "Payment Error",
-                      description: "There was an error processing your PayPal payment.",
-                      variant: "destructive",
-                    });
-                  }}
-                  disabled={isProcessing}
-                />
-              </PayPalScriptProvider>
+              <div className="w-full min-h-[150px]"> {/* Added fixed height container */}
+                <PayPalScriptProvider options={{ 
+                  clientId: PAYPAL_CLIENT_ID,
+                  currency: "USD",
+                  intent: "CAPTURE"
+                }}>
+                  <PayPalButtons
+                    style={{ 
+                      layout: "vertical",
+                      height: 48 // Explicitly set height
+                    }}
+                    createOrder={(data, actions) => {
+                      return actions.order.create({
+                        intent: "CAPTURE",
+                        purchase_units: [{
+                          amount: {
+                            value: planDetails.price,
+                            currency_code: "USD"
+                          },
+                          description: `${planDetails.name} Subscription`
+                        }]
+                      });
+                    }}
+                    onApprove={async (data, actions) => {
+                      if (actions.order) {
+                        const order = await actions.order.capture();
+                        await handlePaymentSuccess(order.id);
+                      }
+                    }}
+                    onError={(err) => {
+                      console.error('PayPal error:', err);
+                      toast({
+                        title: "Payment Error",
+                        description: "There was an error processing your PayPal payment.",
+                        variant: "destructive",
+                      });
+                    }}
+                    disabled={isProcessing}
+                  />
+                </PayPalScriptProvider>
+              </div>
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
