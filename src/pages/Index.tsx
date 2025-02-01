@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon, LogOutIcon, UserIcon, ChevronDownIcon, Wand2Icon } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon, LogOutIcon, UserIcon, ChevronDownIcon } from "lucide-react";
 import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/hooks/use-toast";
 import Testimonials from "@/components/Testimonials";
@@ -20,7 +20,6 @@ import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [post, setPost] = useState("");
-  const [isEnhancing, setIsEnhancing] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [category, setCategory] = useState("business");
@@ -91,7 +90,7 @@ const Index = () => {
     return hashtags[category as keyof typeof hashtags] || hashtags.business;
   };
 
-  const handleEnhancePost = async () => {
+  const handleEnhancePost = () => {
     if (!session) {
       toast({
         title: "Authentication required",
@@ -111,38 +110,18 @@ const Index = () => {
       return;
     }
 
-    setIsEnhancing(true);
     try {
-      // First, correct any spelling or grammar mistakes
-      const correctionResponse = await supabase.functions.invoke('correct-text', {
-        body: { text: post }
-      });
-
-      if (correctionResponse.error) {
-        throw new Error('Failed to correct text');
-      }
-
-      const correctedText = correctionResponse.data.correctedText;
-
-      // If the text was corrected, show a toast
-      if (correctedText !== post) {
-        toast({
-          title: "Text corrected",
-          description: "Spelling and grammar have been improved",
-        });
-      }
-
-      // Add hashtags to the corrected text
+      // Add hashtags to the post
       const selectedHashtags = getCategoryHashtags(category)
         .sort(() => 0.5 - Math.random())
         .slice(0, 5);
       
-      const enhancedPost = `${correctedText}\n\n${selectedHashtags.join(" ")}`;
+      const enhancedPost = `${post}\n\n${selectedHashtags.join(" ")}`;
       
       setPost(enhancedPost);
       toast({
         title: "Post Enhanced!",
-        description: "Your post has been optimized with trending hashtags for better engagement",
+        description: "Your post has been enhanced with trending hashtags for better engagement",
       });
     } catch (error: any) {
       toast({
@@ -150,8 +129,6 @@ const Index = () => {
         description: error.message || "Please try again later",
         variant: "destructive",
       });
-    } finally {
-      setIsEnhancing(false);
     }
   };
 
@@ -333,7 +310,7 @@ const Index = () => {
             <Textarea
               value={post}
               onChange={(e) => setPost(e.target.value)}
-              placeholder="Paste your post here to enhance it with AI..."
+              placeholder="Paste your post here to enhance it with trending hashtags..."
               className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
             />
             
@@ -348,10 +325,9 @@ const Index = () => {
               <Button 
                 className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans"
                 onClick={handleEnhancePost}
-                disabled={isEnhancing}
               >
                 <RocketIcon className="w-4 h-4 mr-2" />
-                {isEnhancing ? "Enhancing..." : "Enhance Post"}
+                Enhance Post
               </Button>
             </div>
           </div>
