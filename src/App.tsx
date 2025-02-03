@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
-import Landing from "./pages/Landing";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Enhance from "./pages/Enhance";
@@ -23,8 +22,7 @@ const App = () => (
         <TooltipProvider>
           <BrowserRouter basename="/">
             <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/app" element={<Index />} />
+              <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/enhance" element={<Enhance />} />
               <Route path="/features" element={<Features />} />
