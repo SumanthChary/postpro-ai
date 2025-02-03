@@ -26,15 +26,15 @@ const PricingSection = () => {
       variants: [
         {
           name: "Weekly",
-          price: "6.99",
+          price: "4.99",
           period: "week",
           savings: null,
         },
         {
           name: "Influencer Plan",
-          price: "25",
+          price: "20",
           period: "month",
-          savings: "Save 10% compared to weekly",
+          savings: "Save 15% compared to weekly",
         }
       ],
       subtext: "14-day trial available • Limited time: $3.99 first month",
