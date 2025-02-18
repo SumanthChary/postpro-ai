@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -25,13 +26,23 @@ const Payment = () => {
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please sign in to make a payment",
+          variant: "destructive",
+        });
+        navigate("/auth");
+        return;
+      }
       setUser(user);
     };
     getUser();
-  }, []);
+  }, [navigate, toast]);
 
   const handlePaymentSuccess = async (orderId: string) => {
     try {
+      setIsProcessing(true);
       const { error } = await supabase
         .from('payments')
         .insert([
@@ -62,20 +73,22 @@ const Payment = () => {
         description: error.message,
         variant: "destructive",
       });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-custom-bg py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-custom-text mb-2">Complete Your Purchase</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Complete Your Purchase</h1>
           <p className="text-gray-600">
             {planDetails.name} - ${planDetails.price}/{planDetails.period}
           </p>
         </div>
 
-        <Card className="p-6 mb-6">
+        <Card className="p-6 mb-6 bg-white">
           <div className="space-y-6">
             <div className="bg-yellow-50 p-4 rounded-md">
               <div className="flex">
@@ -95,20 +108,22 @@ const Payment = () => {
             </div>
 
             <div className="space-y-4">
-              <div className="w-full min-h-[150px]"> {/* Added fixed height container */}
-                <PayPalScriptProvider options={{ 
+              <PayPalScriptProvider 
+                options={{ 
                   clientId: PAYPAL_CLIENT_ID,
                   currency: "USD",
-                  intent: "CAPTURE"
-                }}>
+                  intent: "capture"
+                }}
+              >
+                <div className="w-full min-h-[200px] flex items-center justify-center">
                   <PayPalButtons
                     style={{ 
                       layout: "vertical",
-                      height: 48 // Explicitly set height
+                      shape: "rect",
+                      color: "gold"
                     }}
                     createOrder={(data, actions) => {
                       return actions.order.create({
-                        intent: "CAPTURE",
                         purchase_units: [{
                           amount: {
                             value: planDetails.price,
@@ -134,12 +149,12 @@ const Payment = () => {
                     }}
                     disabled={isProcessing}
                   />
-                </PayPalScriptProvider>
-              </div>
+                </div>
+              </PayPalScriptProvider>
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
+                  <span className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 bg-white text-gray-500">Or pay with card</span>
