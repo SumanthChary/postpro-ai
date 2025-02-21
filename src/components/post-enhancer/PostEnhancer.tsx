@@ -21,7 +21,6 @@ const PostEnhancer = ({
   setPost,
   category,
   setCategory,
-  handleEnhancePost: originalHandleEnhancePost,
 }: PostEnhancerProps) => {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const { toast } = useToast();
@@ -39,10 +38,29 @@ const PostEnhancer = ({
     setIsEnhancing(true);
 
     try {
+      // Get the current session to include the auth token
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        throw new Error('Authentication required to enhance posts');
+      }
+
+      if (!session) {
+        toast({
+          title: "Authentication Required",
+          description: "Please sign in to enhance your posts",
+          variant: "destructive",
+        });
+        return;
+      }
+
       console.log('Calling enhance-post function with:', { post, category });
       
       const { data, error } = await supabase.functions.invoke('enhance-post', {
         body: { post, category },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`
+        }
       });
 
       console.log('Response from enhance-post:', { data, error });

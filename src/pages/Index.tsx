@@ -12,7 +12,6 @@ import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import useHashtags from "@/hooks/useHashtags";
 
 const Index = () => {
   const [post, setPost] = useState("");
@@ -24,7 +23,6 @@ const Index = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { getCategoryHashtags } = useHashtags();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -62,47 +60,6 @@ const Index = () => {
       setAvatarUrl(data.avatar_url || "");
     } catch (error: any) {
       console.error("Error fetching user profile:", error.message);
-    }
-  };
-
-  const handleEnhancePost = () => {
-    if (!session) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to enhance your posts",
-        variant: "destructive",
-      });
-      navigate("/auth");
-      return;
-    }
-
-    if (!post.trim()) {
-      toast({
-        title: "Please enter some text",
-        description: "Your post content cannot be empty",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const selectedHashtags = getCategoryHashtags(category)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 5);
-      
-      const enhancedPost = `${post}\n\n${selectedHashtags.join(" ")}`;
-      
-      setPost(enhancedPost);
-      toast({
-        title: "Post Enhanced!",
-        description: "Your post has been enhanced with trending hashtags for better engagement",
-      });
-    } catch (error: any) {
-      toast({
-        title: "Enhancement failed",
-        description: error.message || "Please try again later",
-        variant: "destructive",
-      });
     }
   };
 
@@ -159,7 +116,7 @@ const Index = () => {
           setPost={setPost}
           category={category}
           setCategory={setCategory}
-          handleEnhancePost={handleEnhancePost}
+          handleEnhancePost={() => {}}
         />
 
         <SupportSection />
