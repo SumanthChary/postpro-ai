@@ -17,7 +17,7 @@ const blogPosts: Record<string, BlogPost> = {
     id: "1",
     title: "Maximizing Your Social Media Impact",
     description: "Learn the key strategies to enhance your social media presence and engage with your audience effectively.",
-    imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+    imageUrl: "/lovable-uploads/fda8da79-8fb0-49e8-b96d-a822f5f49818.png",
     date: "March 15, 2024",
     content: `
       In today's digital landscape, having a strong social media presence is more important than ever. Whether you're an individual creator or a business, the way you present yourself online can make a significant difference in your success.
@@ -43,7 +43,7 @@ const blogPosts: Record<string, BlogPost> = {
     id: "2",
     title: "The Power of AI in Content Creation",
     description: "Discover how artificial intelligence is revolutionizing the way we create and optimize social media content.",
-    imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+    imageUrl: "/lovable-uploads/fdd496bb-ba93-4b3e-934f-c21a3a306935.png",
     date: "March 14, 2024",
     content: `
       Artificial Intelligence is transforming the way we create and optimize content for social media. From generating ideas to optimizing posts for maximum engagement, AI tools are becoming indispensable for content creators.
@@ -69,7 +69,7 @@ const blogPosts: Record<string, BlogPost> = {
     id: "3",
     title: "Trending Hashtag Strategies for 2024",
     description: "Stay ahead of the curve with the latest hashtag strategies that can boost your content's visibility.",
-    imageUrl: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+    imageUrl: "/lovable-uploads/0469528d-321e-4129-b477-feb07c3479cf.png",
     date: "March 13, 2024",
     content: `
       Hashtags continue to be a crucial element in social media strategy. In 2024, the way we use hashtags has evolved, and it's important to stay updated with the latest trends.
@@ -95,7 +95,7 @@ const blogPosts: Record<string, BlogPost> = {
     id: "4",
     title: "Building a Strong Personal Brand Online",
     description: "Essential tips and techniques for creating and maintaining a powerful personal brand on social media.",
-    imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    imageUrl: "/lovable-uploads/8f4675ad-4562-4fd6-9ed5-751a0415748f.png",
     date: "March 12, 2024",
     content: `
       Your personal brand is how you present yourself to the world online. It's the combination of your skills, experience, and personality that makes you unique.

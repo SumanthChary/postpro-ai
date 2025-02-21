@@ -16,28 +16,28 @@ const blogPosts: BlogPost[] = [
     id: "1",
     title: "Maximizing Your Social Media Impact",
     description: "Learn the key strategies to enhance your social media presence and engage with your audience effectively.",
-    imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+    imageUrl: "/lovable-uploads/fda8da79-8fb0-49e8-b96d-a822f5f49818.png",
     date: "March 15, 2024"
   },
   {
     id: "2",
     title: "The Power of AI in Content Creation",
     description: "Discover how artificial intelligence is revolutionizing the way we create and optimize social media content.",
-    imageUrl: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+    imageUrl: "/lovable-uploads/fdd496bb-ba93-4b3e-934f-c21a3a306935.png",
     date: "March 14, 2024"
   },
   {
     id: "3",
     title: "Trending Hashtag Strategies for 2024",
     description: "Stay ahead of the curve with the latest hashtag strategies that can boost your content's visibility.",
-    imageUrl: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+    imageUrl: "/lovable-uploads/0469528d-321e-4129-b477-feb07c3479cf.png",
     date: "March 13, 2024"
   },
   {
     id: "4",
     title: "Building a Strong Personal Brand Online",
     description: "Essential tips and techniques for creating and maintaining a powerful personal brand on social media.",
-    imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    imageUrl: "/lovable-uploads/8f4675ad-4562-4fd6-9ed5-751a0415748f.png",
     date: "March 12, 2024"
   }
 ];
