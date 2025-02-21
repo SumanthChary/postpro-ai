@@ -16,6 +16,7 @@ import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, Men
 import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/hooks/use-toast";
 import Testimonials from "@/components/Testimonials";
+import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -156,7 +157,6 @@ const Index = () => {
               </span>
             </div>
             
-            {/* Desktop Menu */}
             <div className="hidden md:flex space-x-4">
               <Button 
                 variant="ghost" 
@@ -201,7 +201,6 @@ const Index = () => {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
             <button 
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -214,7 +213,6 @@ const Index = () => {
             </button>
           </div>
 
-          {/* Mobile Menu */}
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4">
               <div className="flex flex-col space-y-4">
@@ -273,7 +271,6 @@ const Index = () => {
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 pt-32 pb-20">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-montserrat font-extrabold mb-6 tracking-tight">
@@ -288,7 +285,6 @@ const Index = () => {
           </p>
         </div>
 
-        {/* Main Card */}
         <Card className="max-w-2xl mx-auto p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
           <div className="space-y-6">
             <div className="flex items-center justify-between mb-4">
@@ -345,7 +341,6 @@ const Index = () => {
           </div>
         </Card>
 
-        {/* Buy Me a Coffee Section */}
         <div className="max-w-2xl mx-auto mt-16 text-center">
           <div className="bg-white rounded-lg p-6 shadow-lg border border-gray-100">
             <h3 className="text-xl font-montserrat font-bold mb-4">Support Our Development</h3>
@@ -367,7 +362,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Templates Section */}
         <div className="mt-16 max-w-2xl mx-auto">
           <h2 className="text-2xl font-montserrat font-bold text-center mb-8 bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
             Available Templates
@@ -417,14 +411,13 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Testimonials Section */}
         <Testimonials />
+
+        <FAQ />
       </main>
 
-      {/* Footer */}
       <Footer />
 
-      {/* Pricing Dialog */}
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
