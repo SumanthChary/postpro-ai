@@ -65,7 +65,7 @@ const Index = () => {
     }
   };
 
-  const handleEnhancePost = () => {
+  const handleEnhancePost = async () => {
     if (!session) {
       toast({
         title: "Authentication required",
@@ -103,6 +103,53 @@ const Index = () => {
         description: error.message || "Please try again later",
         variant: "destructive",
       });
+    }
+  };
+
+  const handlePostToTwitter = async () => {
+    if (!session) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to post to Twitter",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    if (!post.trim()) {
+      toast({
+        title: "Please enter some text",
+        description: "Your post content cannot be empty",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/post-to-twitter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tweet: post }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to post to Twitter');
+      }
+
+      toast({
+        title: "Success!",
+        description: "Your post has been shared on Twitter",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Posting failed",
+        description: "Failed to post to Twitter. Please try again later.",
+        variant: "destructive",
+      });
+      console.error("Error posting to Twitter:", error);
     }
   };
 
@@ -160,6 +207,7 @@ const Index = () => {
           category={category}
           setCategory={setCategory}
           handleEnhancePost={handleEnhancePost}
+          handlePostToTwitter={handlePostToTwitter}
         />
 
         <SupportSection />
