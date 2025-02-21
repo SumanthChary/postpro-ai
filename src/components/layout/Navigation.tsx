@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon } from "lucide-react";
+import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon } from "lucide-react";
 
 interface NavigationProps {
   session: any;
@@ -44,6 +44,14 @@ const Navigation = ({
           </div>
           
           <div className="hidden md:flex space-x-4">
+            <Button 
+              variant="ghost" 
+              className="text-custom-text hover:text-electric-purple font-opensans"
+              onClick={() => navigate("/blogs")}
+            >
+              <BookOpenIcon className="w-4 h-4 mr-2" />
+              Blog
+            </Button>
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-electric-purple font-opensans"
@@ -102,6 +110,17 @@ const Navigation = ({
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4">
             <div className="flex flex-col space-y-4">
+              <Button 
+                variant="ghost" 
+                className="text-custom-text hover:text-electric-purple w-full font-opensans"
+                onClick={() => {
+                  navigate("/blogs");
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <BookOpenIcon className="w-4 h-4 mr-2" />
+                Blog
+              </Button>
               <Button 
                 variant="ghost" 
                 className="text-custom-text hover:text-electric-purple w-full font-opensans"
