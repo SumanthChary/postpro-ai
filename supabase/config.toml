@@ -1,5 +1,8 @@
 
 project_id = "rskzizedzagohmvyhuyu"
 
+[functions.enhance-post]
+verify_jwt = true
+
 [functions.enhance-profile]
 verify_jwt = true

@@ -1,8 +1,6 @@
 
-import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+import { createClient } from 'https://esm.sh/@google/generative-ai';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -16,86 +14,50 @@ serve(async (req) => {
   }
 
   try {
-    console.log('Starting enhance-post function');
-    
-    // Check for API key first
-    if (!openAIApiKey) {
-      console.error('OpenAI API key missing');
-      throw new Error('OpenAI API key not configured');
+    const { post, category } = await req.json();
+    console.log('Received request with post:', post, 'and category:', category);
+
+    const apiKey = Deno.env.get('GOOGLE_AI_API_KEY');
+    if (!apiKey) {
+      throw new Error('Google AI API key not configured');
     }
 
-    // Parse request body and validate
-    let requestData;
-    try {
-      requestData = await req.json();
-    } catch (e) {
-      console.error('Error parsing request body:', e);
-      throw new Error('Invalid request body');
-    }
+    const genAI = new createClient(apiKey);
+    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-    const { post, category } = requestData;
-    
-    if (!post || !category) {
-      console.error('Missing required fields:', { post: !!post, category: !!category });
-      throw new Error('Post content and category are required');
-    }
+    const prompt = `Enhance this ${category} social media post while maintaining its core message. 
+    Make it more engaging, add relevant emojis, and improve readability. 
+    Add relevant hashtags at the end. Keep the tone professional but friendly.
+    Original post: "${post}"`;
 
-    console.log('Enhancing post for category:', category);
-    
-    const systemPrompt = `You are a professional social media editor. Your task is to enhance the given post while following these steps in order:
+    console.log('Sending prompt to Gemini:', prompt);
 
-    1. First, correct any spelling and grammar mistakes
-    2. Improve readability with appropriate line breaks and formatting
-    3. Add relevant emojis strategically to increase engagement
-    4. Add 3-5 trending hashtags based on the category
-    5. Keep the original message intent but make it more engaging
-    
-    Make the enhancements while considering this category: ${category}
+    const result = await model.generateContent(prompt);
+    const enhancedPost = result.response.text();
 
-    Your response should be just the enhanced post, no explanations needed.`;
+    console.log('Enhanced post:', enhancedPost);
 
-    console.log('Making request to OpenAI API');
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: post }
-        ],
-        temperature: 0.7,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('OpenAI API error:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
-    }
-
-    const data = await response.json();
-    console.log('Successfully received enhanced post from OpenAI');
-
-    return new Response(JSON.stringify({ 
-      enhancedPost: data.choices[0].message.content 
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-
+    return new Response(
+      JSON.stringify({ enhancedPost }),
+      { 
+        headers: { 
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
   } catch (error) {
     console.error('Error in enhance-post function:', error);
-    
-    // Return a proper error response
     return new Response(
       JSON.stringify({ 
-        error: error.message || 'An unexpected error occurred while enhancing your post'
-      }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        error: error.message || 'Failed to enhance post'
+      }),
+      { 
+        status: 500,
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        }
       }
     );
   }
