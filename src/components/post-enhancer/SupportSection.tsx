@@ -8,7 +8,7 @@ const SupportSection = () => {
           Help us improve PostPro AI and bring new features by supporting our work!
         </p>
         <a
-          href="https://buymeacoffee.com/sumanthcharyy"
+          href="https://bit.ly/3EmW1ua"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center px-6 py-3 bg-[#FFDD00] text-[#000000] font-semibold rounded-md hover:bg-[#FFDD00]/90 transition-colors"
