@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, AlertCircle } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, AlertCircle, BookTemplate } from "lucide-react";
 import { useState } from "react";
 
 interface PostEnhancerProps {
@@ -28,6 +28,57 @@ const PLATFORM_PLACEHOLDERS = {
   instagram: "Write a caption for your post..."
 };
 
+const LINKEDIN_TEMPLATES = {
+  announcement: `🎉 Exciting News! 
+
+I'm thrilled to announce [Your Announcement]
+
+Key highlights:
+• [Key Point 1]
+• [Key Point 2]
+• [Key Point 3]
+
+[Call to Action]
+
+#[Industry] #[Relevant] #[Tags]`,
+
+  insight: `💡 Quick Insight
+
+Here's what I've learned about [Topic]:
+
+1. [First Point]
+2. [Second Point]
+3. [Third Point]
+
+What's your experience with this? Let me know in the comments!
+
+#ProfessionalDevelopment #[Industry] #Insights`,
+
+  milestone: `🏆 Milestone Achievement
+
+Grateful to share that [Achievement]
+
+Thank you to [Acknowledgments]
+
+Looking forward to [Future Plans]
+
+#Gratitude #Achievement #[Industry]`,
+
+  tip: `📌 Pro Tip
+
+Want to improve your [Skill/Area]?
+
+Here's a simple yet effective approach:
+
+1️⃣ [First Step]
+2️⃣ [Second Step]
+3️⃣ [Third Step]
+
+Save this post for later! 🔖
+
+#ProfessionalTips #[Industry] #Growth`
+};
+
 const PostEnhancer = ({
   post,
   setPost,
@@ -36,6 +87,7 @@ const PostEnhancer = ({
   handleEnhancePost,
 }: PostEnhancerProps) => {
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>('linkedin');
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
   
   const getCharacterLimit = () => PLATFORM_LIMITS[selectedPlatform];
   const getRemainingChars = () => getCharacterLimit() - post.length;
@@ -43,9 +95,16 @@ const PostEnhancer = ({
 
   const handlePlatformChange = (platform: Platform) => {
     setSelectedPlatform(platform);
-    // Reset post if it's over the new platform's limit
+    setSelectedTemplate("");
     if (post.length > PLATFORM_LIMITS[platform]) {
       setPost(post.slice(0, PLATFORM_LIMITS[platform]));
+    }
+  };
+
+  const handleTemplateChange = (templateKey: string) => {
+    setSelectedTemplate(templateKey);
+    if (templateKey && selectedPlatform === 'linkedin') {
+      setPost(LINKEDIN_TEMPLATES[templateKey as keyof typeof LINKEDIN_TEMPLATES]);
     }
   };
 
@@ -96,21 +155,41 @@ const PostEnhancer = ({
             <span className="text-sm font-medium">Optimizing for {selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)}</span>
           </div>
 
-          <Select
-            value={category}
-            onValueChange={setCategory}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select post category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="business">Business & Entrepreneurship</SelectItem>
-              <SelectItem value="technology">Technology & Innovation</SelectItem>
-              <SelectItem value="lifestyle">Lifestyle & Personal Development</SelectItem>
-              <SelectItem value="marketing">Marketing & Digital Media</SelectItem>
-              <SelectItem value="creative">Creative & Design</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="space-y-4">
+            {selectedPlatform === 'linkedin' && (
+              <Select
+                value={selectedTemplate}
+                onValueChange={handleTemplateChange}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Choose a template" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">No template</SelectItem>
+                  <SelectItem value="announcement">Announcement Post</SelectItem>
+                  <SelectItem value="insight">Quick Insight</SelectItem>
+                  <SelectItem value="milestone">Milestone Achievement</SelectItem>
+                  <SelectItem value="tip">Pro Tip</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+
+            <Select
+              value={category}
+              onValueChange={setCategory}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select post category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="business">Business & Entrepreneurship</SelectItem>
+                <SelectItem value="technology">Technology & Innovation</SelectItem>
+                <SelectItem value="lifestyle">Lifestyle & Personal Development</SelectItem>
+                <SelectItem value="marketing">Marketing & Digital Media</SelectItem>
+                <SelectItem value="creative">Creative & Design</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         
         <div className="space-y-2">
@@ -144,7 +223,10 @@ const PostEnhancer = ({
           <Button 
             variant="outline" 
             className="text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans"
-            onClick={() => setPost("")}
+            onClick={() => {
+              setPost("");
+              setSelectedTemplate("");
+            }}
           >
             Reset
           </Button>
@@ -163,3 +245,4 @@ const PostEnhancer = ({
 };
 
 export default PostEnhancer;
+
