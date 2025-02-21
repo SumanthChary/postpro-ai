@@ -17,6 +17,12 @@ serve(async (req) => {
 
   try {
     console.log('Received request to enhance post');
+    
+    if (!openAIApiKey) {
+      console.error('OpenAI API key not found');
+      throw new Error('OpenAI API key not configured');
+    }
+
     const { post, category } = await req.json();
     
     if (!post || !category) {
@@ -26,16 +32,17 @@ serve(async (req) => {
 
     console.log('Enhancing post for category:', category);
     
-    const systemPrompt = `You are a social media expert that enhances posts to maximize engagement. 
-    Given a post and its category, improve it by:
-    1. Adding relevant emojis strategically
-    2. Improving readability with line breaks and formatting
-    3. Adding 3-5 trending hashtags based on the category
-    4. Maintaining the original message but making it more engaging
-    5. Using bullet points or numbering if appropriate
-    6. Keeping the tone professional yet friendly
+    const systemPrompt = `You are a professional social media editor. Your task is to enhance the given post while following these steps in order:
 
-    Category: ${category}`;
+    1. First, correct any spelling and grammar mistakes
+    2. Improve readability with appropriate line breaks and formatting
+    3. Add relevant emojis strategically to increase engagement
+    4. Add 3-5 trending hashtags based on the category
+    5. Keep the original message intent but make it more engaging
+    
+    Make the enhancements while considering this category: ${category}
+
+    Your response should be just the enhanced post, no explanations needed.`;
 
     console.log('Making request to OpenAI API');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -45,7 +52,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-4o',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: post }
