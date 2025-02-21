@@ -1,8 +1,9 @@
 
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { WandIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon } from "lucide-react";
 
 interface PostEnhancerProps {
   post: string;
@@ -20,72 +21,61 @@ const PostEnhancer = ({
   handleEnhancePost,
 }: PostEnhancerProps) => {
   return (
-    <>
-      <Card className="p-6 mb-12">
-        <div className="space-y-4">
-          <div className="flex flex-wrap gap-4">
-            <button
-              onClick={() => setCategory("business")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                category === "business"
-                  ? "bg-electric-purple text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              Business
-            </button>
-            <button
-              onClick={() => setCategory("tech")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                category === "tech"
-                  ? "bg-electric-purple text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              Tech
-            </button>
-            <button
-              onClick={() => setCategory("marketing")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                category === "marketing"
-                  ? "bg-electric-purple text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              Marketing
-            </button>
+    <Card className="max-w-2xl mx-auto p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-2">
+            <SparklesIcon className="w-5 h-5 text-electric-purple" />
+            <h2 className="text-lg font-montserrat font-extrabold text-custom-text">Post Enhancer</h2>
           </div>
-
-          <Textarea
-            placeholder="Write your post here..."
-            className="min-h-[200px] text-lg p-4"
-            value={post}
-            onChange={(e) => setPost(e.target.value)}
-          />
-
-          <div className="flex flex-wrap gap-4">
-            <Button
-              onClick={handleEnhancePost}
-              className="bg-electric-purple hover:bg-electric-purple/90 text-white"
-            >
-              <WandIcon className="w-4 h-4 mr-2" />
-              Enhance Post
-            </Button>
+          <div className="flex space-x-3">
+            <LinkedinIcon className="w-5 h-5 text-electric-purple" />
+            <TwitterIcon className="w-5 h-5 text-bright-teal" />
+            <InstagramIcon className="w-5 h-5 text-coral-red" />
           </div>
         </div>
-      </Card>
 
-      <div className="max-w-2xl mx-auto mt-16 mb-8">
-        <div className="bg-gradient-to-r from-electric-purple/10 to-bright-teal/10 rounded-lg p-6 text-center border border-electric-purple/20">
-          <h3 className="text-xl font-montserrat font-bold mb-2 bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
-            Coming Soon
-          </h3>
-          <p className="text-custom-text font-opensans">
-            Direct posting to LinkedIn, Twitter, Instagram and other platforms will be available soon!
-          </p>
+        <Select
+          value={category}
+          onValueChange={setCategory}
+        >
+          <SelectTrigger className="w-full mb-4">
+            <SelectValue placeholder="Select post category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="business">Business & Entrepreneurship</SelectItem>
+            <SelectItem value="technology">Technology & Innovation</SelectItem>
+            <SelectItem value="lifestyle">Lifestyle & Personal Development</SelectItem>
+            <SelectItem value="marketing">Marketing & Digital Media</SelectItem>
+            <SelectItem value="creative">Creative & Design</SelectItem>
+          </SelectContent>
+        </Select>
+        
+        <Textarea
+          value={post}
+          onChange={(e) => setPost(e.target.value)}
+          placeholder="Paste your post here to enhance it with trending hashtags..."
+          className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
+        />
+        
+        <div className="flex justify-end space-x-3">
+          <Button 
+            variant="outline" 
+            className="text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans"
+            onClick={() => setPost("")}
+          >
+            Reset
+          </Button>
+          <Button 
+            className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans"
+            onClick={handleEnhancePost}
+          >
+            <RocketIcon className="w-4 h-4 mr-2" />
+            Enhance Post
+          </Button>
         </div>
       </div>
-    </>
+    </Card>
   );
 };
 
