@@ -2,7 +2,7 @@
 project_id = "rskzizedzagohmvyhuyu"
 
 [functions.enhance-post]
-verify_jwt = true
+verify_jwt = false
 
 [functions.enhance-profile]
 verify_jwt = true
