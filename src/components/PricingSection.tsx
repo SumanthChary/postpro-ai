@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, Sparkles, X } from "lucide-react";
@@ -12,7 +13,7 @@ const PricingSection = () => {
       price: "0",
       period: "forever",
       features: [
-        "3 LinkedIn posts optimization per week",
+        "3-5 LinkedIn posts optimization per week",
         "Basic tone analysis",
         "Real-Time Trend Hashtags",
         "Standard templates (5 templates)",
