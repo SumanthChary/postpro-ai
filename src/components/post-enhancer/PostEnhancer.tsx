@@ -39,22 +39,33 @@ const PostEnhancer = ({
     setIsEnhancing(true);
 
     try {
+      console.log('Calling enhance-post function with:', { post, category });
+      
       const { data, error } = await supabase.functions.invoke('enhance-post', {
         body: { post, category },
       });
 
-      if (error) throw error;
+      console.log('Response from enhance-post:', { data, error });
+
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (!data?.enhancedPost) {
+        throw new Error('No enhanced post received from the API');
+      }
 
       setPost(data.enhancedPost);
       toast({
         title: "Post Enhanced!",
         description: "Your post has been enhanced for better engagement",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error enhancing post:', error);
       toast({
         title: "Enhancement Failed",
-        description: "There was an error enhancing your post. Please try again.",
+        description: error.message || "There was an error enhancing your post. Please try again.",
         variant: "destructive",
       });
     } finally {

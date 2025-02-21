@@ -16,14 +16,24 @@ serve(async (req) => {
   }
 
   try {
-    console.log('Received request to enhance post');
+    console.log('Starting enhance-post function');
     
+    // Check for API key first
     if (!openAIApiKey) {
-      console.error('OpenAI API key not found');
+      console.error('OpenAI API key missing');
       throw new Error('OpenAI API key not configured');
     }
 
-    const { post, category } = await req.json();
+    // Parse request body and validate
+    let requestData;
+    try {
+      requestData = await req.json();
+    } catch (e) {
+      console.error('Error parsing request body:', e);
+      throw new Error('Invalid request body');
+    }
+
+    const { post, category } = requestData;
     
     if (!post || !category) {
       console.error('Missing required fields:', { post: !!post, category: !!category });
@@ -75,13 +85,18 @@ serve(async (req) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
+
   } catch (error) {
     console.error('Error in enhance-post function:', error);
-    return new Response(JSON.stringify({ 
-      error: error.message || 'An unexpected error occurred while enhancing your post'
-    }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    
+    // Return a proper error response
+    return new Response(
+      JSON.stringify({ 
+        error: error.message || 'An unexpected error occurred while enhancing your post'
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    );
   }
 });
