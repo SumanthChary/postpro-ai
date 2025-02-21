@@ -15,7 +15,7 @@ serve(async (req) => {
 
   try {
     const apiKey = Deno.env.get('GOOGLE_AI_API_KEY');
-    if (!apiKey) throw new Error('Google AI API key not found');
+    if (!apiKey) throw new Error('Google AI API key not configured');
 
     const genAI = new createClient(apiKey);
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
