@@ -10,12 +10,21 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    console.log('Received request to enhance post');
     const { post, category } = await req.json();
+    
+    if (!post || !category) {
+      console.error('Missing required fields:', { post: !!post, category: !!category });
+      throw new Error('Post content and category are required');
+    }
+
+    console.log('Enhancing post for category:', category);
     
     const systemPrompt = `You are a social media expert that enhances posts to maximize engagement. 
     Given a post and its category, improve it by:
@@ -28,6 +37,7 @@ serve(async (req) => {
 
     Category: ${category}`;
 
+    console.log('Making request to OpenAI API');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -35,7 +45,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: post }
@@ -44,8 +54,14 @@ serve(async (req) => {
       }),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('OpenAI API error:', errorData);
+      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
+    }
+
     const data = await response.json();
-    console.log('Enhanced post response:', data);
+    console.log('Successfully received enhanced post from OpenAI');
 
     return new Response(JSON.stringify({ 
       enhancedPost: data.choices[0].message.content 
@@ -54,7 +70,9 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error('Error in enhance-post function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ 
+      error: error.message || 'An unexpected error occurred while enhancing your post'
+    }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
