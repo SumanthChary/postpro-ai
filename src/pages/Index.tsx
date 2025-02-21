@@ -1,24 +1,18 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, MenuIcon, XIcon, FileTextIcon, LockIcon, LogOutIcon, ChevronDownIcon } from "lucide-react";
-import PricingSection from "@/components/PricingSection";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import Navigation from "@/components/layout/Navigation";
+import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
+import SupportSection from "@/components/post-enhancer/SupportSection";
+import TemplatesSection from "@/components/post-enhancer/TemplatesSection";
+import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import { supabase } from "@/integrations/supabase/client";
+import useHashtags from "@/hooks/useHashtags";
 
 const Index = () => {
   const [post, setPost] = useState("");
@@ -30,6 +24,7 @@ const Index = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { getCategoryHashtags } = useHashtags();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -68,18 +63,6 @@ const Index = () => {
     } catch (error: any) {
       console.error("Error fetching user profile:", error.message);
     }
-  };
-
-  const getCategoryHashtags = (category: string) => {
-    const hashtags = {
-      business: ["#entrepreneurship", "#business", "#success", "#leadership", "#innovation", "#startup", "#growthmindset", "#businesstips", "#networking", "#entrepreneurlife"],
-      technology: ["#tech", "#innovation", "#ai", "#programming", "#coding", "#developer", "#software", "#technology", "#future", "#digitalmarketing"],
-      lifestyle: ["#lifestyle", "#motivation", "#mindfulness", "#wellness", "#selfcare", "#inspiration", "#personaldevelopment", "#growth", "#positivity", "#mindset"],
-      marketing: ["#marketing", "#digitalmarketing", "#socialmedia", "#branding", "#contentmarketing", "#marketingstrategy", "#advertising", "#business", "#marketingtips", "#socialmediatips"],
-      creative: ["#creative", "#design", "#art", "#creativity", "#inspiration", "#artist", "#designer", "#creative", "#digitalart", "#graphicdesign"]
-    };
-    
-    return hashtags[category as keyof typeof hashtags] || hashtags.business;
   };
 
   const handleEnhancePost = () => {
@@ -147,129 +130,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-custom-bg">
-      <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <SparklesIcon className="w-8 h-8 text-electric-purple" />
-              <span className="text-2xl font-montserrat font-extrabold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
-                PostPro AI
-              </span>
-            </div>
-            
-            <div className="hidden md:flex space-x-4">
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-electric-purple font-opensans"
-                onClick={() => setShowPricing(true)}
-              >
-                Pricing
-              </Button>
-              {session ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="font-opensans">
-                      <Avatar className="w-6 h-6 mr-2">
-                        <AvatarImage src={avatarUrl} alt={username} />
-                        <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
-                      </Avatar>
-                      {username}
-                      <ChevronDownIcon className="w-4 h-4 ml-2" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => navigate("/profile")}>
-                      <Avatar className="w-4 h-4 mr-2">
-                        <AvatarImage src={avatarUrl} alt={username} />
-                        <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
-                      </Avatar>
-                      Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleSignOut}>
-                      <LogOutIcon className="w-4 h-4 mr-2" />
-                      Sign Out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Button
-                  className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white font-opensans"
-                  onClick={() => navigate("/auth")}
-                >
-                  Sign In
-                </Button>
-              )}
-            </div>
-
-            <button 
-              className="md:hidden"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? (
-                <XIcon className="w-6 h-6 text-electric-purple" />
-              ) : (
-                <MenuIcon className="w-6 h-6 text-electric-purple" />
-              )}
-            </button>
-          </div>
-
-          {mobileMenuOpen && (
-            <div className="md:hidden mt-4 pb-4">
-              <div className="flex flex-col space-y-4">
-                <Button 
-                  variant="ghost" 
-                  className="text-custom-text hover:text-electric-purple w-full font-opensans"
-                  onClick={() => {
-                    setShowPricing(true);
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Pricing
-                </Button>
-                {session ? (
-                  <>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        navigate("/profile");
-                        setMobileMenuOpen(false);
-                      }}
-                      className="w-full font-opensans"
-                    >
-                      <Avatar className="w-4 h-4 mr-2">
-                        <AvatarImage src={avatarUrl} alt={username} />
-                        <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
-                      </Avatar>
-                      Profile
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        handleSignOut();
-                        setMobileMenuOpen(false);
-                      }}
-                      className="w-full font-opensans"
-                    >
-                      <LogOutIcon className="w-4 h-4 mr-2" />
-                      Sign Out
-                    </Button>
-                  </>
-                ) : (
-                  <Button
-                    className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white w-full font-opensans"
-                    onClick={() => {
-                      navigate("/auth");
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    Sign In
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <Navigation
+        session={session}
+        username={username}
+        avatarUrl={avatarUrl}
+        handleSignOut={handleSignOut}
+        setShowPricing={setShowPricing}
+        setMobileMenuOpen={setMobileMenuOpen}
+        mobileMenuOpen={mobileMenuOpen}
+      />
 
       <main className="container mx-auto px-4 pt-32 pb-20">
         <div className="max-w-3xl mx-auto text-center mb-12">
@@ -285,131 +154,17 @@ const Index = () => {
           </p>
         </div>
 
-        <Card className="max-w-2xl mx-auto p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <SparklesIcon className="w-5 h-5 text-electric-purple" />
-                <h2 className="text-lg font-montserrat font-extrabold text-custom-text">Post Enhancer</h2>
-              </div>
-              <div className="flex space-x-3">
-                <LinkedinIcon className="w-5 h-5 text-electric-purple" />
-                <TwitterIcon className="w-5 h-5 text-bright-teal" />
-                <InstagramIcon className="w-5 h-5 text-coral-red" />
-              </div>
-            </div>
+        <PostEnhancer
+          post={post}
+          setPost={setPost}
+          category={category}
+          setCategory={setCategory}
+          handleEnhancePost={handleEnhancePost}
+        />
 
-            <Select
-              value={category}
-              onValueChange={setCategory}
-            >
-              <SelectTrigger className="w-full mb-4">
-                <SelectValue placeholder="Select post category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="business">Business & Entrepreneurship</SelectItem>
-                <SelectItem value="technology">Technology & Innovation</SelectItem>
-                <SelectItem value="lifestyle">Lifestyle & Personal Development</SelectItem>
-                <SelectItem value="marketing">Marketing & Digital Media</SelectItem>
-                <SelectItem value="creative">Creative & Design</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Textarea
-              value={post}
-              onChange={(e) => setPost(e.target.value)}
-              placeholder="Paste your post here to enhance it with trending hashtags..."
-              className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
-            />
-            
-            <div className="flex justify-end space-x-3">
-              <Button 
-                variant="outline" 
-                className="text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans"
-                onClick={() => setPost("")}
-              >
-                Reset
-              </Button>
-              <Button 
-                className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans"
-                onClick={handleEnhancePost}
-              >
-                <RocketIcon className="w-4 h-4 mr-2" />
-                Enhance Post
-              </Button>
-            </div>
-          </div>
-        </Card>
+        <SupportSection />
 
-        <div className="max-w-2xl mx-auto mt-16 text-center">
-          <div className="bg-white rounded-lg p-6 shadow-lg border border-gray-100">
-            <h3 className="text-xl font-montserrat font-bold mb-4">Support Our Development</h3>
-            <p className="text-gray-600 mb-6 font-opensans">
-              Help us improve PostPro AI and bring new features by supporting our work!
-            </p>
-            <a
-              href="https://buymeacoffee.com/sumanthcharyy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-[#FFDD00] text-[#000000] font-semibold rounded-md hover:bg-[#FFDD00]/90 transition-colors"
-            >
-              <img 
-                src="/lovable-uploads/76f00aba-ea4e-40ad-af9f-0bf66d3ee4d5.png" 
-                alt="Buy Me a Coffee" 
-                className="h-8"
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className="mt-16 max-w-2xl mx-auto">
-          <h2 className="text-2xl font-montserrat font-bold text-center mb-8 bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
-            Available Templates
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <Card className="p-6 hover:shadow-lg transition-shadow duration-200">
-              <div className="flex items-center space-x-3 mb-4">
-                <FileTextIcon className="w-6 h-6 text-electric-purple" />
-                <h3 className="text-lg font-montserrat font-bold">Basic Templates</h3>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Access our collection of basic templates designed for essential social media posts.
-              </p>
-              <a 
-                href="https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-electric-purple hover:text-electric-purple/80 font-semibold"
-              >
-                View Templates
-                <RocketIcon className="w-4 h-4 ml-2" />
-              </a>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow duration-200 relative">
-              <div className="absolute inset-0 bg-black/5 backdrop-blur-[1px] rounded-lg flex items-center justify-center">
-                <div className="bg-white/90 p-4 rounded-lg shadow-lg flex items-center space-x-2">
-                  <LockIcon className="w-5 h-5 text-coral-red" />
-                  <span className="font-semibold text-coral-red">Pro Plan Required</span>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 mb-4">
-                <FileTextIcon className="w-6 h-6 text-bright-teal" />
-                <h3 className="text-lg font-montserrat font-bold">Pro Templates</h3>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Explore our premium templates with advanced features for professional content.
-              </p>
-              <button 
-                onClick={handleProTemplatesClick}
-                className="inline-flex items-center text-bright-teal hover:text-bright-teal/80 font-semibold"
-              >
-                View Templates
-                <RocketIcon className="w-4 h-4 ml-2" />
-              </button>
-            </Card>
-          </div>
-        </div>
+        <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
 
         <Testimonials />
 
