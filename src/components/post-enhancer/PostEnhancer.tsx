@@ -73,44 +73,44 @@ const PostEnhancer = ({
   };
 
   return (
-    <Card className="max-w-2xl mx-auto p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
-      <div className="space-y-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <SparklesIcon className="w-5 h-5 text-electric-purple" />
-            <h2 className="text-lg font-montserrat font-extrabold text-custom-text">AI Post Enhancer</h2>
+    <div className="space-y-8">
+      <Card className="max-w-2xl mx-auto p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-2">
+              <SparklesIcon className="w-5 h-5 text-electric-purple" />
+              <h2 className="text-lg font-montserrat font-extrabold text-custom-text">AI Post Enhancer</h2>
+            </div>
+            <div className="flex space-x-3">
+              <LinkedinIcon className="w-5 h-5 text-electric-purple" />
+              <TwitterIcon className="w-5 h-5 text-bright-teal" />
+              <InstagramIcon className="w-5 h-5 text-coral-red" />
+            </div>
           </div>
-          <div className="flex space-x-3">
-            <LinkedinIcon className="w-5 h-5 text-electric-purple" />
-            <TwitterIcon className="w-5 h-5 text-bright-teal" />
-            <InstagramIcon className="w-5 h-5 text-coral-red" />
-          </div>
-        </div>
 
-        <Select
-          value={category}
-          onValueChange={setCategory}
-        >
-          <SelectTrigger className="w-full mb-4">
-            <SelectValue placeholder="Select post category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="business">Business & Entrepreneurship</SelectItem>
-            <SelectItem value="technology">Technology & Innovation</SelectItem>
-            <SelectItem value="lifestyle">Lifestyle & Personal Development</SelectItem>
-            <SelectItem value="marketing">Marketing & Digital Media</SelectItem>
-            <SelectItem value="creative">Creative & Design</SelectItem>
-          </SelectContent>
-        </Select>
-        
-        <Textarea
-          value={post}
-          onChange={(e) => setPost(e.target.value)}
-          placeholder="Paste your post here to enhance it with AI magic ✨"
-          className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
-        />
-        
-        <div className="space-y-4">
+          <Select
+            value={category}
+            onValueChange={setCategory}
+          >
+            <SelectTrigger className="w-full mb-4">
+              <SelectValue placeholder="Select post category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="business">Business & Entrepreneurship</SelectItem>
+              <SelectItem value="technology">Technology & Innovation</SelectItem>
+              <SelectItem value="lifestyle">Lifestyle & Personal Development</SelectItem>
+              <SelectItem value="marketing">Marketing & Digital Media</SelectItem>
+              <SelectItem value="creative">Creative & Design</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Textarea
+            value={post}
+            onChange={(e) => setPost(e.target.value)}
+            placeholder="Paste your post here to enhance it with AI magic ✨"
+            className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
+          />
+          
           <div className="flex justify-end space-x-3">
             <Button 
               variant="outline" 
@@ -133,24 +133,24 @@ const PostEnhancer = ({
               {isEnhancing ? "Enhancing..." : "Enhance Post"}
             </Button>
           </div>
-          
-          <div className="flex justify-center mt-4">
-            <a 
-              href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img 
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740241427035" 
-                alt="PostProAI - PostPro AI, Smart AI-Powered Post Enhancement | Product Hunt" 
-                width="250" 
-                height="54" 
-              />
-            </a>
-          </div>
         </div>
+      </Card>
+
+      <div className="flex justify-center max-w-2xl mx-auto">
+        <a 
+          href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img 
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740241427035" 
+            alt="PostProAI - PostPro AI, Smart AI-Powered Post Enhancement | Product Hunt" 
+            width="250" 
+            height="54" 
+          />
+        </a>
       </div>
-    </Card>
+    </div>
   );
 };
 
