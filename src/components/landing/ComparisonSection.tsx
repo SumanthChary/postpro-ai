@@ -6,24 +6,24 @@ import { TrendingUpIcon } from 'lucide-react';
 
 const data = [
   {
-    name: 'Engagement Rate',
-    manual: 2.4,
-    enhanced: 5.8,
+    name: 'Post Impressions',
+    manual: 15,
+    enhanced: 101,
   },
   {
-    name: 'Impressions',
-    manual: 1200,
-    enhanced: 3500,
+    name: 'Followers Growth',
+    manual: 4,
+    enhanced: 5,
   },
   {
-    name: 'Click Rate',
-    manual: 1.2,
-    enhanced: 3.6,
+    name: 'Profile Views',
+    manual: 2,
+    enhanced: 5,
   },
   {
-    name: 'Comments',
-    manual: 8,
-    enhanced: 24,
+    name: 'Search Appearances',
+    manual: 1,
+    enhanced: 3,
   },
 ];
 
@@ -32,7 +32,7 @@ const ComparisonSection = () => {
     <section className="py-16 bg-gradient-to-r from-light-lavender to-white">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-montserrat font-bold text-center mb-8">
-          The Impact of AI Enhancement
+          Real Results from a LinkedIn Newcomer
         </h2>
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <Card className="p-6">
@@ -54,8 +54,8 @@ const ComparisonSection = () => {
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="manual" name="Manual Posts" fill="#8E44AD" />
-                  <Bar dataKey="enhanced" name="AI-Enhanced" fill="#1ABC9C" />
+                  <Bar dataKey="manual" name="Before PostProAI" fill="#8E44AD" />
+                  <Bar dataKey="enhanced" name="With PostProAI" fill="#1ABC9C" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -65,9 +65,9 @@ const ComparisonSection = () => {
               <div className="flex items-start gap-4">
                 <TrendingUpIcon className="w-6 h-6 text-bright-teal" />
                 <div>
-                  <h4 className="text-lg font-semibold mb-2">142% Higher Engagement</h4>
+                  <h4 className="text-lg font-semibold mb-2">677% Boost in Post Impressions</h4>
                   <p className="text-custom-text">
-                    AI-enhanced posts consistently outperform manual posts in engagement metrics
+                    From just 15 to 101 impressions in 7 days - even as a LinkedIn newcomer!
                   </p>
                 </div>
               </div>
@@ -76,9 +76,9 @@ const ComparisonSection = () => {
               <div className="flex items-start gap-4">
                 <TrendingUpIcon className="w-6 h-6 text-bright-teal" />
                 <div>
-                  <h4 className="text-lg font-semibold mb-2">3x More Impressions</h4>
+                  <h4 className="text-lg font-semibold mb-2">25% Follower Growth</h4>
                   <p className="text-custom-text">
-                    Reach a wider audience with optimized content and strategic hashtags
+                    Attract more relevant followers with AI-optimized content
                   </p>
                 </div>
               </div>
@@ -87,9 +87,9 @@ const ComparisonSection = () => {
               <div className="flex items-start gap-4">
                 <TrendingUpIcon className="w-6 h-6 text-bright-teal" />
                 <div>
-                  <h4 className="text-lg font-semibold mb-2">200% More Comments</h4>
+                  <h4 className="text-lg font-semibold mb-2">150% More Profile Views</h4>
                   <p className="text-custom-text">
-                    Generate more meaningful conversations and connections
+                    Increased visibility leading to more professional opportunities
                   </p>
                 </div>
               </div>
@@ -102,4 +102,3 @@ const ComparisonSection = () => {
 };
 
 export default ComparisonSection;
-

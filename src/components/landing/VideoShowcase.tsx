@@ -13,12 +13,14 @@ const VideoShowcase = () => {
         <div className="max-w-4xl mx-auto">
           <Card className="overflow-hidden">
             <AspectRatio ratio={16/9}>
-              <iframe
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                title="PostProAI Analytics Boost Demo"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                className="w-full h-full border-0"
-              />
+              <video
+                controls
+                className="w-full h-full object-cover"
+                poster="/placeholder.svg"
+              >
+                <source src="/path-to-your-video.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </AspectRatio>
           </Card>
           <p className="text-center mt-6 text-custom-text text-lg">
