@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon } from "lucide-react";
+import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon, Link2Icon } from "lucide-react";
 
 interface NavigationProps {
   session: any;
@@ -58,6 +58,14 @@ const Navigation = ({
               onClick={() => setShowPricing(true)}
             >
               Pricing
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-custom-text hover:text-electric-purple font-opensans"
+              onClick={() => window.open('https://www.producthunt.com/posts/postpro-ai', '_blank')}
+            >
+              <Link2Icon className="w-4 h-4 mr-2" />
+              Product Hunt
             </Button>
             {session ? (
               <DropdownMenu>
@@ -130,6 +138,17 @@ const Navigation = ({
                 }}
               >
                 Pricing
+              </Button>
+              <Button
+                variant="ghost"
+                className="text-custom-text hover:text-electric-purple w-full font-opensans"
+                onClick={() => {
+                  window.open('https://www.producthunt.com/posts/postpro-ai', '_blank');
+                  setMobileMenuOpen(false);
+                }}
+              >
+                <Link2Icon className="w-4 h-4 mr-2" />
+                Product Hunt
               </Button>
               {session ? (
                 <>
