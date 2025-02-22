@@ -33,11 +33,12 @@ serve(async (req) => {
       );
     }
 
-    // Simplified, focused prompt
+    // Simplified prompt for Gemini 1.5 Flash
     const prompt = `Make this ${category} post more professional and engaging while keeping it authentic: ${post}`;
     console.log('Using prompt:', prompt);
 
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + apiKey, {
+    // Updated to use Gemini 1.5 Flash model
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,6 +51,8 @@ serve(async (req) => {
         }]
       })
     });
+
+    console.log('API Response status:', response.status);
 
     if (!response.ok) {
       const errorData = await response.text();
@@ -68,6 +71,7 @@ serve(async (req) => {
     }
 
     const enhancedPost = data.candidates[0].content.parts[0].text.trim();
+    console.log('Enhanced post:', enhancedPost);
 
     return new Response(
       JSON.stringify({ enhancedPost }),
