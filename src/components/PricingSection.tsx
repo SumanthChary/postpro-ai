@@ -1,210 +1,179 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle, Sparkles, X } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { CheckCircle, Sparkles, X, CreditCard, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const PricingSection = () => {
+  const [period, setPeriod] = useState<"monthly" | "yearly">("monthly");
   const navigate = useNavigate();
-  
+
   const plans = [
     {
       name: "Free",
       price: "0",
       period: "forever",
       features: [
-        "3-5 LinkedIn posts optimization per week",
-        "Basic tone analysis",
+        "5 post enhancements/month",
+        "Basic AI features",
+        "Manual posting",
         "Real-Time Trend Hashtags",
         "Standard templates (5 templates)",
-        "Basic analytics",
       ],
       cta: "Start Free",
       popular: false,
     },
     {
-      name: "Creator Plan",
-      variants: [
-        {
-          name: "Weekly",
-          price: "4.99",
-          period: "week",
-          savings: null,
-        },
-        {
-          name: "Influencer Plan",
-          price: "20",
-          period: "month",
-          savings: "Save 15% compared to weekly",
-        }
-      ],
-      subtext: "14-day trial available • Limited time: $3.99 first month",
+      name: "Weekly",
+      price: "7.99",
+      period: "week",
       features: [
-        "Unlimited Post Enhancements",
-        "AI Post Writer",
-        "Advanced tone analysis",
-        "Engagement predictions",
+        "Unlimited post enhancements",
+        "AI tone/style analysis",
+        "Trending Hashtag suggestions",
         "Premium templates (20+ templates)",
       ],
-      comingSoon: [
-        "AI Profile Enhancer",
-        "AI Visuals Generator",
-        "Cross-Platform Sharing",
-        "Teams collaboration",
-        "CTA Generator"
-      ],
-      cta: "Start Creator Plan",
+      cta: "Choose Plan",
       popular: true,
     },
     {
-      name: "Business Plan",
-      price: "99",
-      period: "year",
-      subtext: "Special 1st year pricing - Save $270.99 (73% off regular price)",
+      name: period === "monthly" ? "Monthly" : "Yearly",
+      price: period === "monthly" ? "19.99" : "149.99",
+      period: period === "monthly" ? "month" : "year",
       features: [
-        "All Creator Features",
-        "Premium Support",
-        "Early access to new features",
-        "Premium templates (20+ templates)",
-        "Advanced analytics dashboard",
+        "All Weekly features",
+        "Content analysis",
+        "Custom templates",
+        "Priority processing",
+        "CTA Generator",
+        "AI Profile Enhancer",
+        period === "yearly" ? "Early feature access" : "24/7 support",
+        period === "yearly" ? "Personal Branding tools" : "",
+      ].filter(Boolean),
+      cta: "Choose Plan",
+      popular: false,
+    },
+    {
+      name: "Enterprise",
+      price: "Custom",
+      features: [
+        "API access",
+        "Bulk enhancements",
+        "Team collaboration",
+        "Custom solutions",
+        "Dedicated support",
       ],
-      comingSoon: [
-        "API integration",
-        "Personal Branding Tools",
-        "Priority customer support",
-        "Dedicated account manager",
-      ],
-      cta: "Start Business Plan",
+      cta: "Contact Sales",
       popular: false,
     },
   ];
 
-  const handleSubscribe = (plan: any) => {
-    navigate("/payment", { state: { plan } });
-  };
-
-  const handleLearnMore = () => {
-    navigate("/features");
-  };
-
-  const handleTemplates = () => {
-    window.open("https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing", "_blank");
-  };
-
-  const handleCompare = () => {
-    navigate("/plan-comparison");
+  const handleSelectPlan = (plan: any) => {
+    navigate("/subscription", { state: { selectedPlan: plan } });
   };
 
   return (
-    <div className="py-8">
-      <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {plans.map((plan) => (
-          <Card
-            key={plan.name}
-            className={`p-6 flex flex-col ${
-              plan.popular ? "border-electric-purple shadow-lg relative" : ""
-            }`}
-          >
-            {plan.popular && (
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-electric-purple text-white px-4 py-1 rounded-full text-sm font-medium">
-                  Most Popular
-                </span>
+    <Dialog>
+      <DialogContent className="sm:max-w-[900px] p-0">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold">Choose Your Plan</h2>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 bg-gray-100 p-2 rounded-lg">
+                <Button
+                  variant={period === "monthly" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setPeriod("monthly")}
+                >
+                  Monthly
+                </Button>
+                <Button
+                  variant={period === "yearly" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setPeriod("yearly")}
+                >
+                  Yearly
+                </Button>
               </div>
-            )}
-            <div className="relative">
-              <button 
-                className="absolute right-0 top-0 text-gray-400 hover:text-gray-600"
-                onClick={() => navigate("/")}
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {plans.map((plan) => (
+              <Card
+                key={plan.name}
+                className={`p-6 flex flex-col ${
+                  plan.popular ? "border-electric-purple" : ""
+                }`}
               >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-              {'variants' in plan ? (
-                <div className="space-y-4">
-                  {plan.variants.map((variant, index) => (
-                    <div key={variant.period} className="border-b last:border-b-0 pb-4 last:pb-0">
-                      <div className="flex items-end mb-2">
-                        <span className="text-sm font-medium text-gray-600 mb-1">{variant.name}</span>
-                      </div>
-                      <div className="flex items-end mb-2">
-                        <span className="text-4xl font-bold">${variant.price}</span>
-                        <span className="text-gray-600 ml-2">/{variant.period}</span>
-                      </div>
-                      {variant.savings && (
-                        <p className="text-sm text-green-600">{variant.savings}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex items-end mb-2">
-                  <span className="text-4xl font-bold">${plan.price}</span>
-                  {plan.period && (
-                    <span className="text-gray-600 ml-2">/{plan.period}</span>
-                  )}
-                </div>
-              )}
-              {plan.subtext && (
-                <p className="text-sm text-green-600 font-medium">{plan.subtext}</p>
-              )}
-            </div>
-            <div className="space-y-6 mb-8 flex-grow">
-              <div className="space-y-3">
-                {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
-                    <span>{feature}</span>
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-electric-purple text-white px-3 py-1 rounded-full text-xs">
+                      Most Popular
+                    </span>
                   </div>
-                ))}
-              </div>
-              {plan.comingSoon && plan.comingSoon.length > 0 && (
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-coral-red flex items-center gap-2">
-                    <Sparkles className="w-4 h-4" />
-                    Coming Soon
-                  </p>
-                  {plan.comingSoon.map((feature) => (
-                    <div key={feature} className="flex items-start opacity-60">
-                      <CheckCircle className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
+                )}
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+                  <div className="flex items-baseline mb-2">
+                    {plan.price === "Custom" ? (
+                      <span className="text-2xl font-bold">Custom Pricing</span>
+                    ) : (
+                      <>
+                        <span className="text-3xl font-bold">${plan.price}</span>
+                        {plan.period && (
+                          <span className="text-gray-600 ml-1">/{plan.period}</span>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
-            <div className="space-y-4 mt-auto">
-              <Button
-                className={plan.popular ? "bg-electric-purple hover:bg-electric-purple/90 w-full" : "w-full"}
-                variant={plan.popular ? "default" : "outline"}
-                onClick={() => handleSubscribe(plan)}
-              >
-                {plan.cta}
-              </Button>
-              <Button 
-                variant="ghost" 
-                onClick={plan.name === "Free" ? handleLearnMore : handleTemplates}
-                className="w-full text-sm text-gray-600 hover:text-electric-purple"
-              >
-                {plan.name === "Free" ? "Learn More About Features" : "View Templates"}
-              </Button>
-            </div>
-          </Card>
-        ))}
-      </div>
-      <div className="text-center mt-8">
-        <Button
-          variant="link"
-          onClick={handleCompare}
-          className="text-electric-purple hover:text-electric-purple/90"
-        >
-          Read More About Our Plans
-        </Button>
-      </div>
-    </div>
+
+                <ul className="space-y-3 mb-6 flex-grow">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Button
+                  className={`w-full ${
+                    plan.popular
+                      ? "bg-electric-purple hover:bg-electric-purple/90"
+                      : ""
+                  }`}
+                  variant={plan.popular ? "default" : "outline"}
+                  onClick={() => handleSelectPlan(plan)}
+                >
+                  {plan.name === "Enterprise" ? (
+                    <Building2 className="w-4 h-4 mr-2" />
+                  ) : (
+                    <CreditCard className="w-4 h-4 mr-2" />
+                  )}
+                  {plan.cta}
+                </Button>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-8 text-center">
+            <Button
+              variant="link"
+              onClick={() => navigate("/subscription")}
+              className="text-electric-purple hover:text-electric-purple/90"
+            >
+              See Full Features
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
 export default PricingSection;
+
