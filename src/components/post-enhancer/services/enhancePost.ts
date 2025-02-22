@@ -1,57 +1,24 @@
 
+import { supabase } from "@/integrations/supabase/client";
 import { EnhancePostResponse } from "../types";
 
 export async function enhancePost(post: string, category: string): Promise<EnhancePostResponse> {
-  // This is a mock implementation - in production this would call an API
-  const enhancedPost = `🌟 ${post}
+  console.log('Calling enhance-post function with:', { post, category });
+  
+  const { data, error } = await supabase.functions.invoke('enhance-post', {
+    body: { post, category }
+  });
 
-${getCategoryEmojis(category)} The Impact We're Making:
+  console.log('Response from enhance-post:', { data, error });
 
-✨ Transforming the way we think about innovation
-🎯 Driving meaningful change in our industry
-💡 Creating solutions that matter
-
-🤝 Let's connect and explore how we can make a difference together!
-
-#Innovation #Leadership ${getCategoryHashtags(category)}`;
-
-  return {
-    platforms: {
-      linkedin: enhancedPost
-    }
-  };
-}
-
-function getCategoryEmojis(category: string): string {
-  switch (category) {
-    case "business":
-      return "📈 💼 🚀";
-    case "technology":
-      return "💻 🤖 🔧";
-    case "lifestyle":
-      return "🌿 ✨ 🎯";
-    case "marketing":
-      return "📱 📊 🎨";
-    case "creative":
-      return "🎨 ✏️ 💫";
-    default:
-      return "🌟 ✨ 💫";
+  if (error) {
+    console.error('Supabase function error:', error);
+    throw error;
   }
-}
 
-function getCategoryHashtags(category: string): string {
-  switch (category) {
-    case "business":
-      return "#BusinessGrowth #Entrepreneurship #Success";
-    case "technology":
-      return "#TechTrends #Innovation #FutureOfTech";
-    case "lifestyle":
-      return "#LifestyleDesign #Wellness #PersonalGrowth";
-    case "marketing":
-      return "#DigitalMarketing #SocialMedia #MarketingStrategy";
-    case "creative":
-      return "#CreativeMinds #Design #Inspiration";
-    default:
-      return "#Growth #Success #Innovation";
+  if (!data?.platforms) {
+    throw new Error('No enhanced posts received from the API');
   }
+
+  return data;
 }
