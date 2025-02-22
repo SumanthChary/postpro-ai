@@ -8,6 +8,9 @@ import Navigation from "@/components/layout/Navigation";
 import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
 import SupportSection from "@/components/post-enhancer/SupportSection";
 import TemplatesSection from "@/components/post-enhancer/TemplatesSection";
+import VideoShowcase from "@/components/landing/VideoShowcase";
+import ComparisonSection from "@/components/landing/ComparisonSection";
+import EnhancedPostsShowcase from "@/components/landing/EnhancedPostsShowcase";
 import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
@@ -119,6 +122,10 @@ const Index = () => {
           handleEnhancePost={() => {}}
         />
 
+        <VideoShowcase />
+        <ComparisonSection />
+        <EnhancedPostsShowcase />
+        
         <SupportSection />
         <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
         <Testimonials />
