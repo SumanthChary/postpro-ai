@@ -7,6 +7,7 @@ import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, Loa
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface PostEnhancerProps {
   post: string;
@@ -23,6 +24,11 @@ const PostEnhancer = ({
 }: PostEnhancerProps) => {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [originalPost, setOriginalPost] = useState("");
+  const [enhancedPosts, setEnhancedPosts] = useState<{
+    linkedin?: string;
+    twitter?: string;
+    instagram?: string;
+  }>({});
   const { toast } = useToast();
 
   const handleEnhancePost = async () => {
@@ -36,7 +42,7 @@ const PostEnhancer = ({
     }
 
     setIsEnhancing(true);
-    setOriginalPost(post); // Save original post
+    setOriginalPost(post);
 
     try {
       console.log('Calling enhance-post function with:', { post, category });
@@ -52,14 +58,14 @@ const PostEnhancer = ({
         throw error;
       }
 
-      if (!data?.enhancedPost) {
-        throw new Error('No enhanced post received from the API');
+      if (!data?.platforms) {
+        throw new Error('No enhanced posts received from the API');
       }
 
-      setPost(data.enhancedPost);
+      setEnhancedPosts(data.platforms);
       toast({
-        title: "Post Enhanced!",
-        description: "Your post has been professionally enhanced for better engagement",
+        title: "Posts Enhanced!",
+        description: "Your posts have been professionally enhanced for each platform",
       });
     } catch (error: any) {
       console.error('Error enhancing post:', error);
@@ -68,7 +74,7 @@ const PostEnhancer = ({
         description: error.message || "There was an error enhancing your post. Please try again.",
         variant: "destructive",
       });
-      setPost(originalPost); // Restore original post on error
+      setPost(originalPost);
     } finally {
       setIsEnhancing(false);
     }
@@ -84,9 +90,9 @@ const PostEnhancer = ({
               <h2 className="text-lg font-montserrat font-extrabold text-custom-text">Professional Post Enhancer</h2>
             </div>
             <div className="flex space-x-3">
-              <LinkedinIcon className="w-5 h-5 text-electric-purple" />
-              <TwitterIcon className="w-5 h-5 text-bright-teal" />
-              <InstagramIcon className="w-5 h-5 text-coral-red" />
+              <LinkedinIcon className="w-5 h-5 text-[#0077B5]" />
+              <TwitterIcon className="w-5 h-5 text-[#1DA1F2]" />
+              <InstagramIcon className="w-5 h-5 text-[#E4405F]" />
             </div>
           </div>
 
@@ -120,13 +126,14 @@ const PostEnhancer = ({
               onClick={() => {
                 setPost(originalPost || "");
                 setOriginalPost("");
+                setEnhancedPosts({});
               }}
               disabled={isEnhancing || !post}
             >
               Reset
             </Button>
             <Button 
-              className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans"
+              className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans group"
               onClick={handleEnhancePost}
               disabled={isEnhancing}
             >
@@ -137,12 +144,54 @@ const PostEnhancer = ({
                 </>
               ) : (
                 <>
-                  <RocketIcon className="w-4 h-4 mr-2" />
+                  <RocketIcon className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:rotate-45" />
                   Enhance Post
                 </>
               )}
             </Button>
           </div>
+
+          {Object.keys(enhancedPosts).length > 0 && (
+            <div className="mt-8">
+              <Tabs defaultValue="linkedin" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="linkedin" className="flex items-center gap-2">
+                    <LinkedinIcon className="w-4 h-4" />
+                    LinkedIn
+                  </TabsTrigger>
+                  <TabsTrigger value="twitter" className="flex items-center gap-2">
+                    <TwitterIcon className="w-4 h-4" />
+                    Twitter
+                  </TabsTrigger>
+                  <TabsTrigger value="instagram" className="flex items-center gap-2">
+                    <InstagramIcon className="w-4 h-4" />
+                    Instagram
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="linkedin" className="mt-4">
+                  <Textarea
+                    value={enhancedPosts.linkedin}
+                    readOnly
+                    className="min-h-[150px] text-base"
+                  />
+                </TabsContent>
+                <TabsContent value="twitter" className="mt-4">
+                  <Textarea
+                    value={enhancedPosts.twitter}
+                    readOnly
+                    className="min-h-[150px] text-base"
+                  />
+                </TabsContent>
+                <TabsContent value="instagram" className="mt-4">
+                  <Textarea
+                    value={enhancedPosts.instagram}
+                    readOnly
+                    className="min-h-[150px] text-base"
+                  />
+                </TabsContent>
+              </Tabs>
+            </div>
+          )}
         </div>
       </Card>
     </div>
