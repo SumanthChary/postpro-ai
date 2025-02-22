@@ -1,9 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const VideoShowcase = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <section className="py-16">
       <div className="max-w-6xl mx-auto px-4">
@@ -13,12 +16,16 @@ const VideoShowcase = () => {
         <div className="max-w-4xl mx-auto">
           <Card className="overflow-hidden">
             <AspectRatio ratio={16/9}>
+              {isLoading && (
+                <div className="w-full h-full bg-gray-200 animate-pulse" />
+              )}
               <video
                 controls
                 className="w-full h-full object-cover"
                 poster="/placeholder.svg"
+                onLoadedData={() => setIsLoading(false)}
               >
-                <source src="/path-to-your-video.mp4" type="video/mp4" />
+                <source src="/demo-video.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </AspectRatio>
