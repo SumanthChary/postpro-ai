@@ -17,12 +17,11 @@ serve(async (req) => {
   try {
     const apiKey = Deno.env.get('GOOGLE_AI_API_KEY');
     if (!apiKey) {
-      console.error('Google AI API key not found');
       throw new Error('API key not configured');
     }
 
     const { post, category } = await req.json();
-    console.log('Processing request:', { post, category });
+    console.log('Request payload:', { post, category });
 
     if (!post?.trim()) {
       return new Response(
@@ -34,19 +33,14 @@ serve(async (req) => {
       );
     }
 
-    const prompt = `Enhance this ${category} social media post to be more engaging and professional while maintaining its core message.
-    Make it sound natural and authentic.
-    Add 1-2 relevant emojis if appropriate.
-    Include a clear call-to-action.
-    Original post: ${post}`;
+    // Simplified, focused prompt
+    const prompt = `Make this ${category} post more professional and engaging while keeping it authentic: ${post}`;
+    console.log('Using prompt:', prompt);
 
-    console.log('Sending request to Google AI API with prompt:', prompt);
-
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + apiKey, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         contents: [{
@@ -57,46 +51,35 @@ serve(async (req) => {
       })
     });
 
-    console.log('Google AI API response status:', response.status);
-
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Google AI API error:', {
+      const errorData = await response.text();
+      console.error('API Error:', {
         status: response.status,
-        statusText: response.statusText,
-        error: errorText
+        response: errorData
       });
-      throw new Error(`Google AI API error: ${response.status} ${errorText}`);
+      throw new Error(`API error: ${response.status} - ${errorData}`);
     }
 
     const data = await response.json();
-    console.log('Received response from Google AI:', data);
+    console.log('AI Response:', data);
 
     if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-      console.error('Invalid response format from AI:', data);
-      throw new Error('Invalid response format from AI service');
+      throw new Error('Invalid API response format');
     }
 
     const enhancedPost = data.candidates[0].content.parts[0].text.trim();
-    console.log('Enhanced post:', enhancedPost);
 
     return new Response(
       JSON.stringify({ enhancedPost }),
-      { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
-    console.error('Error in enhance-post function:', error);
-    
+    console.error('Function error:', error);
     return new Response(
       JSON.stringify({ 
-        error: 'Failed to enhance post',
-        details: error.message 
+        error: 'Enhancement failed',
+        details: error.message
       }),
       { 
         status: 500,
