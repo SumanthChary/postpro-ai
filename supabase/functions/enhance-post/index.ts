@@ -17,17 +17,17 @@ serve(async (req) => {
 
   try {
     const { post, category } = await req.json();
-    console.log('Received request:', { post, category });
+    console.log('Processing request:', { post, category });
 
     if (!apiKey) {
       throw new Error('GOOGLE_AI_API_KEY is not configured');
     }
 
-    if (!post) {
-      throw new Error('Post content is required');
+    if (!post || !category) {
+      throw new Error('Post content and category are required');
     }
 
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-pro:generateContent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,21 +36,19 @@ serve(async (req) => {
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `Enhance this professional post for LinkedIn, focusing on ${category}. Make it more engaging and add appropriate emojis:
+            text: `Enhance this LinkedIn post to be more engaging and professional. Focus on ${category}:
 
 "${post}"
 
 Instructions:
-1. Keep core message but make it more impactful
-2. Add 2-3 relevant emojis strategically
-3. Improve structure with line breaks
-4. Add 3-4 relevant hashtags
+1. Keep the core message
+2. Add 2-3 relevant emojis
+3. Improve structure with paragraphs
+4. Add relevant hashtags
 5. Keep professional tone
-6. Focus on ${category} expertise
-7. Add a clear call-to-action
-8. Format as a LinkedIn post
+6. Add a clear call-to-action
 
-Return ONLY the enhanced post text, nothing else.`
+Write ONLY the enhanced post, no explanations.`
           }]
         }],
         generationConfig: {
@@ -63,22 +61,23 @@ Return ONLY the enhanced post text, nothing else.`
     });
 
     const data = await response.json();
-    console.log('Gemini API Response:', data);
+    console.log('Gemini API response status:', response.status);
 
     if (!response.ok) {
-      throw new Error(`Gemini API error: ${JSON.stringify(data.error || 'Unknown error')}`);
+      console.error('Gemini API error:', data);
+      throw new Error(data.error?.message || 'Failed to generate enhanced post');
     }
 
-    const enhancedPost = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const enhancedText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
     
-    if (!enhancedPost) {
+    if (!enhancedText) {
       throw new Error('No enhanced content generated');
     }
 
     return new Response(
       JSON.stringify({
         platforms: {
-          linkedin: enhancedPost.trim()
+          linkedin: enhancedText.trim()
         }
       }),
       {
@@ -91,7 +90,7 @@ Return ONLY the enhanced post text, nothing else.`
     console.error('Error in enhance-post function:', error);
     return new Response(
       JSON.stringify({
-        error: error.message
+        error: error.message || 'Failed to enhance post'
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

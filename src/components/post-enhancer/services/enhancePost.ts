@@ -3,6 +3,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { EnhancePostResponse } from "../types";
 
 export async function enhancePost(post: string, category: string): Promise<EnhancePostResponse> {
+  if (!post?.trim()) {
+    throw new Error('Post content is required');
+  }
+
+  if (!category?.trim()) {
+    throw new Error('Category is required');
+  }
+
   console.log('Calling enhance-post function with:', { post, category });
   
   const { data, error } = await supabase.functions.invoke('enhance-post', {
@@ -17,7 +25,7 @@ export async function enhancePost(post: string, category: string): Promise<Enhan
   }
 
   if (!data?.platforms?.linkedin) {
-    throw new Error('No enhanced post content received');
+    throw new Error('No enhanced content received');
   }
 
   return data;
