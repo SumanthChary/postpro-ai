@@ -8,6 +8,22 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+const categoryEmojis: Record<string, string[]> = {
+  business: ['💼', '📈', '🚀', '🎯', '💡', '🤝'],
+  technology: ['💻', '🔧', '🌐', '⚡', '🤖', '📱'],
+  lifestyle: ['✨', '🌟', '💫', '🎉', '💪', '🌈'],
+  marketing: ['📣', '📊', '🎨', '💎', '📱', '🔍'],
+  creative: ['🎨', '✏️', '🎭', '🎬', '📸', '🎯']
+};
+
+const trendingHashtags: Record<string, string[]> = {
+  business: ['#BusinessGrowth', '#Entrepreneurship', '#Innovation', '#Leadership', '#StartupLife'],
+  technology: ['#TechInnovation', '#AI', '#DigitalTransformation', '#FutureOfWork', '#Tech'],
+  lifestyle: ['#PersonalGrowth', '#WorkLifeBalance', '#Mindfulness', '#WellnessJourney', '#Growth'],
+  marketing: ['#DigitalMarketing', '#ContentStrategy', '#MarketingTips', '#SocialMedia', '#Branding'],
+  creative: ['#CreativeProcess', '#Design', '#ArtisticVision', '#CreativeMindset', '#Innovation']
+};
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -33,11 +49,38 @@ serve(async (req) => {
       );
     }
 
-    // Simplified prompt for Gemini 1.5 Flash
-    const prompt = `Make this ${category} post more professional and engaging while keeping it authentic: ${post}`;
+    // Get random emoji for the category
+    const categorySpecificEmojis = categoryEmojis[category as keyof typeof categoryEmojis] || categoryEmojis.business;
+    const selectedEmoji = categorySpecificEmojis[Math.floor(Math.random() * categorySpecificEmojis.length)];
+    
+    // Get relevant hashtags for the category
+    const relevantHashtags = trendingHashtags[category as keyof typeof trendingHashtags] || trendingHashtags.business;
+    const selectedHashtags = relevantHashtags
+      .sort(() => 0.5 - Math.random()) // Shuffle array
+      .slice(0, 3) // Select top 3 hashtags
+      .join(' ');
+
+    // Enhanced prompt for more engaging content
+    const prompt = `
+    Create an engaging and professional social media post based on this content. Follow these guidelines:
+    
+    Original Post: ${post}
+    
+    Requirements:
+    1. Start with this emoji: ${selectedEmoji}
+    2. Make the content more conversational and engaging
+    3. Keep the authentic message but make it more impactful
+    4. Add these relevant hashtags at the end: ${selectedHashtags}
+    5. Do not use asterisks or other special formatting symbols
+    6. Keep it professional and authentic
+    7. Focus on value and insights
+    8. Structure it with clear paragraphs
+    
+    The output should be ready to post as-is.
+    `;
+    
     console.log('Using prompt:', prompt);
 
-    // Updated to use Gemini 1.5 Flash model
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
@@ -78,7 +121,7 @@ serve(async (req) => {
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Function error:', error);
     return new Response(
       JSON.stringify({ 
