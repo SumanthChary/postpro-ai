@@ -27,7 +27,7 @@ export const EnhancerForm = ({
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
-          <SparklesIcon className="w-5 h-5 text-electric-purple" />
+          <SparklesIcon className="w-5 h-5 text-electric-purple animate-pulse" />
           <h2 className="text-lg font-montserrat font-extrabold text-custom-text">Professional Post Enhancer</h2>
         </div>
       </div>
@@ -51,7 +51,7 @@ export const EnhancerForm = ({
       <Textarea
         value={post}
         onChange={(e) => onPostChange(e.target.value)}
-        placeholder="Paste your post here to enhance it with professional AI magic ✨"
+        placeholder="✨ Share your thoughts here and let our AI transform them into an engaging professional post! 🚀"
         className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
       />
       
@@ -65,7 +65,7 @@ export const EnhancerForm = ({
           Reset
         </Button>
         <Button 
-          className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans group"
+          className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans group relative overflow-hidden"
           onClick={onEnhance}
           disabled={isEnhancing}
         >
@@ -76,8 +76,11 @@ export const EnhancerForm = ({
             </>
           ) : (
             <>
-              <RocketIcon className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:rotate-45" />
-              Enhance Post
+              <RocketIcon className="w-4 h-4 mr-2 transition-all duration-500 group-hover:rotate-[360deg] group-hover:scale-110 group-hover:translate-y-[-2px]" />
+              <span className="relative z-10 group-hover:scale-105 transition-transform duration-300">
+                Enhance Post
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-electric-purple to-bright-teal opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </>
           )}
         </Button>
