@@ -19,15 +19,13 @@ const VideoShowcase = () => {
               {isLoading && (
                 <div className="w-full h-full bg-gray-200 animate-pulse" />
               )}
-              <video
-                controls
-                className="w-full h-full object-cover"
-                poster="/placeholder.svg"
-                onLoadedData={() => setIsLoading(false)}
-              >
-                <source src="/demo-video.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              <iframe 
+                src="https://player.vimeo.com/video/1059294138?h=3fede10115" 
+                className="w-full h-full absolute top-0 left-0"
+                allow="autoplay; fullscreen; picture-in-picture" 
+                allowFullScreen
+                onLoad={() => setIsLoading(false)}
+              />
             </AspectRatio>
           </Card>
           <p className="text-center mt-6 text-custom-text text-lg">
