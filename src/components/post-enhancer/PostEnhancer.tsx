@@ -110,27 +110,44 @@ const PostEnhancer = ({
           className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
         />
         
-        <div className="flex justify-end space-x-3">
-          <Button 
-            variant="outline" 
-            className="text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans"
-            onClick={() => setPost("")}
-            disabled={isEnhancing}
-          >
-            Reset
-          </Button>
-          <Button 
-            className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans"
-            onClick={handleEnhancePost}
-            disabled={isEnhancing}
-          >
-            {isEnhancing ? (
-              <SparklesIcon className="w-4 h-4 mr-2 animate-spin" />
-            ) : (
-              <RocketIcon className="w-4 h-4 mr-2" />
-            )}
-            {isEnhancing ? "Enhancing..." : "Enhance Post"}
-          </Button>
+        <div className="space-y-4">
+          <div className="flex justify-end space-x-3">
+            <Button 
+              variant="outline" 
+              className="text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans"
+              onClick={() => setPost("")}
+              disabled={isEnhancing}
+            >
+              Reset
+            </Button>
+            <Button 
+              className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans"
+              onClick={handleEnhancePost}
+              disabled={isEnhancing}
+            >
+              {isEnhancing ? (
+                <SparklesIcon className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <RocketIcon className="w-4 h-4 mr-2" />
+              )}
+              {isEnhancing ? "Enhancing..." : "Enhance Post"}
+            </Button>
+          </div>
+          
+          <div className="flex justify-center mt-4">
+            <a 
+              href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img 
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740241427035" 
+                alt="PostProAI - PostPro AI, Smart AI-Powered Post Enhancement | Product Hunt" 
+                width="250" 
+                height="54" 
+              />
+            </a>
+          </div>
         </div>
       </div>
     </Card>
@@ -138,3 +155,4 @@ const PostEnhancer = ({
 };
 
 export default PostEnhancer;
+
