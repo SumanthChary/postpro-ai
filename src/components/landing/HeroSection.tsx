@@ -26,7 +26,6 @@ const HeroSection = () => {
         setPost={setPost}
         category={category}
         setCategory={setCategory}
-        handleEnhancePost={() => {}}
       />
     </>
   );
