@@ -45,7 +45,7 @@ serve(async (req) => {
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `Enhance this professional ${category} post for LinkedIn. 
+            text: `Enhance this professional ${category} post for social media. 
             Requirements:
             1. Keep it professional and impactful
             2. Focus on value and insights
@@ -54,6 +54,7 @@ serve(async (req) => {
             5. Structure it with a hook, context, key learning, and call to action
             6. Minimize emoji use (max 1-2 if truly appropriate)
             7. Make it sound natural and authentic
+            8. Keep the essence of the original post while improving its impact
             
             Original post:
             ${post}`

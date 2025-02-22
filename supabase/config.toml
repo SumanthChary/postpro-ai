@@ -6,4 +6,3 @@ verify_jwt = false
 
 [functions.enhance-profile]
 verify_jwt = true
-
