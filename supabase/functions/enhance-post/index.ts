@@ -17,7 +17,7 @@ serve(async (req) => {
 
   try {
     const { post, category } = await req.json();
-    console.log('Processing request:', { postLength: post?.length, category });
+    console.log('Starting enhance-post function with:', { postLength: post?.length, category });
 
     if (!apiKey) {
       console.error('Google AI API key not found');
@@ -42,35 +42,33 @@ Instructions:
 
 Write ONLY the enhanced post, no explanations.`;
 
+    console.log('Sending request to Gemini API...');
+    
     const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         contents: [{
           parts: [{
             text: prompt
           }]
-        }],
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
-        },
-      }),
+        }]
+      })
     });
 
     console.log('Gemini API response status:', response.status);
-    const data = await response.json();
-    console.log('Gemini API response:', data);
-
+    
     if (!response.ok) {
-      console.error('Gemini API error:', data);
-      throw new Error(data.error?.message || 'Failed to generate enhanced post');
+      const errorData = await response.json();
+      console.error('Gemini API error:', errorData);
+      throw new Error(errorData.error?.message || 'Failed to generate enhanced post');
     }
+
+    const data = await response.json();
+    console.log('Successful response from Gemini API');
 
     const enhancedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
     
