@@ -31,12 +31,17 @@ const PostEnhancer = ({
 
     try {
       const data = await enhancePost(post, category);
-      setPost(data.platforms.linkedin || "");
+      console.log('Enhanced post response:', data);
       
-      toast({
-        title: "Post Enhanced!",
-        description: "Your post has been professionally enhanced",
-      });
+      if (data.platforms.linkedin) {
+        setPost(data.platforms.linkedin);
+        toast({
+          title: "Post Enhanced!",
+          description: "Your post has been professionally enhanced",
+        });
+      } else {
+        throw new Error('No enhanced content received');
+      }
     } catch (error: any) {
       console.error('Error enhancing post:', error);
       toast({

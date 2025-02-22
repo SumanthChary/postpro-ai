@@ -13,11 +13,11 @@ export async function enhancePost(post: string, category: string): Promise<Enhan
 
   if (error) {
     console.error('Supabase function error:', error);
-    throw error;
+    throw new Error(error.message || 'Failed to enhance post');
   }
 
-  if (!data?.platforms) {
-    throw new Error('No enhanced posts received from the API');
+  if (!data?.platforms?.linkedin) {
+    throw new Error('No enhanced post content received');
   }
 
   return data;

@@ -36,21 +36,21 @@ serve(async (req) => {
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `As an expert in ${category} content creation, enhance this professional LinkedIn post to maximize engagement:
+            text: `Enhance this professional post for LinkedIn, focusing on ${category}. Make it more engaging and add appropriate emojis:
 
 "${post}"
 
 Instructions:
-1. Maintain core message but make it more impactful
-2. Add relevant emojis strategically
+1. Keep core message but make it more impactful
+2. Add 2-3 relevant emojis strategically
 3. Improve structure with line breaks
-4. Include 3-4 relevant hashtags
+4. Add 3-4 relevant hashtags
 5. Keep professional tone
-6. Focus on your expertise in ${category}
+6. Focus on ${category} expertise
 7. Add a clear call-to-action
-8. Optimize for LinkedIn's algorithm
+8. Format as a LinkedIn post
 
-Format the response as a ready-to-post LinkedIn update.`
+Return ONLY the enhanced post text, nothing else.`
           }]
         }],
         generationConfig: {
@@ -63,10 +63,10 @@ Format the response as a ready-to-post LinkedIn update.`
     });
 
     const data = await response.json();
-    console.log('AI Response:', data);
+    console.log('Gemini API Response:', data);
 
     if (!response.ok) {
-      throw new Error(`AI API error: ${JSON.stringify(data.error || 'Unknown error')}`);
+      throw new Error(`Gemini API error: ${JSON.stringify(data.error || 'Unknown error')}`);
     }
 
     const enhancedPost = data?.candidates?.[0]?.content?.parts?.[0]?.text;
