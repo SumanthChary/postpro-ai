@@ -3,11 +3,10 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, Loader2Icon } from "lucide-react";
+import { SparklesIcon, RocketIcon, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface PostEnhancerProps {
   post: string;
@@ -24,11 +23,6 @@ const PostEnhancer = ({
 }: PostEnhancerProps) => {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [originalPost, setOriginalPost] = useState("");
-  const [enhancedPosts, setEnhancedPosts] = useState<{
-    linkedin?: string;
-    twitter?: string;
-    instagram?: string;
-  }>({});
   const { toast } = useToast();
 
   const handleEnhancePost = async () => {
@@ -62,10 +56,11 @@ const PostEnhancer = ({
         throw new Error('No enhanced posts received from the API');
       }
 
-      setEnhancedPosts(data.platforms);
+      // Use the LinkedIn version as the enhanced post (you can modify this to use any platform's version)
+      setPost(data.platforms.linkedin || "");
       toast({
-        title: "Posts Enhanced!",
-        description: "Your posts have been professionally enhanced for each platform",
+        title: "Post Enhanced!",
+        description: "Your post has been professionally enhanced",
       });
     } catch (error: any) {
       console.error('Error enhancing post:', error);
@@ -88,11 +83,6 @@ const PostEnhancer = ({
             <div className="flex items-center space-x-2">
               <SparklesIcon className="w-5 h-5 text-electric-purple" />
               <h2 className="text-lg font-montserrat font-extrabold text-custom-text">Professional Post Enhancer</h2>
-            </div>
-            <div className="flex space-x-3">
-              <LinkedinIcon className="w-5 h-5 text-[#0077B5]" />
-              <TwitterIcon className="w-5 h-5 text-[#1DA1F2]" />
-              <InstagramIcon className="w-5 h-5 text-[#E4405F]" />
             </div>
           </div>
 
@@ -126,7 +116,6 @@ const PostEnhancer = ({
               onClick={() => {
                 setPost(originalPost || "");
                 setOriginalPost("");
-                setEnhancedPosts({});
               }}
               disabled={isEnhancing || !post}
             >
@@ -150,48 +139,6 @@ const PostEnhancer = ({
               )}
             </Button>
           </div>
-
-          {Object.keys(enhancedPosts).length > 0 && (
-            <div className="mt-8">
-              <Tabs defaultValue="linkedin" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="linkedin" className="flex items-center gap-2">
-                    <LinkedinIcon className="w-4 h-4" />
-                    LinkedIn
-                  </TabsTrigger>
-                  <TabsTrigger value="twitter" className="flex items-center gap-2">
-                    <TwitterIcon className="w-4 h-4" />
-                    Twitter
-                  </TabsTrigger>
-                  <TabsTrigger value="instagram" className="flex items-center gap-2">
-                    <InstagramIcon className="w-4 h-4" />
-                    Instagram
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="linkedin" className="mt-4">
-                  <Textarea
-                    value={enhancedPosts.linkedin}
-                    readOnly
-                    className="min-h-[150px] text-base"
-                  />
-                </TabsContent>
-                <TabsContent value="twitter" className="mt-4">
-                  <Textarea
-                    value={enhancedPosts.twitter}
-                    readOnly
-                    className="min-h-[150px] text-base"
-                  />
-                </TabsContent>
-                <TabsContent value="instagram" className="mt-4">
-                  <Textarea
-                    value={enhancedPosts.instagram}
-                    readOnly
-                    className="min-h-[150px] text-base"
-                  />
-                </TabsContent>
-              </Tabs>
-            </div>
-          )}
         </div>
       </Card>
     </div>
