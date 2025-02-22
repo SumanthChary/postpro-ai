@@ -1,4 +1,5 @@
 
+// Follow Deno deploy requirements
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -14,8 +15,6 @@ serve(async (req) => {
   }
 
   try {
-    console.log('Starting enhance-post function');
-
     const apiKey = Deno.env.get('GOOGLE_AI_API_KEY');
     if (!apiKey) {
       console.error('Google AI API key not found');
@@ -23,7 +22,7 @@ serve(async (req) => {
     }
 
     const { post, category } = await req.json();
-    console.log('Received request:', { post, category });
+    console.log('Processing request:', { post, category });
 
     if (!post?.trim()) {
       return new Response(
@@ -35,7 +34,14 @@ serve(async (req) => {
       );
     }
 
-    console.log('Making request to Google AI API');
+    const prompt = `Enhance this ${category} social media post to be more engaging and professional while maintaining its core message.
+    Make it sound natural and authentic.
+    Add 1-2 relevant emojis if appropriate.
+    Include a clear call-to-action.
+    Original post: ${post}`;
+
+    console.log('Sending request to Google AI API with prompt:', prompt);
+
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
       method: 'POST',
       headers: {
@@ -45,26 +51,14 @@ serve(async (req) => {
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `Enhance this professional ${category} post for social media. 
-            Requirements:
-            1. Keep it professional and impactful
-            2. Focus on value and insights
-            3. Include relevant statistics or data points if appropriate
-            4. Add a clear call-to-action
-            5. Structure it with a hook, context, key learning, and call to action
-            6. Minimize emoji use (max 1-2 if truly appropriate)
-            7. Make it sound natural and authentic
-            8. Keep the essence of the original post while improving its impact
-            
-            Original post:
-            ${post}`
+            text: prompt
           }]
         }]
       })
     });
 
     console.log('Google AI API response status:', response.status);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Google AI API error:', {
@@ -76,26 +70,33 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    console.log('Successfully received AI response');
+    console.log('Received response from Google AI:', data);
 
     if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
       console.error('Invalid response format from AI:', data);
       throw new Error('Invalid response format from AI service');
     }
 
-    const enhancedPost = data.candidates[0].content.parts[0].text;
+    const enhancedPost = data.candidates[0].content.parts[0].text.trim();
+    console.log('Enhanced post:', enhancedPost);
 
     return new Response(
       JSON.stringify({ enhancedPost }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json' 
+        } 
+      }
     );
 
   } catch (error) {
     console.error('Error in enhance-post function:', error);
+    
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        details: error.toString()
+        error: 'Failed to enhance post',
+        details: error.message 
       }),
       { 
         status: 500,
