@@ -10,4 +10,5 @@ export interface Plan {
   features: string[];
   cta: string;
   popular?: boolean;
+  icon?: string;
 }

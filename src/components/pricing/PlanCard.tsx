@@ -24,10 +24,17 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
         </div>
       )}
       <div className="mb-6">
-        <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+        <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
+          {plan.icon && <span>{plan.icon}</span>}
+          {plan.name}
+        </h3>
         <div className="flex items-end mb-4">
-          <span className="text-4xl font-bold">${plan.price}</span>
-          <span className="text-gray-600 ml-2">/{plan.period}</span>
+          <span className="text-4xl font-bold">
+            {plan.price === "Custom" ? "Custom" : `$${plan.price}`}
+          </span>
+          {plan.price !== "Custom" && (
+            <span className="text-gray-600 ml-2">/{plan.period}</span>
+          )}
         </div>
       </div>
       <div className="space-y-4 mb-8 flex-grow">
