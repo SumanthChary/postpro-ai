@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { ArrowTrendingUpIcon } from 'lucide-react';
+import { TrendingUpIcon } from 'lucide-react';
 
 const data = [
   {
@@ -63,7 +63,7 @@ const ComparisonSection = () => {
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-start gap-4">
-                <ArrowTrendingUpIcon className="w-6 h-6 text-bright-teal" />
+                <TrendingUpIcon className="w-6 h-6 text-bright-teal" />
                 <div>
                   <h4 className="text-lg font-semibold mb-2">142% Higher Engagement</h4>
                   <p className="text-custom-text">
@@ -74,7 +74,7 @@ const ComparisonSection = () => {
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-start gap-4">
-                <ArrowTrendingUpIcon className="w-6 h-6 text-bright-teal" />
+                <TrendingUpIcon className="w-6 h-6 text-bright-teal" />
                 <div>
                   <h4 className="text-lg font-semibold mb-2">3x More Impressions</h4>
                   <p className="text-custom-text">
@@ -85,7 +85,7 @@ const ComparisonSection = () => {
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex items-start gap-4">
-                <ArrowTrendingUpIcon className="w-6 h-6 text-bright-teal" />
+                <TrendingUpIcon className="w-6 h-6 text-bright-teal" />
                 <div>
                   <h4 className="text-lg font-semibold mb-2">200% More Comments</h4>
                   <p className="text-custom-text">
@@ -102,3 +102,4 @@ const ComparisonSection = () => {
 };
 
 export default ComparisonSection;
+
