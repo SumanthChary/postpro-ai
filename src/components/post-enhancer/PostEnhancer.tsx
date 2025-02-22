@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon, SparklesIcon, RocketIcon, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,7 +13,6 @@ interface PostEnhancerProps {
   setPost: (post: string) => void;
   category: string;
   setCategory: (category: string) => void;
-  handleEnhancePost: () => void;
 }
 
 const PostEnhancer = ({
@@ -23,6 +22,7 @@ const PostEnhancer = ({
   setCategory,
 }: PostEnhancerProps) => {
   const [isEnhancing, setIsEnhancing] = useState(false);
+  const [originalPost, setOriginalPost] = useState("");
   const { toast } = useToast();
 
   const handleEnhancePost = async () => {
@@ -36,6 +36,7 @@ const PostEnhancer = ({
     }
 
     setIsEnhancing(true);
+    setOriginalPost(post); // Save original post
 
     try {
       console.log('Calling enhance-post function with:', { post, category });
@@ -58,7 +59,7 @@ const PostEnhancer = ({
       setPost(data.enhancedPost);
       toast({
         title: "Post Enhanced!",
-        description: "Your post has been enhanced for better engagement",
+        description: "Your post has been professionally enhanced for better engagement",
       });
     } catch (error: any) {
       console.error('Error enhancing post:', error);
@@ -67,6 +68,7 @@ const PostEnhancer = ({
         description: error.message || "There was an error enhancing your post. Please try again.",
         variant: "destructive",
       });
+      setPost(originalPost); // Restore original post on error
     } finally {
       setIsEnhancing(false);
     }
@@ -79,7 +81,7 @@ const PostEnhancer = ({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
               <SparklesIcon className="w-5 h-5 text-electric-purple" />
-              <h2 className="text-lg font-montserrat font-extrabold text-custom-text">AI Post Enhancer</h2>
+              <h2 className="text-lg font-montserrat font-extrabold text-custom-text">Professional Post Enhancer</h2>
             </div>
             <div className="flex space-x-3">
               <LinkedinIcon className="w-5 h-5 text-electric-purple" />
@@ -107,7 +109,7 @@ const PostEnhancer = ({
           <Textarea
             value={post}
             onChange={(e) => setPost(e.target.value)}
-            placeholder="Paste your post here to enhance it with AI magic ✨"
+            placeholder="Paste your post here to enhance it with professional AI magic ✨"
             className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
           />
           
@@ -115,8 +117,11 @@ const PostEnhancer = ({
             <Button 
               variant="outline" 
               className="text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans"
-              onClick={() => setPost("")}
-              disabled={isEnhancing}
+              onClick={() => {
+                setPost(originalPost || "");
+                setOriginalPost("");
+              }}
+              disabled={isEnhancing || !post}
             >
               Reset
             </Button>
@@ -126,33 +131,22 @@ const PostEnhancer = ({
               disabled={isEnhancing}
             >
               {isEnhancing ? (
-                <SparklesIcon className="w-4 h-4 mr-2 animate-spin" />
+                <>
+                  <Loader2Icon className="w-4 h-4 mr-2 animate-spin" />
+                  Enhancing...
+                </>
               ) : (
-                <RocketIcon className="w-4 h-4 mr-2" />
+                <>
+                  <RocketIcon className="w-4 h-4 mr-2" />
+                  Enhance Post
+                </>
               )}
-              {isEnhancing ? "Enhancing..." : "Enhance Post"}
             </Button>
           </div>
         </div>
       </Card>
-
-      <div className="flex justify-center max-w-2xl mx-auto">
-        <a 
-          href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img 
-            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740241427035" 
-            alt="PostProAI - PostPro AI, Smart AI-Powered Post Enhancement | Product Hunt" 
-            width="250" 
-            height="54" 
-          />
-        </a>
-      </div>
     </div>
   );
 };
 
 export default PostEnhancer;
-
