@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle, Sparkles, X } from "lucide-react";
+import { CheckCircle, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const PricingSection = () => {
@@ -16,66 +16,31 @@ const PricingSection = () => {
         "3-5 LinkedIn posts optimization per week",
         "Basic tone analysis",
         "Real-Time Trend Hashtags",
-        "Standard templates (5 templates)",
-        "Basic analytics",
       ],
       cta: "Start Free",
-      popular: false,
     },
     {
       name: "Creator Plan",
-      variants: [
-        {
-          name: "Weekly",
-          price: "4.99",
-          period: "week",
-          savings: null,
-        },
-        {
-          name: "Influencer Plan",
-          price: "20",
-          period: "month",
-          savings: "Save 15% compared to weekly",
-        }
-      ],
-      subtext: "14-day trial available • Limited time: $3.99 first month",
+      price: "4.99",
+      period: "week",
       features: [
         "Unlimited Post Enhancements",
         "AI Post Writer",
         "Advanced tone analysis",
-        "Engagement predictions",
-        "Premium templates (20+ templates)",
       ],
-      comingSoon: [
-        "AI Profile Enhancer",
-        "AI Visuals Generator",
-        "Cross-Platform Sharing",
-        "Teams collaboration",
-        "CTA Generator"
-      ],
-      cta: "Start Creator Plan",
       popular: true,
+      cta: "Choose Plan",
     },
     {
       name: "Business Plan",
       price: "99",
       period: "year",
-      subtext: "Special 1st year pricing - Save $270.99 (73% off regular price)",
       features: [
         "All Creator Features",
         "Premium Support",
         "Early access to new features",
-        "Premium templates (20+ templates)",
-        "Advanced analytics dashboard",
       ],
-      comingSoon: [
-        "API integration",
-        "Personal Branding Tools",
-        "Priority customer support",
-        "Dedicated account manager",
-      ],
-      cta: "Start Business Plan",
-      popular: false,
+      cta: "Choose Plan",
     },
   ];
 
@@ -83,21 +48,13 @@ const PricingSection = () => {
     navigate("/payment", { state: { plan } });
   };
 
-  const handleLearnMore = () => {
-    navigate("/features");
-  };
-
-  const handleTemplates = () => {
-    window.open("https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing", "_blank");
-  };
-
-  const handleCompare = () => {
-    navigate("/plan-comparison");
+  const handleSeeFullFeatures = () => {
+    navigate("/subscription");
   };
 
   return (
     <div className="py-8">
-      <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         {plans.map((plan) => (
           <Card
             key={plan.name}
@@ -112,95 +69,39 @@ const PricingSection = () => {
                 </span>
               </div>
             )}
-            <div className="relative">
-              <button 
-                className="absolute right-0 top-0 text-gray-400 hover:text-gray-600"
-                onClick={() => navigate("/")}
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="mb-8">
+            <div className="mb-6">
               <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-              {'variants' in plan ? (
-                <div className="space-y-4">
-                  {plan.variants.map((variant, index) => (
-                    <div key={variant.period} className="border-b last:border-b-0 pb-4 last:pb-0">
-                      <div className="flex items-end mb-2">
-                        <span className="text-sm font-medium text-gray-600 mb-1">{variant.name}</span>
-                      </div>
-                      <div className="flex items-end mb-2">
-                        <span className="text-4xl font-bold">${variant.price}</span>
-                        <span className="text-gray-600 ml-2">/{variant.period}</span>
-                      </div>
-                      {variant.savings && (
-                        <p className="text-sm text-green-600">{variant.savings}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex items-end mb-2">
-                  <span className="text-4xl font-bold">${plan.price}</span>
-                  {plan.period && (
-                    <span className="text-gray-600 ml-2">/{plan.period}</span>
-                  )}
-                </div>
-              )}
-              {plan.subtext && (
-                <p className="text-sm text-green-600 font-medium">{plan.subtext}</p>
-              )}
-            </div>
-            <div className="space-y-6 mb-8 flex-grow">
-              <div className="space-y-3">
-                {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </div>
-                ))}
+              <div className="flex items-end mb-4">
+                <span className="text-4xl font-bold">${plan.price}</span>
+                <span className="text-gray-600 ml-2">/{plan.period}</span>
               </div>
-              {plan.comingSoon && plan.comingSoon.length > 0 && (
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold text-coral-red flex items-center gap-2">
-                    <Sparkles className="w-4 h-4" />
-                    Coming Soon
-                  </p>
-                  {plan.comingSoon.map((feature) => (
-                    <div key={feature} className="flex items-start opacity-60">
-                      <CheckCircle className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
+            </div>
+            <div className="space-y-4 mb-8 flex-grow">
+              {plan.features.map((feature) => (
+                <div key={feature} className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
+                  <span>{feature}</span>
                 </div>
-              )}
+              ))}
             </div>
-            <div className="space-y-4 mt-auto">
-              <Button
-                className={plan.popular ? "bg-electric-purple hover:bg-electric-purple/90 w-full" : "w-full"}
-                variant={plan.popular ? "default" : "outline"}
-                onClick={() => handleSubscribe(plan)}
-              >
-                {plan.cta}
-              </Button>
-              <Button 
-                variant="ghost" 
-                onClick={plan.name === "Free" ? handleLearnMore : handleTemplates}
-                className="w-full text-sm text-gray-600 hover:text-electric-purple"
-              >
-                {plan.name === "Free" ? "Learn More About Features" : "View Templates"}
-              </Button>
-            </div>
+            <Button
+              className={`w-full ${plan.popular ? "bg-electric-purple hover:bg-electric-purple/90" : ""}`}
+              variant={plan.popular ? "default" : "outline"}
+              onClick={() => handleSubscribe(plan)}
+            >
+              {plan.cta}
+            </Button>
           </Card>
         ))}
       </div>
       <div className="text-center mt-8">
         <Button
+          onClick={handleSeeFullFeatures}
+          className="group text-electric-purple hover:text-electric-purple/90"
           variant="link"
-          onClick={handleCompare}
-          className="text-electric-purple hover:text-electric-purple/90"
         >
-          Read More About Our Plans
+          See Full Features
+          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Button>
       </div>
     </div>
