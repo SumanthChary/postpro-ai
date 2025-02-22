@@ -1,5 +1,7 @@
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Rocket } from "lucide-react";
 import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
 
 const HeroSection = () => {
@@ -19,6 +21,13 @@ const HeroSection = () => {
           Enhance your LinkedIn, Twitter & Instagram posts with AI magic. Create content that
           captivates and converts.
         </p>
+        <Button
+          className="bg-[#F97316] hover:bg-[#FB923C] text-white font-opensans text-lg px-8 py-6 h-auto mb-8 rounded-xl shadow-lg hover:shadow-xl transition-all"
+          onClick={() => window.open('https://www.producthunt.com/posts/postproai?utm_source=other&utm_medium=social', '_blank')}
+        >
+          <Rocket className="w-6 h-6 mr-3" />
+          Support us on Product Hunt
+        </Button>
       </div>
 
       <PostEnhancer
