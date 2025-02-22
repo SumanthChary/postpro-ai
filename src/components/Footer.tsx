@@ -1,5 +1,5 @@
 
-import { Twitter, Linkedin, Instagram, Mail, Link2 } from "lucide-react";
+import { Twitter, Linkedin, Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -17,17 +17,7 @@ const Footer = () => {
               <li><Link to="/" className="hover:text-bright-teal transition-colors">Home</Link></li>
               <li><Link to="/features" className="hover:text-bright-teal transition-colors">Features</Link></li>
               <li><Link to="/pricing" className="hover:text-bright-teal transition-colors">Pricing</Link></li>
-              <li>
-                <a 
-                  href="https://www.producthunt.com/posts/postpro-ai" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-bright-teal transition-colors flex items-center gap-2"
-                >
-                  <Link2 className="w-4 h-4" />
-                  Product Hunt
-                </a>
-              </li>
+              <li><Link to="/plan-comparison" className="hover:text-bright-teal transition-colors">Compare Plans</Link></li>
             </ul>
           </div>
           <div>

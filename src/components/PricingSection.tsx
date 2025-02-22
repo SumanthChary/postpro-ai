@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, Sparkles, X } from "lucide-react";
@@ -91,6 +90,10 @@ const PricingSection = () => {
     window.open("https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing", "_blank");
   };
 
+  const handleCompare = () => {
+    navigate("/plan-comparison");
+  };
+
   return (
     <div className="py-8">
       <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -171,7 +174,7 @@ const PricingSection = () => {
                 </div>
               )}
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 mt-auto">
               <Button
                 className={plan.popular ? "bg-electric-purple hover:bg-electric-purple/90 w-full" : "w-full"}
                 variant={plan.popular ? "default" : "outline"}
@@ -189,6 +192,15 @@ const PricingSection = () => {
             </div>
           </Card>
         ))}
+      </div>
+      <div className="text-center mt-8">
+        <Button
+          variant="link"
+          onClick={handleCompare}
+          className="text-electric-purple hover:text-electric-purple/90"
+        >
+          Read More About Our Plans
+        </Button>
       </div>
     </div>
   );
