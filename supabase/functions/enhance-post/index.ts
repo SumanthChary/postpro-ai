@@ -17,21 +17,23 @@ serve(async (req) => {
 
   try {
     const { post, category } = await req.json();
-    console.log('Processing request:', { post, category });
+    console.log('Processing request with content length:', post?.length, 'category:', category);
 
     if (!apiKey) {
-      throw new Error('GOOGLE_AI_API_KEY is not configured');
+      console.error('API key missing');
+      throw new Error('API configuration error');
     }
 
-    if (!post || !category) {
+    if (!post?.trim() || !category?.trim()) {
       throw new Error('Post content and category are required');
     }
 
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-pro:generateContent', {
+    // Use the correct model name and API version
+    const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         contents: [{
@@ -57,11 +59,11 @@ Write ONLY the enhanced post, no explanations.`
           topP: 0.95,
           maxOutputTokens: 1024,
         },
-      })
+      }),
     });
 
-    const data = await response.json();
     console.log('Gemini API response status:', response.status);
+    const data = await response.json();
 
     if (!response.ok) {
       console.error('Gemini API error:', data);
@@ -71,9 +73,11 @@ Write ONLY the enhanced post, no explanations.`
     const enhancedText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
     
     if (!enhancedText) {
+      console.error('No content in response:', data);
       throw new Error('No enhanced content generated');
     }
 
+    // Return success response
     return new Response(
       JSON.stringify({
         platforms: {
