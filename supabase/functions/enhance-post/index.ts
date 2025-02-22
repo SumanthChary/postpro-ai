@@ -35,59 +35,58 @@ const professionalTemplates = {
   ]
 };
 
-const categoryKeywords = {
-  business: ["strategic", "ROI", "optimization", "scalable", "innovative", "market-leading"],
-  technology: ["implementation", "solution", "architecture", "infrastructure", "integration"],
-  lifestyle: ["professional development", "leadership", "productivity", "work-life integration"],
-  marketing: ["engagement", "conversion", "analytics", "brand equity", "market penetration"],
-  creative: ["design thinking", "user-centric", "creative solution", "innovative approach"]
-};
-
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { post, category } = await req.json();
-    console.log('Received request with:', { post, category });
+    console.log('Received request:', { post, category });
 
     if (!post?.trim()) {
-      throw new Error('Post content cannot be empty');
+      return new Response(
+        JSON.stringify({ error: 'Post content cannot be empty' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const apiKey = Deno.env.get('GOOGLE_AI_API_KEY');
     if (!apiKey) {
-      throw new Error('Google AI API key not configured');
+      return new Response(
+        JSON.stringify({ error: 'Google AI API key not configured' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    // Select relevant template and keywords
+    // Select relevant template
     const templates = professionalTemplates[category] || professionalTemplates.business;
-    const keywords = categoryKeywords[category] || categoryKeywords.business;
     const selectedTemplate = templates[Math.floor(Math.random() * templates.length)];
 
-    // Create professional enhancement prompt
+    // Create enhancement prompt
     const enhancementPrompt = `
     Enhance this professional ${category} post for LinkedIn. Follow these guidelines:
 
-    Context: ${selectedTemplate.replace("{content}", post)}
+    Original Post: ${post}
 
     Requirements:
     1. Keep it professional and impactful
     2. Focus on value and insights
     3. Include 1-2 relevant statistics or data points if applicable
     4. Add a clear call-to-action
-    5. Use these industry keywords naturally: ${keywords.join(', ')}
-    6. Minimize emoji use (max 1-2 where truly appropriate)
-    7. Structure:
+    5. Structure:
        - Hook/Insight
        - Context/Story
        - Key Learning/Value
        - Call to Action
+    6. Minimize emoji use (max 1-2 where truly appropriate)
+    7. Make it sound natural and authentic while maintaining professional credibility
 
-    Make it sound natural and authentic while maintaining professional credibility.`;
+    Make it compelling and engaging while staying true to the original message.`;
 
-    // Use Google AI for enhancement
+    console.log('Sending request to Google AI API with prompt:', enhancementPrompt);
+
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
       method: 'POST',
       headers: {
@@ -103,20 +102,30 @@ serve(async (req) => {
       })
     });
 
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Google AI API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorData
+      });
+      throw new Error(`Google AI API error: ${response.status} ${response.statusText}`);
+    }
+
     const data = await response.json();
-    console.log('AI response:', data);
+    console.log('Google AI API response:', data);
 
     if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-      throw new Error('Invalid response from AI service');
+      throw new Error('Invalid response format from AI service');
     }
 
     const enhancedContent = data.candidates[0].content.parts[0].text;
 
-    // Get relevant hashtags for the category
+    // Get relevant hashtags
     const hashtagsPerCategory = {
-      business: ["#leadership", "#business", "#innovation", "#entrepreneurship", "#strategy"],
-      technology: ["#tech", "#innovation", "#digital", "#technology", "#future"],
-      lifestyle: ["#professionaldevelopment", "#leadership", "#productivity", "#growth"],
+      business: ["#leadership", "#business", "#innovation", "#entrepreneurship"],
+      technology: ["#tech", "#innovation", "#digital", "#technology"],
+      lifestyle: ["#professionaldevelopment", "#leadership", "#productivity"],
       marketing: ["#marketing", "#digitalmarketing", "#strategy", "#branding"],
       creative: ["#design", "#innovation", "#creativity", "#strategy"]
     };
@@ -128,7 +137,6 @@ serve(async (req) => {
       .join(' ');
 
     const finalPost = `${enhancedContent}\n\n${selectedHashtags}`;
-    console.log('Final enhanced post:', finalPost);
 
     return new Response(
       JSON.stringify({ enhancedPost: finalPost }),
@@ -137,8 +145,14 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in enhance-post function:', error);
     return new Response(
-      JSON.stringify({ error: error.message || 'Failed to enhance post' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        error: error.message || 'Failed to enhance post',
+        details: error.toString()
+      }),
+      { 
+        status: 500, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
     );
   }
 });
