@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { SparklesIcon, RocketIcon, Loader2Icon } from "lucide-react";
+import { LinkedinIcon, TwitterIcon, InstagramIcon } from "lucide-react";
 
 interface EnhancerFormProps {
   post: string;
@@ -30,6 +31,11 @@ export const EnhancerForm = ({
           <SparklesIcon className="w-5 h-5 text-electric-purple animate-pulse" />
           <h2 className="text-lg font-montserrat font-extrabold text-custom-text">Professional Post Enhancer</h2>
         </div>
+        <div className="flex items-center gap-3">
+          <LinkedinIcon className="w-5 h-5 text-[#0077B5]" />
+          <TwitterIcon className="w-5 h-5 text-[#1DA1F2]" />
+          <InstagramIcon className="w-5 h-5 text-[#E4405F]" />
+        </div>
       </div>
 
       <Select
@@ -51,7 +57,7 @@ export const EnhancerForm = ({
       <Textarea
         value={post}
         onChange={(e) => onPostChange(e.target.value)}
-        placeholder="✨ Share your thoughts here and let our AI transform them into an engaging professional post! 🚀"
+        placeholder="Just paste your normal post here, and we'll transform it into an engaging professional post with relevant emojis and hashtags! ✨"
         className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
       />
       
@@ -85,6 +91,29 @@ export const EnhancerForm = ({
           )}
         </Button>
       </div>
+
+      <div className="flex flex-col items-center space-y-4 pt-4 border-t border-gray-200">
+        <a 
+          href="https://www.producthunt.com/posts/postproai?utm_source=other&utm_medium=social" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-sm text-gray-600 hover:text-electric-purple transition-colors"
+        >
+          Check us out on Product Hunt!
+        </a>
+        <a 
+          href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img 
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740317554845" 
+            alt="PostProAI - Smart AI-Powered Post Enhancement | Product Hunt" 
+            className="w-[250px] h-[54px]"
+          />
+        </a>
+      </div>
     </div>
   );
 };
+
