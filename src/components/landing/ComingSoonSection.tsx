@@ -10,15 +10,15 @@ const ComingSoonSection = () => {
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="p-6 bg-white/10 rounded-lg backdrop-blur-sm">
-            <h3 className="text-xl font-semibold mb-4">AI Image Generator</h3>
+            <h3 className="text-xl font-semibold mb-4">Cross-Platform Sharing</h3>
             <p className="text-sm opacity-90">
-              Create stunning visuals for your posts with our AI-powered image generator.
+              Share your enhanced posts seamlessly across multiple social media platforms with a single click.
             </p>
           </div>
           <div className="p-6 bg-white/10 rounded-lg backdrop-blur-sm">
-            <h3 className="text-xl font-semibold mb-4">Analytics Dashboard</h3>
+            <h3 className="text-xl font-semibold mb-4">Daily Streaks</h3>
             <p className="text-sm opacity-90">
-              Track your content performance and engagement metrics in real-time.
+              Build a consistent posting habit and earn rewards by maintaining your daily content creation streaks.
             </p>
           </div>
           <div className="p-6 bg-white/10 rounded-lg backdrop-blur-sm">
@@ -34,3 +34,4 @@ const ComingSoonSection = () => {
 };
 
 export default ComingSoonSection;
+
