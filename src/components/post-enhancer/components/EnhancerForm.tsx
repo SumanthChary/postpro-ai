@@ -91,6 +91,32 @@ export const EnhancerForm = ({
           )}
         </Button>
       </div>
+
+      {/* Product Hunt Section */}
+      <div className="mt-12 flex flex-col items-center space-y-4">
+        <a 
+          href="https://www.producthunt.com/posts/postproai?utm_source=other&utm_medium=social" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-sm text-gray-600 hover:text-electric-purple transition-colors"
+        >
+          Check us out on Product Hunt!
+        </a>
+        <a 
+          href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img 
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740317554845" 
+            alt="PostProAI - Smart AI-Powered Post Enhancement | Product Hunt" 
+            style={{ width: '250px', height: '54px' }}
+            width="250"
+            height="54"
+          />
+        </a>
+      </div>
     </div>
   );
 };
+
