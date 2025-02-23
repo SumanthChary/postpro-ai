@@ -26,10 +26,10 @@ export const EnhancerForm = ({
 }: EnhancerFormProps) => {
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 mb-4">
         <div className="flex items-center space-x-2">
           <SparklesIcon className="w-5 h-5 text-electric-purple animate-pulse" />
-          <h2 className="text-lg font-montserrat font-extrabold text-custom-text">Professional Post Enhancer</h2>
+          <h2 className="text-base sm:text-lg font-montserrat font-extrabold text-custom-text">Professional Post Enhancer</h2>
         </div>
         <div className="flex items-center gap-3">
           <LinkedinIcon className="w-5 h-5 text-[#0077B5]" />
@@ -58,20 +58,20 @@ export const EnhancerForm = ({
         value={post}
         onChange={(e) => onPostChange(e.target.value)}
         placeholder="Paste your post here to enhance it with AI magic ✨"
-        className="min-h-[200px] text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
+        className="min-h-[150px] sm:min-h-[200px] text-sm sm:text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200"
       />
       
-      <div className="flex justify-end space-x-3">
+      <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-3">
         <Button 
           variant="outline" 
-          className="text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans"
+          className="w-full sm:w-auto text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans"
           onClick={onReset}
           disabled={isEnhancing || !post}
         >
           Reset
         </Button>
         <Button 
-          className="bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans group relative overflow-hidden"
+          className="w-full sm:w-auto bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans group relative overflow-hidden"
           onClick={onEnhance}
           disabled={isEnhancing}
         >
@@ -94,4 +94,3 @@ export const EnhancerForm = ({
     </div>
   );
 };
-

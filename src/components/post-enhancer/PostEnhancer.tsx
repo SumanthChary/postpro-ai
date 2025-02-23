@@ -61,8 +61,8 @@ const PostEnhancer = ({
   };
 
   return (
-    <div className="space-y-8">
-      <Card className="max-w-2xl mx-auto p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
+    <div className="space-y-8 w-full px-4 sm:px-0">
+      <Card className="max-w-2xl mx-auto p-4 sm:p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
         <EnhancerForm
           post={post}
           category={category}
@@ -75,7 +75,7 @@ const PostEnhancer = ({
       </Card>
       
       {/* Product Hunt Section */}
-      <div className="max-w-2xl mx-auto flex flex-col items-center space-y-4 py-8">
+      <div className="max-w-2xl mx-auto flex flex-col items-center space-y-4 py-6 sm:py-8">
         <a 
           href="https://www.producthunt.com/posts/postproai?utm_source=other&utm_medium=social" 
           target="_blank" 
@@ -88,11 +88,12 @@ const PostEnhancer = ({
           href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
           target="_blank"
           rel="noopener noreferrer"
+          className="w-full flex justify-center"
         >
           <img 
             src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740317554845" 
             alt="PostProAI - Smart AI-Powered Post Enhancement | Product Hunt" 
-            style={{ width: '250px', height: '54px' }}
+            className="max-w-[250px] h-[54px] w-full"
             width="250"
             height="54"
           />
