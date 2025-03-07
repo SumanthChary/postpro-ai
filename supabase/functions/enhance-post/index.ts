@@ -2,8 +2,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const apiKey = Deno.env.get('GOOGLE_AI_API_KEY');
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -18,6 +16,9 @@ serve(async (req) => {
     const { post, category } = await req.json();
     console.log('Starting enhance-post function with:', { post, category });
 
+    // Use provided API key or fall back to environment variable
+    const apiKey = 'AIzaSyCF8SJtCqwOAdyUIgq6YgJOyKP2th1vBsU' || Deno.env.get('GOOGLE_AI_API_KEY');
+    
     if (!apiKey) {
       console.error('API key not found');
       return new Response(
@@ -41,8 +42,8 @@ serve(async (req) => {
     }
 
     try {
-      // Fixed URL for Gemini API and improved logging
-      const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+      // Updated API URL for Gemini - using generative language API with the correct version
+      const apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
       console.log(`Calling Gemini API at: ${apiUrl}`);
       
       const requestBody = {
@@ -55,11 +56,10 @@ serve(async (req) => {
       
       console.log('Request payload:', JSON.stringify(requestBody));
       
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${apiUrl}?key=${apiKey}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': apiKey
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(requestBody)
       });
