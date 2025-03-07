@@ -14,6 +14,7 @@ export async function enhancePost(post: string, category: string): Promise<Enhan
   console.log('Calling enhance-post function with:', { post, category });
   
   try {
+    // Add timeout option to avoid hanging requests
     const { data, error } = await supabase.functions.invoke('enhance-post', {
       body: { post, category }
     });
@@ -22,10 +23,17 @@ export async function enhancePost(post: string, category: string): Promise<Enhan
 
     if (error) {
       console.error('Supabase function error:', error);
+      
+      // Check if the error response contains more details
+      if (error.message?.includes('Failed to generate enhanced post')) {
+        throw new Error('AI service error: The Gemini API is currently unavailable. Please try again later.');
+      }
+      
       throw new Error(error.message || 'Failed to enhance post');
     }
 
     if (!data?.platforms?.linkedin) {
+      console.error('Invalid response structure:', data);
       throw new Error('No enhanced content received');
     }
 
@@ -33,11 +41,18 @@ export async function enhancePost(post: string, category: string): Promise<Enhan
   } catch (error: any) {
     console.error('Error in enhancePost function:', error);
     
-    // Check if the error is from Supabase Edge Function
+    // More specific error handling
     if (error.message?.includes('FunctionInvocationError') || 
-        error.status >= 400 || 
-        error.statusCode >= 400) {
-      throw new Error('Server error: Unable to process your request. Please try again later.');
+        error.message?.includes('Edge Function returned a non-2xx status code')) {
+      console.error('Function invocation details:', error);
+      throw new Error('Server error: The AI enhancement service is temporarily unavailable. Please try again later.');
+    }
+    
+    // Network or timeout errors
+    if (error.message?.includes('Failed to fetch') || 
+        error.message?.includes('timeout') ||
+        error.message?.includes('network')) {
+      throw new Error('Network error: Please check your internet connection and try again.');
     }
     
     throw error;

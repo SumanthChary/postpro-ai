@@ -41,26 +41,42 @@ serve(async (req) => {
     }
 
     try {
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+      // Fixed URL for Gemini API and improved logging
+      const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+      console.log(`Calling Gemini API at: ${apiUrl}`);
+      
+      const requestBody = {
+        contents: [{
+          parts: [{
+            text: `Enhance this ${category} post to be more engaging and professional: "${post}". Add relevant emojis and hashtags.`
+          }]
+        }]
+      };
+      
+      console.log('Request payload:', JSON.stringify(requestBody));
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-goog-api-key': apiKey
         },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `Enhance this ${category} post to be more engaging and professional: "${post}". Add relevant emojis and hashtags.`
-            }]
-          }]
-        })
+        body: JSON.stringify(requestBody)
       });
 
+      // Log detailed response info for debugging
+      console.log('Gemini API response status:', response.status);
+      console.log('Gemini API response headers:', Object.fromEntries(response.headers.entries()));
+      
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Gemini API error:', errorText);
+        console.error(`Gemini API error (${response.status}):`, errorText);
+        
         return new Response(
-          JSON.stringify({ error: `Failed to generate enhanced post: ${response.status}` }),
+          JSON.stringify({ 
+            error: `Failed to generate enhanced post: ${response.status}`,
+            details: errorText
+          }),
           {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
             status: 502
@@ -69,13 +85,14 @@ serve(async (req) => {
       }
 
       const data = await response.json();
-      console.log('Gemini API response:', data);
+      console.log('Gemini API successful response:', data);
 
       const enhancedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
       
       if (!enhancedText) {
+        console.error('No enhanced content in response:', data);
         return new Response(
-          JSON.stringify({ error: 'No enhanced content generated' }),
+          JSON.stringify({ error: 'No enhanced content generated', responseData: data }),
           {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
             status: 422
@@ -97,7 +114,11 @@ serve(async (req) => {
     } catch (apiError) {
       console.error('Error calling Gemini API:', apiError);
       return new Response(
-        JSON.stringify({ error: 'Error processing with AI service', details: apiError.message }),
+        JSON.stringify({ 
+          error: 'Error processing with AI service', 
+          details: apiError.message,
+          stack: apiError.stack
+        }),
         {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           status: 502
@@ -107,7 +128,10 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in enhance-post function:', error);
     return new Response(
-      JSON.stringify({ error: error.message || 'An unexpected error occurred' }),
+      JSON.stringify({ 
+        error: error.message || 'An unexpected error occurred',
+        stack: error.stack 
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500
