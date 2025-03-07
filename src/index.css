@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -76,6 +77,15 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold tracking-tight;
+  }
+
+  p, li, input, textarea {
+    @apply font-body;
   }
 
   textarea, input {
@@ -83,6 +93,6 @@
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-linkedin to-twitter bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent;
   }
 }
