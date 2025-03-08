@@ -14,6 +14,7 @@ export const pricingPlans: Plan[] = [
       "Standard Templates (5)",
     ],
     cta: "Start Free",
+    credits: 50
   },
   {
     name: "Weekly Plan",
@@ -24,10 +25,12 @@ export const pricingPlans: Plan[] = [
       "AI tone/style",
       "Trending Hashtag suggestions",
       "Premium templates (20+ templates)",
+      "200 Credits for premium features",
     ],
     popular: true,
     icon: "🔥",
     cta: "Choose Plan",
+    credits: 200
   },
   {
     name: "Monthly Plan",
@@ -39,9 +42,11 @@ export const pricingPlans: Plan[] = [
       "Custom templates",
       "Priority processing",
       "CTA Generator",
+      "500 Credits for premium features",
     ],
     icon: "🚀",
     cta: "Choose Plan",
+    credits: 500
   },
   {
     name: "Yearly Plan",
@@ -53,9 +58,11 @@ export const pricingPlans: Plan[] = [
       "Advanced AI",
       "Early feature access",
       "Personal Branding tools",
+      "2000 Credits + monthly bonus credits",
     ],
     icon: "🎉",
     cta: "Choose Plan",
+    credits: 2000
   },
   {
     name: "Enterprise Plan",
@@ -67,8 +74,10 @@ export const pricingPlans: Plan[] = [
       "Team collaboration",
       "Custom solutions",
       "Dedicated support",
+      "Custom credit allocation",
     ],
     icon: "💼",
     cta: "Contact Sales",
+    credits: 5000
   },
 ];

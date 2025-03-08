@@ -2,7 +2,7 @@
 import { Plan } from "@/types/pricing";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Coins } from "lucide-react";
 
 interface PlanCardProps {
   plan: Plan;
@@ -36,6 +36,12 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
             <span className="text-gray-600 ml-2">/{plan.period}</span>
           )}
         </div>
+        {plan.credits && (
+          <div className="flex items-center gap-2 text-green-600 text-sm font-medium mb-2">
+            <Coins className="w-4 h-4" />
+            {plan.credits} credits included
+          </div>
+        )}
       </div>
       <div className="space-y-4 mb-8 flex-grow">
         {plan.features.map((feature) => (

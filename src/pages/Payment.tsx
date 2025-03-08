@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { AlertCircle, CreditCard } from "lucide-react";
+import { AlertCircle, CreditCard, Coins } from "lucide-react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -20,7 +20,8 @@ const Payment = () => {
   const planDetails = location.state?.plan || {
     name: "Creator Plan",
     price: "25",
-    period: "month"
+    period: "month",
+    credits: 500
   };
 
   useEffect(() => {
@@ -43,7 +44,9 @@ const Payment = () => {
   const handlePaymentSuccess = async (orderId: string) => {
     try {
       setIsProcessing(true);
-      const { error } = await supabase
+      
+      // 1. Insert payment record
+      const { error: paymentError } = await supabase
         .from('payments')
         .insert([
           {
@@ -57,11 +60,37 @@ const Payment = () => {
           }
         ]);
 
-      if (error) throw error;
+      if (paymentError) throw paymentError;
+
+      // 2. Add credits to user account
+      if (planDetails.credits) {
+        // Calculate expiration date (3 months from now)
+        const expiresAt = new Date();
+        expiresAt.setMonth(expiresAt.getMonth() + 3);
+        
+        const { error: creditError } = await supabase.functions.invoke('handle-credits', {
+          body: { 
+            action: 'add',
+            userId: user?.id,
+            amount: planDetails.credits,
+            expiresAt: expiresAt.toISOString()
+          }
+        });
+        
+        if (creditError) {
+          console.error('Error adding credits:', creditError);
+          // Continue with subscription but show warning about credits
+          toast({
+            title: "Credits Not Added",
+            description: "We couldn't add credits to your account. Please contact support.",
+            variant: "destructive",
+          });
+        }
+      }
 
       toast({
         title: "Payment Successful!",
-        description: `You are now subscribed to the ${planDetails.name}`,
+        description: `You are now subscribed to the ${planDetails.name}${planDetails.credits ? ` with ${planDetails.credits} credits` : ''}`,
         duration: 5000,
       });
 
@@ -86,6 +115,12 @@ const Payment = () => {
           <p className="text-gray-600">
             {planDetails.name} - ${planDetails.price}/{planDetails.period}
           </p>
+          {planDetails.credits && (
+            <div className="flex items-center justify-center mt-2 text-green-600">
+              <Coins className="w-5 h-5 mr-2" />
+              <span>Includes {planDetails.credits} credits</span>
+            </div>
+          )}
         </div>
 
         <Card className="p-6 mb-6 bg-white">
@@ -102,6 +137,11 @@ const Payment = () => {
                       Your subscription will start immediately after successful payment.
                       You can cancel anytime from your account settings.
                     </p>
+                    {planDetails.credits && (
+                      <p className="mt-1">
+                        Credits expire after 3 months and can be used for premium features.
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

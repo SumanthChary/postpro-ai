@@ -2,7 +2,11 @@
 import { supabase } from "@/integrations/supabase/client";
 import { EnhancePostResponse } from "../types";
 
-export async function enhancePost(post: string, category: string): Promise<EnhancePostResponse> {
+export async function enhancePost(
+  post: string, 
+  category: string, 
+  useCredits: boolean = false
+): Promise<EnhancePostResponse> {
   if (!post?.trim()) {
     throw new Error('Post content is required');
   }
@@ -11,12 +15,16 @@ export async function enhancePost(post: string, category: string): Promise<Enhan
     throw new Error('Category is required');
   }
 
-  console.log('Calling enhance-post function with:', { post, category });
+  console.log('Calling enhance-post function with:', { post, category, useCredits });
   
   try {
     // Add timeout option to avoid hanging requests
     const { data, error } = await supabase.functions.invoke('enhance-post', {
-      body: { post, category }
+      body: { 
+        post, 
+        category,
+        useCredits 
+      }
     });
 
     console.log('Response from enhance-post:', { data, error });
@@ -28,6 +36,10 @@ export async function enhancePost(post: string, category: string): Promise<Enhan
       if (error.message?.includes('Failed to generate enhanced post') || 
           error.message?.includes('models/gemini')) {
         throw new Error('AI service error: Unable to enhance your post at this time. Please try again later.');
+      }
+      
+      if (error.message?.includes('Insufficient credits')) {
+        throw new Error('Insufficient credits: Please add more credits or disable premium features.');
       }
       
       throw new Error(error.message || 'Failed to enhance post');
