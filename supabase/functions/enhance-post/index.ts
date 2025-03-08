@@ -42,14 +42,31 @@ serve(async (req) => {
     }
 
     try {
-      // Updated API URL for Gemini - using generative language API with the correct version
+      // Updated API URL for Gemini
       const apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
       console.log(`Calling Gemini API at: ${apiUrl}`);
+      
+      const promptText = `
+      Transform this ${category} post into a highly engaging, professional LinkedIn post. 
+      
+      Original post: "${post}"
+      
+      Follow these guidelines:
+      1. Make it conversational and authentic 
+      2. Use short paragraphs with line breaks between them for readability
+      3. Include 3-5 relevant emojis throughout the post strategically
+      4. Add a call to action at the end
+      5. End with 3-5 relevant and trending hashtags in 2023 format (#word)
+      6. Maintain the core message but make it more impactful
+      7. Total length should be comparable to the original
+      
+      Format it exactly like a professional LinkedIn post with proper spacing and structure.
+      `;
       
       const requestBody = {
         contents: [{
           parts: [{
-            text: `Enhance this ${category} post to be more engaging and professional: "${post}". Add relevant emojis and hashtags.`
+            text: promptText
           }]
         }]
       };

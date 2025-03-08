@@ -24,10 +24,10 @@ export async function enhancePost(post: string, category: string): Promise<Enhan
     if (error) {
       console.error('Supabase function error:', error);
       
-      // Check if the error response contains more details about the Gemini API error
+      // Provide more specific error messages
       if (error.message?.includes('Failed to generate enhanced post') || 
-          error.message?.includes('models/gemini-pro is not found')) {
-        throw new Error('AI service error: The Gemini API configuration needs to be updated. Please check your API key and model.');
+          error.message?.includes('models/gemini')) {
+        throw new Error('AI service error: Unable to enhance your post at this time. Please try again later.');
       }
       
       throw new Error(error.message || 'Failed to enhance post');
