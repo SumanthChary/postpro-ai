@@ -1,0 +1,24 @@
+
+import { Coins } from "lucide-react";
+import { Plan } from "@/types/pricing";
+
+interface PlanSummaryProps {
+  planDetails: Plan;
+}
+
+export const PlanSummary = ({ planDetails }: PlanSummaryProps) => {
+  return (
+    <div className="text-center mb-8">
+      <h1 className="text-3xl font-bold text-gray-900 mb-2">Complete Your Purchase</h1>
+      <p className="text-gray-600">
+        {planDetails.name} - ${planDetails.price}/{planDetails.period}
+      </p>
+      {planDetails.credits && (
+        <div className="flex items-center justify-center mt-2 text-green-600">
+          <Coins className="w-5 h-5 mr-2" />
+          <span>Includes {planDetails.credits} credits</span>
+        </div>
+      )}
+    </div>
+  );
+};
