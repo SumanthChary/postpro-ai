@@ -1,13 +1,13 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { PlanSummary } from "@/components/payment/PlanSummary";
 import { PaymentNotice } from "@/components/payment/PaymentNotice";
 import { PaymentOptions } from "@/components/payment/PaymentOptions";
+import { useAuth } from "@/hooks/useAuth";
 
 const PAYPAL_CLIENT_ID = "AUAlOzak-yTYorC9Iz4-u4VFApYVxgbvNGHZvTxqfCxPnzoJoyI6-bqCfEtJAwXbfRBlmuxPuLdOkO_j";
 
@@ -16,7 +16,7 @@ const Payment = () => {
   const location = useLocation();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const { user, loading } = useAuth();
   
   const planDetails = location.state?.plan || {
     name: "Creator Plan",
@@ -24,23 +24,6 @@ const Payment = () => {
     period: "month",
     credits: 500
   };
-
-  useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please sign in to make a payment",
-          variant: "destructive",
-        });
-        navigate("/auth");
-        return;
-      }
-      setUser(user);
-    };
-    getUser();
-  }, [navigate, toast]);
 
   const handlePaymentSuccess = () => {
     setIsProcessing(false);
@@ -55,6 +38,16 @@ const Payment = () => {
     });
     setIsProcessing(false);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Loading payment details...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
