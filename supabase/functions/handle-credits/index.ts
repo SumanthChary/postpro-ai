@@ -59,6 +59,7 @@ serve(async (req) => {
           .select('*')
           .eq('user_id', userId)
           .gt('balance', 0)
+          .lt('expires_at', new Date(Date.now() + 86400000).toISOString()) // Only use non-expired credits (comparing to tomorrow to avoid timezone issues)
           .order('expires_at', { ascending: true });
 
         if (fetchError) {
@@ -131,7 +132,7 @@ serve(async (req) => {
           .select('*')
           .eq('user_id', userId)
           .gt('balance', 0)
-          .lt('expires_at', new Date().toISOString());
+          .lt('expires_at', new Date(Date.now() + 86400000).toISOString()); // Only get non-expired credits
 
         if (error) {
           console.error('Error fetching credits:', error);

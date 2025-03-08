@@ -11,7 +11,7 @@ export interface Plan {
   cta: string;
   popular?: boolean;
   icon?: string;
-  credits?: number; // Added credits field for the plan
+  credits?: number; // Credits field for the plan
 }
 
 export interface UserCredit {
