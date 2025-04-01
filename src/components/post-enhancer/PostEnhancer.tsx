@@ -62,7 +62,7 @@ const PostEnhancer = ({
 
   return (
     <div className="space-y-8 w-full px-4 sm:px-0">
-      <Card className="max-w-2xl mx-auto p-4 sm:p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
+      <Card className="relative z-10 max-w-2xl mx-auto p-6 sm:p-7 shadow-xl border-0 bg-white/90 backdrop-blur-sm rounded-lg">
         <EnhancerForm
           post={post}
           category={category}
@@ -88,7 +88,7 @@ const PostEnhancer = ({
           href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full flex justify-center"
+          className="w-full flex justify-center transition-transform hover:scale-105 duration-300"
         >
           <img 
             src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740317554845" 
