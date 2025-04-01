@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { CheckCircle, CreditCard, Sparkles, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Footer from "@/components/Footer";
+import RedeemCodeDialog from "@/components/pricing/RedeemCodeDialog";
 
 const Subscription = () => {
   const navigate = useNavigate();
@@ -99,7 +100,7 @@ const Subscription = () => {
           Choose Your <span className="bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">Subscription</span>
         </h1>
         
-        <div className="flex justify-center items-center gap-4 mb-12">
+        <div className="flex justify-center items-center gap-4 mb-8">
           <span className={`text-lg ${!isYearly ? 'font-bold text-electric-purple' : 'text-gray-600'}`}>Weekly</span>
           <button
             onClick={() => setIsYearly(!isYearly)}
@@ -114,6 +115,10 @@ const Subscription = () => {
             />
           </button>
           <span className={`text-lg ${isYearly ? 'font-bold text-electric-purple' : 'text-gray-600'}`}>Yearly</span>
+        </div>
+        
+        <div className="flex justify-center mb-8">
+          <RedeemCodeDialog />
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">

@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import PlanCard from "./pricing/PlanCard";
 import SeeFullFeaturesButton from "./pricing/SeeFullFeaturesButton";
+import RedeemCodeDialog from "./pricing/RedeemCodeDialog";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
 
@@ -27,8 +28,9 @@ const PricingSection = () => {
           />
         ))}
       </div>
-      <div className="text-center mt-8">
+      <div className="text-center mt-8 flex flex-col md:flex-row items-center justify-center gap-4">
         <SeeFullFeaturesButton onClick={handleSeeFullFeatures} />
+        <RedeemCodeDialog />
       </div>
     </div>
   );

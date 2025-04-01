@@ -1,5 +1,5 @@
 
-import { Twitter, Linkedin, Instagram, Mail, FileText, Shield, FileMinus, Ship, Phone } from "lucide-react";
+import { Twitter, Linkedin, Instagram, Mail, FileText, Shield, FileMinus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -18,18 +18,6 @@ const Footer = () => {
               <li><Link to="/features" className="hover:text-bright-teal transition-colors">Features</Link></li>
               <li><Link to="/subscription" className="hover:text-bright-teal transition-colors">Pricing</Link></li>
               <li><Link to="/blogs" className="hover:text-bright-teal transition-colors">Blog</Link></li>
-              <li>
-                <Link to="/shipping" className="hover:text-bright-teal transition-colors flex items-center">
-                  <Ship className="w-4 h-4 mr-1" />
-                  Shipping & Delivery
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="hover:text-bright-teal transition-colors flex items-center">
-                  <Phone className="w-4 h-4 mr-1" />
-                  Contact Us
-                </Link>
-              </li>
             </ul>
           </div>
           <div>
