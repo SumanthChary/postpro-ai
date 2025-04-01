@@ -18,6 +18,8 @@ import BlogArticle from "./pages/BlogArticle";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CancellationPolicy from "./pages/CancellationPolicy";
+import Shipping from "./pages/Shipping";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +42,8 @@ const App = () => (
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+              <Route path="/shipping" element={<Shipping />} />
+              <Route path="/contact" element={<Contact />} />
             </Routes>
             <Toaster />
             <Sonner />
