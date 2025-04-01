@@ -1,5 +1,5 @@
 
-import { Twitter, Linkedin, Instagram, Mail } from "lucide-react";
+import { Twitter, Linkedin, Instagram, Mail, FileText, Shield, FileMinus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -21,13 +21,34 @@ const Footer = () => {
             </ul>
           </div>
           <div>
+            <h4 className="font-montserrat font-bold text-lg mb-4">Legal</h4>
+            <ul className="space-y-2 font-opensans">
+              <li>
+                <Link to="/terms-and-conditions" className="hover:text-bright-teal transition-colors flex items-center">
+                  <FileText className="w-4 h-4 mr-1" />
+                  Terms and Conditions
+                </Link>
+              </li>
+              <li>
+                <Link to="/privacy-policy" className="hover:text-bright-teal transition-colors flex items-center">
+                  <Shield className="w-4 h-4 mr-1" />
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/cancellation-policy" className="hover:text-bright-teal transition-colors flex items-center">
+                  <FileMinus className="w-4 h-4 mr-1" />
+                  Cancellation & Refunds
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
             <h4 className="font-montserrat font-bold text-lg mb-4">Contact</h4>
             <ul className="space-y-2 font-opensans">
               <li><a href="mailto:sumanthchary.business@gmail.com" className="hover:text-bright-teal transition-colors">sumanthchary.business@gmail.com</a></li>
             </ul>
-          </div>
-          <div>
-            <h4 className="font-montserrat font-bold text-lg mb-4">Follow Us</h4>
+            <h4 className="font-montserrat font-bold text-lg mt-6 mb-4">Follow Us</h4>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-bright-teal transition-colors"><Twitter className="w-6 h-6" /></a>
               <a href="#" className="hover:text-bright-teal transition-colors"><Linkedin className="w-6 h-6" /></a>
