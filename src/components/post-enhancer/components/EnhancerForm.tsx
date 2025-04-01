@@ -2,8 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { SparklesIcon, RocketIcon, Loader2Icon, RefreshCw, ArrowRightLeft } from "lucide-react";
+import { SparklesIcon, RocketIcon, Loader2Icon, RefreshCw, ArrowRightLeft, Stars, Rocket, Zap, Award } from "lucide-react";
 import { LinkedinIcon, TwitterIcon, InstagramIcon } from "lucide-react";
+import { useState } from "react";
 
 interface EnhancerFormProps {
   post: string;
@@ -15,6 +16,13 @@ interface EnhancerFormProps {
   onEnhance: () => void;
 }
 
+interface CategoryOption {
+  value: string;
+  label: string;
+  icon: React.ReactNode;
+  description: string;
+}
+
 export const EnhancerForm = ({
   post,
   category,
@@ -24,6 +32,43 @@ export const EnhancerForm = ({
   onReset,
   onEnhance
 }: EnhancerFormProps) => {
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  
+  const categoryOptions: CategoryOption[] = [
+    {
+      value: "business",
+      label: "Business & Entrepreneurship",
+      icon: <Award className="w-4 h-4 text-electric-purple" />,
+      description: "Perfect for business insights, startup advice, and professional growth content"
+    },
+    {
+      value: "technology",
+      label: "Technology & Innovation",
+      icon: <Zap className="w-4 h-4 text-electric-purple" />,
+      description: "Ideal for tech trends, digital innovation, and product announcements"
+    },
+    {
+      value: "lifestyle",
+      label: "Lifestyle & Personal Development",
+      icon: <Stars className="w-4 h-4 text-electric-purple" />,
+      description: "Great for self-improvement, wellness, and life experience sharing"
+    },
+    {
+      value: "marketing",
+      label: "Marketing & Digital Media",
+      icon: <SparklesIcon className="w-4 h-4 text-electric-purple" />,
+      description: "Enhance content about marketing strategies, social media, and digital campaigns"
+    },
+    {
+      value: "creative",
+      label: "Creative & Design",
+      icon: <Rocket className="w-4 h-4 text-electric-purple" />,
+      description: "For design insights, creative processes, and artistic expressions"
+    },
+  ];
+
+  const selectedCategory = categoryOptions.find(option => option.value === category);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 mb-6">
@@ -38,23 +83,45 @@ export const EnhancerForm = ({
         </div>
       </div>
 
-      <div className="relative group">
-        <Select
-          value={category}
-          onValueChange={onCategoryChange}
-        >
-          <SelectTrigger className="w-full mb-4 border-gray-200 hover:border-electric-purple transition-colors duration-300 rounded-lg">
-            <SelectValue placeholder="Select post category" />
-          </SelectTrigger>
-          <SelectContent className="bg-white/95 backdrop-blur-sm">
-            <SelectItem value="business">Business & Entrepreneurship</SelectItem>
-            <SelectItem value="technology">Technology & Innovation</SelectItem>
-            <SelectItem value="lifestyle">Lifestyle & Personal Development</SelectItem>
-            <SelectItem value="marketing">Marketing & Digital Media</SelectItem>
-            <SelectItem value="creative">Creative & Design</SelectItem>
-          </SelectContent>
-        </Select>
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-electric-purple to-bright-teal rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-300"></div>
+      {/* Enhanced Category Selector */}
+      <div className="w-full">
+        <label className="text-sm font-medium text-gray-700 mb-1 block">Select Content Category</label>
+        
+        <div className="relative group">
+          <Select 
+            value={category}
+            onValueChange={onCategoryChange}
+            onOpenChange={setIsSelectOpen}
+          >
+            <SelectTrigger className="w-full bg-white transition-all duration-300 border-gray-200 hover:border-electric-purple relative overflow-hidden group">
+              <div className="flex items-center">
+                {selectedCategory?.icon}
+                <span className="ml-2">{selectedCategory?.label || "Select a category"}</span>
+              </div>
+              
+              <div className="absolute inset-0 bg-gradient-to-r from-electric-purple/5 to-bright-teal/5 opacity-0 group-hover:opacity-100 transition-opacity -z-10"></div>
+            </SelectTrigger>
+            
+            <SelectContent className="bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg w-full">
+              {categoryOptions.map((option) => (
+                <SelectItem 
+                  key={option.value} 
+                  value={option.value}
+                  className="py-3 px-2 focus:bg-light-lavender/50 cursor-pointer"
+                >
+                  <div className="flex flex-col">
+                    <div className="flex items-center">
+                      {option.icon}
+                      <span className="ml-2 font-medium">{option.label}</span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 pl-6">{option.description}</p>
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className={`absolute -inset-0.5 bg-gradient-to-r from-electric-purple to-bright-teal rounded-xl blur opacity-0 ${isSelectOpen ? 'opacity-20' : 'group-hover:opacity-20'} transition duration-300`}></div>
+        </div>
       </div>
       
       <div className="relative group">
@@ -99,11 +166,20 @@ export const EnhancerForm = ({
         </Button>
       </div>
 
-      {/* Tips Section */}
-      <div className="mt-4 pt-4 border-t border-gray-100">
-        <div className="text-xs text-gray-500 flex items-center">
-          <ArrowRightLeft className="w-3 h-3 mr-1 text-electric-purple" />
-          <span>Pro tip: Add keywords relevant to your industry to improve your post's reach</span>
+      {/* Enhanced Tips Section */}
+      <div className="mt-6 pt-4 border-t border-gray-100">
+        <div className="flex items-start space-x-3 bg-light-lavender/40 p-3 rounded-lg">
+          <div className="bg-electric-purple/10 rounded-full p-2 mt-1">
+            <ArrowRightLeft className="w-4 h-4 text-electric-purple" />
+          </div>
+          <div>
+            <h4 className="text-sm font-medium text-gray-800">Pro Tips</h4>
+            <ul className="text-xs text-gray-600 mt-1 space-y-1">
+              <li>• Add industry-specific keywords to improve your post's reach</li>
+              <li>• Include a clear call-to-action for better engagement</li>
+              <li>• Keep your original message but make it more impactful</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
