@@ -67,7 +67,7 @@ export const EnhancerForm = ({
     },
   ];
 
-  const selectedCategory = categoryOptions.find(option => option.value === category);
+  const selectedCategory = categoryOptions.find(option => option.value === category) || categoryOptions[0];
 
   return (
     <div className="space-y-6">
@@ -90,10 +90,16 @@ export const EnhancerForm = ({
         <div className="relative group">
           <Select 
             value={category}
-            onValueChange={onCategoryChange}
-            onOpenChange={setIsSelectOpen}
+            onValueChange={(value) => {
+              onCategoryChange(value);
+              console.log("Category changed to:", value);
+            }}
+            onOpenChange={(open) => {
+              setIsSelectOpen(open);
+              console.log("Select dropdown is now:", open ? "open" : "closed");
+            }}
           >
-            <SelectTrigger className="w-full bg-white transition-all duration-300 border-gray-200 hover:border-electric-purple relative overflow-hidden group">
+            <SelectTrigger className="w-full bg-white transition-all duration-300 border-gray-200 hover:border-electric-purple relative overflow-hidden group z-10">
               <div className="flex items-center">
                 {selectedCategory?.icon}
                 <span className="ml-2">{selectedCategory?.label || "Select a category"}</span>
@@ -102,7 +108,10 @@ export const EnhancerForm = ({
               <div className="absolute inset-0 bg-gradient-to-r from-electric-purple/5 to-bright-teal/5 opacity-0 group-hover:opacity-100 transition-opacity -z-10"></div>
             </SelectTrigger>
             
-            <SelectContent className="bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg w-full">
+            <SelectContent 
+              className="bg-white border border-gray-200 shadow-lg w-full z-50" 
+              position="popper"
+            >
               {categoryOptions.map((option) => (
                 <SelectItem 
                   key={option.value} 
@@ -127,7 +136,10 @@ export const EnhancerForm = ({
       <div className="relative group">
         <Textarea
           value={post}
-          onChange={(e) => onPostChange(e.target.value)}
+          onChange={(e) => {
+            onPostChange(e.target.value);
+            console.log("Text changed:", e.target.value);
+          }}
           placeholder="Paste your post here to enhance it with AI magic ✨"
           className="min-h-[150px] sm:min-h-[200px] text-sm sm:text-base resize-none rounded-lg border-gray-200 hover:border-electric-purple focus:border-electric-purple focus:ring-electric-purple transition-all duration-300"
         />

@@ -27,6 +27,12 @@ const PostEnhancer = ({
   const [username, setUsername] = useState("Guest");
   const [avatarUrl, setAvatarUrl] = useState("");
 
+  // Debug logs to monitor state changes
+  useEffect(() => {
+    console.log("PostEnhancer rendered with post:", post);
+    console.log("PostEnhancer rendered with category:", category);
+  }, [post, category]);
+
   // Check local storage for session data
   useEffect(() => {
     const storedSession = localStorage.getItem("sb-session");
@@ -87,6 +93,16 @@ const PostEnhancer = ({
     setOriginalPost("");
   };
 
+  const handlePostChange = (newPost: string) => {
+    console.log("PostEnhancer: post changed to:", newPost);
+    setPost(newPost);
+  };
+
+  const handleCategoryChange = (newCategory: string) => {
+    console.log("PostEnhancer: category changed to:", newCategory);
+    setCategory(newCategory);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navigation Bar */}
@@ -107,8 +123,8 @@ const PostEnhancer = ({
               post={post}
               category={category}
               isEnhancing={isEnhancing}
-              onPostChange={setPost}
-              onCategoryChange={setCategory}
+              onPostChange={handlePostChange}
+              onCategoryChange={handleCategoryChange}
               onReset={handleReset}
               onEnhance={handleEnhancePost}
             />

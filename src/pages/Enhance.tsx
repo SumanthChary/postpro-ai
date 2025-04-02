@@ -9,13 +9,23 @@ const Enhance = () => {
   const [post, setPost] = useState("");
   const [category, setCategory] = useState("business");
 
+  const handleSetPost = (newPost: string) => {
+    console.log("Setting post to:", newPost);
+    setPost(newPost);
+  };
+
+  const handleSetCategory = (newCategory: string) => {
+    console.log("Setting category to:", newCategory);
+    setCategory(newCategory);
+  };
+
   return (
     <div className="min-h-screen">
       <PostEnhancer 
         post={post}
-        setPost={setPost}
+        setPost={handleSetPost}
         category={category}
-        setCategory={setCategory}
+        setCategory={handleSetCategory}
       />
     </div>
   );
