@@ -5,15 +5,19 @@ import { useToast } from "@/components/ui/use-toast";
 import { PostEnhancerProps } from "./types";
 import { enhancePost } from "./services/enhancePost";
 import { EnhancerForm } from "./components/EnhancerForm";
+import { ShareOptions } from "./components/ShareOptions";
 
 const PostEnhancer = ({
   post,
   setPost,
   category,
   setCategory,
+  styleTone,
+  setStyleTone,
 }: PostEnhancerProps) => {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [originalPost, setOriginalPost] = useState("");
+  const [enhancedPosts, setEnhancedPosts] = useState<{[key: string]: string}>({});
   const { toast } = useToast();
 
   const handleEnhancePost = async () => {
@@ -30,11 +34,14 @@ const PostEnhancer = ({
     setOriginalPost(post);
 
     try {
-      const data = await enhancePost(post, category);
+      console.log('Enhancing post with:', { post, category, styleTone });
+      const data = await enhancePost(post, category, false, styleTone);
       console.log('Enhanced post response:', data);
       
-      if (data.platforms.linkedin) {
-        setPost(data.platforms.linkedin);
+      if (data.platforms) {
+        setEnhancedPosts(data.platforms);
+        setPost(data.platforms.linkedin || post);
+        
         toast({
           title: "Post Enhanced!",
           description: "Your post has been professionally enhanced",
@@ -58,6 +65,13 @@ const PostEnhancer = ({
   const handleReset = () => {
     setPost(originalPost || "");
     setOriginalPost("");
+    setEnhancedPosts({});
+  };
+
+  const handlePlatformSelect = (platform: string) => {
+    if (enhancedPosts[platform]) {
+      setPost(enhancedPosts[platform]);
+    }
   };
 
   return (
@@ -66,39 +80,24 @@ const PostEnhancer = ({
         <EnhancerForm
           post={post}
           category={category}
+          styleTone={styleTone}
           isEnhancing={isEnhancing}
           onPostChange={setPost}
           onCategoryChange={setCategory}
+          onStyleToneChange={setStyleTone}
           onReset={handleReset}
           onEnhance={handleEnhancePost}
         />
+        
+        {Object.keys(enhancedPosts).length > 0 && (
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <ShareOptions 
+              enhancedPosts={enhancedPosts} 
+              onPlatformSelect={handlePlatformSelect} 
+            />
+          </div>
+        )}
       </Card>
-      
-      {/* Product Hunt Section */}
-      <div className="max-w-2xl mx-auto flex flex-col items-center space-y-4 py-6 sm:py-8">
-        <a 
-          href="https://www.producthunt.com/posts/postproai?utm_source=other&utm_medium=social" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-sm text-gray-600 hover:text-electric-purple transition-colors"
-        >
-          Check us out on Product Hunt!
-        </a>
-        <a 
-          href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full flex justify-center"
-        >
-          <img 
-            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740317554845" 
-            alt="PostProAI - Smart AI-Powered Post Enhancement | Product Hunt" 
-            className="max-w-[250px] h-[54px] w-full"
-            width="250"
-            height="54"
-          />
-        </a>
-      </div>
     </div>
   );
 };

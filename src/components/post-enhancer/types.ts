@@ -4,6 +4,8 @@ export interface PostEnhancerProps {
   setPost: (post: string) => void;
   category: string;
   setCategory: (category: string) => void;
+  styleTone?: string;
+  setStyleTone?: (tone: string) => void;
 }
 
 export interface EnhancePostResponse {
@@ -11,5 +13,18 @@ export interface EnhancePostResponse {
     linkedin?: string;
     twitter?: string;
     instagram?: string;
+    facebook?: string;
   };
+}
+
+export interface EnhancerFormProps {
+  post: string;
+  category: string;
+  styleTone?: string;
+  isEnhancing: boolean;
+  onPostChange: (value: string) => void;
+  onCategoryChange: (value: string) => void;
+  onStyleToneChange?: (value: string) => void;
+  onReset: () => void;
+  onEnhance: () => void;
 }

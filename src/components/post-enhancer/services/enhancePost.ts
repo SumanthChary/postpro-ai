@@ -5,7 +5,8 @@ import { EnhancePostResponse } from "../types";
 export async function enhancePost(
   post: string, 
   category: string, 
-  useCredits: boolean = false
+  useCredits: boolean = false,
+  styleTone: string = "professional"
 ): Promise<EnhancePostResponse> {
   if (!post?.trim()) {
     throw new Error('Post content is required');
@@ -15,7 +16,7 @@ export async function enhancePost(
     throw new Error('Category is required');
   }
 
-  console.log('Calling enhance-post function with:', { post, category, useCredits });
+  console.log('Calling enhance-post function with:', { post, category, useCredits, styleTone });
   
   try {
     // Add timeout option to avoid hanging requests
@@ -23,7 +24,8 @@ export async function enhancePost(
       body: { 
         post, 
         category,
-        useCredits 
+        useCredits,
+        styleTone 
       }
     });
 
