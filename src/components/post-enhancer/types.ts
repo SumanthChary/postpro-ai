@@ -4,8 +4,8 @@ export interface PostEnhancerProps {
   setPost: (post: string) => void;
   category: string;
   setCategory: (category: string) => void;
-  styleTone?: string;
-  setStyleTone?: (tone: string) => void;
+  styleTone: string;
+  setStyleTone: (tone: string) => void;
 }
 
 export interface EnhancePostResponse {
@@ -20,11 +20,11 @@ export interface EnhancePostResponse {
 export interface EnhancerFormProps {
   post: string;
   category: string;
-  styleTone?: string;
+  styleTone: string;
   isEnhancing: boolean;
   onPostChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
-  onStyleToneChange?: (value: string) => void;
+  onStyleToneChange: (value: string) => void;
   onReset: () => void;
   onEnhance: () => void;
 }
