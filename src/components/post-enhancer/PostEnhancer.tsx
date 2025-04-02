@@ -1,13 +1,10 @@
 
 import { Card } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { PostEnhancerProps } from "./types";
 import { enhancePost } from "./services/enhancePost";
 import { EnhancerForm } from "./components/EnhancerForm";
-import Footer from "@/components/Footer";
-import Navigation from "@/components/layout/Navigation";
-import { useNavigate } from "react-router-dom";
 
 const PostEnhancer = ({
   post,
@@ -17,37 +14,7 @@ const PostEnhancer = ({
 }: PostEnhancerProps) => {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [originalPost, setOriginalPost] = useState("");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showPricing, setShowPricing] = useState(false);
   const { toast } = useToast();
-  const navigate = useNavigate();
-  
-  // Mock session for navigation component
-  const [session, setSession] = useState(null);
-  const [username, setUsername] = useState("Guest");
-  const [avatarUrl, setAvatarUrl] = useState("");
-
-  // Debug logs to monitor state changes
-  useEffect(() => {
-    console.log("PostEnhancer rendered with post:", post);
-    console.log("PostEnhancer rendered with category:", category);
-  }, [post, category]);
-
-  // Check local storage for session data
-  useEffect(() => {
-    const storedSession = localStorage.getItem("sb-session");
-    if (storedSession) {
-      setSession(JSON.parse(storedSession));
-    }
-  }, []);
-
-  const handleSignOut = async () => {
-    // Mock sign out
-    localStorage.removeItem("sb-session");
-    setSession(null);
-    navigate("/auth");
-    return Promise.resolve();
-  };
 
   const handleEnhancePost = async () => {
     if (!post.trim()) {
@@ -93,47 +60,45 @@ const PostEnhancer = ({
     setOriginalPost("");
   };
 
-  const handlePostChange = (newPost: string) => {
-    console.log("PostEnhancer: post changed to:", newPost);
-    setPost(newPost);
-  };
-
-  const handleCategoryChange = (newCategory: string) => {
-    console.log("PostEnhancer: category changed to:", newCategory);
-    setCategory(newCategory);
-  };
-
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Navigation Bar */}
-      <Navigation
-        session={session}
-        username={username}
-        avatarUrl={avatarUrl}
-        handleSignOut={handleSignOut}
-        setShowPricing={setShowPricing}
-        setMobileMenuOpen={setMobileMenuOpen}
-        mobileMenuOpen={mobileMenuOpen}
-      />
+    <div className="space-y-8 w-full px-4 sm:px-0">
+      <Card className="max-w-2xl mx-auto p-4 sm:p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
+        <EnhancerForm
+          post={post}
+          category={category}
+          isEnhancing={isEnhancing}
+          onPostChange={setPost}
+          onCategoryChange={setCategory}
+          onReset={handleReset}
+          onEnhance={handleEnhancePost}
+        />
+      </Card>
       
-      <div className="flex-grow py-20 px-4 bg-gradient-to-b from-white to-light-lavender">
-        <div className="space-y-8 w-full px-4 sm:px-0 max-w-4xl mx-auto">
-          <Card className="relative z-10 mx-auto p-6 sm:p-7 shadow-xl border-0 bg-white/90 backdrop-blur-sm rounded-lg">
-            <EnhancerForm
-              post={post}
-              category={category}
-              isEnhancing={isEnhancing}
-              onPostChange={handlePostChange}
-              onCategoryChange={handleCategoryChange}
-              onReset={handleReset}
-              onEnhance={handleEnhancePost}
-            />
-          </Card>
-        </div>
+      {/* Product Hunt Section */}
+      <div className="max-w-2xl mx-auto flex flex-col items-center space-y-4 py-6 sm:py-8">
+        <a 
+          href="https://www.producthunt.com/posts/postproai?utm_source=other&utm_medium=social" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-sm text-gray-600 hover:text-electric-purple transition-colors"
+        >
+          Check us out on Product Hunt!
+        </a>
+        <a 
+          href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full flex justify-center"
+        >
+          <img 
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740317554845" 
+            alt="PostProAI - Smart AI-Powered Post Enhancement | Product Hunt" 
+            className="max-w-[250px] h-[54px] w-full"
+            width="250"
+            height="54"
+          />
+        </a>
       </div>
-      
-      {/* Footer */}
-      <Footer />
     </div>
   );
 };
