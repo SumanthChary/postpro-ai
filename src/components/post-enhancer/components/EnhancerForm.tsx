@@ -177,23 +177,6 @@ export const EnhancerForm = ({
           )}
         </Button>
       </div>
-
-      {/* Enhanced Tips Section */}
-      <div className="mt-6 pt-4 border-t border-gray-100">
-        <div className="flex items-start space-x-3 bg-light-lavender/40 p-3 rounded-lg">
-          <div className="bg-electric-purple/10 rounded-full p-2 mt-1">
-            <ArrowRightLeft className="w-4 h-4 text-electric-purple" />
-          </div>
-          <div>
-            <h4 className="text-sm font-medium text-gray-800">Pro Tips</h4>
-            <ul className="text-xs text-gray-600 mt-1 space-y-1">
-              <li>• Add industry-specific keywords to improve your post's reach</li>
-              <li>• Include a clear call-to-action for better engagement</li>
-              <li>• Keep your original message but make it more impactful</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -129,32 +129,6 @@ const PostEnhancer = ({
               onEnhance={handleEnhancePost}
             />
           </Card>
-          
-          {/* Product Hunt Section */}
-          <div className="mx-auto flex flex-col items-center space-y-4 py-6 sm:py-8">
-            <a 
-              href="https://www.producthunt.com/posts/postproai?utm_source=other&utm_medium=social" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-sm text-gray-600 hover:text-electric-purple transition-colors"
-            >
-              Check us out on Product Hunt!
-            </a>
-            <a 
-              href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex justify-center transition-transform hover:scale-105 duration-300"
-            >
-              <img 
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=dark&t=1740317554845" 
-                alt="PostProAI - Smart AI-Powered Post Enhancement | Product Hunt" 
-                className="max-w-[250px] h-[54px] w-full"
-                width="250"
-                height="54"
-              />
-            </a>
-          </div>
         </div>
       </div>
       
