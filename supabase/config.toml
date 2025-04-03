@@ -7,3 +7,6 @@ verify_jwt = false
 [functions.enhance-profile]
 verify_jwt = true
 
+[functions.analyze-virality]
+verify_jwt = false
+

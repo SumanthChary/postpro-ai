@@ -47,6 +47,7 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
     }
 
     setLoading(true);
+    console.log("Analyzing virality for:", { post: post.substring(0, 50) + "...", category });
     
     try {
       const { data, error } = await supabase.functions.invoke('analyze-virality', {
@@ -56,19 +57,47 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error response from analyze-virality function:', error);
+        throw error;
+      }
 
       console.log('Virality score result:', data);
+      
+      if (!data || typeof data.score !== 'number') {
+        throw new Error('Invalid response format from virality analysis');
+      }
       
       setScore(data.score);
       setInsights(data.insights || []);
       
       toast({
         title: "Analysis Complete",
-        description: "Virality score has been calculated",
+        description: `Your post has a virality score of ${data.score}%`,
       });
     } catch (error: any) {
       console.error('Error analyzing virality:', error);
+      
+      // Fallback for development/testing
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Using fallback virality score for development');
+        const fallbackScore = Math.floor(Math.random() * 40) + 50; // Random score between 50-90
+        const fallbackInsights = [
+          "Add more engaging questions to increase interaction",
+          "Include trending hashtags relevant to your topic",
+          "Consider shortening your sentences for better readability"
+        ];
+        setScore(fallbackScore);
+        setInsights(fallbackInsights);
+        
+        toast({
+          title: "Development Mode",
+          description: "Using sample virality score data",
+        });
+        setLoading(false);
+        return;
+      }
+      
       toast({
         title: "Analysis Failed",
         description: error.message || "There was an error analyzing your post. Please try again.",
