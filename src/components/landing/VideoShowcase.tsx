@@ -2,9 +2,6 @@
 import React, { useState } from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { ArrowUpRight } from "lucide-react";
 
 const VideoShowcase = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,19 +15,14 @@ const VideoShowcase = () => {
         
         {/* Product Hunt Button */}
         <div className="flex justify-center mb-8">
-          <a
-            href="https://www.producthunt.com/posts/postpro-ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-6 py-3 bg-[#FF6154] text-white font-semibold rounded-md hover:bg-[#FF6154]/90 transition-colors shadow-md"
-          >
+          <a href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" target="_blank">
             <img 
-              src="/lovable-uploads/fda8da79-8fb0-49e8-b96d-a822f5f49818.png" 
-              alt="Product Hunt" 
-              className="h-5 mr-2" 
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=light&t=1743695250761" 
+              alt="PostProAI - PostPro&#0032;AI&#0044;&#0032;Smart&#0032;AI&#0045;Powered&#0032;Post&#0032;Enhancement | Product Hunt" 
+              style={{ width: '250px', height: '54px' }} 
+              width="250" 
+              height="54" 
             />
-            Support us on Product Hunt
-            <ArrowUpRight className="ml-2 h-4 w-4" />
           </a>
         </div>
         
