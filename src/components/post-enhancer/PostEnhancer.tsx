@@ -1,11 +1,12 @@
 
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { PostEnhancerProps } from "./types";
 import { enhancePost } from "./services/enhancePost";
 import { EnhancerForm } from "./components/EnhancerForm";
 import { ShareOptions } from "./components/ShareOptions";
+import { ViralityScore } from "./components/ViralityScore";
 
 const PostEnhancer = ({
   post,
@@ -97,6 +98,9 @@ const PostEnhancer = ({
             />
           </div>
         )}
+
+        {/* Add Virality Score component */}
+        <ViralityScore post={post} category={category} />
       </Card>
     </div>
   );

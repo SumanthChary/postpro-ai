@@ -15,6 +15,7 @@ import Payment from "./pages/Payment";
 import Profile from "./pages/Profile";
 import Blogs from "./pages/Blogs";
 import BlogArticle from "./pages/BlogArticle";
+import Chatbot from "./pages/Chatbot";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blog/:id" element={<BlogArticle />} />
+              <Route path="/chatbot" element={<Chatbot />} />
             </Routes>
             <Toaster />
             <Sonner />
