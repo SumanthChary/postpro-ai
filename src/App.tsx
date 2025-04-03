@@ -15,9 +15,6 @@ import Payment from "./pages/Payment";
 import Profile from "./pages/Profile";
 import Blogs from "./pages/Blogs";
 import BlogArticle from "./pages/BlogArticle";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import CancellationPolicy from "./pages/CancellationPolicy";
 
 const queryClient = new QueryClient();
 
@@ -37,9 +34,6 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blog/:id" element={<BlogArticle />} />
-              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/cancellation-policy" element={<CancellationPolicy />} />
             </Routes>
             <Toaster />
             <Sonner />

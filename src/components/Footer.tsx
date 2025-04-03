@@ -1,12 +1,12 @@
 
-import { Twitter, Linkedin, Instagram, Mail, FileText, Shield, FileMinus } from "lucide-react";
+import { Twitter, Linkedin, Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer className="bg-electric-purple text-white py-12">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           <div>
             <h3 className="font-montserrat font-extrabold text-2xl mb-4">PostPro AI</h3>
             <p className="font-opensans">Elevate your social media presence with AI-powered content enhancement.</p>
@@ -18,29 +18,6 @@ const Footer = () => {
               <li><Link to="/features" className="hover:text-bright-teal transition-colors">Features</Link></li>
               <li><Link to="/subscription" className="hover:text-bright-teal transition-colors">Pricing</Link></li>
               <li><Link to="/blogs" className="hover:text-bright-teal transition-colors">Blog</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-montserrat font-bold text-lg mb-4">Legal</h4>
-            <ul className="space-y-2 font-opensans">
-              <li>
-                <Link to="/terms-and-conditions" className="hover:text-bright-teal transition-colors flex items-center">
-                  <FileText className="w-4 h-4 mr-1" />
-                  Terms and Conditions
-                </Link>
-              </li>
-              <li>
-                <Link to="/privacy-policy" className="hover:text-bright-teal transition-colors flex items-center">
-                  <Shield className="w-4 h-4 mr-1" />
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/cancellation-policy" className="hover:text-bright-teal transition-colors flex items-center">
-                  <FileMinus className="w-4 h-4 mr-1" />
-                  Cancellation & Refunds
-                </Link>
-              </li>
             </ul>
           </div>
           <div>
