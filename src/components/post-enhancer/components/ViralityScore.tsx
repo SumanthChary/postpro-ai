@@ -30,9 +30,9 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
     return "Needs Improvement";
   };
 
-  const getBadgeVariant = (score: number) => {
-    if (score >= 80) return "success";
-    if (score >= 60) return "warning";
+  const getBadgeVariant = (score: number): "default" | "secondary" | "destructive" | "outline" => {
+    if (score >= 80) return "default";
+    if (score >= 60) return "secondary";
     return "destructive";
   };
 
@@ -104,7 +104,7 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
               <p className="text-sm text-gray-600 mb-1">Virality Score</p>
               <p className={`text-2xl font-bold ${getScoreColor(score)}`}>{score}%</p>
             </div>
-            <Badge variant={getBadgeVariant(score) as "default" | "secondary" | "destructive" | "outline" | "success" | "warning"}>
+            <Badge variant={getBadgeVariant(score)}>
               {getScoreBadge(score)}
             </Badge>
           </div>
