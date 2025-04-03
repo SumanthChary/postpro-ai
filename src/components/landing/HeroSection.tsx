@@ -5,6 +5,7 @@ import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
 const HeroSection = () => {
   const [post, setPost] = useState("");
   const [category, setCategory] = useState("business");
+  const [styleTone, setStyleTone] = useState("professional");
 
   return (
     <>
@@ -26,6 +27,8 @@ const HeroSection = () => {
         setPost={setPost}
         category={category}
         setCategory={setCategory}
+        styleTone={styleTone}
+        setStyleTone={setStyleTone}
       />
     </>
   );
