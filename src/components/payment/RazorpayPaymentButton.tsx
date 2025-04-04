@@ -54,7 +54,7 @@ export const RazorpayPaymentButton = ({
       
       // Initialize Razorpay payment
       const options = {
-        key: 'rzp_test_QEgz8yfPYoxfau', // Use test key for development
+        key: 'rzp_live_L9cXXNKWlP9tYl', // Using live key
         amount: parseFloat(planDetails.price) * 100,
         currency: 'INR',
         name: 'PostPro AI',

@@ -9,8 +9,8 @@ const corsHeaders = {
 };
 
 // Razorpay API configuration
-const RAZORPAY_KEY_ID = Deno.env.get('RAZORPAY_KEY_ID') || 'rzp_test_QEgz8yfPYoxfau';
-const RAZORPAY_KEY_SECRET = Deno.env.get('RAZORPAY_KEY_SECRET') || 'ZKIZQh7EG2mHJSqZT9nFLTet';
+const RAZORPAY_KEY_ID = Deno.env.get('RAZORPAY_KEY_ID') || 'rzp_live_L9cXXNKWlP9tYl';
+const RAZORPAY_KEY_SECRET = Deno.env.get('RAZORPAY_KEY_SECRET') || 'h3Pg1rY8iuWjJoFmnUzbtKbi';
 const RAZORPAY_API_URL = 'https://api.razorpay.com/v1';
 
 // Function to create HMAC signature for payment verification
