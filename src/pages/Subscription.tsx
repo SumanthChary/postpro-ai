@@ -16,55 +16,56 @@ const Subscription = () => {
 
   const plans = [
     {
-      name: "Free",
+      name: "Free Plan",
       price: "0",
       period: "forever",
+      subtext: "Trial Plan",
       features: [
-        "3-5 LinkedIn posts optimization per week",
-        "Basic tone analysis",
-        "Real-Time Trend Hashtags",
-        "Standard templates (5 templates)",
-        "Basic analytics",
+        "5 Post Enhancements/Month",
+        "Basic AI Features",
+        "Manual Posting",
+        "Real-Time Trending Hashtags",
+        "Watermark on AI-Enhanced Posts",
       ],
     },
     {
       name: "Creator Plan",
-      price: isYearly ? "20" : "4.99",
-      period: isYearly ? "month" : "week",
-      subtext: isYearly ? "Save 15% compared to weekly" : "14-day trial available",
+      price: isYearly ? "129.99" : "5.99",
+      period: isYearly ? "year" : "week",
+      subtext: isYearly ? "Best value for long-term growth" : "Perfect for short-term boosts",
       features: [
         "Unlimited Post Enhancements",
-        "AI Post Writer",
-        "Advanced tone analysis",
-        "Engagement predictions",
-        "Premium templates (20+ templates)",
+        "AI Tone & Style Suggestions",
+        "Trending Hashtag Generator",
+        "Premium Templates (20+)",
+        "Virality Score Predictor",
       ],
       comingSoon: [
-        "AI Profile Enhancer",
-        "AI Visuals Generator",
-        "Cross-Platform Sharing",
-        "Teams collaboration",
-        "CTA Generator"
+        "Advanced AI Chatbot",
+        "AI-Powered Smart Dashboard",
+        "A/B Testing for Posts",
+        "CTA Generator",
       ],
       popular: true,
     },
     {
       name: "Business Plan",
-      price: "99",
-      period: "year",
-      subtext: "Special 1st year pricing - Save $270.99 (73% off regular price)",
+      price: "24.99",
+      period: "month",
+      subtext: "Ideal for serious content creators & businesses",
       features: [
-        "All Creator Features",
-        "Premium Support",
-        "Early access to new features",
-        "Premium templates (20+ templates)",
-        "Advanced analytics dashboard",
+        "All Weekly Features + More!",
+        "Advanced AI Chatbot",
+        "AI-Powered Smart Dashboard",
+        "A/B Testing for Posts",
+        "CTA Generator",
+        "Custom Templates",
       ],
       comingSoon: [
-        "API integration",
-        "Personal Branding Tools",
-        "Priority customer support",
-        "Dedicated account manager",
+        "Personal Branding Toolkit",
+        "Content Strategy Calendar",
+        "Advanced Analytics",
+        "Team Collaboration (1 seat)",
       ],
     }
   ];
@@ -97,7 +98,7 @@ const Subscription = () => {
     <div className="min-h-screen bg-gradient-to-b from-light-lavender/50 to-transparent">
       <div className="container mx-auto px-4 py-16">
         <h1 className="text-4xl font-montserrat font-extrabold text-center mb-8">
-          Choose Your <span className="bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">Subscription</span>
+          <span className="bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">PostPro AI</span> - Pricing & Features
         </h1>
         
         <div className="flex justify-center items-center gap-4 mb-8">
@@ -173,7 +174,7 @@ const Subscription = () => {
                 variant={plan.popular ? "default" : "outline"}
                 onClick={() => handleSelectPlan(plan)}
               >
-                {plan.name === "Free" ? "Start Free" : (
+                {plan.name === "Free Plan" ? "Start Free" : (
                   <>
                     <CreditCard className="w-4 h-4 mr-2" />
                     Start {plan.name}
@@ -213,11 +214,11 @@ const Subscription = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">What payment methods do you accept?</h3>
-                  <p className="text-gray-600">We accept all major credit cards and PayPal.</p>
+                  <p className="text-gray-600">We accept all major credit cards, PayPal, and Razorpay.</p>
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">Is there a trial period?</h3>
-                  <p className="text-gray-600">Yes, our Creator Plan comes with a 14-day trial.</p>
+                  <p className="text-gray-600">Yes, our Free Plan gives you 5 post enhancements per month.</p>
                 </div>
               </div>
             </div>

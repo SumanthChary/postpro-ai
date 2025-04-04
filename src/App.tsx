@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
+import FloatingChatButton from "./components/chatbot/FloatingChatButton";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Enhance from "./pages/Enhance";
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/blog/:id" element={<BlogArticle />} />
               <Route path="/chatbot" element={<Chatbot />} />
             </Routes>
+            <FloatingChatButton />
             <Toaster />
             <Sonner />
           </BrowserRouter>
