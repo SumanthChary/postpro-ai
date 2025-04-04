@@ -112,6 +112,7 @@ export const RazorpayPaymentButton = ({
         }
       };
 
+      // @ts-ignore - Razorpay is loaded via script
       const razorpay = new window.Razorpay(options);
       razorpay.open();
       

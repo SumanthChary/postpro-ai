@@ -1,7 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.48.1";
-import { createHmac } from "https://deno.land/std@0.178.0/node/crypto.ts";
+import * as crypto from "https://deno.land/std@0.168.0/crypto/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,6 +12,26 @@ const corsHeaders = {
 const RAZORPAY_KEY_ID = Deno.env.get('RAZORPAY_KEY_ID') || 'rzp_test_QEgz8yfPYoxfau';
 const RAZORPAY_KEY_SECRET = Deno.env.get('RAZORPAY_KEY_SECRET') || 'ZKIZQh7EG2mHJSqZT9nFLTet';
 const RAZORPAY_API_URL = 'https://api.razorpay.com/v1';
+
+// Function to create HMAC signature for payment verification
+function createHmacSignature(data: string, secret: string): string {
+  const encoder = new TextEncoder();
+  const key = encoder.encode(secret);
+  const message = encoder.encode(data);
+  
+  // Create the HMAC signature using SHA-256
+  const hmacDigest = crypto.subtle.digestSync(
+    "HMAC",
+    key,
+    message,
+    { algorithm: "SHA-256" }
+  );
+  
+  // Convert to hex string
+  return Array.from(new Uint8Array(hmacDigest))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -69,9 +89,8 @@ serve(async (req) => {
         } = data;
         
         // Verify signature
-        const generated_signature = createHmac('sha256', RAZORPAY_KEY_SECRET)
-          .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-          .digest('hex');
+        const dataToVerify = `${razorpay_order_id}|${razorpay_payment_id}`;
+        const generated_signature = createHmacSignature(dataToVerify, RAZORPAY_KEY_SECRET);
         
         if (generated_signature !== razorpay_signature) {
           throw new Error('Invalid payment signature');
