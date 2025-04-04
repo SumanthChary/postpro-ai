@@ -10,3 +10,12 @@ verify_jwt = true
 [functions.analyze-virality]
 verify_jwt = false
 
+[functions.handle-payment]
+verify_jwt = false
+
+[functions.handle-credits]
+verify_jwt = true
+
+[functions.handle-razorpay-payment]
+verify_jwt = false
+

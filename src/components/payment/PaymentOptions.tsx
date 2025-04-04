@@ -2,6 +2,7 @@
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { CardPaymentButton } from "./CardPaymentButton";
 import { PayPalPaymentButton } from "./PayPalPaymentButton";
+import { RazorpayPaymentButton } from "./RazorpayPaymentButton";
 import { Plan } from "@/types/pricing";
 
 interface PaymentOptionsProps {
@@ -35,6 +36,22 @@ export const PaymentOptions = ({
           onError={onError}
         />
       </PayPalScriptProvider>
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t border-gray-300" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-2 bg-white text-gray-500">Or pay with other methods</span>
+        </div>
+      </div>
+
+      <RazorpayPaymentButton
+        planDetails={planDetails}
+        userId={userId}
+        onSuccess={onSuccess}
+        onError={onError}
+      />
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
