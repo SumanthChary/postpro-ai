@@ -36,8 +36,8 @@ export const RazorpayPaymentButton = ({
       const { data: orderData, error: orderError } = await supabase.functions.invoke('handle-razorpay-payment', {
         body: { 
           action: 'create_order',
-          amount: parseFloat(planDetails.price) * 100, // Convert to smallest currency unit (paise)
-          currency: 'INR',
+          amount: parseFloat(planDetails.price) * 100, // Convert to smallest currency unit (cents)
+          currency: 'USD', // Changed from INR to USD
           receipt: `plan_${planDetails.name.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}`,
           notes: {
             plan_name: planDetails.name,
@@ -56,7 +56,7 @@ export const RazorpayPaymentButton = ({
       const options = {
         key: 'rzp_live_L9cXXNKWlP9tYl', // Using live key
         amount: parseFloat(planDetails.price) * 100,
-        currency: 'INR',
+        currency: 'USD', // Changed from INR to USD
         name: 'PostPro AI',
         description: `${planDetails.name} Subscription`,
         order_id: orderData.id,

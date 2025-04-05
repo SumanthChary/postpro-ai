@@ -60,7 +60,7 @@ serve(async (req) => {
           },
           body: JSON.stringify({
             amount,
-            currency,
+            currency, // Now passing USD from the client
             receipt,
             notes
           }),
@@ -119,7 +119,7 @@ serve(async (req) => {
             {
               user_id,
               amount: parseFloat(plan_details.price),
-              currency: 'INR',
+              currency: 'USD', // Changed from INR to USD
               payment_method: 'razorpay',
               status: 'completed',
               transaction_id: razorpay_payment_id,

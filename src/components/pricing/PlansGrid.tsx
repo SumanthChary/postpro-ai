@@ -89,7 +89,7 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
             onClick={() => handleSelectPlan(plan)}
           >
             {plan.cta}
-            {plan.cta.includes("Choose") && <CreditCard className="w-4 h-4 ml-2" />}
+            {plan.cta?.includes("Choose") && <CreditCard className="w-4 h-4 ml-2" />}
           </Button>
         </Card>
       ))}
