@@ -9,11 +9,13 @@ interface CurrencyContextType {
   exchangeRate: number; // USD to INR rate
 }
 
+// Create context with a more informative default value
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
 export const useCurrency = () => {
   const context = useContext(CurrencyContext);
-  if (!context) {
+  if (context === undefined) {
+    console.error('useCurrency must be used within a CurrencyProvider');
     throw new Error('useCurrency must be used within a CurrencyProvider');
   }
   return context;
@@ -29,12 +31,21 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // For demo purposes, we're using a static rate
     // Example API endpoint: https://api.exchangerate-api.com/v4/latest/USD
     
-    // Simulating API fetch with a static rate for now
+    console.log('CurrencyProvider initialized with exchange rate:', exchangeRate);
     setExchangeRate(83.5); // 1 USD = 83.5 INR (approximate)
   }, []);
 
+  // Create the context value object
+  const contextValue: CurrencyContextType = {
+    currency,
+    setCurrency,
+    exchangeRate
+  };
+
+  console.log('CurrencyProvider rendering with currency:', currency);
+
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, exchangeRate }}>
+    <CurrencyContext.Provider value={contextValue}>
       {children}
     </CurrencyContext.Provider>
   );

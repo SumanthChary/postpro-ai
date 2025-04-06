@@ -3,6 +3,7 @@ import { Plan } from "@/types/pricing";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, Coins } from "lucide-react";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface PlanCardProps {
   plan: Plan;
@@ -10,6 +11,16 @@ interface PlanCardProps {
 }
 
 const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
+  // Safely use the currency context with a fallback
+  let currencySymbol = '$'; // Default to USD
+  try {
+    const { currency } = useCurrency();
+    currencySymbol = currency === 'USD' ? '$' : '₹';
+  } catch (error) {
+    console.warn('Currency context not available, using default currency symbol:', error);
+    // Continue with the default currency symbol
+  }
+
   return (
     <Card
       className={`p-6 flex flex-col ${
@@ -30,7 +41,7 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
         </h3>
         <div className="flex items-end mb-4">
           <span className="text-4xl font-bold">
-            {plan.price === "Custom" ? "Custom" : `$${plan.price}`}
+            {plan.price === "Custom" ? "Custom" : `${currencySymbol}${plan.price}`}
           </span>
           {plan.price !== "Custom" && (
             <span className="text-gray-600 ml-2">/{plan.period}</span>

@@ -5,6 +5,7 @@ import SeeFullFeaturesButton from "./pricing/SeeFullFeaturesButton";
 import RedeemCodeDialog from "./pricing/RedeemCodeDialog";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 
 const PricingSection = () => {
   const navigate = useNavigate();
