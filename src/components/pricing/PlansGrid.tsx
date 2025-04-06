@@ -8,6 +8,8 @@ import { CheckCircle, CreditCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
+import { useCurrency } from "@/contexts/CurrencyContext";
+import { formatPrice, convertPrice } from "@/utils/currencyUtils";
 
 interface PlanGridProps {
   isYearly: boolean;
@@ -16,6 +18,7 @@ interface PlanGridProps {
 const PlansGrid = ({ isYearly }: PlanGridProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { currency, exchangeRate } = useCurrency();
 
   // Filter plans based on whether viewing yearly plans
   const filteredPlans = isYearly 
@@ -40,7 +43,10 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
         plan: {
           name: plan.name,
           price: plan.price,
-          period: plan.period
+          period: plan.period,
+          currency: currency,
+          // If user is viewing in INR but plan is stored in USD, send converted price
+          displayPrice: currency === 'INR' ? convertPrice(plan.price, 'USD', 'INR', exchangeRate) : plan.price
         }
       }
     });
@@ -65,7 +71,13 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
               {plan.icon && <span className="mr-2">{plan.icon}</span>}
               {plan.name}
             </h2>
-            <p className="text-3xl font-bold mb-2">${plan.price}<span className="text-lg font-normal">/{plan.period}</span></p>
+            <p className="text-3xl font-bold mb-2">
+              {currency === 'USD' ? '$' : '₹'}
+              {currency === 'USD' 
+                ? plan.price 
+                : convertPrice(plan.price, 'USD', 'INR', exchangeRate)}
+              <span className="text-lg font-normal">/{plan.period}</span>
+            </p>
             <p className="text-sm text-green-600 flex items-center gap-1">
               <span>🚀</span>
               {plan.credits} credits included

@@ -12,6 +12,8 @@ export interface Plan {
   popular?: boolean;
   icon?: string;
   credits?: number; // Credits field for the plan
+  currency?: 'USD' | 'INR'; // Added currency field
+  displayPrice?: string; // Added display price field for converted amounts
 }
 
 export interface UserCredit {

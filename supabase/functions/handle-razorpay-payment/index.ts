@@ -60,7 +60,7 @@ serve(async (req) => {
           },
           body: JSON.stringify({
             amount,
-            currency, // Now passing USD from the client
+            currency, // Now using the currency passed from the client (USD or INR)
             receipt,
             notes
           }),
@@ -112,6 +112,9 @@ serve(async (req) => {
           throw new Error('Payment verification failed');
         }
         
+        // Get the currency used
+        const currency = plan_details.currency || 'USD';
+        
         // Record the payment in the database
         const { error: paymentError } = await supabase
           .from('payments')
@@ -119,7 +122,7 @@ serve(async (req) => {
             {
               user_id,
               amount: parseFloat(plan_details.price),
-              currency: 'USD', // Changed from INR to USD
+              currency: currency, // Use the currency from payment
               payment_method: 'razorpay',
               status: 'completed',
               transaction_id: razorpay_payment_id,
@@ -170,7 +173,8 @@ serve(async (req) => {
             message: 'Payment verified successfully',
             data: { 
               payment_id: razorpay_payment_id,
-              order_id: razorpay_order_id
+              order_id: razorpay_order_id,
+              currency: currency
             }
           }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

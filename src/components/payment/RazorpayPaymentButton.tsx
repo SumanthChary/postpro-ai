@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Plan } from "@/types/pricing";
 import { supabase } from "@/integrations/supabase/client";
 import Script from "./Script";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 declare global {
   interface Window {
@@ -27,21 +28,28 @@ export const RazorpayPaymentButton = ({
 }: RazorpayPaymentButtonProps) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
+  const { currency } = useCurrency();
 
   const handlePayment = async () => {
     try {
       setIsProcessing(true);
       
+      // Get the price to use (if displayPrice exists, use it, otherwise use regular price)
+      const priceToUse = (planDetails as any).displayPrice || planDetails.price;
+      const currencyToUse = (planDetails as any).currency || currency || 'USD';
+      
       // Create an order on the server
       const { data: orderData, error: orderError } = await supabase.functions.invoke('handle-razorpay-payment', {
         body: { 
           action: 'create_order',
-          amount: parseFloat(planDetails.price) * 100, // Convert to smallest currency unit (cents)
-          currency: 'USD', // Changed from INR to USD
+          amount: parseFloat(priceToUse) * 100, // Convert to smallest currency unit (cents/paise)
+          currency: currencyToUse, // Use selected currency
           receipt: `plan_${planDetails.name.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}`,
           notes: {
             plan_name: planDetails.name,
-            user_id: userId
+            user_id: userId,
+            original_currency: 'USD', // Original stored currency
+            display_currency: currencyToUse // Currency displayed to user
           }
         }
       });
@@ -55,8 +63,8 @@ export const RazorpayPaymentButton = ({
       // Initialize Razorpay payment
       const options = {
         key: 'rzp_live_L9cXXNKWlP9tYl', // Using live key
-        amount: parseFloat(planDetails.price) * 100,
-        currency: 'USD', // Changed from INR to USD
+        amount: parseFloat(priceToUse) * 100,
+        currency: currencyToUse, // Use selected currency
         name: 'PostPro AI',
         description: `${planDetails.name} Subscription`,
         order_id: orderData.id,
@@ -74,7 +82,8 @@ export const RazorpayPaymentButton = ({
                 plan_details: {
                   name: planDetails.name,
                   price: planDetails.price,
-                  credits: planDetails.credits
+                  credits: planDetails.credits,
+                  currency: currencyToUse
                 }
               }
             });
@@ -139,7 +148,7 @@ export const RazorpayPaymentButton = ({
         onClick={handlePayment}
         disabled={isProcessing}
       >
-        {isProcessing ? "Processing..." : "Pay with Razorpay"}
+        {isProcessing ? "Processing..." : `Pay with Razorpay (${currency})`}
       </Button>
     </>
   );
