@@ -34,7 +34,7 @@ export const RazorpayPaymentButton = ({
     try {
       setIsProcessing(true);
       
-      // Get the price to use (if displayPrice exists, use it, otherwise use regular price)
+      // Get the price and currency to use
       const priceToUse = (planDetails as any).displayPrice || planDetails.price;
       const currencyToUse = (planDetails as any).currency || currency || 'USD';
       
@@ -43,13 +43,13 @@ export const RazorpayPaymentButton = ({
         body: { 
           action: 'create_order',
           amount: parseFloat(priceToUse) * 100, // Convert to smallest currency unit (cents/paise)
-          currency: currencyToUse, // Use selected currency
+          currency: currencyToUse,
           receipt: `plan_${planDetails.name.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}`,
           notes: {
             plan_name: planDetails.name,
             user_id: userId,
-            original_currency: 'USD', // Original stored currency
-            display_currency: currencyToUse // Currency displayed to user
+            original_currency: 'USD',
+            display_currency: currencyToUse
           }
         }
       });
@@ -58,18 +58,15 @@ export const RazorpayPaymentButton = ({
         throw new Error(orderError?.message || 'Failed to create order');
       }
 
-      console.log('Order created:', orderData);
-      
       // Initialize Razorpay payment
       const options = {
-        key: 'rzp_live_L9cXXNKWlP9tYl', // Using live key
+        key: 'rzp_live_L9cXXNKWlP9tYl',
         amount: parseFloat(priceToUse) * 100,
-        currency: currencyToUse, // Use selected currency
+        currency: currencyToUse,
         name: 'PostPro AI',
         description: `${planDetails.name} Subscription`,
         order_id: orderData.id,
         handler: async (response: any) => {
-          console.log('Payment success response:', response);
           try {
             // Verify the payment on server
             const { data: verifyData, error: verifyError } = await supabase.functions.invoke('handle-razorpay-payment', {
@@ -91,8 +88,6 @@ export const RazorpayPaymentButton = ({
             if (verifyError) {
               throw new Error(verifyError.message);
             }
-
-            console.log('Payment verified:', verifyData);
             
             toast({
               title: "Payment Successful!",

@@ -2,7 +2,6 @@
 import { Coins } from "lucide-react";
 import { Plan } from "@/types/pricing";
 import { useCurrency } from "@/contexts/CurrencyContext";
-import { formatPrice } from "@/utils/currencyUtils";
 
 interface PlanSummaryProps {
   planDetails: Plan;
