@@ -1,25 +1,17 @@
 
 import { Coins } from "lucide-react";
 import { Plan } from "@/types/pricing";
-import { useCurrency } from "@/contexts/CurrencyContext";
-import { formatPrice } from "@/utils/currencyUtils";
 
 interface PlanSummaryProps {
   planDetails: Plan;
 }
 
 export const PlanSummary = ({ planDetails }: PlanSummaryProps) => {
-  const { currency } = useCurrency();
-  
-  // Get the price to display
-  const displayPrice = (planDetails as any).displayPrice || planDetails.price;
-  const displayCurrency = (planDetails as any).currency || currency;
-  
   return (
     <div className="text-center mb-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-2">Complete Your Purchase</h1>
       <p className="text-gray-600">
-        {planDetails.name} - {displayCurrency === 'USD' ? '$' : '₹'}{displayPrice}/{planDetails.period}
+        {planDetails.name} - ${planDetails.price}/{planDetails.period}
       </p>
       {planDetails.credits && (
         <div className="flex items-center justify-center mt-2 text-green-600">
