@@ -8,6 +8,8 @@ import { CheckCircle, CreditCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
+import { useCurrency } from "@/contexts/CurrencyContext";
+import { formatPrice, convertPrice } from "@/utils/currencyUtils";
 
 interface PlanGridProps {
   isYearly: boolean;
@@ -16,19 +18,12 @@ interface PlanGridProps {
 const PlansGrid = ({ isYearly }: PlanGridProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { currency, exchangeRate } = useCurrency();
 
-  // Simplified filtering logic
+  // Fix the filtering logic to avoid type comparison issues
   const filteredPlans = isYearly 
-    ? pricingPlans.filter(plan => 
-        plan.period === "year" || 
-        plan.period === "forever" || 
-        plan.name === "Enterprise Plan"
-      )
-    : pricingPlans.filter(plan => 
-        plan.period === "month" || 
-        plan.period === "week" || 
-        plan.period === "forever"
-      );
+    ? pricingPlans.filter(plan => plan.period === "year" || plan.period === "forever" || plan.name === "Enterprise Plan")
+    : pricingPlans.filter(plan => plan.period === "month" || plan.period === "week" || plan.period === "forever");
 
   const handleSelectPlan = async (plan: Plan) => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -49,8 +44,9 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
           name: plan.name,
           price: plan.price,
           period: plan.period,
-          currency: 'USD',
-          credits: plan.credits
+          currency: currency,
+          // If user is viewing in INR but plan is stored in USD, send converted price
+          displayPrice: currency === 'INR' ? convertPrice(plan.price, 'USD', 'INR', exchangeRate) : plan.price
         }
       }
     });
@@ -76,7 +72,10 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
               {plan.name}
             </h2>
             <p className="text-3xl font-bold mb-2">
-              ${plan.price}
+              {currency === 'USD' ? '$' : '₹'}
+              {currency === 'USD' 
+                ? plan.price 
+                : convertPrice(plan.price, 'USD', 'INR', exchangeRate)}
               <span className="text-lg font-normal">/{plan.period}</span>
             </p>
             <p className="text-sm text-green-600 flex items-center gap-1">

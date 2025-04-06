@@ -19,23 +19,21 @@ const PricingSection = () => {
   };
 
   return (
-    <CurrencyProvider>
-      <div className="py-8">
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {pricingPlans.map((plan) => (
-            <PlanCard 
-              key={plan.name} 
-              plan={plan} 
-              onSubscribe={handleSubscribe} 
-            />
-          ))}
-        </div>
-        <div className="text-center mt-8 flex flex-col md:flex-row items-center justify-center gap-4">
-          <SeeFullFeaturesButton onClick={handleSeeFullFeatures} />
-          <RedeemCodeDialog />
-        </div>
+    <div className="py-8">
+      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {pricingPlans.map((plan) => (
+          <PlanCard 
+            key={plan.name} 
+            plan={plan} 
+            onSubscribe={handleSubscribe} 
+          />
+        ))}
       </div>
-    </CurrencyProvider>
+      <div className="text-center mt-8 flex flex-col md:flex-row items-center justify-center gap-4">
+        <SeeFullFeaturesButton onClick={handleSeeFullFeatures} />
+        <RedeemCodeDialog />
+      </div>
+    </div>
   );
 };
 
