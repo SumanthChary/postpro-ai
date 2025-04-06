@@ -1,3 +1,4 @@
+
 import { StrictMode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -24,27 +25,29 @@ function App() {
   return (
     <StrictMode>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <BrowserRouter basename="/">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/enhance" element={<Enhance />} />
-                <Route path="/features" element={<Features />} />
-                <Route path="/subscription" element={<Subscription />} />
-                <Route path="/payment" element={<Payment />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/blog/:id" element={<BlogArticle />} />
-                <Route path="/chatbot" element={<Chatbot />} />
-              </Routes>
-              <FloatingChatButton />
-              <Toaster />
-              <Sonner />
-            </BrowserRouter>
-          </TooltipProvider>
-        </QueryClientProvider>
+        <CurrencyProvider>
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+              <BrowserRouter basename="/">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/enhance" element={<Enhance />} />
+                  <Route path="/features" element={<Features />} />
+                  <Route path="/subscription" element={<Subscription />} />
+                  <Route path="/payment" element={<Payment />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/blogs" element={<Blogs />} />
+                  <Route path="/blog/:id" element={<BlogArticle />} />
+                  <Route path="/chatbot" element={<Chatbot />} />
+                </Routes>
+                <FloatingChatButton />
+                <Toaster />
+                <Sonner />
+              </BrowserRouter>
+            </TooltipProvider>
+          </QueryClientProvider>
+        </CurrencyProvider>
       </ThemeProvider>
     </StrictMode>
   );
