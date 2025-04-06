@@ -20,10 +20,10 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
   const { toast } = useToast();
   const { currency, exchangeRate } = useCurrency();
 
-  // Filter plans based on whether viewing yearly plans
+  // Fix the filtering logic to avoid type comparison issues
   const filteredPlans = isYearly 
     ? pricingPlans.filter(plan => plan.period === "year" || plan.period === "forever" || plan.name === "Enterprise Plan")
-    : pricingPlans.filter(plan => plan.period !== "year" || plan.period === "forever");
+    : pricingPlans.filter(plan => plan.period === "month" || plan.period === "week" || plan.period === "forever");
 
   const handleSelectPlan = async (plan: Plan) => {
     const { data: { session } } = await supabase.auth.getSession();
