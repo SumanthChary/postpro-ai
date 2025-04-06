@@ -6,7 +6,7 @@ export interface PlanFeature {
 export interface Plan {
   name: string;
   price: string;
-  period: string;
+  period: "week" | "month" | "year" | "forever";
   features: string[];
   cta: string;
   popular?: boolean;
