@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -9,7 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
 import { useCurrency } from "@/contexts/CurrencyContext";
-import { formatPrice, convertPrice } from "@/utils/currencyUtils";
 
 interface PlanGridProps {
   isYearly: boolean;
@@ -18,7 +16,7 @@ interface PlanGridProps {
 const PlansGrid = ({ isYearly }: PlanGridProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { currency, exchangeRate } = useCurrency();
+  const { currency, formatPrice, convertPrice } = useCurrency();
 
   // Fix the filtering logic to avoid type comparison issues
   const filteredPlans = isYearly 
@@ -38,6 +36,24 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
       return;
     }
 
+    // Check if user already has active credits
+    const { data: userCredits, error: creditsError } = await supabase
+      .from('user_credits')
+      .select('balance, expires_at')
+      .eq('user_id', session.user.id)
+      .gt('balance', 0)
+      .lt('expires_at', new Date(Date.now() + 86400000).toISOString())
+      .order('expires_at', { ascending: false });
+
+    if (creditsError) {
+      console.error('Error checking user credits:', creditsError);
+    }
+
+    // Prepare the converted price for display
+    const displayPrice = currency === 'INR' 
+      ? convertPrice(plan.price, 'INR')
+      : plan.price;
+
     navigate("/payment", { 
       state: { 
         plan: {
@@ -45,9 +61,10 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
           price: plan.price,
           period: plan.period,
           currency: currency,
-          // If user is viewing in INR but plan is stored in USD, send converted price
-          displayPrice: currency === 'INR' ? convertPrice(plan.price, 'USD', 'INR', exchangeRate) : plan.price
-        }
+          displayPrice: displayPrice,
+          credits: plan.credits
+        },
+        existingCredits: userCredits && userCredits.length > 0
       }
     });
   };
@@ -75,7 +92,7 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
               {currency === 'USD' ? '$' : '₹'}
               {currency === 'USD' 
                 ? plan.price 
-                : convertPrice(plan.price, 'USD', 'INR', exchangeRate)}
+                : convertPrice(plan.price, 'INR')}
               <span className="text-lg font-normal">/{plan.period}</span>
             </p>
             <p className="text-sm text-green-600 flex items-center gap-1">

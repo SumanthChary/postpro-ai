@@ -28,15 +28,22 @@ export const RazorpayPaymentButton = ({
 }: RazorpayPaymentButtonProps) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
-  const { currency } = useCurrency();
+  const { currency, convertPrice } = useCurrency();
 
   const handlePayment = async () => {
     try {
       setIsProcessing(true);
       
-      // Get the price and currency to use
-      const priceToUse = (planDetails as any).displayPrice || planDetails.price;
+      // Get the appropriate currency and price
       const currencyToUse = (planDetails as any).currency || currency || 'USD';
+      
+      // Convert price if needed
+      let priceToUse = planDetails.price;
+      if(currencyToUse === 'INR' && typeof planDetails.price === 'string') {
+        priceToUse = convertPrice(planDetails.price, 'INR');
+      } else if((planDetails as any).displayPrice) {
+        priceToUse = (planDetails as any).displayPrice;
+      }
       
       // Create an order on the server
       const { data: orderData, error: orderError } = await supabase.functions.invoke('handle-razorpay-payment', {
@@ -49,7 +56,8 @@ export const RazorpayPaymentButton = ({
             plan_name: planDetails.name,
             user_id: userId,
             original_currency: 'USD',
-            display_currency: currencyToUse
+            display_currency: currencyToUse,
+            credits: planDetails.credits
           }
         }
       });
@@ -80,7 +88,8 @@ export const RazorpayPaymentButton = ({
                   name: planDetails.name,
                   price: planDetails.price,
                   credits: planDetails.credits,
-                  currency: currencyToUse
+                  currency: currencyToUse,
+                  period: planDetails.period
                 }
               }
             });
@@ -99,6 +108,8 @@ export const RazorpayPaymentButton = ({
           } catch (error: any) {
             console.error('Payment verification error:', error);
             onError(error.message || 'Failed to verify payment');
+          } finally {
+            setIsProcessing(false);
           }
         },
         prefill: {
@@ -116,7 +127,7 @@ export const RazorpayPaymentButton = ({
         }
       };
 
-      // @ts-ignore - Razorpay is loaded via script
+      // Initialize and open Razorpay
       const razorpay = new window.Razorpay(options);
       razorpay.open();
       

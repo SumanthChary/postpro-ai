@@ -33,6 +33,28 @@ function createHmacSignature(data: string, secret: string): string {
     .join('');
 }
 
+// Function to calculate credits expiration date based on plan period
+function calculateCreditsExpiration(period: string): Date {
+  const expirationDate = new Date();
+  
+  switch(period) {
+    case 'week':
+      expirationDate.setDate(expirationDate.getDate() + 7);
+      break;
+    case 'month':
+      expirationDate.setMonth(expirationDate.getMonth() + 1);
+      break;
+    case 'year':
+      expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+      break;
+    default:
+      // Default to 3 months for any other period
+      expirationDate.setMonth(expirationDate.getMonth() + 3);
+  }
+  
+  return expirationDate;
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -139,31 +161,53 @@ serve(async (req) => {
         if (plan_details.credits && plan_details.credits > 0) {
           console.log(`Adding ${plan_details.credits} credits for user ${user_id}`);
           
-          // Calculate expiration date (3 months from now)
-          const expiresAt = new Date();
-          expiresAt.setMonth(expiresAt.getMonth() + 3);
+          // Calculate expiration date based on plan period
+          const expiresAt = calculateCreditsExpiration(plan_details.period || 'month');
           
-          const { error: creditError } = await supabase
+          // First check if user already has credits to update them
+          const { data: existingCredits, error: fetchError } = await supabase
             .from('user_credits')
-            .insert([
-              { 
-                user_id,
-                balance: plan_details.credits,
-                expires_at: expiresAt.toISOString()
-              }
-            ]);
+            .select('*')
+            .eq('user_id', user_id)
+            .gt('balance', 0)
+            .lt('expires_at', new Date(Date.now() + 86400000).toISOString())
+            .order('expires_at', { ascending: false })
+            .limit(1);
             
-          if (creditError) {
-            console.error('Error adding credits:', creditError);
-            // Continue with the payment but return warning
-            return new Response(
-              JSON.stringify({ 
-                success: true, 
-                message: 'Payment successful but credits could not be added',
-                warning: 'Failed to add credits'
-              }),
-              { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-            );
+          if (fetchError) {
+            console.error('Error fetching existing credits:', fetchError);
+          }
+          
+          if (existingCredits && existingCredits.length > 0) {
+            // Update existing credits
+            const { error: updateError } = await supabase
+              .from('user_credits')
+              .update({ 
+                balance: existingCredits[0].balance + plan_details.credits,
+                expires_at: expiresAt.toISOString()
+              })
+              .eq('id', existingCredits[0].id);
+              
+            if (updateError) {
+              console.error('Error updating credits:', updateError);
+              throw new Error('Failed to update credits');
+            }
+          } else {
+            // Create new credits record
+            const { error: creditError } = await supabase
+              .from('user_credits')
+              .insert([
+                { 
+                  user_id,
+                  balance: plan_details.credits,
+                  expires_at: expiresAt.toISOString()
+                }
+              ]);
+              
+            if (creditError) {
+              console.error('Error adding credits:', creditError);
+              throw new Error('Failed to add credits');
+            }
           }
         }
         

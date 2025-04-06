@@ -8,17 +8,22 @@ interface PlanSummaryProps {
 }
 
 export const PlanSummary = ({ planDetails }: PlanSummaryProps) => {
-  const { currency } = useCurrency();
+  const { currency, formatPrice, convertPrice } = useCurrency();
   
   // Get the price to display
   const displayPrice = (planDetails as any).displayPrice || planDetails.price;
   const displayCurrency = (planDetails as any).currency || currency;
   
+  // Convert price if needed
+  const finalPrice = displayCurrency === 'USD' 
+    ? displayPrice 
+    : convertPrice(planDetails.price, 'INR');
+  
   return (
     <div className="text-center mb-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-2">Complete Your Purchase</h1>
       <p className="text-gray-600">
-        {planDetails.name} - {displayCurrency === 'USD' ? '$' : '₹'}{displayPrice}/{planDetails.period}
+        {planDetails.name} - {displayCurrency === 'USD' ? '$' : '₹'}{finalPrice}/{planDetails.period}
       </p>
       {planDetails.credits && (
         <div className="flex items-center justify-center mt-2 text-green-600">
