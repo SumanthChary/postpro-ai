@@ -12,7 +12,7 @@ const MAX_FREE_POSTS = 5;
 
 // Update logic to enforce limits based on user plans
 const PLAN_LIMITS = {
-  free: 5, // 5 posts per month as per Free Plan
+  free: 3, // 3 posts per month as per Free Plan
   weekly: Infinity, // Unlimited as per Weekly Plan
   monthly: Infinity, // Unlimited as per Monthly Plan
   yearly: Infinity, // Unlimited as per Yearly Plan
@@ -20,13 +20,32 @@ const PLAN_LIMITS = {
 };
 
 const PLAN_FEATURES = {
-  free: { maxPosts: 5, accessTemplates: false },
-  weekly: { maxPosts: Infinity, accessTemplates: false },
-  monthly: { maxPosts: Infinity, accessTemplates: false },
-  yearly: { maxPosts: Infinity, accessTemplates: false },
-  enterprise: { maxPosts: Infinity, accessTemplates: false },
+  free: { maxPosts: 3, accessTemplates: false },
+  weekly: { maxPosts: Infinity, accessTemplates: true },
+  monthly: { maxPosts: Infinity, accessTemplates: true },
+  yearly: { maxPosts: Infinity, accessTemplates: true },
+  enterprise: { maxPosts: Infinity, accessTemplates: true },
   pro: { maxPosts: Infinity, accessTemplates: true }, // Pro plan with template access
 };
+
+let referralBonusCount = 0; // Track the number of users who have received referral bonuses
+const MAX_REFERRAL_BONUSES = 100; // Limit to the first 100 users
+
+async function handleReferralBonus(userId) {
+  if (referralBonusCount >= MAX_REFERRAL_BONUSES) {
+    console.log(`Referral bonus limit reached. No more bonuses available.`);
+    return 0; // No bonus if limit is reached
+  }
+
+  console.log(`Adding referral bonus for user: ${userId}`);
+  const bonusPosts = 2; // Bonus posts for referring a new user
+
+  // Increment the referral bonus count
+  referralBonusCount++;
+
+  // Update the user's post count or plan features in the database
+  return bonusPosts;
+}
 
 async function getUserPlanAndPostCount(userId) {
   // Mocked function: Replace with actual database query to fetch user plan and post count
