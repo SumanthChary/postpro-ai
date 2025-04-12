@@ -1,4 +1,3 @@
-
 import { Twitter, Linkedin, Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -18,6 +17,7 @@ const Footer = () => {
               <li><Link to="/features" className="hover:text-bright-teal transition-colors">Features</Link></li>
               <li><Link to="/subscription" className="hover:text-bright-teal transition-colors">Pricing</Link></li>
               <li><Link to="/blogs" className="hover:text-bright-teal transition-colors">Blog</Link></li>
+              <li><Link to="/affiliate" className="hover:text-bright-teal transition-colors">Affiliate</Link></li>
             </ul>
           </div>
           <div>
