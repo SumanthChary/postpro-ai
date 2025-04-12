@@ -1,4 +1,3 @@
-
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -7,6 +6,8 @@ import { enhancePost } from "./services/enhancePost";
 import { EnhancerForm } from "./components/EnhancerForm";
 import { ShareOptions } from "./components/ShareOptions";
 import { ViralityScore } from "./components/ViralityScore";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const PostEnhancer = ({
   post,
@@ -16,12 +17,25 @@ const PostEnhancer = ({
   styleTone,
   setStyleTone,
 }: PostEnhancerProps) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [originalPost, setOriginalPost] = useState("");
   const [enhancedPosts, setEnhancedPosts] = useState<{[key: string]: string}>({});
   const { toast } = useToast();
 
   const handleEnhancePost = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in or sign up to use the post enhancement feature.",
+        variant: "default",
+      });
+      navigate("/auth");
+      return;
+    }
+
     if (!post.trim()) {
       toast({
         title: "Empty Post",
@@ -50,11 +64,12 @@ const PostEnhancer = ({
       } else {
         throw new Error('No enhanced content received');
       }
-    } catch (error: any) {
-      console.error('Error enhancing post:', error);
+    } catch (error: unknown) {
+      const err = error as Error;
+      console.error('Error enhancing post:', err);
       toast({
         title: "Enhancement Failed",
-        description: error.message || "There was an error enhancing your post. Please try again.",
+        description: err.message || "There was an error enhancing your post. Please try again.",
         variant: "destructive",
       });
       setPost(originalPost);

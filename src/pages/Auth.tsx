@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -81,11 +82,19 @@ const Auth = () => {
           title: "Success!",
           description: "Please check your email to verify your account. The verification link will expire in 24 hours.",
         });
+
+        // Notify user about free plan activation
+        toast({
+          title: "Welcome!",
+          description: "Your free plan has been activated. Start enhancing your posts now!",
+        });
+        navigate("/");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as Error;
       toast({
         title: "Error",
-        description: error.message,
+        description: err.message,
         variant: "destructive",
       });
     } finally {
