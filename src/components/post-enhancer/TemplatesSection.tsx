@@ -12,10 +12,9 @@ const TemplatesSection = ({ handleProTemplatesClick }: TemplatesSectionProps) =>
   const [isProUser, setIsProUser] = useState(false);
 
   useEffect(() => {
-    // Mocked function: Replace with actual API call to check user plan
     const fetchUserPlan = async () => {
       const userPlan = user?.plan || 'free'; // Replace with actual user plan fetching logic
-      setIsProUser(userPlan === 'pro' || userPlan === 'enterprise');
+      setIsProUser(userPlan === 'weekly' || userPlan === 'monthly' || userPlan === 'yearly' || userPlan === 'enterprise');
     };
 
     fetchUserPlan();

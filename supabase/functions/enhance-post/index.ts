@@ -12,20 +12,45 @@ const MAX_FREE_POSTS = 5;
 
 // Update logic to enforce limits based on user plans
 const PLAN_LIMITS = {
-  free: 3, // 3 posts per month as per Free Plan
-  weekly: Infinity, // Unlimited as per Weekly Plan
-  monthly: Infinity, // Unlimited as per Monthly Plan
-  yearly: Infinity, // Unlimited as per Yearly Plan
-  enterprise: Infinity, // Unlimited as per Enterprise Plan
+  free: 5, // 5 Post Enhancements/Month
+  weekly: Infinity, // Unlimited Post Enhancements
+  monthly: Infinity, // Unlimited Post Enhancements
+  yearly: Infinity, // Unlimited Post Enhancements
+  enterprise: Infinity, // Unlimited Post Enhancements
 };
 
 const PLAN_FEATURES = {
-  free: { maxPosts: 3, accessTemplates: false },
-  weekly: { maxPosts: Infinity, accessTemplates: true },
-  monthly: { maxPosts: Infinity, accessTemplates: true },
-  yearly: { maxPosts: Infinity, accessTemplates: true },
-  enterprise: { maxPosts: Infinity, accessTemplates: true },
-  pro: { maxPosts: Infinity, accessTemplates: true }, // Pro plan with template access
+  free: {
+    maxPosts: 5,
+    accessTemplates: false,
+    accessViralityTips: false,
+    accessAdvancedAI: false,
+  },
+  weekly: {
+    maxPosts: Infinity,
+    accessTemplates: true,
+    accessViralityTips: true,
+    accessAdvancedAI: false,
+  },
+  monthly: {
+    maxPosts: Infinity,
+    accessTemplates: true,
+    accessViralityTips: true,
+    accessAdvancedAI: true,
+  },
+  yearly: {
+    maxPosts: Infinity,
+    accessTemplates: true,
+    accessViralityTips: true,
+    accessAdvancedAI: true,
+  },
+  enterprise: {
+    maxPosts: Infinity,
+    accessTemplates: true,
+    accessViralityTips: true,
+    accessAdvancedAI: true,
+    apiAccess: true,
+  },
 };
 
 let referralBonusCount = 0; // Track the number of users who have received referral bonuses
@@ -53,18 +78,20 @@ async function getUserPlanAndPostCount(userId) {
 }
 
 async function getUserPlanFeatures(userId, email) {
-  // Mocked function: Replace with actual database query to fetch user plan and features
-  const testingAccountEmail = 'enjoywithpandu@gmail.com'; // Your testing account email
+  const testingAccountEmail = 'enjoywithpandu@gmail.com';
 
   if (email === testingAccountEmail) {
     return {
       maxPosts: Infinity,
       accessTemplates: true,
-      allFeatures: true, // Grant access to all features
+      accessViralityTips: true,
+      accessAdvancedAI: true,
+      allFeatures: true,
     };
   }
 
-  return PLAN_FEATURES['free']; // Default to free plan for other users
+  const userPlan = await fetchUserPlanFromDatabase(userId); // Replace with actual DB query
+  return PLAN_FEATURES[userPlan] || PLAN_FEATURES['free'];
 }
 
 async function incrementPostCount(userId) {
