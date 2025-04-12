@@ -1,44 +1,106 @@
+import { createServer } from 'http';
+import dotenv from 'dotenv';
 
-import "https://deno.land/x/xhr@0.1.0/mod.ts";
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+dotenv.config();
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-serve(async (req) => {
+const MAX_FREE_POSTS = 5;
+
+// Update logic to enforce limits based on user plans
+const PLAN_LIMITS = {
+  free: 5, // 5 posts per month as per Free Plan
+  weekly: Infinity, // Unlimited as per Weekly Plan
+  monthly: Infinity, // Unlimited as per Monthly Plan
+  yearly: Infinity, // Unlimited as per Yearly Plan
+  enterprise: Infinity, // Unlimited as per Enterprise Plan
+};
+
+const PLAN_FEATURES = {
+  free: { maxPosts: 5, accessTemplates: false },
+  weekly: { maxPosts: Infinity, accessTemplates: false },
+  monthly: { maxPosts: Infinity, accessTemplates: false },
+  yearly: { maxPosts: Infinity, accessTemplates: false },
+  enterprise: { maxPosts: Infinity, accessTemplates: false },
+  pro: { maxPosts: Infinity, accessTemplates: true }, // Pro plan with template access
+};
+
+async function getUserPlanAndPostCount(userId) {
+  // Mocked function: Replace with actual database query to fetch user plan and post count
+  return { plan: 'free', postCount: 3 }; // Example response
+}
+
+async function getUserPlanFeatures(userId, email) {
+  // Mocked function: Replace with actual database query to fetch user plan and features
+  const testingAccountEmail = 'enjoywithpandu@gmail.com'; // Your testing account email
+
+  if (email === testingAccountEmail) {
+    return {
+      maxPosts: Infinity,
+      accessTemplates: true,
+      allFeatures: true, // Grant access to all features
+    };
+  }
+
+  return PLAN_FEATURES['free']; // Default to free plan for other users
+}
+
+async function incrementPostCount(userId) {
+  // Mocked function: Replace with actual database update to increment post count
+  console.log(`Incrementing post count for user: ${userId}`);
+}
+
+const apiKey = process.env.GOOGLE_AI_API_KEY;
+if (!apiKey) {
+  console.error('API key not found');
+  process.exit(1);
+}
+
+createServer(async (req, res) => {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    res.writeHead(204, corsHeaders);
+    res.end();
+    return;
   }
 
   try {
-    const { post, category, styleTone = "professional" } = await req.json();
-    console.log('Starting enhance-post function with:', { post, category, styleTone });
+    const { userId, post, category, styleTone = "professional" } = await req.json();
+    console.log('Starting enhance-post function with:', { userId, post, category, styleTone });
 
-    // Use provided API key or fall back to environment variable
-    const apiKey = 'AIzaSyCF8SJtCqwOAdyUIgq6YgJOyKP2th1vBsU' || Deno.env.get('GOOGLE_AI_API_KEY');
-    
-    if (!apiKey) {
-      console.error('API key not found');
-      return new Response(
-        JSON.stringify({ error: 'API configuration error' }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 500
-        }
-      );
+    // Check user plan and post count
+    const { plan, postCount } = await getUserPlanAndPostCount(userId);
+    const maxPosts = PLAN_LIMITS[plan] || 0;
+
+    if (postCount >= maxPosts) {
+      res.writeHead(403, { 'Content-Type': 'application/json', ...corsHeaders });
+      res.end(JSON.stringify({
+        error: `Post limit reached for your ${plan} plan. Upgrade to a higher plan to create more posts.`,
+      }));
+      return;
     }
+
+    // Check user plan and features
+    const { maxPosts: planMaxPosts, accessTemplates } = await getUserPlanFeatures(userId);
+
+    if (!accessTemplates) {
+      res.writeHead(403, { 'Content-Type': 'application/json', ...corsHeaders });
+      res.end(JSON.stringify({
+        error: 'Upgrade to the Pro plan to access post templates.',
+      }));
+      return;
+    }
+
+    // Increment post count for the user
+    await incrementPostCount(userId);
 
     if (!post?.trim() || !category?.trim()) {
       console.error('Missing required fields');
-      return new Response(
-        JSON.stringify({ error: 'Post content and category are required' }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 400
-        }
-      );
+      res.writeHead(400, { 'Content-Type': 'application/json', ...corsHeaders });
+      res.end(JSON.stringify({ error: 'Post content and category are required' }));
+      return;
     }
 
     try {
@@ -150,7 +212,17 @@ serve(async (req) => {
         generatePlatformContent('facebook')
       ]);
       
-      const platforms = {};
+      // Fixing the platforms object type
+      interface Platforms {
+        linkedin?: string;
+        twitter?: string;
+        instagram?: string;
+        facebook?: string;
+      }
+
+      // Initialize platforms with proper type
+      const platforms: Platforms = {};
+
       if (linkedinText) platforms.linkedin = linkedinText.trim();
       if (twitterText) platforms.twitter = twitterText.trim();
       if (instagramText) platforms.instagram = instagramText.trim();
@@ -158,47 +230,30 @@ serve(async (req) => {
       
       if (Object.keys(platforms).length === 0) {
         console.error('No enhanced content generated for any platform');
-        return new Response(
-          JSON.stringify({ error: 'No enhanced content generated' }),
-          {
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-            status: 422
-          }
-        );
+        res.writeHead(422, { 'Content-Type': 'application/json', ...corsHeaders });
+        res.end(JSON.stringify({ error: 'No enhanced content generated' }));
+        return;
       }
 
-      return new Response(
-        JSON.stringify({ platforms }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 200
-        }
-      );
+      res.writeHead(200, { 'Content-Type': 'application/json', ...corsHeaders });
+      res.end(JSON.stringify({ platforms }));
     } catch (apiError) {
       console.error('Error calling Gemini API:', apiError);
-      return new Response(
-        JSON.stringify({ 
-          error: 'Error processing with AI service', 
-          details: apiError.message,
-          stack: apiError.stack
-        }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 502
-        }
-      );
+      res.writeHead(502, { 'Content-Type': 'application/json', ...corsHeaders });
+      res.end(JSON.stringify({ 
+        error: 'Error processing with AI service', 
+        details: apiError.message,
+        stack: apiError.stack
+      }));
     }
   } catch (error) {
     console.error('Error in enhance-post function:', error);
-    return new Response(
-      JSON.stringify({ 
-        error: error.message || 'An unexpected error occurred',
-        stack: error.stack 
-      }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500
-      }
-    );
+    res.writeHead(500, { 'Content-Type': 'application/json', ...corsHeaders });
+    res.end(JSON.stringify({ 
+      error: error.message || 'An unexpected error occurred',
+      stack: error.stack 
+    }));
   }
+}).listen(3000, () => {
+  console.log('Server running on port 3000');
 });
