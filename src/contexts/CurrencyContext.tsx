@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Currency = 'USD' | 'INR';
@@ -30,13 +29,13 @@ export const useCurrency = () => {
 
 export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currency, setCurrency] = useState<Currency>('USD');
-  const [exchangeRate, setExchangeRate] = useState<number>(83.5); // Default exchange rate USD to INR
+  const [exchangeRate, setExchangeRate] = useState<number>(86); // Default exchange rate USD to INR
 
   // Fetch the latest exchange rate from an API or service
   useEffect(() => {
     // For production, use a proper exchange rate API
     // For demo, using a static value
-    setExchangeRate(83.5); // 1 USD = 83.5 INR
+    setExchangeRate(86); // 1 USD = 86 INR
   }, []);
 
   // Convert price from USD to INR or vice versa
