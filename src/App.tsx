@@ -18,6 +18,7 @@ import BlogArticle from "./pages/BlogArticle";
 import Chatbot from "./pages/Chatbot";
 import Affiliate from "./pages/Affiliate";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
+import ScheduleShareButton from "./components/ScheduleShareButton"; // Import the new component
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ function App() {
                   <Route path="/affiliate" element={<Affiliate />} />
                 </Routes>
                 <FloatingChatButton />
+                <ScheduleShareButton /> {/* Add the Schedule & Auto-Share button */}
                 <Toaster />
                 <Sonner />
               </BrowserRouter>
