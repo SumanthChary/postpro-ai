@@ -1,4 +1,3 @@
-
 import { StrictMode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -17,6 +16,7 @@ import Profile from "./pages/Profile";
 import Blogs from "./pages/Blogs";
 import BlogArticle from "./pages/BlogArticle";
 import Chatbot from "./pages/Chatbot";
+import Affiliate from "./pages/Affiliate";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 
 const queryClient = new QueryClient();
@@ -40,6 +40,7 @@ function App() {
                   <Route path="/blogs" element={<Blogs />} />
                   <Route path="/blog/:id" element={<BlogArticle />} />
                   <Route path="/chatbot" element={<Chatbot />} />
+                  <Route path="/affiliate" element={<Affiliate />} />
                 </Routes>
                 <FloatingChatButton />
                 <Toaster />
