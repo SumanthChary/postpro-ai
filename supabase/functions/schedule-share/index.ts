@@ -1,45 +1,42 @@
-import { serve } from "https://deno.land/x/sift@0.5.0/mod.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { schedule } from "https://deno.land/x/deno_cron/cron.ts";
+import express from "express";
+import { createClient } from "@supabase/supabase-js";
+import cron from "node-cron";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const app = express();
+app.use(express.json());
+
+const SUPABASE_URL = process.env.SUPABASE_URL || ""; // Provide a fallback to an empty string
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ""; // Provide a fallback to an empty string
+
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+  console.error("Supabase environment variables are not set.");
+  process.exit(1); // Exit the process if variables are missing
+}
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-serve(async (req) => {
-  if (req.method === "POST") {
-    const { time, content } = await req.json();
+// Endpoint to schedule shares
+app.post("/schedule-share", async (req, res) => {
+  const { time, content } = req.body;
 
-    if (!time || !content) {
-      return new Response(JSON.stringify({ error: "Time and content are required." }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    // Save the scheduled share to the database
-    const { data, error } = await supabase
-      .from("scheduled_shares")
-      .insert([{ time, content }]);
-
-    if (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    return new Response(JSON.stringify({ message: "Scheduled successfully!", data }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+  if (!time || !content) {
+    return res.status(400).json({ error: "Time and content are required." });
   }
 
-  return new Response("Method not allowed", { status: 405 });
+  // Save the scheduled share to the database
+  const { data, error } = await supabase
+    .from("scheduled_shares")
+    .insert([{ time, content }]);
+
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.status(200).json({ message: "Scheduled successfully!", data });
 });
 
-// Function to auto-share scheduled content
-schedule("* * * * *", async () => {
+// Cron job to process scheduled shares
+cron.schedule("* * * * *", async () => {
   console.log("Checking for scheduled shares...");
 
   const now = new Date().toISOString();
@@ -75,4 +72,10 @@ schedule("* * * * *", async () => {
   } else {
     console.log("No scheduled shares to process.");
   }
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

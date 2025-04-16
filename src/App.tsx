@@ -18,7 +18,7 @@ import BlogArticle from "./pages/BlogArticle";
 import Chatbot from "./pages/Chatbot";
 import Affiliate from "./pages/Affiliate";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
-import ScheduleShareButton from "./components/ScheduleShareButton"; // Import the new component
+import ScheduleShareButton from "./components/ScheduleShareButton"; // Ensure the correct path to the component
 
 const queryClient = new QueryClient();
 
