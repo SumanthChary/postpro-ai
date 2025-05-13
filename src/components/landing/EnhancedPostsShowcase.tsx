@@ -33,7 +33,6 @@ const EnhancedPostsShowcase = () => {
           Transform Your Posts
         </h2>
         <p className="text-center text-lg mb-8 max-w-3xl mx-auto">
-          Every post you make without PostPro AI is <span className="text-electric-purple font-semibold">underperforming</span>. 
           See the difference AI enhancement makes:
         </p>
         

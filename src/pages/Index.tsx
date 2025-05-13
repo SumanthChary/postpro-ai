@@ -17,7 +17,6 @@ import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import ExitIntentPopup from "@/components/marketing/ExitIntentPopup";
 
 const Index = () => {
   const [showPricing, setShowPricing] = useState(false);
@@ -127,8 +126,6 @@ const Index = () => {
           <PricingSection />
         </DialogContent>
       </Dialog>
-
-      <ExitIntentPopup />
     </div>
   );
 };
