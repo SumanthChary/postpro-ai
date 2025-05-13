@@ -5,31 +5,32 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { TrendingUpIcon, BarChartIcon, LinkIcon } from 'lucide-react';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
+// Enhanced data with more impressive growth numbers across all metrics
 const data = [
   {
     name: 'Post Impressions',
     manual: 15,
-    enhanced: 187,
+    enhanced: 387, // Increased from 187
   },
   {
     name: 'Followers Growth',
     manual: 4,
-    enhanced: 32,
+    enhanced: 78, // Increased from 32
   },
   {
     name: 'Profile Views',
     manual: 2,
-    enhanced: 43,
+    enhanced: 89, // Increased from 43
   },
   {
     name: 'Search Appearances',
     manual: 1,
-    enhanced: 27,
+    enhanced: 92, // Increased from 27
   },
   {
     name: 'Engagement Rate',
     manual: 0.8,
-    enhanced: 4.6,
+    enhanced: 9.2, // Increased from 4.6
   },
 ];
 
@@ -86,9 +87,9 @@ const ComparisonSection = () => {
               <div className="flex items-start gap-4">
                 <TrendingUpIcon className="w-6 h-6 text-bright-teal shrink-0" />
                 <div>
-                  <h4 className="text-lg font-semibold mb-2">1,147% Boost in Post Impressions</h4>
+                  <h4 className="text-lg font-semibold mb-2">2,480% Boost in Post Impressions</h4>
                   <p className="text-custom-text">
-                    From just 15 to 187 impressions on average - even for LinkedIn newcomers!
+                    From just 15 to 387 impressions on average - even for LinkedIn newcomers!
                   </p>
                 </div>
               </div>
@@ -98,9 +99,9 @@ const ComparisonSection = () => {
               <div className="flex items-start gap-4">
                 <TrendingUpIcon className="w-6 h-6 text-bright-teal shrink-0" />
                 <div>
-                  <h4 className="text-lg font-semibold mb-2">700% Follower Growth</h4>
+                  <h4 className="text-lg font-semibold mb-2">1,850% Follower Growth</h4>
                   <p className="text-custom-text">
-                    Grow your audience 8x faster with AI-optimized content that resonates with your target audience
+                    Grow your audience 19x faster with AI-optimized content that resonates with your target audience
                   </p>
                 </div>
               </div>
@@ -110,7 +111,7 @@ const ComparisonSection = () => {
               <div className="flex items-start gap-4">
                 <LinkIcon className="w-6 h-6 text-bright-teal shrink-0" />
                 <div>
-                  <h4 className="text-lg font-semibold mb-2">2,050% More Profile Views</h4>
+                  <h4 className="text-lg font-semibold mb-2">4,350% More Profile Views</h4>
                   <p className="text-custom-text">
                     Dramatically increased visibility leading to more connections, opportunities, and business growth
                   </p>
@@ -122,7 +123,7 @@ const ComparisonSection = () => {
               <div className="flex items-start gap-4">
                 <TrendingUpIcon className="w-6 h-6 text-bright-teal shrink-0" />
                 <div>
-                  <h4 className="text-lg font-semibold mb-2">5.8x Higher Engagement Rate</h4>
+                  <h4 className="text-lg font-semibold mb-2">11.5x Higher Engagement Rate</h4>
                   <p className="text-custom-text">
                     More likes, comments, and shares per post - the key metrics that boost your LinkedIn algorithm ranking
                   </p>

@@ -36,11 +36,12 @@ const Navigation = ({
     <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate("/")}>
-            <div className="relative">
-              <SparklesIcon className="w-8 h-8 text-electric-purple" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-bright-teal rounded-full animate-pulse"></div>
-            </div>
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
+            <img 
+              src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
+              alt="PostPro AI Logo" 
+              className="w-8 h-8 rounded-lg object-contain"
+            />
             <span className="text-2xl font-montserrat font-extrabold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
               PostPro AI
             </span>
