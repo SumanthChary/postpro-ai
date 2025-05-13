@@ -1,4 +1,3 @@
-
 import { StrictMode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -19,7 +18,7 @@ import BlogArticle from "./pages/BlogArticle";
 import Chatbot from "./pages/Chatbot";
 import Affiliate from "./pages/Affiliate";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
-import ScheduleShareButton from "./components/ScheduleShareButton";
+import ScheduleShareButton from "./components/ScheduleShareButton"; // Ensure the correct path to the component
 
 const queryClient = new QueryClient();
 
@@ -45,7 +44,7 @@ function App() {
                   <Route path="/affiliate" element={<Affiliate />} />
                 </Routes>
                 <FloatingChatButton />
-                <ScheduleShareButton />
+                <ScheduleShareButton /> {/* Add the Schedule & Auto-Share button */}
                 <Toaster />
                 <Sonner />
               </BrowserRouter>
