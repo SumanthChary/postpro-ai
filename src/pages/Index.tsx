@@ -17,6 +17,7 @@ import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import ExitIntentPopup from "@/components/marketing/ExitIntentPopup";
 
 const Index = () => {
   const [showPricing, setShowPricing] = useState(false);
@@ -100,16 +101,17 @@ const Index = () => {
         mobileMenuOpen={mobileMenuOpen}
       />
 
-      <main className="container mx-auto px-4 pt-32 pb-20">
+      <main className="container mx-auto px-4 pt-24 md:pt-32 pb-20">
         <HeroSection />
+        <EnhancedPostsShowcase />
         <VideoShowcase />
         <ComparisonSection />
-        <EnhancedPostsShowcase />
+        <Testimonials />
+        <PricingSection />
         <SupportSection />
         <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
         <AboutSection />
         <ComingSoonSection />
-        <Testimonials />
         <FAQ />
       </main>
 
@@ -118,13 +120,15 @@ const Index = () => {
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-montserrat font-extrabold text-center mb-4">
+            <DialogTitle className="text-2xl font-extrabold text-center mb-4">
               Choose Your Perfect Plan
             </DialogTitle>
           </DialogHeader>
           <PricingSection />
         </DialogContent>
       </Dialog>
+
+      <ExitIntentPopup />
     </div>
   );
 };
