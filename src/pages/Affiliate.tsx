@@ -1,30 +1,27 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { 
   TrendingUpIcon, 
   LinkIcon, 
-  CopyIcon, 
-  CheckIcon, 
   UsersIcon, 
   BarChartIcon,
   Link2Icon,
-  DollarSignIcon,
-  ArrowRightIcon,
-  ExternalLinkIcon
+  DollarSignIcon
 } from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/layout/Navigation';
 import { supabase } from '@/integrations/supabase/client';
-import AffiliateStats from '@/components/affiliate/AffiliateStats';
-import DetailedStats from '@/components/affiliate/DetailedStats';
 import { BackButton } from '@/components/ui/back-button';
+
+// Component imports
+import AffiliateHero from '@/components/affiliate/AffiliateHero';
+import AffiliateTabContent from '@/components/affiliate/AffiliateTabContent';
+import AffiliateHowItWorks from '@/components/affiliate/AffiliateHowItWorks';
+import AffiliateBenefits from '@/components/affiliate/AffiliateBenefits';
+import AffiliateCTA from '@/components/affiliate/AffiliateCTA';
 
 // Mock earnings data for the line chart
 const earningsData = [
@@ -80,10 +77,8 @@ const Affiliate = () => {
   const [username, setUsername] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [referralLink, setReferralLink] = useState("https://postpro.ai/?ref=your-unique-id");
-  const [copied, setCopied] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
   const [progressValue, setProgressValue] = useState(75);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -142,12 +137,10 @@ const Affiliate = () => {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(referralLink);
-    setCopied(true);
     toast({
       title: "Link copied!",
       description: "Your affiliate link is copied to clipboard",
     });
-    setTimeout(() => setCopied(false), 3000);
   };
 
   // Statistics for the dashboard - with more impressive numbers for logged-in users
@@ -218,200 +211,27 @@ const Affiliate = () => {
         <div className="max-w-5xl mx-auto">
           <BackButton to="/" label="Back to Home" />
         
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-montserrat font-extrabold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent mb-4">
-              PostPro AI Affiliate Program
-            </h1>
-            <p className="text-xl text-custom-text max-w-3xl mx-auto">
-              Earn recurring commissions by sharing PostPro AI with your network. Get 25% on all referrals - for life!
-            </p>
-          </div>
+          <AffiliateHero session={session} copyToClipboard={copyToClipboard} />
 
-          {!session ? (
-            <Card className="p-8 text-center mb-12 shadow-lg">
-              <h3 className="text-2xl font-bold mb-4">Join Our Affiliate Program</h3>
-              <p className="mb-6">Sign in or create an account to get your unique referral link and start earning.</p>
-              <Button 
-                className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white"
-                onClick={() => navigate("/auth")}
-                size="lg"
-              >
-                Sign In to Get Started
-              </Button>
-            </Card>
-          ) : (
-            <>
-              <Card className="p-6 shadow-lg mb-8">
-                <h3 className="text-xl font-bold mb-4 text-electric-purple flex items-center gap-2">
-                  <Link2Icon className="w-5 h-5" /> Your Affiliate Link
-                </h3>
-                <p className="mb-4 text-sm text-custom-text">
-                  Share this unique link to earn 25% commission on all purchases made by your referrals.
-                </p>
-                <div className="flex gap-2">
-                  <Input 
-                    value={referralLink} 
-                    readOnly 
-                    className="font-mono text-sm bg-gray-50"
-                  />
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    onClick={copyToClipboard}
-                    className="shrink-0"
-                  >
-                    {copied ? <CheckIcon className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </Card>
-              
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-12">
-                <TabsList className="grid w-full grid-cols-3 mb-8">
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="stats">Detailed Stats</TabsTrigger>
-                  <TabsTrigger value="materials">Promotional Material</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="overview">
-                  <AffiliateStats 
-                    statsData={stats}
-                    earningsData={earningsData}
-                    progressValue={progressValue}
-                    chartConfig={chartConfig}
-                  />
-                </TabsContent>
-                
-                <TabsContent value="stats">
-                  <DetailedStats 
-                    referralSourceData={referralSourceData}
-                    colors={COLORS}
-                    chartConfig={chartConfig}
-                  />
-                </TabsContent>
-                
-                <TabsContent value="materials">
-                  <Card className="p-6 shadow-lg">
-                    <h3 className="text-xl font-bold mb-4 text-electric-purple">Promotional Materials</h3>
-                    <p className="text-sm text-gray-600 mb-6">
-                      Use these ready-made marketing materials to promote PostPro AI effectively. All materials automatically include your unique affiliate link.
-                    </p>
-                    
-                    <div className="grid md:grid-cols-2 gap-6">
-                      {promotionalMaterials.map((material, index) => (
-                        <div key={index} className="border border-gray-200 rounded-lg p-4 hover:border-electric-purple transition-colors">
-                          <h4 className="font-semibold text-lg mb-2">{material.title}</h4>
-                          <p className="text-sm text-gray-600 mb-4">{material.description}</p>
-                          <Button variant="outline" size="sm">
-                            {material.cta} <ArrowRightIcon className="w-3 h-3 ml-1" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </>
-          )}
+          <AffiliateTabContent 
+            session={session}
+            referralLink={referralLink}
+            stats={stats}
+            earningsData={earningsData}
+            progressValue={progressValue}
+            chartConfig={chartConfig}
+            referralSourceData={referralSourceData}
+            colors={COLORS}
+            promotionalMaterials={promotionalMaterials}
+          />
 
           <Separator className="my-12" />
 
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-center mb-8">How It Works</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="p-6 shadow-lg border-t-4 border-electric-purple">
-                <div className="font-bold text-3xl text-electric-purple mb-4">1</div>
-                <h3 className="text-xl font-semibold mb-2">Share Your Link</h3>
-                <p className="text-custom-text">
-                  Copy your unique referral link and share it on social media, email, or your website.
-                </p>
-              </Card>
-              
-              <Card className="p-6 shadow-lg border-t-4 border-bright-teal">
-                <div className="font-bold text-3xl text-bright-teal mb-4">2</div>
-                <h3 className="text-xl font-semibold mb-2">Users Sign Up</h3>
-                <p className="text-custom-text">
-                  When someone clicks your link and signs up, they're tracked as your referral forever.
-                </p>
-              </Card>
-              
-              <Card className="p-6 shadow-lg border-t-4 border-electric-purple">
-                <div className="font-bold text-3xl text-electric-purple mb-4">3</div>
-                <h3 className="text-xl font-semibold mb-2">Earn Commission</h3>
-                <p className="text-custom-text">
-                  You earn 25% commission every time your referral makes a payment - for life!
-                </p>
-              </Card>
-            </div>
-          </div>
+          <AffiliateHowItWorks />
+          
+          <AffiliateBenefits />
 
-          <div className="bg-white p-8 rounded-lg shadow-lg mb-12">
-            <h2 className="text-3xl font-bold text-center mb-8">Affiliate Program Benefits</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex items-start gap-3">
-                <div className="bg-electric-purple/10 p-2 rounded-full">
-                  <TrendingUpIcon className="w-5 h-5 text-electric-purple" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">25% Lifetime Commission</h3>
-                  <p className="text-custom-text">Earn recurring revenue from all payments made by your referrals, forever.</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <div className="bg-bright-teal/10 p-2 rounded-full">
-                  <LinkIcon className="w-5 h-5 text-bright-teal" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">Easy Tracking</h3>
-                  <p className="text-custom-text">Simple dashboard to track clicks, referrals, and earnings in one place.</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <div className="bg-electric-purple/10 p-2 rounded-full">
-                  <UsersIcon className="w-5 h-5 text-electric-purple" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">Extended Cookie Period</h3>
-                  <p className="text-custom-text">90-day cookie window ensures you get credit even if users sign up later.</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-3">
-                <div className="bg-bright-teal/10 p-2 rounded-full">
-                  <BarChartIcon className="w-5 h-5 text-bright-teal" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">Monthly Payouts</h3>
-                  <p className="text-custom-text">Get paid reliably every month via PayPal or bank transfer when you reach $50.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center">
-            <h2 className="text-3xl font-bold mb-6">Ready to Start Earning?</h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Join our affiliate program today and start earning passive income by sharing PostPro AI with your network.
-            </p>
-            {!session ? (
-              <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white"
-                onClick={() => navigate("/auth")}
-              >
-                Sign Up Now
-              </Button>
-            ) : (
-              <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white"
-                onClick={copyToClipboard}
-              >
-                Copy Your Affiliate Link
-              </Button>
-            )}
-          </div>
+          <AffiliateCTA session={session} copyToClipboard={copyToClipboard} />
         </div>
       </main>
       
