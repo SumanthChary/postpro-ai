@@ -67,6 +67,17 @@ serve(async (req) => {
         - 4,350% more profile views
         - 11.5x higher engagement rates
         
+        Website sections include:
+        - Home page with feature showcase and testimonials
+        - Authentication page for sign-in/sign-up
+        - Post enhancement tool for optimizing content
+        - Features page describing all capabilities
+        - Subscription options with different pricing tiers
+        - User profile management
+        - Blog with social media tips
+        - AI Assistant (this chat interface)
+        - Affiliate program for earning commissions
+        
         Your knowledge includes:
         - Social media best practices for all major platforms
         - Content creation strategies including hooks, storytelling, and CTA design

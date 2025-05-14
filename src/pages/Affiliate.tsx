@@ -31,14 +31,14 @@ import {
   CartesianGrid, 
   XAxis, 
   YAxis, 
-  Tooltip, 
+  Tooltip as RechartsTooltip, 
   Legend as RechartLegend,
   PieChart,
   Pie,
   Cell,
   ResponsiveContainer
 } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartContainer } from "@/components/ui/chart";
 
 // Mock earnings data for the line chart
 const earningsData = [
@@ -202,6 +202,15 @@ const Affiliate = () => {
 
       <main className="container mx-auto pt-32 pb-20 px-4">
         <div className="max-w-5xl mx-auto">
+          <Button
+            variant="ghost"
+            className="mb-6"
+            onClick={() => navigate("/")}
+          >
+            <ArrowRightIcon className="w-4 h-4 mr-2 rotate-180" />
+            Back to Home
+          </Button>
+        
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-montserrat font-extrabold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent mb-4">
               PostPro AI Affiliate Program
@@ -261,34 +270,38 @@ const Affiliate = () => {
                     <Card className="p-6 shadow-lg">
                       <h3 className="text-xl font-bold mb-4 text-electric-purple">Earnings Dashboard</h3>
                       <div className="h-[300px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <LineChart
-                            data={earningsData}
-                            margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-                          >
-                            <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
-                            <XAxis dataKey="month" />
-                            <YAxis />
-                            <Tooltip content={({active, payload}) => {
-                              if (active && payload && payload.length) {
-                                return (
-                                  <div className="bg-white p-2 border rounded shadow text-sm">
-                                    <p>${payload[0].value}</p>
-                                  </div>
-                                );
-                              }
-                              return null;
-                            }} />
-                            <Line 
-                              type="monotone" 
-                              dataKey="earnings" 
-                              stroke="#8b5cf6" 
-                              strokeWidth={3}
-                              dot={{ r: 4 }}
-                              activeDot={{ r: 6 }}
-                            />
-                          </LineChart>
-                        </ResponsiveContainer>
+                        <ChartContainer>
+                          <ResponsiveContainer width="100%" height="100%">
+                            <LineChart
+                              data={earningsData}
+                              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+                              <XAxis dataKey="month" />
+                              <YAxis />
+                              <RechartsTooltip
+                                content={({active, payload}) => {
+                                  if (active && payload && payload.length) {
+                                    return (
+                                      <div className="bg-white p-2 border rounded shadow text-sm">
+                                        <p>${payload[0].value}</p>
+                                      </div>
+                                    );
+                                  }
+                                  return null;
+                                }}
+                              />
+                              <Line 
+                                type="monotone" 
+                                dataKey="earnings" 
+                                stroke="#8b5cf6" 
+                                strokeWidth={3}
+                                dot={{ r: 4 }}
+                                activeDot={{ r: 6 }}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </ChartContainer>
                       </div>
                       <div className="flex justify-between items-center mt-4">
                         <div>
@@ -337,26 +350,28 @@ const Affiliate = () => {
                     <Card className="p-6 shadow-lg">
                       <h3 className="text-xl font-bold mb-4 text-electric-purple">Traffic Sources</h3>
                       <div className="h-[300px] flex justify-center">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <PieChart>
-                            <Pie
-                              data={referralSourceData}
-                              cx="50%"
-                              cy="50%"
-                              innerRadius={60}
-                              outerRadius={80}
-                              fill="#8884d8"
-                              paddingAngle={5}
-                              dataKey="value"
-                              label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
-                            >
-                              {referralSourceData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                              ))}
-                            </Pie>
-                            <Tooltip />
-                          </PieChart>
-                        </ResponsiveContainer>
+                        <ChartContainer>
+                          <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                              <Pie
+                                data={referralSourceData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={60}
+                                outerRadius={80}
+                                fill="#8884d8"
+                                paddingAngle={5}
+                                dataKey="value"
+                                label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
+                              >
+                                {referralSourceData.map((entry, index) => (
+                                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                              </Pie>
+                              <RechartsTooltip />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        </ChartContainer>
                       </div>
                       <div className="grid grid-cols-2 gap-2 mt-4">
                         {referralSourceData.map((source, index) => (

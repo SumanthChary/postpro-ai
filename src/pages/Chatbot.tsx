@@ -1,13 +1,17 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Send, Bot, User, RefreshCw, Share2, Image } from "lucide-react";
+import { ArrowLeft, Bot, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import ChatMessage from "@/components/chatbot/ChatMessage";
+import ChatLoading from "@/components/chatbot/ChatLoading";
+import ChatInput from "@/components/chatbot/ChatInput";
+import QuickActionButtons from "@/components/chatbot/QuickActionButtons";
+import Footer from "@/components/Footer";
 
 interface Message {
   role: "user" | "assistant";
@@ -173,34 +177,11 @@ const Chatbot = () => {
         </div>
 
         {/* Quick Action Buttons */}
-        <div className="flex flex-wrap justify-center gap-2">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex items-center gap-1.5"
-            onClick={shareStrategy}
-          >
-            <Share2 size={14} />
-            Get LinkedIn Strategy
-          </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex items-center gap-1.5"
-            onClick={handleImageUpload}
-            disabled={imageUploading}
-          >
-            <Image size={14} />
-            {imageUploading ? 'Uploading...' : 'Analyze Image'}
-          </Button>
-          <input 
-            type="file" 
-            ref={fileInputRef} 
-            accept="image/*" 
-            className="hidden" 
-            onChange={handleImageSelected} 
-          />
-        </div>
+        <QuickActionButtons 
+          shareStrategy={shareStrategy} 
+          handleImageUpload={handleImageUpload}
+          imageUploading={imageUploading}
+        />
 
         {/* Chat Interface */}
         <Card className="max-w-2xl mx-auto shadow-lg border-0 bg-white/70 backdrop-blur-sm overflow-hidden">
@@ -218,81 +199,26 @@ const Chatbot = () => {
           <ScrollArea className="h-[400px] p-4" ref={scrollAreaRef}>
             <div className="space-y-4">
               {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex ${
-                    message.role === "user" ? "justify-end" : "justify-start"
-                  }`}
-                >
-                  <div
-                    className={`max-w-[80%] p-3 rounded-lg ${
-                      message.role === "user"
-                        ? "bg-electric-purple text-white rounded-tr-none"
-                        : "bg-gray-100 text-gray-800 rounded-tl-none"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      {message.role === "assistant" ? (
-                        <Bot size={14} />
-                      ) : (
-                        <User size={14} />
-                      )}
-                      <span className="text-xs opacity-70">
-                        {message.role === "user" ? "You" : "Assistant"}
-                      </span>
-                    </div>
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                    <span className="text-xs opacity-50 block text-right mt-1">
-                      {message.timestamp.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                  </div>
-                </div>
+                <ChatMessage key={index} message={message} />
               ))}
-              {(loading || imageUploading) && (
-                <div className="flex justify-start">
-                  <div className="max-w-[80%] p-3 rounded-lg bg-gray-100 text-gray-800 rounded-tl-none">
-                    <div className="flex items-center gap-2">
-                      <Bot size={14} />
-                      <span className="text-xs opacity-70">Assistant</span>
-                    </div>
-                    <div className="flex items-center gap-1 mt-2">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                    </div>
-                  </div>
-                </div>
-              )}
+              {(loading || imageUploading) && <ChatLoading />}
             </div>
           </ScrollArea>
           
-          <form onSubmit={handleSubmit} className="p-4 border-t">
-            <div className="flex gap-2">
-              <Textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask something about social media strategy..."
-                className="resize-none"
-                rows={1}
-                disabled={loading || imageUploading}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    if (input.trim()) handleSubmit(e);
-                  }
-                }}
-              />
-              <Button type="submit" size="icon" disabled={loading || imageUploading || !input.trim()}>
-                <Send size={16} />
-                <span className="sr-only">Send</span>
-              </Button>
-            </div>
-          </form>
+          <ChatInput 
+            input={input}
+            setInput={setInput}
+            handleSubmit={handleSubmit}
+            loading={loading}
+            imageUploading={imageUploading}
+            fileInputRef={fileInputRef}
+            handleImageUpload={handleImageUpload}
+            handleImageSelected={handleImageSelected}
+          />
         </Card>
       </div>
+      
+      <Footer />
     </div>
   );
 };
