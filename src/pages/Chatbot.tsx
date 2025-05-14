@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Send, Bot, User, RefreshCw } from "lucide-react";
+import { ArrowLeft, Send, Bot, User, RefreshCw, Share2, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -19,12 +19,14 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "👋 Hi there! I'm your social media assistant. Ask me anything about content creation, social media strategy, or how to improve your posts!",
+      content: "👋 Hi there! I'm your social media assistant. Ask me anything about content creation, social media strategy, or how to improve your posts! I can help with specific platforms like LinkedIn, Twitter, Instagram, and more.",
       timestamp: new Date(),
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -90,10 +92,61 @@ const Chatbot = () => {
     setMessages([
       {
         role: "assistant",
-        content: "👋 Hi there! I'm your social media assistant. Ask me anything about content creation, social media strategy, or how to improve your posts!",
+        content: "👋 Hi there! I'm your social media assistant. Ask me anything about content creation, social media strategy, or how to improve your posts! I can help with specific platforms like LinkedIn, Twitter, Instagram, and more.",
         timestamp: new Date(),
       },
     ]);
+  };
+
+  const handleImageUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    // Image upload simulation - in a real app, this would upload to storage
+    setImageUploading(true);
+    
+    try {
+      // Simulate upload delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const userMessage: Message = {
+        role: "user",
+        content: `[Shared an image: ${file.name}] Can you analyze this image and suggest improvements for my social media?`,
+        timestamp: new Date(),
+      };
+      
+      setMessages((prev) => [...prev, userMessage]);
+      
+      // Simulate AI response to image
+      setTimeout(() => {
+        const assistantMessage: Message = {
+          role: "assistant",
+          content: "I've analyzed your image. To make it more engaging on social media, consider: 1) Adding a text overlay with a key statistic or question, 2) Increasing the contrast for better visibility, 3) Using the rule of thirds for composition. Would you like specific advice for a particular platform?",
+          timestamp: new Date(),
+        };
+        
+        setMessages((prev) => [...prev, assistantMessage]);
+      }, 2000);
+      
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to process your image. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setImageUploading(false);
+      // Clear the input to allow the same file to be uploaded again
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const shareStrategy = () => {
+    setInput("Can you recommend a content strategy for growing my LinkedIn network?");
   };
 
   return (
@@ -117,6 +170,36 @@ const Chatbot = () => {
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Get expert advice on social media strategy, content creation, and engagement tactics
           </p>
+        </div>
+
+        {/* Quick Action Buttons */}
+        <div className="flex flex-wrap justify-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex items-center gap-1.5"
+            onClick={shareStrategy}
+          >
+            <Share2 size={14} />
+            Get LinkedIn Strategy
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex items-center gap-1.5"
+            onClick={handleImageUpload}
+            disabled={imageUploading}
+          >
+            <Image size={14} />
+            {imageUploading ? 'Uploading...' : 'Analyze Image'}
+          </Button>
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            accept="image/*" 
+            className="hidden" 
+            onChange={handleImageSelected} 
+          />
         </div>
 
         {/* Chat Interface */}
@@ -168,7 +251,7 @@ const Chatbot = () => {
                   </div>
                 </div>
               ))}
-              {loading && (
+              {(loading || imageUploading) && (
                 <div className="flex justify-start">
                   <div className="max-w-[80%] p-3 rounded-lg bg-gray-100 text-gray-800 rounded-tl-none">
                     <div className="flex items-center gap-2">
@@ -194,9 +277,15 @@ const Chatbot = () => {
                 placeholder="Ask something about social media strategy..."
                 className="resize-none"
                 rows={1}
-                disabled={loading}
+                disabled={loading || imageUploading}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (input.trim()) handleSubmit(e);
+                  }
+                }}
               />
-              <Button type="submit" size="icon" disabled={loading || !input.trim()}>
+              <Button type="submit" size="icon" disabled={loading || imageUploading || !input.trim()}>
                 <Send size={16} />
                 <span className="sr-only">Send</span>
               </Button>

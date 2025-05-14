@@ -19,8 +19,7 @@ import {
   DollarSignIcon,
   LineChartIcon,
   ArrowRightIcon,
-  ExternalLinkIcon,
-  ZapIcon
+  ExternalLinkIcon
 } from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/layout/Navigation';
@@ -36,7 +35,8 @@ import {
   Legend as RechartLegend,
   PieChart,
   Pie,
-  Cell
+  Cell,
+  ResponsiveContainer
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
@@ -67,10 +67,8 @@ const Affiliate = () => {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [referralLink, setReferralLink] = useState("https://postpro.ai/?ref=your-unique-id");
   const [copied, setCopied] = useState(false);
-  const [zapierWebhook, setZapierWebhook] = useState("");
   const [showPricing, setShowPricing] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [progressValue, setProgressValue] = useState(75);
   const { toast } = useToast();
@@ -136,40 +134,6 @@ const Affiliate = () => {
       description: "Your affiliate link is copied to clipboard",
     });
     setTimeout(() => setCopied(false), 3000);
-  };
-
-  const handleSubmitWebhook = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!zapierWebhook) {
-      toast({
-        title: "Error",
-        description: "Please enter your Zapier webhook URL",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    
-    try {
-      // For demonstration purposes - in a real app you'd save this to the user's profile
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Success",
-        description: "Your Zapier integration has been set up successfully",
-      });
-      
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save your webhook URL. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   // Statistics for the dashboard - with more impressive numbers for logged-in users
@@ -297,9 +261,7 @@ const Affiliate = () => {
                     <Card className="p-6 shadow-lg">
                       <h3 className="text-xl font-bold mb-4 text-electric-purple">Earnings Dashboard</h3>
                       <div className="h-[300px]">
-                        <ChartContainer config={{
-                          earnings: { label: "Monthly Earnings ($)" }
-                        }}>
+                        <ResponsiveContainer width="100%" height="100%">
                           <LineChart
                             data={earningsData}
                             margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
@@ -307,7 +269,16 @@ const Affiliate = () => {
                             <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
                             <XAxis dataKey="month" />
                             <YAxis />
-                            <Tooltip content={<ChartTooltipContent />} />
+                            <Tooltip content={({active, payload}) => {
+                              if (active && payload && payload.length) {
+                                return (
+                                  <div className="bg-white p-2 border rounded shadow text-sm">
+                                    <p>${payload[0].value}</p>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            }} />
                             <Line 
                               type="monotone" 
                               dataKey="earnings" 
@@ -317,7 +288,7 @@ const Affiliate = () => {
                               activeDot={{ r: 6 }}
                             />
                           </LineChart>
-                        </ChartContainer>
+                        </ResponsiveContainer>
                       </div>
                       <div className="flex justify-between items-center mt-4">
                         <div>
@@ -366,24 +337,26 @@ const Affiliate = () => {
                     <Card className="p-6 shadow-lg">
                       <h3 className="text-xl font-bold mb-4 text-electric-purple">Traffic Sources</h3>
                       <div className="h-[300px] flex justify-center">
-                        <PieChart width={300} height={300}>
-                          <Pie
-                            data={referralSourceData}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={80}
-                            fill="#8884d8"
-                            paddingAngle={5}
-                            dataKey="value"
-                            label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
-                          >
-                            {referralSourceData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                        </PieChart>
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={referralSourceData}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={60}
+                              outerRadius={80}
+                              fill="#8884d8"
+                              paddingAngle={5}
+                              dataKey="value"
+                              label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
+                            >
+                              {referralSourceData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                              ))}
+                            </Pie>
+                            <Tooltip />
+                          </PieChart>
+                        </ResponsiveContainer>
                       </div>
                       <div className="grid grid-cols-2 gap-2 mt-4">
                         {referralSourceData.map((source, index) => (
@@ -463,35 +436,6 @@ const Affiliate = () => {
                   </Card>
                 </TabsContent>
               </Tabs>
-
-              <Card className="p-6 shadow-lg mb-12">
-                <div className="flex items-center gap-3 mb-4">
-                  <ZapIcon className="w-5 h-5 text-electric-purple" />
-                  <h3 className="text-xl font-bold text-electric-purple">Zapier Integration</h3>
-                </div>
-                <p className="mb-4 text-custom-text">
-                  Connect your Zapier workflow to get notified instantly when you earn a commission.
-                </p>
-                <form onSubmit={handleSubmitWebhook}>
-                  <div className="flex gap-3 mb-2">
-                    <Input 
-                      value={zapierWebhook}
-                      onChange={(e) => setZapierWebhook(e.target.value)}
-                      placeholder="Enter your Zapier webhook URL"
-                      className="flex-1"
-                    />
-                    <Button 
-                      type="submit" 
-                      disabled={isSubmitting || !zapierWebhook}
-                    >
-                      Connect
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-500">
-                    Set up a Zap with a Webhook trigger to receive commission notifications
-                  </p>
-                </form>
-              </Card>
             </>
           )}
 
