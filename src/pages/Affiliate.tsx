@@ -39,6 +39,7 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import { ChartContainer } from "@/components/ui/chart";
+import { BackButton } from '@/components/ui/back-button';
 
 // Mock earnings data for the line chart
 const earningsData = [
@@ -60,6 +61,34 @@ const referralSourceData = [
 ];
 
 const COLORS = ['#8b5cf6', '#3b82f6', '#06b6d4', '#10b981'];
+
+// Chart configuration for the charts
+const chartConfig = {
+  earnings: {
+    label: "Earnings",
+    color: "#8b5cf6"
+  },
+  referrals: {
+    label: "Referrals",
+    color: "#3b82f6"
+  },
+  twitter: {
+    label: "Twitter",
+    color: "#8b5cf6"
+  },
+  linkedin: {
+    label: "LinkedIn",
+    color: "#3b82f6"
+  },
+  facebook: {
+    label: "Facebook",
+    color: "#06b6d4"
+  },
+  email: {
+    label: "Email",
+    color: "#10b981"
+  }
+};
 
 const Affiliate = () => {
   const [session, setSession] = useState<any>(null);
@@ -202,14 +231,7 @@ const Affiliate = () => {
 
       <main className="container mx-auto pt-32 pb-20 px-4">
         <div className="max-w-5xl mx-auto">
-          <Button
-            variant="ghost"
-            className="mb-6"
-            onClick={() => navigate("/")}
-          >
-            <ArrowRightIcon className="w-4 h-4 mr-2 rotate-180" />
-            Back to Home
-          </Button>
+          <BackButton to="/" label="Back to Home" />
         
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-montserrat font-extrabold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent mb-4">
@@ -270,7 +292,7 @@ const Affiliate = () => {
                     <Card className="p-6 shadow-lg">
                       <h3 className="text-xl font-bold mb-4 text-electric-purple">Earnings Dashboard</h3>
                       <div className="h-[300px]">
-                        <ChartContainer>
+                        <ChartContainer config={chartConfig}>
                           <ResponsiveContainer width="100%" height="100%">
                             <LineChart
                               data={earningsData}
@@ -350,7 +372,7 @@ const Affiliate = () => {
                     <Card className="p-6 shadow-lg">
                       <h3 className="text-xl font-bold mb-4 text-electric-purple">Traffic Sources</h3>
                       <div className="h-[300px] flex justify-center">
-                        <ChartContainer>
+                        <ChartContainer config={chartConfig}>
                           <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                               <Pie

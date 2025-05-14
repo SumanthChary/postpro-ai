@@ -1,7 +1,7 @@
-import { createServer } from 'http';
-import dotenv from 'dotenv';
 
-dotenv.config();
+import { createServer } from 'http';
+// Fix the dotenv import to use a URL
+import 'https://deno.land/std@0.218.0/dotenv/load.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -94,15 +94,20 @@ async function getUserPlanFeatures(userId, email) {
   return PLAN_FEATURES[userPlan] || PLAN_FEATURES['free'];
 }
 
+async function fetchUserPlanFromDatabase(userId) {
+  // Mock function - replace with actual DB query
+  return 'free';
+}
+
 async function incrementPostCount(userId) {
   // Mocked function: Replace with actual database update to increment post count
   console.log(`Incrementing post count for user: ${userId}`);
 }
 
-const apiKey = process.env.GOOGLE_AI_API_KEY;
+const apiKey = Deno.env.get("GOOGLE_AI_API_KEY");
 if (!apiKey) {
   console.error('API key not found');
-  process.exit(1);
+  throw new Error('API key not found');
 }
 
 createServer(async (req, res) => {

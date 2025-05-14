@@ -10,6 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOutIcon, ChevronDownIcon, BookOpenIcon, MenuIcon, XIcon } from "lucide-react";
+import { NavLinks } from "./NavLinks";
+import { MobileMenu } from "./MobileMenu";
+import { Logo } from "./Logo";
 
 interface NavigationProps {
   session: any;
@@ -36,47 +39,11 @@ const Navigation = ({
     <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
-            <img 
-              src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
-              alt="PostPro AI Logo" 
-              className="w-8 h-8 rounded-lg object-contain animate-pulse"
-            />
-            <span className="text-2xl font-montserrat font-extrabold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
-              PostPro AI
-            </span>
-          </div>
+          <Logo />
           
           <div className="hidden md:flex space-x-4">
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-electric-purple font-opensans"
-              onClick={() => navigate("/blogs")}
-            >
-              <BookOpenIcon className="w-4 h-4 mr-2" />
-              Blog
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-electric-purple font-opensans"
-              onClick={() => navigate("/affiliate")}
-            >
-              Affiliate
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-electric-purple font-opensans"
-              onClick={() => navigate("/chatbot")}
-            >
-              AI Assistant
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-electric-purple font-opensans"
-              onClick={() => setShowPricing(true)}
-            >
-              Pricing
-            </Button>
+            <NavLinks setShowPricing={setShowPricing} />
+            
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -126,90 +93,14 @@ const Navigation = ({
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4">
-            <div className="flex flex-col space-y-4">
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-electric-purple w-full font-opensans"
-                onClick={() => {
-                  navigate("/blogs");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                <BookOpenIcon className="w-4 h-4 mr-2" />
-                Blog
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-electric-purple w-full font-opensans"
-                onClick={() => {
-                  navigate("/affiliate");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Affiliate
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-electric-purple w-full font-opensans"
-                onClick={() => {
-                  navigate("/chatbot");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                AI Assistant
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-electric-purple w-full font-opensans"
-                onClick={() => {
-                  setShowPricing(true);
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Pricing
-              </Button>
-              {session ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      navigate("/profile");
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full font-opensans"
-                  >
-                    <Avatar className="w-4 h-4 mr-2">
-                      <AvatarImage src={avatarUrl} alt={username} />
-                      <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    Profile
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      handleSignOut();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full font-opensans"
-                  >
-                    <LogOutIcon className="w-4 h-4 mr-2" />
-                    Sign Out
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white w-full font-opensans"
-                  onClick={() => {
-                    navigate("/auth");
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Sign In
-                </Button>
-              )}
-            </div>
-          </div>
+          <MobileMenu 
+            session={session}
+            username={username}
+            avatarUrl={avatarUrl}
+            handleSignOut={handleSignOut}
+            setShowPricing={setShowPricing}
+            setMobileMenuOpen={setMobileMenuOpen}
+          />
         )}
       </div>
     </nav>
