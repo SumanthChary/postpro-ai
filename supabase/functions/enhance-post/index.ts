@@ -1,5 +1,5 @@
 
-import { createServer } from 'http';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 // Fix the dotenv import to use a URL
 import 'https://deno.land/std@0.218.0/dotenv/load.ts';
 
@@ -110,11 +110,10 @@ if (!apiKey) {
   throw new Error('API key not found');
 }
 
-createServer(async (req, res) => {
+serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    res.writeHead(204, corsHeaders);
-    res.end();
-    return;
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
@@ -126,22 +125,30 @@ createServer(async (req, res) => {
     const maxPosts = PLAN_LIMITS[plan] || 0;
 
     if (postCount >= maxPosts) {
-      res.writeHead(403, { 'Content-Type': 'application/json', ...corsHeaders });
-      res.end(JSON.stringify({
-        error: `Post limit reached for your ${plan} plan. Upgrade to a higher plan to create more posts.`,
-      }));
-      return;
+      return new Response(
+        JSON.stringify({
+          error: `Post limit reached for your ${plan} plan. Upgrade to a higher plan to create more posts.`,
+        }), 
+        { 
+          status: 403, 
+          headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+        }
+      );
     }
 
     // Check user plan and features
     const { maxPosts: planMaxPosts, accessTemplates } = await getUserPlanFeatures(userId);
 
     if (!accessTemplates) {
-      res.writeHead(403, { 'Content-Type': 'application/json', ...corsHeaders });
-      res.end(JSON.stringify({
-        error: 'Upgrade to the Pro plan to access post templates.',
-      }));
-      return;
+      return new Response(
+        JSON.stringify({
+          error: 'Upgrade to the Pro plan to access post templates.',
+        }), 
+        { 
+          status: 403, 
+          headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+        }
+      );
     }
 
     // Increment post count for the user
@@ -149,9 +156,13 @@ createServer(async (req, res) => {
 
     if (!post?.trim() || !category?.trim()) {
       console.error('Missing required fields');
-      res.writeHead(400, { 'Content-Type': 'application/json', ...corsHeaders });
-      res.end(JSON.stringify({ error: 'Post content and category are required' }));
-      return;
+      return new Response(
+        JSON.stringify({ error: 'Post content and category are required' }), 
+        { 
+          status: 400, 
+          headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+        }
+      );
     }
 
     try {
@@ -263,16 +274,8 @@ createServer(async (req, res) => {
         generatePlatformContent('facebook')
       ]);
       
-      // Fixing the platforms object type
-      interface Platforms {
-        linkedin?: string;
-        twitter?: string;
-        instagram?: string;
-        facebook?: string;
-      }
-
-      // Initialize platforms with proper type
-      const platforms: Platforms = {};
+      // Initialize platforms object
+      const platforms = {};
 
       if (linkedinText) platforms.linkedin = linkedinText.trim();
       if (twitterText) platforms.twitter = twitterText.trim();
@@ -281,30 +284,47 @@ createServer(async (req, res) => {
       
       if (Object.keys(platforms).length === 0) {
         console.error('No enhanced content generated for any platform');
-        res.writeHead(422, { 'Content-Type': 'application/json', ...corsHeaders });
-        res.end(JSON.stringify({ error: 'No enhanced content generated' }));
-        return;
+        return new Response(
+          JSON.stringify({ error: 'No enhanced content generated' }), 
+          { 
+            status: 422, 
+            headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+          }
+        );
       }
 
-      res.writeHead(200, { 'Content-Type': 'application/json', ...corsHeaders });
-      res.end(JSON.stringify({ platforms }));
+      return new Response(
+        JSON.stringify({ platforms }), 
+        { 
+          status: 200, 
+          headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+        }
+      );
     } catch (apiError) {
       console.error('Error calling Gemini API:', apiError);
-      res.writeHead(502, { 'Content-Type': 'application/json', ...corsHeaders });
-      res.end(JSON.stringify({ 
-        error: 'Error processing with AI service', 
-        details: apiError.message,
-        stack: apiError.stack
-      }));
+      return new Response(
+        JSON.stringify({ 
+          error: 'Error processing with AI service', 
+          details: apiError.message,
+          stack: apiError.stack
+        }), 
+        { 
+          status: 502, 
+          headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+        }
+      );
     }
   } catch (error) {
     console.error('Error in enhance-post function:', error);
-    res.writeHead(500, { 'Content-Type': 'application/json', ...corsHeaders });
-    res.end(JSON.stringify({ 
-      error: error.message || 'An unexpected error occurred',
-      stack: error.stack 
-    }));
+    return new Response(
+      JSON.stringify({ 
+        error: error.message || 'An unexpected error occurred',
+        stack: error.stack 
+      }), 
+      { 
+        status: 500, 
+        headers: { 'Content-Type': 'application/json', ...corsHeaders } 
+      }
+    );
   }
-}).listen(3000, () => {
-  console.log('Server running on port 3000');
 });
