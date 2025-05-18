@@ -20,17 +20,21 @@ export const useProfileData = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        navigate("/auth");
+        // Don't force navigation here - just return silently
         return;
       }
 
+      setLoading(true);
       const { data, error } = await supabase
         .from("profiles")
         .select("username, avatar_url, bio")
         .eq("id", user.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Profile fetch error:", error.message);
+        return;
+      }
 
       if (data) {
         setUsername(data.username || "");
@@ -41,16 +45,16 @@ export const useProfileData = () => {
         }
       }
     } catch (error: any) {
-      toast({
-        title: "Error fetching profile",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.error("Error fetching profile:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getProfileScore = async (currentUsername: string = username, currentBio: string = bio) => {
     try {
+      if (!currentUsername || !currentBio) return;
+      
       const { data: result, error } = await supabase.functions.invoke('enhance-profile', {
         body: { 
           action: 'getProfileScore',

@@ -28,14 +28,7 @@ const Index = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check for session but don't redirect if not logged in
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
-      }
-    });
-
+    // First set up the auth listener
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -45,6 +38,14 @@ const Index = () => {
       } else {
         setUsername("");
         setAvatarUrl("");
+      }
+    });
+
+    // Then check for session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (session?.user) {
+        fetchUserProfile(session.user.id);
       }
     });
 
@@ -59,11 +60,17 @@ const Index = () => {
         .eq("id", userId)
         .single();
 
-      if (error) throw error;
-      setUsername(data.username || "User");
-      setAvatarUrl(data.avatar_url || "");
+      if (error) {
+        console.error("Error fetching user profile:", error.message);
+        return;
+      }
+      
+      if (data) {
+        setUsername(data.username || "User");
+        setAvatarUrl(data.avatar_url || "");
+      }
     } catch (error: any) {
-      console.error("Error fetching user profile:", error.message);
+      console.error("Error in fetchUserProfile:", error.message);
     }
   };
 

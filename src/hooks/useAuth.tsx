@@ -11,22 +11,37 @@ export const useAuth = (redirectPath = "/auth", requireAuth = false) => {
   const { toast } = useToast();
 
   useEffect(() => {
+    // Set up auth state listener FIRST to prevent missing auth events
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "SIGNED_OUT") {
+          setUser(null);
+          if (requireAuth) {
+            navigate(redirectPath);
+          }
+        } else if (event === "SIGNED_IN" && session) {
+          setUser(session.user);
+        }
+      }
+    );
+
+    // THEN check for existing session
     const getUser = async () => {
       try {
         setLoading(true);
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { session } } = await supabase.auth.getSession();
         
-        if (!user && requireAuth) {
+        if (!session?.user && requireAuth) {
           toast({
             title: "Authentication Required",
-            description: "Please sign in to continue",
+            description: "Please sign in to access this feature",
             variant: "destructive",
           });
           navigate(redirectPath);
           return;
         }
         
-        setUser(user);
+        setUser(session?.user || null);
       } catch (error: any) {
         console.error("Authentication error:", error);
         if (requireAuth) {
@@ -44,20 +59,6 @@ export const useAuth = (redirectPath = "/auth", requireAuth = false) => {
 
     getUser();
     
-    // Set up auth state listener
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === "SIGNED_OUT") {
-          setUser(null);
-          if (requireAuth) {
-            navigate(redirectPath);
-          }
-        } else if (event === "SIGNED_IN" && session) {
-          setUser(session.user);
-        }
-      }
-    );
-
     return () => {
       authListener?.subscription.unsubscribe();
     };
