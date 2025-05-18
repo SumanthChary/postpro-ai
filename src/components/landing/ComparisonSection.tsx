@@ -58,23 +58,25 @@ const ComparisonSection = () => {
                 manual: { label: "Before PostProAI" },
                 enhanced: { label: "With PostProAI" }
               }}>
-                <BarChart
-                  data={data}
-                  margin={{
-                    top: 20,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Legend />
-                  <Bar dataKey="manual" name="Before PostProAI" fill="#8E44AD" opacity={0.7} radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="enhanced" name="With PostProAI" fill="#1ABC9C" radius={[4, 4, 0, 0]} />
-                </BarChart>
+                <ResponsiveContainer>
+                  <BarChart
+                    data={data}
+                    margin={{
+                      top: 20,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Legend />
+                    <Bar dataKey="manual" name="Before PostProAI" fill="#8E44AD" opacity={0.7} radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="enhanced" name="With PostProAI" fill="#1ABC9C" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
               </ChartContainer>
             </div>
             <div className="text-center mt-4 text-sm text-gray-500">
