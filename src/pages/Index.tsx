@@ -28,6 +28,7 @@ const Index = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Still check for session but don't redirect if not logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session?.user) {

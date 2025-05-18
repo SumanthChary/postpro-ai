@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-export const useAuth = (redirectPath = "/auth") => {
+export const useAuth = (redirectPath = "/auth", requireAuth = false) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export const useAuth = (redirectPath = "/auth") => {
         setLoading(true);
         const { data: { user } } = await supabase.auth.getUser();
         
-        if (!user) {
+        if (!user && requireAuth) {
           toast({
             title: "Authentication Required",
             description: "Please sign in to continue",
@@ -29,12 +29,14 @@ export const useAuth = (redirectPath = "/auth") => {
         setUser(user);
       } catch (error: any) {
         console.error("Authentication error:", error);
-        toast({
-          title: "Authentication Error",
-          description: error.message || "Failed to authenticate",
-          variant: "destructive",
-        });
-        navigate(redirectPath);
+        if (requireAuth) {
+          toast({
+            title: "Authentication Error",
+            description: error.message || "Failed to authenticate",
+            variant: "destructive",
+          });
+          navigate(redirectPath);
+        }
       } finally {
         setLoading(false);
       }
@@ -47,7 +49,9 @@ export const useAuth = (redirectPath = "/auth") => {
       (event, session) => {
         if (event === "SIGNED_OUT") {
           setUser(null);
-          navigate(redirectPath);
+          if (requireAuth) {
+            navigate(redirectPath);
+          }
         } else if (event === "SIGNED_IN" && session) {
           setUser(session.user);
         }
@@ -57,7 +61,7 @@ export const useAuth = (redirectPath = "/auth") => {
     return () => {
       authListener?.subscription.unsubscribe();
     };
-  }, [navigate, toast, redirectPath]);
+  }, [navigate, toast, redirectPath, requireAuth]);
 
   return { user, loading };
 };
