@@ -1,7 +1,8 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { BookOpenIcon } from "lucide-react";
+import { BookOpenIcon, HomeIcon } from "lucide-react";
 import Footer from "@/components/Footer";
 
 interface BlogPost {
@@ -50,6 +51,16 @@ const Blogs = () => {
     <div className="min-h-screen bg-custom-bg flex flex-col">
       <div className="flex-grow pt-16 sm:pt-20 md:pt-24">
         <div className="container mx-auto px-4">
+          <Button 
+            onClick={() => navigate("/")}
+            variant="outline" 
+            size="sm"
+            className="mb-6 flex items-center gap-2 hover:bg-electric-purple/10 border-electric-purple/20"
+          >
+            <HomeIcon size={16} />
+            <span>Back to Home</span>
+          </Button>
+          
           <div className="flex items-center justify-center mb-6 md:mb-8">
             <BookOpenIcon className="w-6 h-6 md:w-8 md:h-8 text-electric-purple mr-2" />
             <h1 className="text-2xl sm:text-3xl font-montserrat font-bold text-custom-text">
