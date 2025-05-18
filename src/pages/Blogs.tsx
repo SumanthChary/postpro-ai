@@ -57,11 +57,11 @@ const Blogs = () => {
             </h1>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12">
             {blogPosts.map((post) => (
               <Card 
                 key={post.id}
-                className="hover:shadow-lg transition-shadow cursor-pointer"
+                className="hover:shadow-lg transition-shadow cursor-pointer h-full"
                 onClick={() => navigate(`/blog/${post.id}`)}
               >
                 <CardHeader className="p-3 sm:p-4">
@@ -70,13 +70,14 @@ const Blogs = () => {
                       src={post.imageUrl} 
                       alt={post.title}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   </div>
-                  <CardTitle className="text-lg sm:text-xl font-montserrat mt-3 md:mt-4">{post.title}</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl font-montserrat mt-3 md:mt-4 line-clamp-2">{post.title}</CardTitle>
                   <CardDescription className="text-xs sm:text-sm text-gray-500">{post.date}</CardDescription>
                 </CardHeader>
                 <CardContent className="p-3 sm:p-4 pt-0">
-                  <p className="text-sm sm:text-base text-custom-text font-opensans line-clamp-3">{post.description}</p>
+                  <p className="text-sm sm:text-base text-custom-text line-clamp-3">{post.description}</p>
                 </CardContent>
               </Card>
             ))}

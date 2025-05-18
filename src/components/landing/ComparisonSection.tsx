@@ -3,7 +3,6 @@ import React from 'react';
 import { Card } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { TrendingUpIcon, BarChartIcon, LinkIcon } from 'lucide-react';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 // Enhanced data with more impressive growth numbers across all metrics
 const data = [
@@ -54,30 +53,36 @@ const ComparisonSection = () => {
               <BarChartIcon className="text-bright-teal w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div className="h-[300px] sm:h-[400px]">
-              <ChartContainer config={{
-                manual: { label: "Before PostProAI" },
-                enhanced: { label: "With PostProAI" }
-              }}>
-                <ResponsiveContainer>
-                  <BarChart
-                    data={data}
-                    margin={{
-                      top: 20,
-                      right: 20,
-                      left: 0,
-                      bottom: 5,
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={data}
+                  margin={{
+                    top: 20,
+                    right: 20,
+                    left: 0,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                  <XAxis 
+                    dataKey="name" 
+                    tick={{fontSize: 10}}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
+                  />
+                  <YAxis tick={{fontSize: 10}} />
+                  <Tooltip 
+                    formatter={(value, name) => {
+                      return [value, name === 'manual' ? 'Before PostProAI' : 'With PostProAI'];
                     }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                    <XAxis dataKey="name" tick={{fontSize: 10}} />
-                    <YAxis tick={{fontSize: 10}} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Legend wrapperStyle={{fontSize: '12px'}} />
-                    <Bar dataKey="manual" name="Before PostProAI" fill="#8E44AD" opacity={0.7} radius={[4, 4, 0, 0]} />
-                    <Bar dataKey="enhanced" name="With PostProAI" fill="#1ABC9C" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </ChartContainer>
+                  />
+                  <Legend wrapperStyle={{fontSize: '12px'}} />
+                  <Bar dataKey="manual" name="Before PostProAI" fill="#8E44AD" opacity={0.7} radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="enhanced" name="With PostProAI" fill="#1ABC9C" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
             <div className="text-center mt-4 text-xs sm:text-sm text-gray-500">
               Average results based on 1,000+ enhanced posts

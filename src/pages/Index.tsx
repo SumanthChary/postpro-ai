@@ -28,7 +28,7 @@ const Index = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Still check for session but don't redirect if not logged in
+    // Check for session but don't redirect if not logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session?.user) {
@@ -68,6 +68,15 @@ const Index = () => {
   };
 
   const handleProTemplatesClick = () => {
+    if (!session) {
+      toast({
+        title: "Pro Templates",
+        description: "Sign in to access premium templates",
+        variant: "default",
+      });
+      return;
+    }
+    
     setShowPricing(true);
     toast({
       title: "Pro Templates Locked",
@@ -79,7 +88,14 @@ const Index = () => {
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
-      navigate("/auth");
+      setSession(null);
+      setUsername("");
+      setAvatarUrl("");
+      toast({
+        title: "Signed out successfully",
+        description: "You have been logged out",
+        variant: "default",
+      });
     } catch (error: any) {
       toast({
         title: "Error signing out",
