@@ -124,14 +124,14 @@ const Index = () => {
         mobileMenuOpen={mobileMenuOpen}
       />
 
-      <main className="container mx-auto px-4 pt-32 pb-20">
+      <main className="pt-20">
         <HeroSection />
         <VideoShowcase />
         <ComparisonSection />
         <EnhancedPostsShowcase />
+        <AboutSection />
         <SupportSection />
         <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
-        <AboutSection />
         <ComingSoonSection />
         <Testimonials />
         <FAQ />
