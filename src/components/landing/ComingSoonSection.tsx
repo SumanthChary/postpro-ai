@@ -4,12 +4,12 @@ import { Sparkles } from "lucide-react";
 const ComingSoonSection = () => {
   return (
     <section className="py-20 my-10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-electric-purple to-bright-teal opacity-90"></div>
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1507878866276-a947ef722fee?ixlib=rb-4.0.3')] bg-cover bg-center mix-blend-overlay"></div>
+      <div className="absolute inset-0 bg-black"></div>
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1507878866276-a947ef722fee?ixlib=rb-4.0.3')] bg-cover bg-center opacity-10"></div>
       
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="flex flex-col items-center mb-12">
-          <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white inline-block mb-3">
+          <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white inline-block mb-3">
             <Sparkles className="w-4 h-4" />
             Coming Soon
           </div>

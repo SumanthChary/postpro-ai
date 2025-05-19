@@ -16,22 +16,22 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="pt-8 pb-16 md:py-20">
+    <section className="pt-8 pb-16 md:py-20 bg-white">
       <div className="max-w-5xl mx-auto text-center mb-12 px-4">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-extrabold mb-6 tracking-tight leading-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-extrabold mb-6 tracking-tight leading-tight text-black">
           Elevate Your{" "}
-          <span className="bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
+          <span className="text-black underline decoration-4 underline-offset-4">
             Social Media Presence
           </span>
         </h1>
-        <p className="text-lg sm:text-xl text-custom-text mb-8 leading-relaxed font-body max-w-3xl mx-auto">
+        <p className="text-lg sm:text-xl text-gray-700 mb-8 leading-relaxed font-body max-w-3xl mx-auto">
           Transform ordinary posts into engaging content that captivates your audience.
           Our AI enhances clarity, tone, and performance across all platforms.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
           <Button 
             size="lg"
-            className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 transition-all shadow-lg text-white px-8"
+            className="bg-black hover:bg-black/80 transition-all shadow-lg text-white px-8"
             onClick={handleFeatures}
           >
             Discover Features <ArrowRight className="ml-2 h-5 w-5" />
@@ -39,15 +39,15 @@ const HeroSection = () => {
           <Button 
             size="lg"
             variant="outline"
-            className="border-electric-purple text-electric-purple hover:bg-electric-purple/5"
+            className="border-black text-black hover:bg-black/5"
           >
             View Demo
           </Button>
         </div>
         
         <div className="relative mt-16 max-w-4xl mx-auto">
-          <div className="absolute inset-0 bg-gradient-to-r from-electric-purple/10 to-bright-teal/10 rounded-3xl blur-2xl -z-10"></div>
-          <div className="px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-electric-purple border border-electric-purple/20 inline-block mb-6">
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-gray-200 rounded-3xl blur-2xl -z-10"></div>
+          <div className="px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-black border border-black/10 inline-block mb-6">
             Try our AI now — No sign-up required
           </div>
           <PostEnhancer
