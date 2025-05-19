@@ -17,6 +17,7 @@ import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const Index = () => {
   const [showPricing, setShowPricing] = useState(false);
@@ -24,10 +25,16 @@ const Index = () => {
   const [session, setSession] = useState<any>(null);
   const [username, setUsername] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Add page load animation
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    
     // First set up the auth listener
     const {
       data: { subscription },
@@ -49,7 +56,10 @@ const Index = () => {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timer);
+    };
   }, []);
 
   const fetchUserProfile = async (userId: string) => {
@@ -112,8 +122,30 @@ const Index = () => {
     }
   };
 
+  // Track user scroll for optimization
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const sections = document.querySelectorAll('section');
+      
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (scrollPosition >= sectionTop - window.innerHeight / 2 && 
+            scrollPosition < sectionTop + sectionHeight - window.innerHeight / 2) {
+          // Could be used for analytics or UX improvements
+          // console.log('Viewing section:', section.id || 'unnamed section');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-custom-bg">
+    <div className={`min-h-screen bg-custom-bg ${isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
       <Navigation
         session={session}
         username={username}
@@ -126,15 +158,42 @@ const Index = () => {
 
       <main className="pt-20">
         <HeroSection />
-        <VideoShowcase />
-        <ComparisonSection />
-        <EnhancedPostsShowcase />
-        <AboutSection />
-        <SupportSection />
-        <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
-        <ComingSoonSection />
-        <Testimonials />
-        <FAQ />
+        
+        <ScrollReveal>
+          <VideoShowcase />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <ComparisonSection />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <EnhancedPostsShowcase />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <AboutSection />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <SupportSection />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <ComingSoonSection />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <Testimonials />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <FAQ />
+        </ScrollReveal>
       </main>
 
       <Footer />
@@ -149,6 +208,45 @@ const Index = () => {
           <PricingSection />
         </DialogContent>
       </Dialog>
+      
+      {/* Floating CTA - Appears after scrolling */}
+      <div id="floating-cta" className="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-500 z-30">
+        <button 
+          onClick={() => navigate("/enhance")} 
+          className="bg-black text-white rounded-full shadow-lg p-4 flex items-center gap-2 hover:bg-black/80 transition-colors"
+        >
+          <span className="hidden md:inline">Try PostPro AI</span>
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M12 5L19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
+      
+      {/* Script to show/hide floating CTA */}
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          document.addEventListener('DOMContentLoaded', () => {
+            const floatingCTA = document.getElementById('floating-cta');
+            let lastScrollTop = 0;
+            
+            window.addEventListener('scroll', () => {
+              const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+              
+              // Show after scrolling down 300px
+              if (scrollTop > 300) {
+                floatingCTA.style.transform = 'translateY(0)';
+                floatingCTA.style.opacity = '1';
+              } else {
+                floatingCTA.style.transform = 'translateY(20px)';
+                floatingCTA.style.opacity = '0';
+              }
+              
+              lastScrollTop = scrollTop;
+            });
+          });
+        `
+      }} />
     </div>
   );
 };
