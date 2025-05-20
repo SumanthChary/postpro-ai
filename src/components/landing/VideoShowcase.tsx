@@ -8,6 +8,8 @@ const VideoShowcase = () => {
   
   // Supabase hosted video URL
   const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Video%20Project%204.clipchamp";
+  // Supabase hosted thumbnail URL
+  const thumbnailUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Screenshot%20(495).png";
 
   return (
     <section className="py-16">
@@ -39,6 +41,7 @@ const VideoShowcase = () => {
                 className="w-full h-full absolute top-0 left-0 object-cover"
                 controls
                 preload="metadata"
+                poster={thumbnailUrl}
                 onLoadedData={() => setIsLoading(false)}
               >
                 <source src={videoUrl} type="video/mp4" />
