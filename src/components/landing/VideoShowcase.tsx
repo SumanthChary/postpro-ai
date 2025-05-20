@@ -38,9 +38,11 @@ const VideoShowcase = () => {
                 <div className="w-full h-full bg-gray-200 animate-pulse" />
               )}
               <video 
-                className="w-full h-full absolute top-0 left-0 object-cover"
+                className="w-full h-full object-cover"
                 controls
-                preload="metadata"
+                autoPlay
+                muted
+                preload="auto"
                 poster={thumbnailUrl}
                 onLoadedData={() => setIsLoading(false)}
               >
