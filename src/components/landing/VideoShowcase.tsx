@@ -5,6 +5,9 @@ import { Card } from "@/components/ui/card";
 
 const VideoShowcase = () => {
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Supabase hosted video URL
+  const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Video%20Project%204.clipchamp";
 
   return (
     <section className="py-16">
@@ -36,10 +39,9 @@ const VideoShowcase = () => {
                 className="w-full h-full absolute top-0 left-0 object-cover"
                 controls
                 preload="metadata"
-                poster="/demo-thumbnail.jpg"
                 onLoadedData={() => setIsLoading(false)}
               >
-                <source src="/demo-video.mp4" type="video/mp4" />
+                <source src={videoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </AspectRatio>
