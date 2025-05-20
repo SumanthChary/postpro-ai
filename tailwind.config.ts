@@ -20,31 +20,31 @@ export default {
     },
     extend: {
       colors: {
-        "electric-purple": "#8E44AD", // Updated to match logo color
-        "coral-red": "#E74C3C",       // Updated to match logo color  
-        "light-lavender": "#f7f5fa",  // Subtle background color
-        "bright-teal": "#1ABC9C",     // Secondary accent color
-        "custom-bg": "#ffffff",
-        "custom-text": "#1a1a1a",
+        "electric-purple": "#8E44AD",
+        "coral-red": "#FF5733",
+        "light-lavender": "#EAE2F8",
+        "bright-teal": "#1ABC9C",
+        "custom-bg": "#F4F6F8",
+        "custom-text": "#1D2226",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#ffffff",
-        foreground: "#1a1a1a",
+        background: "#F4F6F8",
+        foreground: "#1D2226",
         primary: {
-          DEFAULT: "#111111",
+          DEFAULT: "#8E44AD",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#f5f5f7",
-          foreground: "#1a1a1a",
+          DEFAULT: "#EAE2F8",
+          foreground: "#1D2226",
         },
         accent: {
-          DEFAULT: "#333333",
+          DEFAULT: "#FF5733",
           foreground: "#FFFFFF",
         },
         highlight: {
-          DEFAULT: "#8E44AD", // Same as electric-purple
+          DEFAULT: "#1ABC9C",
           foreground: "#FFFFFF",
         },
       },
@@ -71,25 +71,12 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
-        pulse: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.8" },
-        },
-        shimmer: {
-          "100%": { transform: "translateX(100%)" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         float: "float 3s ease-in-out infinite",
-        pulse: "pulse 2s ease-in-out infinite",
-        shimmer: "shimmer 2s infinite",
       },
-      boxShadow: {
-        'subtle': '0 2px 10px rgba(0, 0, 0, 0.05)',
-        'elegant': '0 10px 30px -10px rgba(0, 0, 0, 0.1)',
-      }
     },
   },
   plugins: [require("tailwindcss-animate")],
