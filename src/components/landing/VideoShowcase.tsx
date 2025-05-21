@@ -1,27 +1,45 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { Progress } from "@/components/ui/progress";
 
 const VideoShowcase = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [videoError, setVideoError] = useState(false);
+  const [progress, setProgress] = useState(0);
   
-  // Supabase hosted video URL - using the alternative URL provided
-  const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Video%20Project%204%20(1).clipchamp";
+  // Supabase hosted video URL - using the new MP4 URL
+  const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Video%20Project%204.mp4";
   // Supabase hosted thumbnail URL
   const thumbnailUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Screenshot%20(495).png";
 
-  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Initialize video after component mounts
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
+      
+      // Add timeupdate event listener to update progress bar
+      const updateProgress = () => {
+        if (videoRef.current) {
+          const value = (videoRef.current.currentTime / videoRef.current.duration) * 100;
+          setProgress(value || 0);
+        }
+      };
+      
+      videoRef.current.addEventListener('timeupdate', updateProgress);
+      
+      return () => {
+        if (videoRef.current) {
+          videoRef.current.removeEventListener('timeupdate', updateProgress);
+        }
+      };
     }
   }, []);
 
@@ -101,14 +119,18 @@ const VideoShowcase = () => {
                 onLoadedData={handleVideoLoadedData}
                 onError={handleVideoError}
                 muted={isMuted}
-                preload="metadata"
+                preload="auto"
                 style={{ opacity: isLoading ? 0 : 1 }}
               >
                 <source src={videoUrl} type="video/mp4" />
-                <source src={videoUrl} type="video/webm" />
                 Your browser does not support the video tag.
               </video>
             </AspectRatio>
+            
+            {/* Progress bar */}
+            <div className="absolute bottom-12 left-4 right-4 z-10">
+              <Progress value={progress} className="h-1 bg-white/30" />
+            </div>
             
             <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-20">
               <Button 
