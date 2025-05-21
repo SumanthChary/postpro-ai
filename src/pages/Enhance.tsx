@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
 import { ArrowLeft } from "lucide-react";
@@ -13,7 +12,7 @@ const Enhance = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4">
-      <div className="max-w-3xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         {/* Back Button */}
         <div className="mb-4">
           <Link to="/">
