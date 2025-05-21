@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ const VideoShowcase = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [videoError, setVideoError] = useState(false);
   
   // Supabase hosted video URL - using the alternative URL provided
   const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Video%20Project%204%20(1).clipchamp";
@@ -17,12 +18,22 @@ const VideoShowcase = () => {
 
   const videoRef = React.useRef<HTMLVideoElement>(null);
 
+  // Initialize video after component mounts
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
+  }, []);
+
   const togglePlay = () => {
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
       } else {
-        videoRef.current.play();
+        videoRef.current.play().catch(error => {
+          console.error("Error playing video:", error);
+          setVideoError(true);
+        });
       }
       setIsPlaying(!isPlaying);
     }
@@ -36,11 +47,19 @@ const VideoShowcase = () => {
   };
 
   const handleVideoLoadedData = () => {
+    console.log("Video loaded successfully");
     setIsLoading(false);
+    setVideoError(false);
     // Ensure video is visible
     if (videoRef.current) {
       videoRef.current.style.opacity = '1';
     }
+  };
+
+  const handleVideoError = () => {
+    console.error("Video failed to load");
+    setVideoError(true);
+    setIsLoading(false);
   };
 
   return (
@@ -69,17 +88,24 @@ const VideoShowcase = () => {
               {isLoading && (
                 <div className="w-full h-full bg-gray-200 animate-pulse absolute top-0 left-0 z-10" />
               )}
+              {videoError && !isLoading && (
+                <div className="w-full h-full bg-gray-100 flex items-center justify-center absolute top-0 left-0 z-10">
+                  <p className="text-gray-600">Video could not be loaded</p>
+                </div>
+              )}
               <video 
                 ref={videoRef}
                 className="w-full h-full object-cover"
                 playsInline
                 poster={thumbnailUrl}
                 onLoadedData={handleVideoLoadedData}
+                onError={handleVideoError}
                 muted={isMuted}
-                preload="auto"
+                preload="metadata"
                 style={{ opacity: isLoading ? 0 : 1 }}
               >
                 <source src={videoUrl} type="video/mp4" />
+                <source src={videoUrl} type="video/webm" />
                 Your browser does not support the video tag.
               </video>
             </AspectRatio>
