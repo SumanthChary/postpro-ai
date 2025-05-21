@@ -81,9 +81,9 @@ const VideoShowcase = () => {
   };
 
   return (
-    <section className="py-16 border-t border-b border-black/10">
+    <section className="py-16">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-editorial font-normal text-center mb-8">
+        <h2 className="text-3xl md:text-4xl font-montserrat font-bold text-center mb-8">
           See PostProAI in Action
         </h2>
         
@@ -101,10 +101,10 @@ const VideoShowcase = () => {
         </div>
         
         <div className="max-w-4xl mx-auto">
-          <Card className="overflow-hidden relative border border-black/20">
+          <Card className="overflow-hidden relative">
             <AspectRatio ratio={16/9}>
               {isLoading && (
-                <div className="w-full h-full bg-gray-100 animate-pulse absolute top-0 left-0 z-10" />
+                <div className="w-full h-full bg-gray-200 animate-pulse absolute top-0 left-0 z-10" />
               )}
               {videoError && !isLoading && (
                 <div className="w-full h-full bg-gray-100 flex items-center justify-center absolute top-0 left-0 z-10">
@@ -136,7 +136,7 @@ const VideoShowcase = () => {
               <Button 
                 onClick={togglePlay} 
                 variant="secondary"
-                className="bg-white/80 hover:bg-white text-black rounded-none"
+                className="bg-white/80 hover:bg-white"
               >
                 {isPlaying ? <Pause size={20} /> : <Play size={20} />}
               </Button>
@@ -144,13 +144,13 @@ const VideoShowcase = () => {
               <Button 
                 onClick={toggleMute} 
                 variant="secondary"
-                className="bg-white/80 hover:bg-white text-black rounded-none"
+                className="bg-white/80 hover:bg-white"
               >
                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
               </Button>
             </div>
           </Card>
-          <p className="text-center mt-6 text-black/80 text-lg font-editorial">
+          <p className="text-center mt-6 text-custom-text text-lg">
             Watch how PostProAI transforms ordinary posts into engagement magnets
           </p>
         </div>
