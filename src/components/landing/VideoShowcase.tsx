@@ -2,14 +2,46 @@
 import React, { useState } from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 
 const VideoShowcase = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   
-  // Supabase hosted video URL
-  const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Video%20Project%204.clipchamp";
+  // Supabase hosted video URL - using the alternative URL provided
+  const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Video%20Project%204%20(1).clipchamp";
   // Supabase hosted thumbnail URL
   const thumbnailUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Screenshot%20(495).png";
+
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const handleVideoLoadedData = () => {
+    setIsLoading(false);
+    // Ensure video is visible
+    if (videoRef.current) {
+      videoRef.current.style.opacity = '1';
+    }
+  };
 
   return (
     <section className="py-16">
@@ -32,24 +64,43 @@ const VideoShowcase = () => {
         </div>
         
         <div className="max-w-4xl mx-auto">
-          <Card className="overflow-hidden">
+          <Card className="overflow-hidden relative">
             <AspectRatio ratio={16/9}>
               {isLoading && (
-                <div className="w-full h-full bg-gray-200 animate-pulse" />
+                <div className="w-full h-full bg-gray-200 animate-pulse absolute top-0 left-0 z-10" />
               )}
               <video 
+                ref={videoRef}
                 className="w-full h-full object-cover"
-                controls
-                autoPlay
-                muted
-                preload="auto"
+                playsInline
                 poster={thumbnailUrl}
-                onLoadedData={() => setIsLoading(false)}
+                onLoadedData={handleVideoLoadedData}
+                muted={isMuted}
+                preload="auto"
+                style={{ opacity: isLoading ? 0 : 1 }}
               >
                 <source src={videoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </AspectRatio>
+            
+            <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-20">
+              <Button 
+                onClick={togglePlay} 
+                variant="secondary"
+                className="bg-white/80 hover:bg-white"
+              >
+                {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+              </Button>
+              
+              <Button 
+                onClick={toggleMute} 
+                variant="secondary"
+                className="bg-white/80 hover:bg-white"
+              >
+                {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+              </Button>
+            </div>
           </Card>
           <p className="text-center mt-6 text-custom-text text-lg">
             Watch how PostProAI transforms ordinary posts into engagement magnets
