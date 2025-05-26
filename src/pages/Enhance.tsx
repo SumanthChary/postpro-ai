@@ -12,7 +12,7 @@ const Enhance = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4">
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-4xl mx-auto space-y-8">
         {/* Back Button */}
         <div className="mb-4">
           <Link to="/">
@@ -29,7 +29,7 @@ const Enhance = () => {
             Enhance Your Post
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Transform your content into engaging posts that capture attention and drive engagement
+            Transform your content into engaging posts with AI-powered enhancements, trending hashtags, and viral CTAs
           </p>
         </div>
 
