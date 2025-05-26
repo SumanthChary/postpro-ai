@@ -29,7 +29,7 @@ const Enhance = () => {
             Enhance Your Post
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Transform your content into engaging posts with AI-powered enhancements, trending hashtags, and viral CTAs
+            Transform your content with AI-powered enhancements, automatic trending hashtags, and viral CTAs
           </p>
         </div>
 
