@@ -176,8 +176,21 @@ const PostEnhancer = ({
             onEnhance={handleEnhancePost}
           />
           
-          {/* Trust Badges - Payment Icons */}
-          <div className="mt-4 flex items-center justify-center gap-4 p-3 bg-gray-50 rounded-lg border">
+          {Object.keys(enhancedPosts).length > 0 && (
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <ShareOptions 
+                enhancedPosts={enhancedPosts} 
+                onPlatformSelect={handlePlatformSelect} 
+              />
+            </div>
+          )}
+
+          <ViralityScore post={post} category={category} />
+        </Card>
+
+        {/* Trust Badges - Payment Icons - Separate Section */}
+        <Card className="p-4 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
+          <div className="flex items-center justify-center gap-4 p-3 bg-gray-50 rounded-lg border">
             <span className="text-sm text-gray-600 font-medium">Secure payments via:</span>
             <button 
               onClick={handlePaymentRedirect}
@@ -202,17 +215,6 @@ const PostEnhancer = ({
               <span className="text-sm font-medium text-blue-600">Razorpay</span>
             </button>
           </div>
-          
-          {Object.keys(enhancedPosts).length > 0 && (
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <ShareOptions 
-                enhancedPosts={enhancedPosts} 
-                onPlatformSelect={handlePlatformSelect} 
-              />
-            </div>
-          )}
-
-          <ViralityScore post={post} category={category} />
         </Card>
       </div>
     </div>
