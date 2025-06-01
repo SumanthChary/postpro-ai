@@ -44,23 +44,39 @@ const PostEnhancer = ({
     return ctas[Math.floor(Math.random() * ctas.length)];
   };
 
-  const analyzeAndEnhanceContent = (content: string, selectedCategory: string) => {
-    // Get relevant hashtags for the category
-    const hashtags = getCategoryHashtags(selectedCategory);
+  const cleanAndEnhanceContent = (content: string, selectedCategory: string) => {
+    // Remove asterisk symbols and clean the content
+    let cleanedContent = content
+      .replace(/\*/g, '') // Remove all asterisk symbols
+      .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+      .trim();
+
+    // Check if content already has hashtags or CTAs to avoid duplicates
+    const hasHashtags = cleanedContent.includes('#');
+    const hasCommonCTAs = [
+      'what are your thoughts',
+      'follow for more',
+      'save this',
+      'share with someone',
+      'double tap',
+      'tag someone',
+      'drop a',
+      'which tip'
+    ].some(phrase => cleanedContent.toLowerCase().includes(phrase));
+
+    // Only add hashtags and CTA if they don't already exist
+    if (!hasHashtags && !hasCommonCTAs) {
+      const hashtags = getCategoryHashtags(selectedCategory);
+      const selectedHashtags = [...hashtags]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.floor(Math.random() * 3) + 3) // 3-5 hashtags
+        .join(' ');
+      
+      const cta = getEngagingCTA();
+      cleanedContent = `${cleanedContent}\n\n${cta}\n\n${selectedHashtags}`;
+    }
     
-    // Select 3-5 most relevant hashtags based on content analysis
-    const selectedHashtags = [...hashtags]
-      .sort(() => 0.5 - Math.random())
-      .slice(0, Math.floor(Math.random() * 3) + 3) // 3-5 hashtags
-      .join(' ');
-    
-    // Get an engaging CTA that matches the content tone
-    const cta = getEngagingCTA();
-    
-    // Intelligently combine content with CTA and hashtags
-    const enhancedContent = `${content.trim()}\n\n${cta}\n\n${selectedHashtags}`;
-    
-    return enhancedContent;
+    return cleanedContent;
   };
 
   const handleEnhancePost = async () => {
@@ -92,18 +108,16 @@ const PostEnhancer = ({
       console.log('Enhanced post response:', data);
       
       if (data.platforms) {
-        // Get the enhanced LinkedIn post
+        // Get the enhanced LinkedIn post and clean it
         const enhancedLinkedInPost = data.platforms.linkedin || post;
+        const finalEnhancedPost = cleanAndEnhanceContent(enhancedLinkedInPost, category);
         
-        // Automatically analyze and add trending hashtags + engaging CTAs
-        const finalEnhancedPost = analyzeAndEnhanceContent(enhancedLinkedInPost, category);
-        
-        // Update all platform posts with smart enhancements
+        // Clean and enhance all platform posts
         const updatedPosts = {
           linkedin: finalEnhancedPost,
-          twitter: data.platforms.twitter ? analyzeAndEnhanceContent(data.platforms.twitter, category) : finalEnhancedPost,
-          instagram: data.platforms.instagram ? analyzeAndEnhanceContent(data.platforms.instagram, category) : finalEnhancedPost,
-          facebook: data.platforms.facebook ? analyzeAndEnhanceContent(data.platforms.facebook, category) : finalEnhancedPost,
+          twitter: data.platforms.twitter ? cleanAndEnhanceContent(data.platforms.twitter, category) : finalEnhancedPost,
+          instagram: data.platforms.instagram ? cleanAndEnhanceContent(data.platforms.instagram, category) : finalEnhancedPost,
+          facebook: data.platforms.facebook ? cleanAndEnhanceContent(data.platforms.facebook, category) : finalEnhancedPost,
         };
         
         setEnhancedPosts(updatedPosts);
@@ -111,7 +125,7 @@ const PostEnhancer = ({
         
         toast({
           title: "Post Enhanced Successfully!",
-          description: "Your post has been enhanced with AI improvements, trending hashtags, and engaging CTAs automatically integrated.",
+          description: "Your post has been enhanced with clean formatting, trending hashtags, and engaging CTAs.",
         });
       } else {
         throw new Error('No enhanced content received');
