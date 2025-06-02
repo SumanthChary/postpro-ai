@@ -52,6 +52,7 @@ export default {
         sans: ["Inter", "system-ui", "sans-serif"],
         heading: ["Inter", "system-ui", "sans-serif"],
         body: ["Inter", "system-ui", "sans-serif"],
+        editorial: ["Editorial New", "Georgia", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
