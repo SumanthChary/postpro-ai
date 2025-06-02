@@ -11,11 +11,11 @@ export const PaymentTrustBadges = () => {
 
   return (
     <Card className="p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
-      <div className="flex items-center justify-center gap-8">
+      <div className="flex items-center justify-center gap-12">
         <span className="text-sm text-gray-500 font-medium">Secure payments via:</span>
         <button 
           onClick={handlePaymentRedirect}
-          className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200"
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
         >
           <img 
             src="/lovable-uploads/14ae3ece-1f14-4d00-943b-e0b05db11ddd.png" 
@@ -26,7 +26,7 @@ export const PaymentTrustBadges = () => {
         </button>
         <button 
           onClick={handlePaymentRedirect}
-          className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200"
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
         >
           <img 
             src="/lovable-uploads/ee9548c4-72d9-4354-adff-ef4509dfb8e3.png" 
