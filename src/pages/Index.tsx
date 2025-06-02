@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -10,6 +11,7 @@ import EnhancedPostsShowcase from "@/components/landing/EnhancedPostsShowcase";
 import HeroSection from "@/components/landing/HeroSection";
 import AboutSection from "@/components/landing/AboutSection";
 import ComingSoonSection from "@/components/landing/ComingSoonSection";
+import SupportSection from "@/components/post-enhancer/SupportSection";
 import TemplatesSection from "@/components/post-enhancer/TemplatesSection";
 import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
@@ -127,6 +129,7 @@ const Index = () => {
         <VideoShowcase />
         <ComparisonSection />
         <EnhancedPostsShowcase />
+        <SupportSection />
         <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
         <AboutSection />
         <ComingSoonSection />
