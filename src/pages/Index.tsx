@@ -11,7 +11,6 @@ import EnhancedPostsShowcase from "@/components/landing/EnhancedPostsShowcase";
 import HeroSection from "@/components/landing/HeroSection";
 import AboutSection from "@/components/landing/AboutSection";
 import ComingSoonSection from "@/components/landing/ComingSoonSection";
-import SupportSection from "@/components/post-enhancer/SupportSection";
 import TemplatesSection from "@/components/post-enhancer/TemplatesSection";
 import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
@@ -113,7 +112,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-custom-bg">
+    <div className="min-h-screen">
       <Navigation
         session={session}
         username={username}
@@ -124,17 +123,18 @@ const Index = () => {
         mobileMenuOpen={mobileMenuOpen}
       />
 
-      <main className="container mx-auto px-4 pt-32 pb-20">
+      <main>
         <HeroSection />
-        <VideoShowcase />
-        <ComparisonSection />
-        <EnhancedPostsShowcase />
-        <SupportSection />
-        <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
-        <AboutSection />
-        <ComingSoonSection />
-        <Testimonials />
-        <FAQ />
+        <div className="bg-custom-bg">
+          <VideoShowcase />
+          <ComparisonSection />
+          <EnhancedPostsShowcase />
+          <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
+          <AboutSection />
+          <ComingSoonSection />
+          <Testimonials />
+          <FAQ />
+        </div>
       </main>
 
       <Footer />
