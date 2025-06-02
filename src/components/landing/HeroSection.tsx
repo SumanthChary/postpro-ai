@@ -12,7 +12,7 @@ const HeroSection = () => {
       <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-12 px-4">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold mb-4 sm:mb-6 tracking-tight leading-tight">
           Transform Your{" "}
-          <span className="bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent italic">
             Social Media Presence
           </span>
         </h1>
