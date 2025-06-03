@@ -36,18 +36,18 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-slate-50 to-white">
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-3 mb-6">
+    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-slate-50 to-white">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12 sm:mb-16">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4 sm:mb-6">
             <div className="p-3 bg-blue-100 rounded-xl">
-              <HelpCircle className="w-8 h-8 text-blue-600" />
+              <HelpCircle className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-semibold text-gray-900">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-900 text-center sm:text-left">
               Frequently Asked Questions
             </h2>
           </div>
-          <p className="text-xl text-gray-600">
+          <p className="text-lg sm:text-xl text-gray-600 px-4">
             Find answers to common questions about PostPro AI
           </p>
         </div>
@@ -57,15 +57,15 @@ const FAQ = () => {
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="bg-white shadow-lg rounded-2xl px-6 border-0 overflow-hidden"
+              className="bg-white shadow-lg rounded-2xl px-4 sm:px-6 border-0 overflow-hidden"
             >
-              <AccordionTrigger className="text-left text-lg hover:text-blue-600 font-semibold py-6 hover:no-underline">
-                <div className="flex items-center gap-3">
-                  <MessageCircleIcon className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                  {faq.question}
+              <AccordionTrigger className="text-left text-base sm:text-lg hover:text-blue-600 font-semibold py-4 sm:py-6 hover:no-underline">
+                <div className="flex items-start gap-3 pr-4">
+                  <MessageCircleIcon className="w-4 sm:w-5 h-4 sm:h-5 text-blue-600 flex-shrink-0 mt-1" />
+                  <span className="leading-tight">{faq.question}</span>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="text-gray-700 text-base leading-relaxed pb-6">
+              <AccordionContent className="text-gray-700 text-sm sm:text-base leading-relaxed pb-4 sm:pb-6 pl-8">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
