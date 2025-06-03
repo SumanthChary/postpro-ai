@@ -15,14 +15,14 @@ const HeroSection = () => {
       <div className="absolute bottom-10 sm:bottom-20 left-1/2 w-36 sm:w-48 md:w-60 lg:w-72 h-36 sm:h-48 md:h-60 lg:h-72 bg-gradient-to-r from-cyan-100/40 to-blue-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{ animationDelay: '4s' }}></div>
       
       <div className="relative z-10 pt-20 sm:pt-24 md:pt-28 pb-8">
-        <div className="max-w-4xl mx-auto text-center mb-12 sm:mb-16 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 tracking-tight leading-tight text-gray-900">
-            Transform Your{" "}
-            <span className="text-gray-800 font-bold">
+        <div className="max-w-5xl mx-auto text-center mb-10 sm:mb-14 px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 md:mb-7 tracking-tight leading-[1.1] text-gray-900">
+            <span className="font-bold">Transform Your</span>{" "}
+            <span className="text-gray-800 font-bold block sm:inline">
               Social Media Presence
             </span>
           </h1>
-          <p className="text-xl sm:text-2xl md:text-3xl text-gray-600 mb-8 sm:mb-12 leading-relaxed max-w-4xl mx-auto px-2 font-medium">
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl text-gray-600 mb-6 sm:mb-8 md:mb-10 leading-relaxed max-w-4xl mx-auto px-2 font-medium">
             Enhance your LinkedIn, Twitter & Instagram posts with AI magic. Create content that
             captivates and converts with professional precision.
           </p>
