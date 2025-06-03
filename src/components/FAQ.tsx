@@ -5,43 +5,49 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, MessageCircleIcon } from "lucide-react";
 
 const FAQ = () => {
   const faqs = [
     {
       question: "What is PostPro AI?",
-      answer: "PostPro AI is a tool that helps you enhance your social media posts with trending hashtags and optimized content structure for better engagement across LinkedIn, Twitter, and Instagram."
+      answer: "PostPro AI is an advanced AI-powered tool that helps you enhance your social media posts with trending hashtags, optimized content structure, and engaging elements for better performance across LinkedIn, Twitter, and Instagram."
     },
     {
       question: "How does the hashtag enhancement work?",
-      answer: "Our system analyzes your post category and adds relevant, trending hashtags that match your content's theme to increase visibility and engagement."
+      answer: "Our intelligent system analyzes your post content, category, and current trends to suggest the most relevant and effective hashtags that match your content's theme and maximize visibility and engagement."
     },
     {
       question: "Can I use PostPro AI for different types of content?",
-      answer: "Yes! We support various content categories including Business, Technology, Lifestyle, Marketing, and Creative content. Each category has its own specialized set of hashtags."
+      answer: "Absolutely! We support various content categories including Business, Technology, Lifestyle, Marketing, Creative content, and more. Each category has its own specialized optimization approach and hashtag sets."
     },
     {
       question: "What's included in the Pro Plan?",
-      answer: "The Pro Plan includes unlimited post enhancements, access to premium templates, and advanced features to help you create more engaging content across all major social platforms."
+      answer: "The Pro Plan includes unlimited post enhancements, access to premium templates, advanced analytics, priority support, team collaboration features, and exclusive AI models for even better content optimization."
     },
     {
       question: "How can I get started?",
-      answer: "Simply sign up for a free account, paste your post in the editor, select your content category, and click 'Enhance Post' to improve your content instantly!"
+      answer: "Getting started is simple! Sign up for a free account, paste your post in the editor, select your content category and style tone, then click 'Enhance Post' to see the magic happen instantly!"
+    },
+    {
+      question: "Is there a free trial available?",
+      answer: "Yes! We offer a generous free tier that allows you to try our basic features. You can enhance posts and see the difference before deciding to upgrade to our Pro Plan for advanced features."
     }
   ];
 
   return (
-    <div className="py-16 bg-gradient-to-b from-light-lavender/30 to-transparent">
-      <div className="max-w-3xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <HelpCircle className="w-6 h-6 text-electric-purple" />
-            <h2 className="text-3xl font-montserrat font-extrabold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
+    <section className="py-20 bg-gradient-to-b from-slate-50 to-white">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="p-3 bg-blue-100 rounded-xl">
+              <HelpCircle className="w-8 h-8 text-blue-600" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-semibold text-gray-900">
               Frequently Asked Questions
             </h2>
           </div>
-          <p className="text-custom-text font-opensans">
+          <p className="text-xl text-gray-600">
             Find answers to common questions about PostPro AI
           </p>
         </div>
@@ -51,19 +57,22 @@ const FAQ = () => {
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="bg-white/80 backdrop-blur-sm rounded-lg px-6 border border-gray-100"
+              className="bg-white shadow-lg rounded-2xl px-6 border-0 overflow-hidden"
             >
-              <AccordionTrigger className="text-left font-montserrat text-lg hover:text-electric-purple">
-                {faq.question}
+              <AccordionTrigger className="text-left text-lg hover:text-blue-600 font-semibold py-6 hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <MessageCircleIcon className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  {faq.question}
+                </div>
               </AccordionTrigger>
-              <AccordionContent className="text-custom-text font-opensans">
+              <AccordionContent className="text-gray-700 text-base leading-relaxed pb-6">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
       </div>
-    </div>
+    </section>
   );
 };
 

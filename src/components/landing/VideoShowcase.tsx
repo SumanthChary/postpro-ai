@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
@@ -81,14 +80,19 @@ const VideoShowcase = () => {
   };
 
   return (
-    <section className="py-16">
-      <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-montserrat font-bold text-center mb-8">
-          See PostProAI in Action
-        </h2>
+    <section className="py-20 bg-gradient-to-b from-white to-slate-50">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-6">
+            See PostProAI in Action
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Watch how PostProAI transforms ordinary posts into engagement magnets
+          </p>
+        </div>
         
         {/* Product Hunt Button */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-12">
           <a href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" target="_blank">
             <img 
               src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=light&t=1743695250761" 
@@ -100,11 +104,11 @@ const VideoShowcase = () => {
           </a>
         </div>
         
-        <div className="max-w-4xl mx-auto">
-          <Card className="overflow-hidden relative">
+        <div className="max-w-5xl mx-auto">
+          <Card className="overflow-hidden relative shadow-2xl border-0 bg-gradient-to-br from-white to-gray-50">
             <AspectRatio ratio={16/9}>
               {isLoading && (
-                <div className="w-full h-full bg-gray-200 animate-pulse absolute top-0 left-0 z-10" />
+                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse absolute top-0 left-0 z-10" />
               )}
               {videoError && !isLoading && (
                 <div className="w-full h-full bg-gray-100 flex items-center justify-center absolute top-0 left-0 z-10">
@@ -127,7 +131,6 @@ const VideoShowcase = () => {
               </video>
             </AspectRatio>
             
-            {/* Progress bar */}
             <div className="absolute bottom-12 left-4 right-4 z-10">
               <Progress value={progress} className="h-1 bg-white/30" />
             </div>
@@ -136,7 +139,7 @@ const VideoShowcase = () => {
               <Button 
                 onClick={togglePlay} 
                 variant="secondary"
-                className="bg-white/80 hover:bg-white"
+                className="bg-white/90 hover:bg-white shadow-lg"
               >
                 {isPlaying ? <Pause size={20} /> : <Play size={20} />}
               </Button>
@@ -144,15 +147,12 @@ const VideoShowcase = () => {
               <Button 
                 onClick={toggleMute} 
                 variant="secondary"
-                className="bg-white/80 hover:bg-white"
+                className="bg-white/90 hover:bg-white shadow-lg"
               >
                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
               </Button>
             </div>
           </Card>
-          <p className="text-center mt-6 text-custom-text text-lg">
-            Watch how PostProAI transforms ordinary posts into engagement magnets
-          </p>
         </div>
       </div>
     </section>
