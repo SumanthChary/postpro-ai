@@ -22,7 +22,7 @@ const HeroSection = () => {
               Social Media Presence
             </span>
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl text-gray-600 mb-6 sm:mb-8 md:mb-10 leading-relaxed max-w-4xl mx-auto px-2 font-medium">
+          <p className="text-base sm:text-lg md:text-xl lg:text-xl xl:text-2xl text-gray-600 mb-6 sm:mb-8 md:mb-10 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
             Enhance your LinkedIn, Twitter & Instagram posts with AI magic. Create content that
             captivates and converts with professional precision.
           </p>

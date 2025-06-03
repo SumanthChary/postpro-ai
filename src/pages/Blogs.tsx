@@ -48,22 +48,22 @@ const Blogs = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-custom-bg flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 flex flex-col">
       <div className="flex-grow pt-16 sm:pt-20 md:pt-24">
         <div className="container mx-auto px-4">
           <Button 
             onClick={() => navigate("/")}
             variant="outline" 
             size="sm"
-            className="mb-6 flex items-center gap-2 hover:bg-electric-purple/10 border-electric-purple/20"
+            className="mb-6 flex items-center gap-2 bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white/90"
           >
             <HomeIcon size={16} />
             <span>Back to Home</span>
           </Button>
           
           <div className="flex items-center justify-center mb-6 md:mb-8">
-            <BookOpenIcon className="w-6 h-6 md:w-8 md:h-8 text-electric-purple mr-2" />
-            <h1 className="text-2xl sm:text-3xl font-montserrat font-bold text-custom-text">
+            <BookOpenIcon className="w-6 h-6 md:w-8 md:h-8 text-blue-600 mr-2" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
               Latest Blog Posts
             </h1>
           </div>
@@ -72,23 +72,23 @@ const Blogs = () => {
             {blogPosts.map((post) => (
               <Card 
                 key={post.id}
-                className="hover:shadow-lg transition-shadow cursor-pointer h-full"
+                className="hover:shadow-xl transition-all duration-300 cursor-pointer h-full bg-white/80 backdrop-blur-sm border border-gray-200/50 hover:-translate-y-1"
                 onClick={() => navigate(`/blog/${post.id}`)}
               >
                 <CardHeader className="p-3 sm:p-4">
-                  <div className="aspect-video overflow-hidden rounded-t-lg">
+                  <div className="aspect-video overflow-hidden rounded-lg">
                     <img 
                       src={post.imageUrl} 
                       alt={post.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       loading="lazy"
                     />
                   </div>
-                  <CardTitle className="text-lg sm:text-xl font-montserrat mt-3 md:mt-4 line-clamp-2">{post.title}</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl mt-3 md:mt-4 line-clamp-2 text-gray-900">{post.title}</CardTitle>
                   <CardDescription className="text-xs sm:text-sm text-gray-500">{post.date}</CardDescription>
                 </CardHeader>
                 <CardContent className="p-3 sm:p-4 pt-0">
-                  <p className="text-sm sm:text-base text-custom-text line-clamp-3">{post.description}</p>
+                  <p className="text-sm sm:text-base text-gray-700 line-clamp-3">{post.description}</p>
                 </CardContent>
               </Card>
             ))}

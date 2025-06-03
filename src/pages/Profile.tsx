@@ -43,59 +43,61 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Button
-        variant="ghost"
-        className="mb-6"
-        onClick={() => navigate(-1)}
-      >
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        Back
-      </Button>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50">
+      <div className="container mx-auto px-4 py-8">
+        <Button
+          variant="ghost"
+          className="mb-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 hover:bg-white/90"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back
+        </Button>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="md:col-span-2">
-          <Card className="p-6">
-            <h1 className="text-2xl font-bold mb-6">Profile Settings</h1>
-            
-            <div className="space-y-6">
-              <AvatarUpload
-                avatarUrl={avatarUrl}
-                username={username}
-                setAvatarUrl={setAvatarUrl}
-                uploading={uploading}
-                setUploading={setUploading}
-              />
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-2">
+            <Card className="p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
+              <h1 className="text-2xl font-bold mb-6 text-gray-900">Profile Settings</h1>
+              
+              <div className="space-y-6">
+                <AvatarUpload
+                  avatarUrl={avatarUrl}
+                  username={username}
+                  setAvatarUrl={setAvatarUrl}
+                  uploading={uploading}
+                  setUploading={setUploading}
+                />
 
-              <ProfileForm
-                username={username}
-                setUsername={setUsername}
-                bio={bio}
-                setBio={setBio}
-                suggestions={suggestions}
-                setSuggestions={setSuggestions}
-                profileScore={profileScore}
-                improvements={improvements}
-                loading={loading}
-                setLoading={setLoading}
-                getProfileScore={getProfileScore}
-              />
-            </div>
-          </Card>
-        </div>
-        
-        <div className="space-y-6">
-          {userId && <UserCredits userId={userId} />}
+                <ProfileForm
+                  username={username}
+                  setUsername={setUsername}
+                  bio={bio}
+                  setBio={setBio}
+                  suggestions={suggestions}
+                  setSuggestions={setSuggestions}
+                  profileScore={profileScore}
+                  improvements={improvements}
+                  loading={loading}
+                  setLoading={setLoading}
+                  getProfileScore={getProfileScore}
+                />
+              </div>
+            </Card>
+          </div>
           
-          <Card className="p-6">
-            <h3 className="text-xl font-semibold mb-4">Subscription</h3>
-            <Button 
-              className="w-full"
-              onClick={() => navigate("/subscription")}
-            >
-              Manage Subscription
-            </Button>
-          </Card>
+          <div className="space-y-6">
+            {userId && <UserCredits userId={userId} />}
+            
+            <Card className="p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">Subscription</h3>
+              <Button 
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                onClick={() => navigate("/subscription")}
+              >
+                Manage Subscription
+              </Button>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

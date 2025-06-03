@@ -41,7 +41,7 @@ const Payment = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600">Loading payment details...</p>
         </div>
@@ -50,11 +50,11 @@ const Payment = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto">
         <PlanSummary planDetails={planDetails} />
 
-        <Card className="p-6 mb-6 bg-white">
+        <Card className="p-6 mb-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
           <div className="space-y-6">
             <PaymentNotice showCreditsInfo={!!planDetails.credits} />
 
@@ -70,7 +70,7 @@ const Payment = () => {
 
             <Button
               variant="outline"
-              className="w-full"
+              className="w-full bg-white/80 border-gray-200/50 hover:bg-gray-50/80"
               onClick={() => navigate(-1)}
               disabled={isProcessing}
             >

@@ -11,12 +11,12 @@ const Enhance = () => {
   const [styleTone, setStyleTone] = useState("professional");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 py-12 px-4">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Back Button */}
         <div className="mb-4">
           <Link to="/">
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button variant="outline" size="sm" className="gap-2 bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white/90 transition-all duration-200">
               <ArrowLeft size={16} />
               Back to Home
             </Button>
@@ -25,23 +25,25 @@ const Enhance = () => {
 
         {/* Header Section */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent">
             Enhance Your Post
           </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
             Transform your content with AI-powered enhancements, automatic trending hashtags, and viral CTAs
           </p>
         </div>
 
         {/* Main Content */}
-        <PostEnhancer 
-          post={post} 
-          setPost={setPost} 
-          category={category} 
-          setCategory={setCategory} 
-          styleTone={styleTone}
-          setStyleTone={setStyleTone}
-        />
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 md:p-8">
+          <PostEnhancer 
+            post={post} 
+            setPost={setPost} 
+            category={category} 
+            setCategory={setCategory} 
+            styleTone={styleTone}
+            setStyleTone={setStyleTone}
+          />
+        </div>
       </div>
     </div>
   );

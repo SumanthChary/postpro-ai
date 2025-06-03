@@ -78,7 +78,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
     min-height: 100vh;
   }
 
@@ -94,16 +94,28 @@
     @apply transition-all duration-200 ease-in-out;
   }
 
-  .professional-gradient {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  .aesthetic-card {
+    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1;
   }
 
-  .card-professional {
-    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-lg hover:shadow-xl transition-all duration-300;
+  .aesthetic-button {
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium transition-all duration-200;
   }
 
-  .section-professional {
+  .aesthetic-input {
+    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all duration-200;
+  }
+
+  .glass-effect {
+    @apply bg-white/60 backdrop-blur-lg border border-white/40;
+  }
+
+  .minimalist-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+  }
+
+  .section-aesthetic {
     @apply py-16 lg:py-24;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
   }
 }
