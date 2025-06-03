@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
@@ -12,19 +13,15 @@ const VideoShowcase = () => {
   const [videoError, setVideoError] = useState(false);
   const [progress, setProgress] = useState(0);
   
-  // Supabase hosted video URL - using the new MP4 URL
   const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Video%20Project%204.mp4";
-  // Supabase hosted thumbnail URL
   const thumbnailUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Screenshot%20(495).png";
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Initialize video after component mounts
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load();
       
-      // Add timeupdate event listener to update progress bar
       const updateProgress = () => {
         if (videoRef.current) {
           const value = (videoRef.current.currentTime / videoRef.current.duration) * 100;
@@ -67,7 +64,6 @@ const VideoShowcase = () => {
     console.log("Video loaded successfully");
     setIsLoading(false);
     setVideoError(false);
-    // Ensure video is visible
     if (videoRef.current) {
       videoRef.current.style.opacity = '1';
     }
@@ -80,32 +76,35 @@ const VideoShowcase = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-slate-50">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 mb-6">
+    <section className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 -mt-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12 lg:mb-16">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6 lg:mb-8 tracking-tight">
             See PostProAI in Action
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Watch how PostProAI transforms ordinary posts into engagement magnets
+          <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed">
+            Watch how PostProAI transforms ordinary posts into engagement magnets with professional precision
           </p>
         </div>
         
         {/* Product Hunt Button */}
-        <div className="flex justify-center mb-12">
-          <a href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" target="_blank">
-            <img 
-              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=light&t=1743695250761" 
-              alt="PostProAI - PostPro&#0032;AI&#0044;&#0032;Smart&#0032;AI&#0045;Powered&#0032;Post&#0032;Enhancement | Product Hunt" 
-              style={{ width: '250px', height: '54px' }} 
-              width="250" 
-              height="54" 
-            />
-          </a>
+        <div className="flex justify-center mb-12 lg:mb-16">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-gray-200/50">
+            <a href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" target="_blank">
+              <img 
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=light&t=1743695250761" 
+                alt="PostProAI - PostPro&#0032;AI&#0044;&#0032;Smart&#0032;AI&#0045;Powered&#0032;Post&#0032;Enhancement | Product Hunt" 
+                style={{ width: '250px', height: '54px' }} 
+                width="250" 
+                height="54" 
+                className="transition-transform hover:scale-105"
+              />
+            </a>
+          </div>
         </div>
         
-        <div className="max-w-5xl mx-auto">
-          <Card className="overflow-hidden relative shadow-2xl border-0 bg-gradient-to-br from-white to-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <Card className="overflow-hidden relative shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
             <AspectRatio ratio={16/9}>
               {isLoading && (
                 <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse absolute top-0 left-0 z-10" />
@@ -139,7 +138,7 @@ const VideoShowcase = () => {
               <Button 
                 onClick={togglePlay} 
                 variant="secondary"
-                className="bg-white/90 hover:bg-white shadow-lg"
+                className="bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm"
               >
                 {isPlaying ? <Pause size={20} /> : <Play size={20} />}
               </Button>
@@ -147,7 +146,7 @@ const VideoShowcase = () => {
               <Button 
                 onClick={toggleMute} 
                 variant="secondary"
-                className="bg-white/90 hover:bg-white shadow-lg"
+                className="bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm"
               >
                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
               </Button>
