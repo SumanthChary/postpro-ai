@@ -173,7 +173,7 @@ export const PostEnhancerLogic = ({
   };
 
   return (
-    <Card className="p-4 sm:p-6 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
+    <Card className="p-4 sm:p-6 shadow-lg border-0 bg-white/70 backdrop-blur-[2px]">
       <EnhancerForm
         post={post}
         category={category}
