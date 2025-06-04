@@ -22,23 +22,25 @@ const HeroSection = () => {
               Social Media Presence
             </span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-xl xl:text-2xl text-gray-600 mb-6 sm:mb-8 md:mb-10 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
+          <p className="text-lg sm:text-xl md:text-xl lg:text-xl xl:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-10 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
             Enhance your LinkedIn, Twitter & Instagram posts with AI magic. Create content that
             captivates and converts with professional precision.
           </p>
         </div>
 
-        <div className="backdrop-blur-lg bg-white/60 rounded-3xl sm:rounded-[2rem] p-6 sm:p-8 md:p-10 mx-4 sm:mx-6 shadow-2xl border border-white/40 max-w-5xl mx-auto relative">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-3xl sm:rounded-[2rem]"></div>
-          <div className="relative z-10">
-            <PostEnhancer
-              post={post}
-              setPost={setPost}
-              category={category}
-              setCategory={setCategory}
-              styleTone={styleTone}
-              setStyleTone={setStyleTone}
-            />
+        <div className="flex justify-center px-4 sm:px-6">
+          <div className="backdrop-blur-lg bg-white/60 rounded-3xl sm:rounded-[2rem] p-6 sm:p-8 md:p-10 shadow-2xl border border-white/40 max-w-5xl w-full relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-3xl sm:rounded-[2rem]"></div>
+            <div className="relative z-10">
+              <PostEnhancer
+                post={post}
+                setPost={setPost}
+                category={category}
+                setCategory={setCategory}
+                styleTone={styleTone}
+                setStyleTone={setStyleTone}
+              />
+            </div>
           </div>
         </div>
       </div>

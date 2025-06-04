@@ -52,7 +52,7 @@ export const PostEnhancerLogic = ({
     return ctas[Math.floor(Math.random() * ctas.length)];
   };
 
-  const cleanAndEnhanceContent = (content: string, selectedCategory: string) => {
+  const cleanAndEnhanceContent = (content: string, selectedCategory: string, platform: string = 'linkedin') => {
     // Remove asterisk symbols and clean the content
     let cleanedContent = content
       .replace(/\*/g, '') // Remove all asterisk symbols
@@ -81,7 +81,15 @@ export const PostEnhancerLogic = ({
         .join(' ');
       
       const cta = getEngagingCTA();
-      cleanedContent = `${cleanedContent}\n\n${cta}\n\n${selectedHashtags}`;
+      
+      // Format differently for LinkedIn with proper line spacing
+      if (platform === 'linkedin') {
+        // Ensure proper line breaks for LinkedIn formatting
+        cleanedContent = cleanedContent.replace(/\n/g, '\n\n'); // Convert single line breaks to double
+        cleanedContent = `${cleanedContent}\n\n${cta}\n\n${selectedHashtags}`;
+      } else {
+        cleanedContent = `${cleanedContent}\n\n${cta}\n\n${selectedHashtags}`;
+      }
     }
     
     return cleanedContent;
@@ -116,16 +124,16 @@ export const PostEnhancerLogic = ({
       console.log('Enhanced post response:', data);
       
       if (data.platforms) {
-        // Get the enhanced LinkedIn post and clean it
+        // Get the enhanced LinkedIn post and clean it with proper formatting
         const enhancedLinkedInPost = data.platforms.linkedin || post;
-        const finalEnhancedPost = cleanAndEnhanceContent(enhancedLinkedInPost, category);
+        const finalEnhancedPost = cleanAndEnhanceContent(enhancedLinkedInPost, category, 'linkedin');
         
         // Clean and enhance all platform posts
         const updatedPosts = {
           linkedin: finalEnhancedPost,
-          twitter: data.platforms.twitter ? cleanAndEnhanceContent(data.platforms.twitter, category) : finalEnhancedPost,
-          instagram: data.platforms.instagram ? cleanAndEnhanceContent(data.platforms.instagram, category) : finalEnhancedPost,
-          facebook: data.platforms.facebook ? cleanAndEnhanceContent(data.platforms.facebook, category) : finalEnhancedPost,
+          twitter: data.platforms.twitter ? cleanAndEnhanceContent(data.platforms.twitter, category, 'twitter') : finalEnhancedPost,
+          instagram: data.platforms.instagram ? cleanAndEnhanceContent(data.platforms.instagram, category, 'instagram') : finalEnhancedPost,
+          facebook: data.platforms.facebook ? cleanAndEnhanceContent(data.platforms.facebook, category, 'facebook') : finalEnhancedPost,
         };
         
         setEnhancedPosts(updatedPosts);

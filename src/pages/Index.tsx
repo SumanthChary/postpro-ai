@@ -112,7 +112,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <Navigation
         session={session}
         username={username}
@@ -125,7 +125,7 @@ const Index = () => {
 
       <main>
         <HeroSection />
-        <div className="bg-custom-bg">
+        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <VideoShowcase />
           <ComparisonSection />
           <EnhancedPostsShowcase />
@@ -140,9 +140,9 @@ const Index = () => {
       <Footer />
 
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-montserrat font-extrabold text-center mb-4">
+            <DialogTitle className="text-2xl font-bold text-center mb-4 text-gray-900">
               Choose Your Perfect Plan
             </DialogTitle>
           </DialogHeader>

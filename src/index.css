@@ -118,4 +118,23 @@
     @apply py-16 lg:py-24;
     background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
   }
+
+  /* Page backgrounds with consistent gradient */
+  .page-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+    min-height: 100vh;
+  }
+
+  /* Ensure all text is black instead of gradient */
+  .text-black-theme {
+    @apply text-gray-900;
+  }
+
+  .heading-black {
+    @apply text-gray-900 font-bold;
+  }
+
+  .subheading-black {
+    @apply text-gray-700 font-medium;
+  }
 }

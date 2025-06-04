@@ -86,8 +86,8 @@ export const ShareOptions = ({ enhancedPosts, onPlatformSelect }: ShareOptionsPr
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold text-lg flex items-center gap-2">
-        <ShareIcon className="h-5 w-5 text-electric-purple" />
+      <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-900">
+        <ShareIcon className="h-5 w-5 text-blue-600" />
         Cross-Platform Sharing
       </h3>
       
@@ -98,9 +98,9 @@ export const ShareOptions = ({ enhancedPosts, onPlatformSelect }: ShareOptionsPr
             variant="outline"
             className={`${
               activePlatform === platform 
-                ? "border-electric-purple bg-electric-purple/10" 
-                : "border-gray-200"
-            } transition-all`}
+                ? "border-blue-600 bg-blue-50 text-gray-900" 
+                : "border-gray-200 text-gray-900"
+            } transition-all hover:bg-blue-50`}
             onClick={() => handlePlatformClick(platform)}
           >
             {getPlatformIcon(platform)}
@@ -111,7 +111,7 @@ export const ShareOptions = ({ enhancedPosts, onPlatformSelect }: ShareOptionsPr
       
       <div className="flex flex-col sm:flex-row gap-2">
         <Button 
-          className="flex-1 bg-electric-purple hover:bg-electric-purple/90"
+          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
           onClick={handleCopyText}
         >
           <CopyIcon className="w-4 h-4 mr-2" />

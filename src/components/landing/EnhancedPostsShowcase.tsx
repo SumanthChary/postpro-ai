@@ -27,7 +27,7 @@ const EnhancedPostsShowcase = () => {
   ];
 
   return (
-    <section className="py-16 lg:py-24 bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/30">
+    <section className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 lg:mb-16">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6 lg:mb-8 tracking-tight">
