@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Send, Bot, User, RefreshCw } from "lucide-react";
+import { ArrowLeft, Send, Bot, User, RefreshCw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
@@ -19,7 +19,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "👋 Hi there! I'm your social media assistant. Ask me anything about content creation, social media strategy, or how to improve your posts!",
+      content: "👋 Hi there! I'm your AI social media assistant. Ask me anything about content creation, strategy, or how to improve your posts!",
       timestamp: new Date(),
     },
   ]);
@@ -90,19 +90,19 @@ const Chatbot = () => {
     setMessages([
       {
         role: "assistant",
-        content: "👋 Hi there! I'm your social media assistant. Ask me anything about content creation, social media strategy, or how to improve your posts!",
+        content: "👋 Hi there! I'm your AI social media assistant. Ask me anything about content creation, strategy, or how to improve your posts!",
         timestamp: new Date(),
       },
     ]);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4">
-      <div className="max-w-3xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 py-8 px-4">
+      <div className="max-w-4xl mx-auto space-y-8">
         {/* Back Button */}
         <div className="mb-4">
           <Link to="/">
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button variant="outline" size="sm" className="gap-2 bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white/90">
               <ArrowLeft size={16} />
               Back to Home
             </Button>
@@ -110,30 +110,54 @@ const Chatbot = () => {
         </div>
 
         {/* Header Section */}
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
-            AI Social Media Assistant
-          </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Get expert advice on social media strategy, content creation, and engagement tactics
+        <div className="text-center space-y-6">
+          <div className="flex items-center justify-center gap-3">
+            <div className="p-4 rounded-2xl" style={{ backgroundColor: 'rgba(57,107,255,0.1)' }}>
+              <Sparkles className="w-8 h-8" style={{ color: 'rgba(57,107,255,1)' }} />
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+              AI Assistant
+            </h1>
+          </div>
+          <p className="text-gray-600 text-xl max-w-3xl mx-auto leading-relaxed font-medium">
+            Get expert advice on social media strategy, content creation, and engagement tactics from our intelligent AI assistant
           </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
+            <span className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: 'rgba(57,107,255,1)' }}></div>
+              Content Strategy
+            </span>
+            <span className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: 'rgba(57,107,255,1)' }}></div>
+              Hashtag Research
+            </span>
+            <span className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: 'rgba(57,107,255,1)' }}></div>
+              Engagement Tips
+            </span>
+          </div>
         </div>
 
         {/* Chat Interface */}
-        <Card className="max-w-2xl mx-auto shadow-lg border-0 bg-white/70 backdrop-blur-sm overflow-hidden">
-          <div className="flex justify-between items-center p-4 border-b">
-            <div className="flex items-center gap-2">
-              <Bot className="text-electric-purple" size={20} />
-              <h2 className="font-medium">Social Media Assistant</h2>
+        <Card className="max-w-4xl mx-auto shadow-2xl border-0 bg-white/80 backdrop-blur-sm overflow-hidden">
+          <div className="flex justify-between items-center p-6 border-b border-gray-200/50">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl" style={{ backgroundColor: 'rgba(57,107,255,0.1)' }}>
+                <Bot style={{ color: 'rgba(57,107,255,1)' }} size={20} />
+              </div>
+              <div>
+                <h2 className="font-semibold text-gray-900">Social Media Assistant</h2>
+                <p className="text-sm text-gray-500">Always here to help</p>
+              </div>
             </div>
-            <Button variant="ghost" size="sm" onClick={resetConversation} className="gap-1">
+            <Button variant="ghost" size="sm" onClick={resetConversation} className="gap-2 hover:bg-gray-100">
               <RefreshCw size={14} />
-              Reset
+              Reset Chat
             </Button>
           </div>
           
-          <ScrollArea className="h-[400px] p-4" ref={scrollAreaRef}>
-            <div className="space-y-4">
+          <ScrollArea className="h-[500px] p-6" ref={scrollAreaRef}>
+            <div className="space-y-6">
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -142,24 +166,25 @@ const Chatbot = () => {
                   }`}
                 >
                   <div
-                    className={`max-w-[80%] p-3 rounded-lg ${
+                    className={`max-w-[80%] p-4 rounded-2xl ${
                       message.role === "user"
-                        ? "bg-electric-purple text-white rounded-tr-none"
-                        : "bg-gray-100 text-gray-800 rounded-tl-none"
+                        ? "text-white rounded-tr-sm"
+                        : "bg-gray-50 text-gray-800 rounded-tl-sm border border-gray-200/50"
                     }`}
+                    style={message.role === "user" ? { backgroundColor: 'rgba(57,107,255,1)' } : {}}
                   >
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-2">
                       {message.role === "assistant" ? (
-                        <Bot size={14} />
+                        <Bot size={16} style={{ color: 'rgba(57,107,255,1)' }} />
                       ) : (
-                        <User size={14} />
+                        <User size={16} />
                       )}
-                      <span className="text-xs opacity-70">
-                        {message.role === "user" ? "You" : "Assistant"}
+                      <span className="text-xs font-medium opacity-70">
+                        {message.role === "user" ? "You" : "AI Assistant"}
                       </span>
                     </div>
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                    <span className="text-xs opacity-50 block text-right mt-1">
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                    <span className="text-xs opacity-50 block text-right mt-2">
                       {message.timestamp.toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -170,15 +195,15 @@ const Chatbot = () => {
               ))}
               {loading && (
                 <div className="flex justify-start">
-                  <div className="max-w-[80%] p-3 rounded-lg bg-gray-100 text-gray-800 rounded-tl-none">
-                    <div className="flex items-center gap-2">
-                      <Bot size={14} />
-                      <span className="text-xs opacity-70">Assistant</span>
+                  <div className="max-w-[80%] p-4 rounded-2xl bg-gray-50 text-gray-800 rounded-tl-sm border border-gray-200/50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Bot size={16} style={{ color: 'rgba(57,107,255,1)' }} />
+                      <span className="text-xs font-medium opacity-70">AI Assistant</span>
                     </div>
-                    <div className="flex items-center gap-1 mt-2">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'rgba(57,107,255,0.4)' }} />
+                      <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'rgba(57,107,255,0.4)', animationDelay: '150ms' }} />
+                      <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'rgba(57,107,255,0.4)', animationDelay: '300ms' }} />
                     </div>
                   </div>
                 </div>
@@ -186,17 +211,23 @@ const Chatbot = () => {
             </div>
           </ScrollArea>
           
-          <form onSubmit={handleSubmit} className="p-4 border-t">
-            <div className="flex gap-2">
+          <form onSubmit={handleSubmit} className="p-6 border-t border-gray-200/50 bg-gray-50/50">
+            <div className="flex gap-3">
               <Textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask something about social media strategy..."
-                className="resize-none"
+                placeholder="Ask me about social media strategy, content ideas, or anything else..."
+                className="resize-none bg-white/80 border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
                 rows={1}
                 disabled={loading}
               />
-              <Button type="submit" size="icon" disabled={loading || !input.trim()}>
+              <Button 
+                type="submit" 
+                size="icon" 
+                disabled={loading || !input.trim()}
+                className="h-10 w-10 text-white"
+                style={{ backgroundColor: 'rgba(57,107,255,1)' }}
+              >
                 <Send size={16} />
                 <span className="sr-only">Send</span>
               </Button>

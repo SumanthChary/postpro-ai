@@ -36,18 +36,18 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-slate-50 to-white">
+    <section className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4 sm:mb-6">
-            <div className="p-3 bg-blue-100 rounded-xl">
-              <HelpCircle className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+            <div className="p-4 rounded-2xl" style={{ backgroundColor: 'rgba(57,107,255,0.1)' }}>
+              <HelpCircle className="w-8 h-8" style={{ color: 'rgba(57,107,255,1)' }} />
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-900 text-center sm:text-left">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900">
               Frequently Asked Questions
             </h2>
           </div>
-          <p className="text-lg sm:text-xl text-gray-600 px-4">
+          <p className="text-xl sm:text-2xl text-gray-600 px-4 font-medium leading-relaxed">
             Find answers to common questions about PostPro AI
           </p>
         </div>
@@ -57,15 +57,15 @@ const FAQ = () => {
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="bg-white shadow-lg rounded-2xl px-4 sm:px-6 border-0 overflow-hidden"
+              className="bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl px-6 border-0 overflow-hidden hover:shadow-2xl transition-all duration-300"
             >
-              <AccordionTrigger className="text-left text-base sm:text-lg hover:text-blue-600 font-semibold py-4 sm:py-6 hover:no-underline">
-                <div className="flex items-start gap-3 pr-4">
-                  <MessageCircleIcon className="w-4 sm:w-5 h-4 sm:h-5 text-blue-600 flex-shrink-0 mt-1" />
+              <AccordionTrigger className="text-left text-lg hover:no-underline font-semibold py-6 text-gray-900">
+                <div className="flex items-start gap-4 pr-4">
+                  <MessageCircleIcon className="w-5 h-5 flex-shrink-0 mt-1" style={{ color: 'rgba(57,107,255,1)' }} />
                   <span className="leading-tight">{faq.question}</span>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="text-gray-700 text-sm sm:text-base leading-relaxed pb-4 sm:pb-6 pl-8">
+              <AccordionContent className="text-gray-700 text-base leading-relaxed pb-6 pl-9 font-medium">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
