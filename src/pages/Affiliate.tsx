@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -19,8 +18,7 @@ import {
   DollarSignIcon,
   LineChartIcon,
   ArrowRightIcon,
-  ExternalLinkIcon,
-  ZapIcon
+  ExternalLinkIcon
 } from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/layout/Navigation';
@@ -68,10 +66,8 @@ const Affiliate = () => {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [referralLink, setReferralLink] = useState("https://postpro.ai/?ref=your-unique-id");
   const [copied, setCopied] = useState(false);
-  const [zapierWebhook, setZapierWebhook] = useState("");
   const [showPricing, setShowPricing] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [progressValue, setProgressValue] = useState(75);
   const { toast } = useToast();
@@ -137,40 +133,6 @@ const Affiliate = () => {
       description: "Your affiliate link is copied to clipboard",
     });
     setTimeout(() => setCopied(false), 3000);
-  };
-
-  const handleSubmitWebhook = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!zapierWebhook) {
-      toast({
-        title: "Error",
-        description: "Please enter your Zapier webhook URL",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    
-    try {
-      // For demonstration purposes - in a real app you'd save this to the user's profile
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Success",
-        description: "Your Zapier integration has been set up successfully",
-      });
-      
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save your webhook URL. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   // Statistics for the dashboard - with more impressive numbers for logged-in users
@@ -475,35 +437,6 @@ const Affiliate = () => {
                   </Card>
                 </TabsContent>
               </Tabs>
-
-              <Card className="p-6 shadow-lg mb-12">
-                <div className="flex items-center gap-3 mb-4">
-                  <ZapIcon className="w-5 h-5 text-electric-purple" />
-                  <h3 className="text-xl font-bold text-electric-purple">Zapier Integration</h3>
-                </div>
-                <p className="mb-4 text-custom-text">
-                  Connect your Zapier workflow to get notified instantly when you earn a commission.
-                </p>
-                <form onSubmit={handleSubmitWebhook}>
-                  <div className="flex gap-3 mb-2">
-                    <Input 
-                      value={zapierWebhook}
-                      onChange={(e) => setZapierWebhook(e.target.value)}
-                      placeholder="Enter your Zapier webhook URL"
-                      className="flex-1"
-                    />
-                    <Button 
-                      type="submit" 
-                      disabled={isSubmitting || !zapierWebhook}
-                    >
-                      Connect
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-500">
-                    Set up a Zap with a Webhook trigger to receive commission notifications
-                  </p>
-                </form>
-              </Card>
             </>
           )}
 
