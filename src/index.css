@@ -116,7 +116,7 @@
   }
 
   .section-aesthetic {
-    @apply py-16 lg:py-24;
+    @apply py-12 sm:py-16 lg:py-24;
     background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
   }
 
@@ -163,5 +163,93 @@
 
   .floating-element {
     @apply shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105;
+  }
+
+  /* Mobile-first responsive utilities */
+  .responsive-text-xs {
+    @apply text-xs sm:text-sm md:text-base lg:text-lg;
+  }
+
+  .responsive-text-sm {
+    @apply text-sm sm:text-base md:text-lg lg:text-xl;
+  }
+
+  .responsive-text-base {
+    @apply text-base sm:text-lg md:text-xl lg:text-2xl;
+  }
+
+  .responsive-text-lg {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+  }
+
+  .responsive-text-xl {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  }
+
+  .responsive-text-2xl {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  .responsive-text-3xl {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
+  }
+
+  /* Responsive spacing utilities */
+  .responsive-p-sm {
+    @apply p-3 sm:p-4 md:p-5 lg:p-6;
+  }
+
+  .responsive-p-md {
+    @apply p-4 sm:p-6 md:p-8 lg:p-10;
+  }
+
+  .responsive-p-lg {
+    @apply p-6 sm:p-8 md:p-10 lg:p-12;
+  }
+
+  .responsive-m-sm {
+    @apply m-3 sm:m-4 md:m-5 lg:m-6;
+  }
+
+  .responsive-m-md {
+    @apply m-4 sm:m-6 md:m-8 lg:m-10;
+  }
+
+  .responsive-m-lg {
+    @apply m-6 sm:m-8 md:m-10 lg:m-12;
+  }
+
+  /* Enhanced mobile optimization */
+  @media (max-width: 640px) {
+    .mobile-optimized {
+      @apply px-3 py-4;
+    }
+    
+    .mobile-text-small {
+      @apply text-sm leading-relaxed;
+    }
+    
+    .mobile-spacing-tight {
+      @apply space-y-3;
+    }
+  }
+
+  /* Smooth animations for mobile */
+  @media (prefers-reduced-motion: no-preference) {
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+  }
+
+  /* Touch-friendly button sizes on mobile */
+  @media (max-width: 640px) {
+    .btn-mobile {
+      @apply min-h-[44px] min-w-[44px] text-sm;
+    }
   }
 }

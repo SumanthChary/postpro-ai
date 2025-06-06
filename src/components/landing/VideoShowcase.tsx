@@ -76,28 +76,28 @@ const VideoShowcase = () => {
   };
 
   return (
-    <section className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 -mt-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6 lg:mb-8 tracking-tight">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 -mt-6 sm:-mt-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight">
             See PostProAI in Action
           </h2>
-          <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed px-2">
             Watch how PostProAI transforms ordinary posts into engagement magnets with professional precision
           </p>
         </div>
         
         {/* Product Hunt Button */}
-        <div className="flex justify-center mb-12 lg:mb-16">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-gray-200/50">
+        <div className="flex justify-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-lg border border-gray-200/50">
             <a href="https://www.producthunt.com/posts/postproai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-postproai" target="_blank">
               <img 
                 src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=903202&theme=light&t=1743695250761" 
                 alt="PostProAI - PostPro&#0032;AI&#0044;&#0032;Smart&#0032;AI&#0045;Powered&#0032;Post&#0032;Enhancement | Product Hunt" 
-                style={{ width: '250px', height: '54px' }} 
-                width="250" 
-                height="54" 
-                className="transition-transform hover:scale-105"
+                style={{ width: '200px', height: '43px' }} 
+                width="200" 
+                height="43" 
+                className="transition-transform hover:scale-105 sm:w-[250px] sm:h-[54px]"
               />
             </a>
           </div>
@@ -111,7 +111,7 @@ const VideoShowcase = () => {
               )}
               {videoError && !isLoading && (
                 <div className="w-full h-full bg-gray-100 flex items-center justify-center absolute top-0 left-0 z-10">
-                  <p className="text-gray-600">Video could not be loaded</p>
+                  <p className="text-gray-600 text-sm sm:text-base">Video could not be loaded</p>
                 </div>
               )}
               <video 
@@ -130,25 +130,27 @@ const VideoShowcase = () => {
               </video>
             </AspectRatio>
             
-            <div className="absolute bottom-12 left-4 right-4 z-10">
+            <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 left-2 sm:left-4 right-2 sm:right-4 z-10">
               <Progress value={progress} className="h-1 bg-white/30" />
             </div>
             
-            <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-20">
+            <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 flex justify-between items-center z-20">
               <Button 
                 onClick={togglePlay} 
                 variant="secondary"
+                size="sm"
                 className="bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm"
               >
-                {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+                {isPlaying ? <Pause size={16} className="sm:w-5 sm:h-5" /> : <Play size={16} className="sm:w-5 sm:h-5" />}
               </Button>
               
               <Button 
                 onClick={toggleMute} 
                 variant="secondary"
+                size="sm"
                 className="bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm"
               >
-                {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                {isMuted ? <VolumeX size={16} className="sm:w-5 sm:h-5" /> : <Volume2 size={16} className="sm:w-5 sm:h-5" />}
               </Button>
             </div>
           </Card>
