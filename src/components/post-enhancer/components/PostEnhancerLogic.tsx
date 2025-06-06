@@ -8,7 +8,6 @@ import { ShareOptions } from "./ShareOptions";
 import { ViralityScore } from "./ViralityScore";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import useHashtags from "@/hooks/useHashtags";
 
 interface PostEnhancerLogicProps {
   post: string;
@@ -29,70 +28,18 @@ export const PostEnhancerLogic = ({
 }: PostEnhancerLogicProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { getCategoryHashtags } = useHashtags();
 
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [originalPost, setOriginalPost] = useState("");
   const [enhancedPosts, setEnhancedPosts] = useState<{[key: string]: string}>({});
   const { toast } = useToast();
 
-  const getEngagingCTA = () => {
-    const ctas = [
-      "What are your thoughts on this?",
-      "Follow for more insights like this!",
-      "Save this for later reference!",
-      "Share with someone who needs to see this!",
-      "Double tap if you found this helpful!",
-      "Tag someone who would benefit from this!",
-      "What's your experience with this?",
-      "Drop a 💯 if you agree!",
-      "Which tip resonates with you most?",
-      "Have you tried this approach?"
-    ];
-    return ctas[Math.floor(Math.random() * ctas.length)];
-  };
-
-  const cleanAndEnhanceContent = (content: string, selectedCategory: string, platform: string = 'linkedin') => {
+  const cleanContent = (content: string) => {
     // Remove asterisk symbols and clean the content
-    let cleanedContent = content
+    return content
       .replace(/\*/g, '') // Remove all asterisk symbols
       .replace(/\s+/g, ' ') // Replace multiple spaces with single space
       .trim();
-
-    // Check if content already has hashtags or CTAs to avoid duplicates
-    const hasHashtags = cleanedContent.includes('#');
-    const hasCommonCTAs = [
-      'what are your thoughts',
-      'follow for more',
-      'save this',
-      'share with someone',
-      'double tap',
-      'tag someone',
-      'drop a',
-      'which tip'
-    ].some(phrase => cleanedContent.toLowerCase().includes(phrase));
-
-    // Only add hashtags and CTA if they don't already exist
-    if (!hasHashtags && !hasCommonCTAs) {
-      const hashtags = getCategoryHashtags(selectedCategory);
-      const selectedHashtags = [...hashtags]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 3) + 3) // 3-5 hashtags
-        .join(' ');
-      
-      const cta = getEngagingCTA();
-      
-      // Format differently for LinkedIn with proper line spacing
-      if (platform === 'linkedin') {
-        // Ensure proper line breaks for LinkedIn formatting
-        cleanedContent = cleanedContent.replace(/\n/g, '\n\n'); // Convert single line breaks to double
-        cleanedContent = `${cleanedContent}\n\n${cta}\n\n${selectedHashtags}`;
-      } else {
-        cleanedContent = `${cleanedContent}\n\n${cta}\n\n${selectedHashtags}`;
-      }
-    }
-    
-    return cleanedContent;
   };
 
   const handleEnhancePost = async () => {
@@ -124,24 +71,20 @@ export const PostEnhancerLogic = ({
       console.log('Enhanced post response:', data);
       
       if (data.platforms) {
-        // Get the enhanced LinkedIn post and clean it with proper formatting
-        const enhancedLinkedInPost = data.platforms.linkedin || post;
-        const finalEnhancedPost = cleanAndEnhanceContent(enhancedLinkedInPost, category, 'linkedin');
-        
-        // Clean and enhance all platform posts
+        // Clean all platform posts without adding extra content since AI prompts handle everything
         const updatedPosts = {
-          linkedin: finalEnhancedPost,
-          twitter: data.platforms.twitter ? cleanAndEnhanceContent(data.platforms.twitter, category, 'twitter') : finalEnhancedPost,
-          instagram: data.platforms.instagram ? cleanAndEnhanceContent(data.platforms.instagram, category, 'instagram') : finalEnhancedPost,
-          facebook: data.platforms.facebook ? cleanAndEnhanceContent(data.platforms.facebook, category, 'facebook') : finalEnhancedPost,
+          linkedin: data.platforms.linkedin ? cleanContent(data.platforms.linkedin) : post,
+          twitter: data.platforms.twitter ? cleanContent(data.platforms.twitter) : post,
+          instagram: data.platforms.instagram ? cleanContent(data.platforms.instagram) : post,
+          facebook: data.platforms.facebook ? cleanContent(data.platforms.facebook) : post,
         };
         
         setEnhancedPosts(updatedPosts);
-        setPost(finalEnhancedPost);
+        setPost(updatedPosts.linkedin);
         
         toast({
           title: "Post Enhanced Successfully!",
-          description: "Your post has been enhanced with clean formatting, trending hashtags, and engaging CTAs.",
+          description: "Your post has been enhanced with professional writing style and platform-specific optimization.",
         });
       } else {
         throw new Error('No enhanced content received');

@@ -1,3 +1,4 @@
+
 import { createServer } from 'http';
 import dotenv from 'dotenv';
 
@@ -160,65 +161,93 @@ createServer(async (req, res) => {
         
         if (platform === 'linkedin') {
           promptText = `
-          Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post. 
+          Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post following modern LinkedIn best practices and writing style of top influencers like Nicolas Cole.
           
           Original post: "${post}"
           
-          Follow these guidelines:
-          1. Make it conversational and authentic with a ${styleTone} tone
-          2. Use short paragraphs with line breaks between them for readability
-          3. Include 3-5 relevant emojis throughout the post strategically
-          4. Add a call to action at the end
-          5. End with 3-5 relevant and trending hashtags in 2023 format (#word)
-          6. Maintain the core message but make it more impactful
-          7. Total length should be comparable to the original
+          Follow these CRITICAL formatting guidelines:
+          1. Use single-line format - each sentence or thought on a separate line (not paragraphs)
+          2. Write like a 6-year experienced LinkedIn writer who understands modern social media
+          3. Use ${styleTone} tone that's authentic and conversational yet professional
+          4. Start with a strong hook that grabs attention in the first line
+          5. Use strategic line breaks for visual appeal and readability
+          6. Include 2-3 relevant emojis placed strategically (not overuse)
+          7. Add a compelling call-to-action that encourages engagement
+          8. End with 3-5 trending, relevant hashtags
+          9. Keep it scannable - each line should be impactful
+          10. Use storytelling elements where appropriate
+          11. Make it relatable and actionable
           
-          Format it exactly like a professional LinkedIn post with proper spacing and structure.
+          Format example:
+          Hook line here 🚀
+          
+          Context or story line
+          
+          Key insight line
+          
+          Another valuable point
+          
+          Call to action question?
+          
+          #HashTag1 #HashTag2 #HashTag3
+          
+          Write the enhanced LinkedIn post now:
           `;
         } else if (platform === 'twitter') {
           promptText = `
-          Transform this ${category} post into an engaging, ${styleTone} Twitter post. 
+          Transform this ${category} post into a compelling, ${styleTone} Twitter/X post that follows modern Twitter best practices.
           
           Original post: "${post}"
           
-          Follow these guidelines:
-          1. Keep it concise (max 280 characters)
-          2. Use ${styleTone} tone
-          3. Include 1-2 relevant emojis
-          4. Add 2-3 trending hashtags
-          5. Make it conversational and shareable
+          Guidelines:
+          1. Keep under 280 characters - be concise and punchy
+          2. Use ${styleTone} tone that's engaging and shareable
+          3. Start with a strong hook or controversial/interesting statement
+          4. Include 1-2 relevant emojis
+          5. Add 2-3 trending hashtags
+          6. Make it tweet-worthy - something people want to retweet
+          7. Use line breaks strategically if needed
+          8. End with engaging element (question, call-to-action, or thought-provoking statement)
           
-          Format it exactly like a Twitter post.
+          Write the enhanced Twitter post now:
           `;
         } else if (platform === 'instagram') {
           promptText = `
-          Transform this ${category} post into an engaging, ${styleTone} Instagram caption. 
+          Transform this ${category} post into an engaging, ${styleTone} Instagram caption that drives engagement.
           
           Original post: "${post}"
           
-          Follow these guidelines:
-          1. Create a ${styleTone} tone caption
-          2. Include line breaks for readability
-          3. Add 4-5 relevant emojis strategically placed
-          4. End with 5-7 hashtags that are relevant and discoverable
-          5. Add a simple call to action
+          Guidelines:
+          1. Create a ${styleTone} tone that's Instagram-native and engaging
+          2. Start with an attention-grabbing opening line
+          3. Use storytelling approach with personal touch
+          4. Include strategic line breaks for visual appeal
+          5. Add 3-4 relevant emojis throughout the caption
+          6. Include a clear call-to-action for engagement
+          7. End with 5-8 discoverable and trending hashtags
+          8. Make it authentic and relatable to Instagram audience
+          9. Encourage comments and saves
           
-          Format it exactly like an Instagram caption.
+          Write the enhanced Instagram caption now:
           `;
         } else if (platform === 'facebook') {
           promptText = `
-          Transform this ${category} post into an engaging, ${styleTone} Facebook post. 
+          Transform this ${category} post into an engaging, ${styleTone} Facebook post optimized for the platform.
           
           Original post: "${post}"
           
-          Follow these guidelines:
-          1. Use a ${styleTone} tone that encourages conversation
-          2. Add 2-3 relevant emojis
-          3. Keep paragraphs short with good spacing
-          4. Include a question or call to action to boost engagement
-          5. Use 1-2 hashtags maximum if relevant
+          Guidelines:
+          1. Use ${styleTone} tone that encourages meaningful conversation
+          2. Write in a more personal, community-focused style
+          3. Add context and background information
+          4. Use 2-3 relevant emojis
+          5. Include conversation starters or questions
+          6. Keep paragraphs short with good spacing
+          7. Add a clear call-to-action that promotes engagement
+          8. Use 1-2 hashtags maximum (Facebook users prefer fewer hashtags)
+          9. Make it shareable and discussion-worthy
           
-          Format it exactly like a Facebook post with proper spacing.
+          Write the enhanced Facebook post now:
           `;
         }
         
