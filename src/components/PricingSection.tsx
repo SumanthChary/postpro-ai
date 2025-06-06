@@ -18,18 +18,18 @@ const PricingSection = () => {
   };
 
   return (
-    <div className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-            Choose Your Plan
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2 sm:mb-4 tracking-tight">
+            Choose Your Perfect Plan
           </h2>
-          <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
             Select the perfect plan to supercharge your social media presence
           </p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8 lg:gap-10 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto">
           {pricingPlans.map((plan) => (
             <PlanCard 
               key={plan.name} 
@@ -39,7 +39,7 @@ const PricingSection = () => {
           ))}
         </div>
         
-        <div className="text-center mt-12 lg:mt-16 flex flex-col md:flex-row items-center justify-center gap-6">
+        <div className="text-center mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <SeeFullFeaturesButton onClick={handleSeeFullFeatures} />
           <RedeemCodeDialog />
         </div>

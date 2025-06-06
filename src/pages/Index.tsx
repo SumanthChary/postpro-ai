@@ -140,7 +140,7 @@ const Index = () => {
       <Footer />
 
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+        <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-y-auto bg-white p-0 rounded-lg">
           <PricingSection />
         </DialogContent>
       </Dialog>
