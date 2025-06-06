@@ -1,13 +1,9 @@
 
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { enhancePost } from "../services/enhancePost";
 import { EnhancerForm } from "./EnhancerForm";
 import { ShareOptions } from "./ShareOptions";
 import { ViralityScore } from "./ViralityScore";
-import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { usePostEnhancer } from "../hooks/usePostEnhancer";
 
 interface PostEnhancerLogicProps {
   post: string;
@@ -26,92 +22,30 @@ export const PostEnhancerLogic = ({
   styleTone,
   setStyleTone,
 }: PostEnhancerLogicProps) => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  const {
+    isEnhancing,
+    enhancedPosts,
+    handleEnhancePost,
+    handleReset,
+    handlePlatformSelect,
+  } = usePostEnhancer();
 
-  const [isEnhancing, setIsEnhancing] = useState(false);
-  const [originalPost, setOriginalPost] = useState("");
-  const [enhancedPosts, setEnhancedPosts] = useState<{[key: string]: string}>({});
-  const { toast } = useToast();
-
-  const cleanContent = (content: string) => {
-    // Remove asterisk symbols and clean the content
-    return content
-      .replace(/\*/g, '') // Remove all asterisk symbols
-      .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-      .trim();
-  };
-
-  const handleEnhancePost = async () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign in or sign up to use the post enhancement feature.",
-        variant: "default",
-      });
-      navigate("/auth");
-      return;
-    }
-
-    if (!post.trim()) {
-      toast({
-        title: "Empty Post",
-        description: "Please enter some content to enhance",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsEnhancing(true);
-    setOriginalPost(post);
-
-    try {
-      console.log('Enhancing post with:', { post, category, styleTone });
-      const data = await enhancePost(post, category, false, styleTone);
-      console.log('Enhanced post response:', data);
-      
-      if (data.platforms) {
-        // Clean all platform posts without adding extra content since AI prompts handle everything
-        const updatedPosts = {
-          linkedin: data.platforms.linkedin ? cleanContent(data.platforms.linkedin) : post,
-          twitter: data.platforms.twitter ? cleanContent(data.platforms.twitter) : post,
-          instagram: data.platforms.instagram ? cleanContent(data.platforms.instagram) : post,
-          facebook: data.platforms.facebook ? cleanContent(data.platforms.facebook) : post,
-        };
-        
-        setEnhancedPosts(updatedPosts);
-        setPost(updatedPosts.linkedin);
-        
-        toast({
-          title: "Post Enhanced Successfully!",
-          description: "Your post has been enhanced with professional writing style and platform-specific optimization.",
-        });
-      } else {
-        throw new Error('No enhanced content received');
-      }
-    } catch (error: unknown) {
-      const err = error as Error;
-      console.error('Error enhancing post:', err);
-      toast({
-        title: "Enhancement Failed",
-        description: err.message || "There was an error enhancing your post. Please try again.",
-        variant: "destructive",
-      });
-      setPost(originalPost);
-    } finally {
-      setIsEnhancing(false);
+  const onEnhance = async () => {
+    const result = await handleEnhancePost(post, category, styleTone);
+    if (result && result.linkedin) {
+      setPost(result.linkedin);
     }
   };
 
-  const handleReset = () => {
-    setPost(originalPost || "");
-    setOriginalPost("");
-    setEnhancedPosts({});
+  const onReset = () => {
+    handleReset();
+    setPost("");
   };
 
-  const handlePlatformSelect = (platform: string) => {
-    if (enhancedPosts[platform]) {
-      setPost(enhancedPosts[platform]);
+  const onPlatformSelect = (platform: string) => {
+    const platformPost = handlePlatformSelect(platform);
+    if (platformPost) {
+      setPost(platformPost);
     }
   };
 
@@ -125,15 +59,15 @@ export const PostEnhancerLogic = ({
         onPostChange={setPost}
         onCategoryChange={setCategory}
         onStyleToneChange={setStyleTone}
-        onReset={handleReset}
-        onEnhance={handleEnhancePost}
+        onReset={onReset}
+        onEnhance={onEnhance}
       />
       
       {Object.keys(enhancedPosts).length > 0 && (
         <div className="mt-6 pt-6 border-t border-gray-200">
           <ShareOptions 
             enhancedPosts={enhancedPosts} 
-            onPlatformSelect={handlePlatformSelect} 
+            onPlatformSelect={onPlatformSelect} 
           />
         </div>
       )}
