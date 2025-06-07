@@ -1,4 +1,3 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -169,78 +168,80 @@ serve(async (req) => {
 Original post: "${post}"
 
 STRUCTURE REQUIREMENTS:
-1. **Hook Line** - Start with an attention-grabbing opener with emoji (like "Hey builders 👋" or similar)
-2. **Engaging Body** - Transform the content into a story format with:
-   - Single line breaks between sentences
-   - Strategic use of bullet points with arrows (➡️) for key pain points
-   - Use checkmarks (✅) for achievements/solutions
-   - Include emotional hooks and relatability
-   - Make it scannable with proper line spacing
-3. **Call-to-Action** - Clear, compelling CTA asking for engagement
-4. **Hashtags** - Separate section with 2-3 line breaks before hashtags
+1. **Dynamic Hook** - Create a compelling opener that matches the post content:
+   - For success stories: "Just achieved something incredible 🚀" or "Three years ago, I never imagined..."
+   - For challenges/struggles: "Ever felt completely overwhelmed by..." or "That moment when reality hits..."
+   - For tips/advice: "Here's what nobody tells you about..." or "After [X] years in [field]..."
+   - For achievements: "Today marks a milestone..." or "Remember when [situation]..."
+   - For business posts: "Building [something] taught me..." or "The hardest lesson in [field]..."
+   - Use relevant emoji that fits the context
+
+2. **Engaging Body** - Transform into story format with:
+   - Single line breaks between key points
+   - Strategic bullet points with ➡️ for challenges/pain points
+   - Use ✅ for solutions/achievements/results
+   - Use 👉 for key insights or important points
+   - Include emotional relatability and personal touch
+   - Make each line scannable and impactful
+
+3. **Strong CTA** - End with engagement-driving questions:
+   - "What's your experience with [topic]? 👇"
+   - "Which point resonates most with you?"
+   - "What would you add to this list?"
+   - "Share your [relevant] story below!"
+
+4. **Hashtags** - Separate with 3 line breaks, use 5-8 relevant hashtags
 
 TONE & STYLE:
-- ${styleTone} but conversational and authentic
-- Use strategic emojis (2-4 throughout the post, not overwhelming)
-- Make it story-driven and relatable
-- Include social proof or credibility elements
-- End with strong engagement hooks
+- ${styleTone} yet conversational and authentic
+- Strategic emojis (3-5 total, not overwhelming)
+- Story-driven with personal elements
+- Include credibility and social proof
+- Create urgency or curiosity
 
-FORMATTING:
-- Each major thought on a new line
-- Use bullet points with ➡️ for problems/challenges
-- Use ✅ for solutions/achievements
-- Use 👉 for important points
-- Separate hashtags with clear line breaks
+FORMATTING RULES:
+- Each major thought = new line
+- ➡️ for problems/challenges
+- ✅ for wins/solutions
+- 👉 for key insights
+- Clear line spacing for readability
 
-Write the enhanced LinkedIn post following this exact structure:`;
+Write the enhanced LinkedIn post:`;
         } else if (platform === 'twitter') {
-          promptText = `Transform this ${category} post into a compelling, ${styleTone} Twitter/X post.
+          promptText = `Create a compelling ${styleTone} Twitter/X post from: "${post}"
 
-Original post: "${post}"
+Requirements:
+- Under 280 characters
+- Strong hook opening
+- Include 1-2 emojis
+- Add 2-3 hashtags
+- End with engagement element
+- ${styleTone} tone
 
-Guidelines:
-1. Keep under 280 characters - be concise and punchy
-2. Use ${styleTone} tone that's engaging and shareable
-3. Start with a strong hook
-4. Include 1-2 relevant emojis
-5. Add 2-3 trending hashtags
-6. Make it tweet-worthy
-7. End with engaging element
-
-Write the enhanced Twitter post:`;
+Enhanced Twitter post:`;
         } else if (platform === 'instagram') {
-          promptText = `Transform this ${category} post into an engaging, ${styleTone} Instagram caption.
+          promptText = `Transform into engaging ${styleTone} Instagram caption: "${post}"
 
-Original post: "${post}"
+Structure:
+- Attention-grabbing opening
+- Story format with line breaks
+- 3-4 strategic emojis
+- Clear call-to-action
+- 5-8 hashtags at end
+- ${styleTone} tone
 
-Guidelines:
-1. Create ${styleTone} tone that's Instagram-native
-2. Start with attention-grabbing opening
-3. Use storytelling approach
-4. Include strategic line breaks
-5. Add 3-4 relevant emojis
-6. Include clear call-to-action
-7. End with 5-8 discoverable hashtags
-8. Make it authentic and relatable
-
-Write the enhanced Instagram caption:`;
+Instagram caption:`;
         } else if (platform === 'facebook') {
-          promptText = `Transform this ${category} post into an engaging, ${styleTone} Facebook post.
+          promptText = `Create ${styleTone} Facebook post from: "${post}"
 
-Original post: "${post}"
+Style:
+- Personal, community-focused
+- Conversational ${styleTone} tone
+- 2-3 emojis
+- Encourage discussion
+- 1-2 hashtags maximum
 
-Guidelines:
-1. Use ${styleTone} tone that encourages conversation
-2. Write in personal, community-focused style
-3. Add context and background
-4. Use 2-3 relevant emojis
-5. Include conversation starters
-6. Keep paragraphs short
-7. Add clear call-to-action
-8. Use 1-2 hashtags maximum
-
-Write the enhanced Facebook post:`;
+Facebook post:`;
         }
         
         const requestBody = {
