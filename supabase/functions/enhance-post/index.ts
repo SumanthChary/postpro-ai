@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -169,53 +170,22 @@ serve(async (req) => {
         let promptText = '';
         
         if (platform === 'linkedin') {
-          promptText = `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post that follows this EXACT line-by-line format and storytelling structure:
+          promptText = `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post following modern LinkedIn best practices.
 
 Original post: "${post}"
 
-REQUIRED FORMAT STRUCTURE:
-1. Start with a powerful, attention-grabbing opening line (like "Just Start. Wherever You Are. With Whatever You Have.")
-2. Use single-line format - each sentence or thought on a separate line with proper spacing
-3. Tell a compelling story with specific details, dates, or personal experiences
-4. Use storytelling elements: "Back then...", "Today...", "Fast forward to..."
-5. Include concrete examples and relatable struggles/challenges
-6. Build emotional connection through vulnerability and authenticity
-7. Show clear transformation/progress over time
-8. End with an inspiring, actionable takeaway or call-to-action
+Guidelines:
+1. Use single-line format - each sentence or thought on a separate line
+2. Write in ${styleTone} tone that's authentic and conversational
+3. Start with a strong hook that grabs attention
+4. Use strategic line breaks for visual appeal
+5. Include 2-3 relevant emojis placed strategically
+6. Add a compelling call-to-action
+7. End with 3-5 trending, relevant hashtags
+8. Keep it scannable and impactful
+9. Make it relatable and actionable
 
-EXAMPLE STRUCTURE TO FOLLOW:
-[Powerful Opening Line]
-
-[Personal story beginning - specific detail/memory]
-[Context about the situation back then]
-[Challenges and limitations faced]
-
-[More specific struggles and obstacles]
-[Details that make it relatable and human]
-
-[Transition to present - "Fast forward to today" or similar]
-[Clear progress and achievements made]
-[Skills/knowledge gained over time]
-
-[Reflection on the journey and what made the difference]
-
-[Inspiring closing line that motivates action]
-
-TONE REQUIREMENTS:
-- ${styleTone} yet authentic and relatable
-- Inspiring and motivational without being preachy
-- Vulnerable but confident
-- Include specific details that make it credible
-- Use strategic line breaks for visual impact and readability
-- Make every line count - avoid filler content
-
-DO NOT:
-- Use hashtags (they will be added separately)
-- Use excessive emojis
-- Make generic statements without backing them up
-- Write in paragraph format
-
-Write the enhanced LinkedIn post following this structure:`;
+Write the enhanced LinkedIn post:`;
         } else if (platform === 'twitter') {
           promptText = `Transform this ${category} post into a compelling, ${styleTone} Twitter/X post.
 
