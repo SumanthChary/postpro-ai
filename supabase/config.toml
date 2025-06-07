@@ -1,3 +1,4 @@
+
 project_id = "rskzizedzagohmvyhuyu"
 
 [functions.enhance-post]
@@ -18,7 +19,8 @@ verify_jwt = true
 [functions.handle-razorpay-payment]
 verify_jwt = false
 
-[cron]
-# Add a cron job to check for scheduled shares every minute
-schedule_share = "* * * * *"
+[functions.referral-system]
+verify_jwt = false
 
+[functions.schedule-share]
+verify_jwt = false
