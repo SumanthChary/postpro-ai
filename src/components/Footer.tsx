@@ -1,20 +1,13 @@
-
 import { Twitter, Linkedin, Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-
 const Footer = () => {
-  return (
-    <footer className="bg-gradient-to-br from-gray-900 via-slate-800 to-black text-white py-12 sm:py-16 lg:py-20">
+  return <footer className="bg-gradient-to-br from-gray-900 via-slate-800 to-black text-white py-12 sm:py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mb-8 sm:mb-10 lg:mb-12 xl:mb-16">
           <div className="sm:col-span-2">
             <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-5 lg:mb-6 xl:mb-8">
-              <img 
-                src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
-                alt="PostPro AI Logo" 
-                className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl object-contain shadow-lg"
-              />
-              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold">PostPro AI</h3>
+              <img src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" alt="PostPro AI Logo" className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl object-contain shadow-lg" />
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-50">PostPro AI</h3>
             </div>
             <p className="text-gray-300 text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed mb-4 sm:mb-5 lg:mb-6 xl:mb-8 max-w-md font-medium">
               Elevate your social media presence with AI-powered content enhancement. 
@@ -63,8 +56,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
