@@ -20,7 +20,7 @@ const PLAN_LIMITS = {
 const PLAN_FEATURES = {
   free: {
     maxPosts: 5,
-    accessTemplates: true, // Changed to true for testing
+    accessTemplates: true,
     accessViralityTips: false,
     accessAdvancedAI: false,
   },
@@ -52,9 +52,8 @@ const PLAN_FEATURES = {
 };
 
 async function getUserPlanAndPostCount(userId: string) {
-  // Mock implementation - replace with actual database query
   console.log(`Getting plan for user: ${userId}`);
-  return { plan: 'free', postCount: 1 }; // Allow requests for testing
+  return { plan: 'free', postCount: 1 };
 }
 
 async function fetchUserPlanFromDatabase(userId: string) {
@@ -108,7 +107,6 @@ serve(async (req) => {
     const { userId, post, category, styleTone = "professional" } = requestBody;
     console.log('Starting enhance-post function with:', { userId, post, category, styleTone });
 
-    // Validate required fields
     if (!post?.trim()) {
       console.error('Missing post content');
       return new Response(JSON.stringify({ error: 'Post content is required' }), {
@@ -125,7 +123,6 @@ serve(async (req) => {
       });
     }
 
-    // Get API key - try both environment variable names
     const apiKey = Deno.env.get('GOOGLE_AI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY');
     if (!apiKey) {
       console.error('Google AI API key not found in environment variables');
@@ -137,7 +134,6 @@ serve(async (req) => {
 
     console.log('API key found, proceeding with enhancement');
 
-    // Check user plan and post count if userId is provided
     if (userId) {
       try {
         const { plan, postCount } = await getUserPlanAndPostCount(userId);
@@ -157,7 +153,6 @@ serve(async (req) => {
         await incrementPostCount(userId);
       } catch (error) {
         console.error('Error checking user plan:', error);
-        // Continue execution for now, but log the error
       }
     }
 
@@ -165,27 +160,40 @@ serve(async (req) => {
       const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
       console.log(`Calling Gemini API at: ${apiUrl}`);
       
-      // Generate content for each platform
       const generatePlatformContent = async (platform: string) => {
         let promptText = '';
         
         if (platform === 'linkedin') {
-          promptText = `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post following modern LinkedIn best practices.
+          promptText = `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post following this EXACT structure:
 
 Original post: "${post}"
 
-Guidelines:
-1. Use single-line format - each sentence or thought on a separate line
-2. Write in ${styleTone} tone that's authentic and conversational
-3. Start with a strong hook that grabs attention
-4. Use strategic line breaks for visual appeal
-5. Include 2-3 relevant emojis placed strategically
-6. Add a compelling call-to-action
-7. End with 3-5 trending, relevant hashtags
-8. Keep it scannable and impactful
-9. Make it relatable and actionable
+STRUCTURE REQUIREMENTS:
+1. **Hook Line** - Start with an attention-grabbing opener with emoji (like "Hey builders 👋" or similar)
+2. **Engaging Body** - Transform the content into a story format with:
+   - Single line breaks between sentences
+   - Strategic use of bullet points with arrows (➡️) for key pain points
+   - Use checkmarks (✅) for achievements/solutions
+   - Include emotional hooks and relatability
+   - Make it scannable with proper line spacing
+3. **Call-to-Action** - Clear, compelling CTA asking for engagement
+4. **Hashtags** - Separate section with 2-3 line breaks before hashtags
 
-Write the enhanced LinkedIn post:`;
+TONE & STYLE:
+- ${styleTone} but conversational and authentic
+- Use strategic emojis (2-4 throughout the post, not overwhelming)
+- Make it story-driven and relatable
+- Include social proof or credibility elements
+- End with strong engagement hooks
+
+FORMATTING:
+- Each major thought on a new line
+- Use bullet points with ➡️ for problems/challenges
+- Use ✅ for solutions/achievements
+- Use 👉 for important points
+- Separate hashtags with clear line breaks
+
+Write the enhanced LinkedIn post following this exact structure:`;
         } else if (platform === 'twitter') {
           promptText = `Transform this ${category} post into a compelling, ${styleTone} Twitter/X post.
 
@@ -276,7 +284,6 @@ Write the enhanced Facebook post:`;
         }
       };
       
-      // Process platforms in parallel with error handling
       console.log('Starting content generation for all platforms');
       const [linkedinResult, twitterResult, instagramResult, facebookResult] = await Promise.allSettled([
         generatePlatformContent('linkedin'),
@@ -285,7 +292,6 @@ Write the enhanced Facebook post:`;
         generatePlatformContent('facebook')
       ]);
       
-      // Extract successful results
       interface Platforms {
         linkedin?: string;
         twitter?: string;
