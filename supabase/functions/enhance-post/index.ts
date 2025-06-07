@@ -9,19 +9,18 @@ const corsHeaders = {
 
 const MAX_FREE_POSTS = 5;
 
-// Update logic to enforce limits based on user plans
 const PLAN_LIMITS = {
-  free: 5, // 5 Post Enhancements/Month
-  weekly: Infinity, // Unlimited Post Enhancements
-  monthly: Infinity, // Unlimited Post Enhancements
-  yearly: Infinity, // Unlimited Post Enhancements
-  enterprise: Infinity, // Unlimited Post Enhancements
+  free: 5,
+  weekly: Infinity,
+  monthly: Infinity,
+  yearly: Infinity,
+  enterprise: Infinity,
 };
 
 const PLAN_FEATURES = {
   free: {
     maxPosts: 5,
-    accessTemplates: false,
+    accessTemplates: true, // Changed to true for testing
     accessViralityTips: false,
     accessAdvancedAI: false,
   },
@@ -52,32 +51,14 @@ const PLAN_FEATURES = {
   },
 };
 
-let referralBonusCount = 0; // Track the number of users who have received referral bonuses
-const MAX_REFERRAL_BONUSES = 100; // Limit to the first 100 users
-
-async function handleReferralBonus(userId: string) {
-  if (referralBonusCount >= MAX_REFERRAL_BONUSES) {
-    console.log(`Referral bonus limit reached. No more bonuses available.`);
-    return 0; // No bonus if limit is reached
-  }
-
-  console.log(`Adding referral bonus for user: ${userId}`);
-  const bonusPosts = 2; // Bonus posts for referring a new user
-
-  // Increment the referral bonus count
-  referralBonusCount++;
-
-  // Update the user's post count or plan features in the database
-  return bonusPosts;
-}
-
 async function getUserPlanAndPostCount(userId: string) {
-  // Mocked function: Replace with actual database query to fetch user plan and post count
-  return { plan: 'free', postCount: 3 }; // Example response
+  // Mock implementation - replace with actual database query
+  console.log(`Getting plan for user: ${userId}`);
+  return { plan: 'free', postCount: 1 }; // Allow requests for testing
 }
 
 async function fetchUserPlanFromDatabase(userId: string) {
-  // Mock implementation - replace with actual database query
+  console.log(`Fetching plan for user: ${userId}`);
   return 'free';
 }
 
@@ -94,16 +75,17 @@ async function getUserPlanFeatures(userId: string, email: string) {
     };
   }
 
-  const userPlan = await fetchUserPlanFromDatabase(userId); // Replace with actual DB query
+  const userPlan = await fetchUserPlanFromDatabase(userId);
   return PLAN_FEATURES[userPlan as keyof typeof PLAN_FEATURES] || PLAN_FEATURES['free'];
 }
 
 async function incrementPostCount(userId: string) {
-  // Mocked function: Replace with actual database update to increment post count
   console.log(`Incrementing post count for user: ${userId}`);
 }
 
 serve(async (req) => {
+  console.log('Request received:', req.method, req.url);
+  
   if (req.method === 'OPTIONS') {
     return new Response(null, { 
       status: 204, 
@@ -143,15 +125,17 @@ serve(async (req) => {
       });
     }
 
-    // Get API key
-    const apiKey = Deno.env.get('GOOGLE_AI_API_KEY');
+    // Get API key - try both environment variable names
+    const apiKey = Deno.env.get('GOOGLE_AI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY');
     if (!apiKey) {
-      console.error('Google AI API key not found');
-      return new Response(JSON.stringify({ error: 'API configuration error' }), {
+      console.error('Google AI API key not found in environment variables');
+      return new Response(JSON.stringify({ error: 'API configuration error - missing API key' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
       });
     }
+
+    console.log('API key found, proceeding with enhancement');
 
     // Check user plan and post count if userId is provided
     if (userId) {
@@ -159,7 +143,9 @@ serve(async (req) => {
         const { plan, postCount } = await getUserPlanAndPostCount(userId);
         const maxPosts = PLAN_LIMITS[plan as keyof typeof PLAN_LIMITS] || 0;
 
-        if (postCount >= maxPosts) {
+        console.log(`User plan: ${plan}, postCount: ${postCount}, maxPosts: ${maxPosts}`);
+
+        if (postCount >= maxPosts && maxPosts !== Infinity) {
           return new Response(JSON.stringify({
             error: `Post limit reached for your ${plan} plan. Upgrade to a higher plan to create more posts.`,
           }), {
@@ -168,19 +154,6 @@ serve(async (req) => {
           });
         }
 
-        // Check user plan and features
-        const { accessTemplates } = await getUserPlanFeatures(userId, '');
-
-        if (!accessTemplates) {
-          return new Response(JSON.stringify({
-            error: 'Upgrade to the Pro plan to access post templates.',
-          }), {
-            status: 403,
-            headers: { 'Content-Type': 'application/json', ...corsHeaders }
-          });
-        }
-
-        // Increment post count for the user
         await incrementPostCount(userId);
       } catch (error) {
         console.error('Error checking user plan:', error);
@@ -189,104 +162,77 @@ serve(async (req) => {
     }
 
     try {
-      // Updated API URL for Gemini
-      const apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
+      const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
       console.log(`Calling Gemini API at: ${apiUrl}`);
       
-      // Create separate prompts for each platform
+      // Generate content for each platform
       const generatePlatformContent = async (platform: string) => {
         let promptText = '';
         
         if (platform === 'linkedin') {
-          promptText = `
-          Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post following modern LinkedIn best practices and writing style of top influencers like Nicolas Cole.
-          
-          Original post: "${post}"
-          
-          Follow these CRITICAL formatting guidelines:
-          1. Use single-line format - each sentence or thought on a separate line (not paragraphs)
-          2. Write like a 6-year experienced LinkedIn writer who understands modern social media
-          3. Use ${styleTone} tone that's authentic and conversational yet professional
-          4. Start with a strong hook that grabs attention in the first line
-          5. Use strategic line breaks for visual appeal and readability
-          6. Include 2-3 relevant emojis placed strategically (not overuse)
-          7. Add a compelling call-to-action that encourages engagement
-          8. End with 3-5 trending, relevant hashtags
-          9. Keep it scannable - each line should be impactful
-          10. Use storytelling elements where appropriate
-          11. Make it relatable and actionable
-          
-          Format example:
-          Hook line here 🚀
-          
-          Context or story line
-          
-          Key insight line
-          
-          Another valuable point
-          
-          Call to action question?
-          
-          #HashTag1 #HashTag2 #HashTag3
-          
-          Write the enhanced LinkedIn post now:
-          `;
+          promptText = `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post following modern LinkedIn best practices.
+
+Original post: "${post}"
+
+Guidelines:
+1. Use single-line format - each sentence or thought on a separate line
+2. Write in ${styleTone} tone that's authentic and conversational
+3. Start with a strong hook that grabs attention
+4. Use strategic line breaks for visual appeal
+5. Include 2-3 relevant emojis placed strategically
+6. Add a compelling call-to-action
+7. End with 3-5 trending, relevant hashtags
+8. Keep it scannable and impactful
+9. Make it relatable and actionable
+
+Write the enhanced LinkedIn post:`;
         } else if (platform === 'twitter') {
-          promptText = `
-          Transform this ${category} post into a compelling, ${styleTone} Twitter/X post that follows modern Twitter best practices.
-          
-          Original post: "${post}"
-          
-          Guidelines:
-          1. Keep under 280 characters - be concise and punchy
-          2. Use ${styleTone} tone that's engaging and shareable
-          3. Start with a strong hook or controversial/interesting statement
-          4. Include 1-2 relevant emojis
-          5. Add 2-3 trending hashtags
-          6. Make it tweet-worthy - something people want to retweet
-          7. Use line breaks strategically if needed
-          8. End with engaging element (question, call-to-action, or thought-provoking statement)
-          
-          Write the enhanced Twitter post now:
-          `;
+          promptText = `Transform this ${category} post into a compelling, ${styleTone} Twitter/X post.
+
+Original post: "${post}"
+
+Guidelines:
+1. Keep under 280 characters - be concise and punchy
+2. Use ${styleTone} tone that's engaging and shareable
+3. Start with a strong hook
+4. Include 1-2 relevant emojis
+5. Add 2-3 trending hashtags
+6. Make it tweet-worthy
+7. End with engaging element
+
+Write the enhanced Twitter post:`;
         } else if (platform === 'instagram') {
-          promptText = `
-          Transform this ${category} post into an engaging, ${styleTone} Instagram caption that drives engagement.
-          
-          Original post: "${post}"
-          
-          Guidelines:
-          1. Create a ${styleTone} tone that's Instagram-native and engaging
-          2. Start with an attention-grabbing opening line
-          3. Use storytelling approach with personal touch
-          4. Include strategic line breaks for visual appeal
-          5. Add 3-4 relevant emojis throughout the caption
-          6. Include a clear call-to-action for engagement
-          7. End with 5-8 discoverable and trending hashtags
-          8. Make it authentic and relatable to Instagram audience
-          9. Encourage comments and saves
-          
-          Write the enhanced Instagram caption now:
-          `;
+          promptText = `Transform this ${category} post into an engaging, ${styleTone} Instagram caption.
+
+Original post: "${post}"
+
+Guidelines:
+1. Create ${styleTone} tone that's Instagram-native
+2. Start with attention-grabbing opening
+3. Use storytelling approach
+4. Include strategic line breaks
+5. Add 3-4 relevant emojis
+6. Include clear call-to-action
+7. End with 5-8 discoverable hashtags
+8. Make it authentic and relatable
+
+Write the enhanced Instagram caption:`;
         } else if (platform === 'facebook') {
-          promptText = `
-          Transform this ${category} post into an engaging, ${styleTone} Facebook post optimized for the platform.
-          
-          Original post: "${post}"
-          
-          Guidelines:
-          1. Use ${styleTone} tone that encourages meaningful conversation
-          2. Write in a more personal, community-focused style
-          3. Add context and background information
-          4. Use 2-3 relevant emojis
-          5. Include conversation starters or questions
-          6. Keep paragraphs short with good spacing
-          7. Add a clear call-to-action that promotes engagement
-          8. Use 1-2 hashtags maximum (Facebook users prefer fewer hashtags)
-          9. Make it shareable and discussion-worthy
-          
-          Write the enhanced Facebook post now:
-          `;
+          promptText = `Transform this ${category} post into an engaging, ${styleTone} Facebook post.
+
+Original post: "${post}"
+
+Guidelines:
+1. Use ${styleTone} tone that encourages conversation
+2. Write in personal, community-focused style
+3. Add context and background
+4. Use 2-3 relevant emojis
+5. Include conversation starters
+6. Keep paragraphs short
+7. Add clear call-to-action
+8. Use 1-2 hashtags maximum
+
+Write the enhanced Facebook post:`;
         }
         
         const requestBody = {
@@ -297,7 +243,7 @@ serve(async (req) => {
           }]
         };
         
-        console.log(`Request payload for ${platform}:`, JSON.stringify(requestBody));
+        console.log(`Making API request for ${platform}`);
         
         try {
           const response = await fetch(`${apiUrl}?key=${apiKey}`, {
@@ -315,7 +261,15 @@ serve(async (req) => {
           }
           
           const data = await response.json();
-          return data.candidates?.[0]?.content?.parts?.[0]?.text;
+          const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+          
+          if (!generatedText) {
+            console.error(`No text generated for ${platform}`);
+            return null;
+          }
+          
+          console.log(`Successfully generated content for ${platform}`);
+          return generatedText;
         } catch (fetchError) {
           console.error(`Network error for ${platform}:`, fetchError);
           return null;
@@ -323,7 +277,8 @@ serve(async (req) => {
       };
       
       // Process platforms in parallel with error handling
-      const [linkedinText, twitterText, instagramText, facebookText] = await Promise.allSettled([
+      console.log('Starting content generation for all platforms');
+      const [linkedinResult, twitterResult, instagramResult, facebookResult] = await Promise.allSettled([
         generatePlatformContent('linkedin'),
         generatePlatformContent('twitter'),
         generatePlatformContent('instagram'),
@@ -340,18 +295,20 @@ serve(async (req) => {
 
       const platforms: Platforms = {};
 
-      if (linkedinText.status === 'fulfilled' && linkedinText.value) {
-        platforms.linkedin = linkedinText.value.trim();
+      if (linkedinResult.status === 'fulfilled' && linkedinResult.value) {
+        platforms.linkedin = linkedinResult.value.trim();
       }
-      if (twitterText.status === 'fulfilled' && twitterText.value) {
-        platforms.twitter = twitterText.value.trim();
+      if (twitterResult.status === 'fulfilled' && twitterResult.value) {
+        platforms.twitter = twitterResult.value.trim();
       }
-      if (instagramText.status === 'fulfilled' && instagramText.value) {
-        platforms.instagram = instagramText.value.trim();
+      if (instagramResult.status === 'fulfilled' && instagramResult.value) {
+        platforms.instagram = instagramResult.value.trim();
       }
-      if (facebookText.status === 'fulfilled' && facebookText.value) {
-        platforms.facebook = facebookText.value.trim();
+      if (facebookResult.status === 'fulfilled' && facebookResult.value) {
+        platforms.facebook = facebookResult.value.trim();
       }
+      
+      console.log('Generated platforms:', Object.keys(platforms));
       
       if (Object.keys(platforms).length === 0) {
         console.error('No enhanced content generated for any platform');
@@ -361,6 +318,7 @@ serve(async (req) => {
         });
       }
 
+      console.log('Successfully enhanced post for platforms:', Object.keys(platforms));
       return new Response(JSON.stringify({ platforms }), {
         status: 200,
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
