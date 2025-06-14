@@ -7,15 +7,17 @@ import {
   FacebookPromptGenerator 
 } from './promptGenerators.ts';
 import { GeminiApiService } from './apiService.ts';
+import { Platform, PlatformContent, StyleTone, Category } from './types.ts';
 
 export class ContentGenerator {
-  private apiService: GeminiApiService;
+  private readonly apiService: GeminiApiService;
+  private static readonly SUPPORTED_PLATFORMS: readonly Platform[] = ['linkedin', 'twitter', 'instagram', 'facebook'] as const;
 
   constructor(apiKey: string) {
     this.apiService = new GeminiApiService(apiKey);
   }
 
-  private getPromptForPlatform(platform: string, post: string, category: string, styleTone: string): string | null {
+  private getPromptForPlatform(platform: Platform, post: string, category: Category, styleTone: StyleTone): string {
     switch (platform) {
       case 'linkedin':
         return LinkedInPromptGenerator.generate(post, category, styleTone);
@@ -26,56 +28,77 @@ export class ContentGenerator {
       case 'facebook':
         return FacebookPromptGenerator.generate(post, styleTone);
       default:
+        throw new Error(`Unsupported platform: ${platform}`);
+    }
+  }
+
+  private async generatePlatformContent(
+    platform: Platform, 
+    post: string, 
+    category: Category, 
+    styleTone: StyleTone
+  ): Promise<string | null> {
+    try {
+      const promptText = this.getPromptForPlatform(platform, post, category, styleTone);
+      const generatedText = await this.apiService.generateContent(promptText, platform);
+      
+      if (!generatedText) {
+        console.warn(`No content generated for ${platform}`);
         return null;
+      }
+      
+      const cleanedContent = ContentCleaner.clean(generatedText);
+      
+      if (!ContentCleaner.validateContent(cleanedContent)) {
+        console.warn(`Invalid content generated for ${platform}`);
+        return null;
+      }
+      
+      console.log(`Successfully generated clean content for ${platform}`);
+      return cleanedContent;
+    } catch (error) {
+      console.error(`Error generating content for ${platform}:`, error);
+      return null;
     }
   }
 
-  private async generatePlatformContent(platform: string, post: string, category: string, styleTone: string): Promise<string | null> {
-    const promptText = this.getPromptForPlatform(platform, post, category, styleTone);
-    
-    if (!promptText) {
-      return null;
+  async generateAllPlatforms(post: string, category: Category, styleTone: StyleTone): Promise<PlatformContent> {
+    if (!post?.trim()) {
+      throw new Error('Post content is required');
     }
     
-    const generatedText = await this.apiService.generateContent(promptText, platform);
-    
-    if (!generatedText) {
-      return null;
+    if (!category?.trim()) {
+      throw new Error('Category is required');
     }
     
-    // Clean the generated content before returning
-    const cleanedContent = ContentCleaner.clean(generatedText);
-    console.log(`Successfully generated clean content for ${platform}`);
-    return cleanedContent;
-  }
+    if (!styleTone?.trim()) {
+      throw new Error('Style tone is required');
+    }
 
-  async generateAllPlatforms(post: string, category: string, styleTone: string) {
     console.log('Starting content generation for all platforms');
     
-    const platforms = ['linkedin', 'twitter', 'instagram', 'facebook'];
     const results = await Promise.allSettled(
-      platforms.map(platform => this.generatePlatformContent(platform, post, category, styleTone))
+      ContentGenerator.SUPPORTED_PLATFORMS.map(platform => 
+        this.generatePlatformContent(platform, post, category, styleTone)
+      )
     );
     
-    interface Platforms {
-      linkedin?: string;
-      twitter?: string;
-      instagram?: string;
-      facebook?: string;
-    }
-
-    const enhancedPlatforms: Platforms = {};
+    const enhancedPlatforms: PlatformContent = {};
+    let successCount = 0;
 
     results.forEach((result, index) => {
-      const platform = platforms[index] as keyof Platforms;
+      const platform = ContentGenerator.SUPPORTED_PLATFORMS[index];
       if (result.status === 'fulfilled' && result.value) {
         enhancedPlatforms[platform] = result.value.trim();
+        successCount++;
+      } else if (result.status === 'rejected') {
+        console.error(`Platform ${platform} generation failed:`, result.reason);
       }
     });
     
-    console.log('Generated platforms:', Object.keys(enhancedPlatforms));
+    console.log(`Generated platforms: ${Object.keys(enhancedPlatforms).join(', ')} (${successCount}/${ContentGenerator.SUPPORTED_PLATFORMS.length})`);
     
-    if (Object.keys(enhancedPlatforms).length === 0) {
+    if (successCount === 0) {
       throw new Error('Failed to generate enhanced content for any platform');
     }
 
