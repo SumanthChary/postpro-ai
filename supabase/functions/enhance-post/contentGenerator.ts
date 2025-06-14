@@ -20,71 +20,79 @@ export class ContentGenerator {
       // Remove formatting artifacts
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<\/?(div|p|span)[^>]*>/gi, '\n')
-      // Clean up extra whitespace
+      // Clean up extra whitespace but preserve intentional line breaks
       .replace(/\n\s*\n\s*\n/g, '\n\n')
       .replace(/[ \t]+/g, ' ')
       .trim();
   }
 
   private getLinkedInPrompt(post: string, category: string, styleTone: string): string {
-    return `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post. 
+    return `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post with PERFECT formatting and structure.
 
-CRITICAL: Output ONLY plain text. No HTML tags, no <br>, no formatting symbols, no markdown formatting.
+CRITICAL FORMATTING RULES:
+- Output ONLY plain text with natural line breaks
+- NO HTML tags, NO <br>, NO formatting symbols, NO markdown
+- Use single line breaks between points for readability
+- Use double line breaks to separate sections
+- Each line should be scannable and impactful
 
 Original post: "${post}"
 
 Create a LinkedIn post with this EXACT structure:
 
-1. **Dynamic Hook** - Choose the most appropriate opener based on the post content:
-   - For success stories: "Just achieved something incredible 🚀" or "Three years ago, I never imagined..."
-   - For challenges: "Ever felt completely overwhelmed by..." or "That moment when reality hits..."
-   - For tips/advice: "Here's what nobody tells you about..." or "After years in this field..."
-   - For achievements: "Today marks a milestone..." or "Remember when..."
-   - For business: "Building something taught me..." or "The hardest lesson in business..."
-   - For personal stories: "Sometimes the best lessons come from..." or "I'll never forget when..."
-   - For insights: "Something completely changed my perspective..." or "What I wish I knew before..."
-   - For failures: "Failure taught me something valuable..." or "The mistake that changed everything..."
-   - For industry updates: "The industry is shifting..." or "Something big just happened..."
+**DYNAMIC HOOK** (Choose based on content):
+For success stories: "Just achieved something incredible 🚀"
+For challenges: "Ever felt completely overwhelmed by..."
+For tips: "Here's what nobody tells you about..."
+For achievements: "Today marks a milestone..."
+For business insights: "Building something taught me..."
+For personal stories: "Sometimes the best lessons come from..."
+For failures: "Failure taught me something valuable..."
+For industry updates: "The industry is shifting..."
 
-2. **Engaging Body** - Write in story format with:
-   - Single line breaks between key points
-   - Use ➡️ for challenges/pain points
-   - Use ✅ for solutions/achievements/results  
-   - Use 👉 for key insights
-   - Make each line scannable and impactful
-   - Build narrative tension and resolution
+**ENGAGING STORY BODY** with proper spacing:
+- Write in story format with clear line breaks
+- Use ➡️ for challenges/pain points
+- Use ✅ for solutions/achievements/results
+- Use 👉 for key insights/takeaways
+- Make each line scannable and impactful
+- Build narrative tension and resolution
+- Add emotional elements and personal touches
 
-3. **Strong CTA** - End with engagement questions:
-   - "What's your experience with this?"
-   - "Which point resonates most with you?"
-   - "What would you add to this list?"
-   - "Share your story below!"
+**POWERFUL CTA** (Call-to-Action):
+End with engaging questions like:
+"What's your experience with this?"
+"Which point resonates most with you?"
+"What would you add to this list?"
+"Share your story in the comments!"
 
-4. **Hashtags** - Add 3 line breaks, then 5-8 relevant hashtags
+**HASHTAGS**:
+Add 2-3 line breaks, then 5-8 relevant hashtags
 
 REQUIREMENTS:
 - ${styleTone} yet conversational tone
 - Strategic emojis (3-5 total, not overwhelming)
 - Story-driven with personal elements
 - Clear line spacing for readability
-- NO HTML tags, NO <br>, NO formatting symbols
-- Output pure text only
+- Professional structure with proper breaks
+- Compelling and actionable content
+- Strong engagement elements
 
-Write the enhanced LinkedIn post:`;
+Write the perfectly formatted LinkedIn post:`;
   }
 
   private getTwitterPrompt(post: string, styleTone: string): string {
     return `Create a compelling ${styleTone} Twitter/X post from: "${post}"
 
-CRITICAL: Output ONLY plain text. No HTML tags, no <br>, no formatting symbols.
+CRITICAL: Output ONLY plain text. NO HTML tags, NO <br>, NO formatting symbols.
 
 Requirements:
 - Under 280 characters
-- Strong hook opening
-- Include 1-2 emojis
-- Add 2-3 hashtags
-- End with engagement element
-- ${styleTone} tone
+- Strong attention-grabbing hook
+- Include 1-2 strategic emojis
+- Add 2-3 relevant hashtags
+- End with engagement element (question/CTA)
+- ${styleTone} but conversational tone
 - Pure text output only
 
 Enhanced Twitter post:`;
@@ -93,15 +101,16 @@ Enhanced Twitter post:`;
   private getInstagramPrompt(post: string, styleTone: string): string {
     return `Transform into engaging ${styleTone} Instagram caption: "${post}"
 
-CRITICAL: Output ONLY plain text. No HTML tags, no <br>, no formatting symbols.
+CRITICAL: Output ONLY plain text with natural line breaks. NO HTML tags, NO <br>, NO formatting symbols.
 
-Structure:
-- Attention-grabbing opening
-- Story format with line breaks
-- 3-4 strategic emojis
-- Clear call-to-action
-- 5-8 hashtags at end
-- ${styleTone} tone
+Structure with proper spacing:
+- Attention-grabbing opening line
+- Story format with clear line breaks between points
+- 3-4 strategic emojis throughout
+- Personal and relatable tone
+- Clear call-to-action question
+- 5-8 hashtags at the end (separated by line breaks)
+- ${styleTone} but authentic tone
 - Pure text output only
 
 Instagram caption:`;
@@ -110,14 +119,16 @@ Instagram caption:`;
   private getFacebookPrompt(post: string, styleTone: string): string {
     return `Create ${styleTone} Facebook post from: "${post}"
 
-CRITICAL: Output ONLY plain text. No HTML tags, no <br>, no formatting symbols.
+CRITICAL: Output ONLY plain text with natural spacing. NO HTML tags, NO <br>, NO formatting symbols.
 
-Style:
-- Personal, community-focused
-- Conversational ${styleTone} tone
-- 2-3 emojis
-- Encourage discussion
+Style requirements:
+- Personal, community-focused approach
+- Conversational ${styleTone} tone with line breaks
+- 2-3 strategic emojis
+- Encourage discussion and sharing
+- Include engaging question/CTA
 - 1-2 hashtags maximum
+- Proper line spacing for readability
 - Pure text output only
 
 Facebook post:`;
