@@ -23,22 +23,42 @@ const Auth = () => {
   const { toast } = useToast();
 
   const validateSignUp = () => {
+    if (!email || !email.includes('@')) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (password.length < 6) {
+      toast({
+        title: "Weak Password",
+        description: "Password must be at least 6 characters long",
+        variant: "destructive",
+      });
+      return false;
+    }
+
     if (password !== confirmPassword) {
       toast({
-        title: "Error",
+        title: "Password Mismatch",
         description: "Passwords do not match",
         variant: "destructive",
       });
       return false;
     }
+    
     if (username.length < 3) {
       toast({
-        title: "Error",
+        title: "Invalid Username",
         description: "Username must be at least 3 characters long",
         variant: "destructive",
       });
       return false;
     }
+    
     return true;
   };
 
@@ -48,11 +68,30 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
+        console.log('Attempting login for:', email);
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
           password,
         });
-        if (error) throw error;
+        
+        if (error) {
+          console.error('Login error:', error);
+          
+          // Handle specific error cases
+          if (error.message.includes('Invalid login credentials')) {
+            throw new Error('Invalid email or password. Please check your credentials and try again.');
+          } else if (error.message.includes('Email not confirmed')) {
+            throw new Error('Please check your email and click the confirmation link before signing in.');
+          } else {
+            throw error;
+          }
+        }
+        
+        console.log('Login successful:', data.user?.email);
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in.",
+        });
         navigate("/");
       } else {
         if (!validateSignUp()) {
@@ -60,33 +99,55 @@ const Auth = () => {
           return;
         }
 
-        const { error } = await supabase.auth.signUp({
-          email,
+        console.log('Attempting signup for:', email);
+        const { data, error } = await supabase.auth.signUp({
+          email: email.trim(),
           password,
           options: {
             data: {
-              username: username,
+              username: username.trim(),
             },
+            emailRedirectTo: `${window.location.origin}/`
           },
         });
         
-        if (error) throw error;
+        if (error) {
+          console.error('Signup error:', error);
+          
+          // Handle specific error cases
+          if (error.message.includes('User already registered')) {
+            throw new Error('An account with this email already exists. Please sign in instead.');
+          } else {
+            throw error;
+          }
+        }
+        
+        console.log('Signup successful:', data.user?.email);
         
         toast({
-          title: "Success!",
+          title: "Account Created!",
           description: "Please check your email to verify your account. The verification link will expire in 24 hours.",
+          duration: 10000,
         });
 
         toast({
-          title: "Welcome!",
+          title: "Welcome to PostPro AI!",
           description: "Your free plan has been activated. Start enhancing your posts now!",
+          duration: 5000,
         });
-        navigate("/");
+        
+        // Auto-switch to login after successful signup
+        setTimeout(() => {
+          setIsLogin(true);
+          setPassword("");
+          setConfirmPassword("");
+        }, 2000);
       }
     } catch (error: unknown) {
       const err = error as Error;
+      console.error('Auth error:', err);
       toast({
-        title: "Error",
+        title: isLogin ? "Sign In Failed" : "Sign Up Failed",
         description: err.message,
         variant: "destructive",
       });
@@ -202,7 +263,6 @@ const Auth = () => {
                 </div>
               </div>
 
-              {/* Username Field (Sign Up Only) */}
               {!isLogin && (
                 <div className="space-y-2">
                   <Label htmlFor="username" className="text-gray-900 font-medium text-sm lg:text-base">Username</Label>
@@ -222,7 +282,6 @@ const Auth = () => {
                 </div>
               )}
 
-              {/* Password Field */}
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-gray-900 font-medium text-sm lg:text-base">Password</Label>
                 <div className="relative">
@@ -234,6 +293,7 @@ const Auth = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    minLength={6}
                     className="pl-11 pr-11 h-12 lg:h-14 bg-white/90 border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 text-base rounded-xl transition-all duration-200"
                   />
                   <button
@@ -246,7 +306,6 @@ const Auth = () => {
                 </div>
               </div>
 
-              {/* Confirm Password Field (Sign Up Only) */}
               {!isLogin && (
                 <div className="space-y-2">
                   <Label htmlFor="confirmPassword" className="text-gray-900 font-medium text-sm lg:text-base">Confirm Password</Label>
@@ -272,7 +331,6 @@ const Auth = () => {
                 </div>
               )}
 
-              {/* Submit Button */}
               <Button
                 type="submit"
                 className="w-full h-12 lg:h-14 text-white font-semibold text-base lg:text-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] rounded-xl"
@@ -290,7 +348,6 @@ const Auth = () => {
               </Button>
             </form>
 
-            {/* Switch Form Type */}
             <div className="text-center mt-6 lg:mt-8">
               <button
                 type="button"
@@ -298,6 +355,7 @@ const Auth = () => {
                   setIsLogin(!isLogin);
                   setUsername("");
                   setConfirmPassword("");
+                  setPassword("");
                   setShowPassword(false);
                   setShowConfirmPassword(false);
                 }}

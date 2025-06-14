@@ -7,59 +7,88 @@ import { supabase } from "@/integrations/supabase/client";
 export const useAuth = (redirectPath = "/auth", requireAuth = false) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [hasRedirected, setHasRedirected] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Set up auth state listener FIRST to prevent missing auth events
+    let mounted = true;
+
+    // Set up auth state listener FIRST
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.email);
+        
+        if (!mounted) return;
+
         if (event === "SIGNED_OUT") {
           setUser(null);
-          if (requireAuth) {
+          setHasRedirected(false);
+          if (requireAuth && !hasRedirected) {
+            setHasRedirected(true);
             navigate(redirectPath);
           }
         } else if (event === "SIGNED_IN" && session) {
           setUser(session.user);
+          setHasRedirected(false);
+        } else if (event === "TOKEN_REFRESHED" && session) {
+          setUser(session.user);
         }
+        
+        setLoading(false);
       }
     );
 
     // THEN check for existing session
     const getUser = async () => {
       try {
-        setLoading(true);
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session }, error } = await supabase.auth.getSession();
         
-        if (!session?.user && requireAuth) {
+        if (!mounted) return;
+        
+        if (error) {
+          console.error("Session error:", error);
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+        
+        if (!session?.user && requireAuth && !hasRedirected) {
+          setHasRedirected(true);
           toast({
             title: "Authentication Required",
             description: "Please sign in to access this feature",
             variant: "destructive",
           });
           navigate(redirectPath);
-          return;
+        } else if (session?.user) {
+          setUser(session.user);
         }
         
-        setUser(session?.user || null);
+        setLoading(false);
       } catch (error: any) {
         console.error("Authentication error:", error);
-        if (requireAuth) {
+        if (!mounted) return;
+        
+        setUser(null);
+        setLoading(false);
+        
+        if (requireAuth && !hasRedirected) {
+          setHasRedirected(true);
           toast({
             title: "Authentication Error",
-            description: error.message || "Failed to authenticate",
+            description: "Please try signing in again",
             variant: "destructive",
           });
           navigate(redirectPath);
         }
-      } finally {
-        setLoading(false);
       }
     };
 
     getUser();
     
     return () => {
+      mounted = false;
       authListener?.subscription.unsubscribe();
     };
   }, [navigate, toast, redirectPath, requireAuth]);

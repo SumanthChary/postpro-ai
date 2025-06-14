@@ -5,7 +5,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Plan } from "@/types/pricing";
 import { supabase } from "@/integrations/supabase/client";
 import Script from "./Script";
-import { useCurrency } from "@/contexts/CurrencyContext";
 
 declare global {
   interface Window {
@@ -28,11 +27,35 @@ export const RazorpayPaymentButton = ({
 }: RazorpayPaymentButtonProps) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
-  const { currency, convertPrice } = useCurrency();
+
+  // Safe currency handling with fallbacks
+  const getCurrency = () => {
+    try {
+      // Try to use currency context
+      const { useCurrency } = require("@/contexts/CurrencyContext");
+      const { currency, convertPrice } = useCurrency();
+      return { currency: currency || 'USD', convertPrice };
+    } catch (error) {
+      console.warn('Currency context not available, using USD');
+      return { 
+        currency: 'USD', 
+        convertPrice: (price: string, targetCurrency: string) => {
+          // Simple fallback conversion
+          if (targetCurrency === 'INR') {
+            return (parseFloat(price) * 83).toFixed(0); // Approximate USD to INR
+          }
+          return price;
+        }
+      };
+    }
+  };
 
   const handlePayment = async () => {
     try {
       setIsProcessing(true);
+      console.log('Starting Razorpay payment process');
+      
+      const { currency, convertPrice } = getCurrency();
       
       // Get the appropriate currency and price
       const currencyToUse = (planDetails as any).currency || currency || 'USD';
@@ -45,11 +68,13 @@ export const RazorpayPaymentButton = ({
         priceToUse = (planDetails as any).displayPrice;
       }
       
+      console.log('Payment details:', { priceToUse, currencyToUse, originalPrice: planDetails.price });
+      
       // Create an order on the server
       const { data: orderData, error: orderError } = await supabase.functions.invoke('handle-razorpay-payment', {
         body: { 
           action: 'create_order',
-          amount: parseFloat(priceToUse) * 100, // Convert to smallest currency unit (cents/paise)
+          amount: parseFloat(priceToUse) * 100, // Convert to smallest currency unit
           currency: currencyToUse,
           receipt: `plan_${planDetails.name.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}`,
           notes: {
@@ -66,6 +91,13 @@ export const RazorpayPaymentButton = ({
         throw new Error(orderError?.message || 'Failed to create order');
       }
 
+      console.log('Razorpay order created:', orderData.id);
+
+      // Check if Razorpay script is loaded
+      if (!window.Razorpay) {
+        throw new Error('Razorpay is not available. Please try PayPal or refresh the page.');
+      }
+
       // Initialize Razorpay payment
       const options = {
         key: 'rzp_live_L9cXXNKWlP9tYl',
@@ -76,6 +108,8 @@ export const RazorpayPaymentButton = ({
         order_id: orderData.id,
         handler: async (response: any) => {
           try {
+            console.log('Razorpay payment response:', response);
+            
             // Verify the payment on server
             const { data: verifyData, error: verifyError } = await supabase.functions.invoke('handle-razorpay-payment', {
               body: { 
@@ -95,7 +129,7 @@ export const RazorpayPaymentButton = ({
             });
             
             if (verifyError) {
-              throw new Error(verifyError.message);
+              throw new Error(verifyError.message || 'Payment verification failed');
             }
             
             toast({
@@ -122,6 +156,7 @@ export const RazorpayPaymentButton = ({
         },
         modal: {
           ondismiss: function() {
+            console.log('Razorpay modal dismissed');
             setIsProcessing(false);
           }
         }
@@ -154,7 +189,7 @@ export const RazorpayPaymentButton = ({
         onClick={handlePayment}
         disabled={isProcessing}
       >
-        {isProcessing ? "Processing..." : `Pay with Razorpay (${currency})`}
+        {isProcessing ? "Processing..." : "Pay with Razorpay"}
       </Button>
     </>
   );

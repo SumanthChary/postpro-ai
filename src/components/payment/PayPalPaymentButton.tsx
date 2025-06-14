@@ -19,11 +19,13 @@ export const PayPalPaymentButton = ({
   onError,
 }: PayPalPaymentButtonProps) => {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const { toast } = useToast();
 
   const handlePaymentSuccess = async (orderId: string) => {
     try {
       setIsProcessing(true);
+      console.log('Processing PayPal payment:', orderId);
       
       // 1. Insert payment record
       const { error: paymentError } = await supabase
@@ -40,11 +42,15 @@ export const PayPalPaymentButton = ({
           }
         ]);
 
-      if (paymentError) throw paymentError;
+      if (paymentError) {
+        console.error('Payment recording error:', paymentError);
+        throw new Error('Failed to record payment: ' + paymentError.message);
+      }
 
       // 2. Add credits to user account
       if (planDetails.credits) {
-        // Calculate expiration date (3 months from now)
+        console.log(`Adding ${planDetails.credits} credits for user ${userId}`);
+        
         const expiresAt = new Date();
         expiresAt.setMonth(expiresAt.getMonth() + 3);
         
@@ -59,10 +65,9 @@ export const PayPalPaymentButton = ({
         
         if (creditError) {
           console.error('Error adding credits:', creditError);
-          // Continue with subscription but show warning about credits
           toast({
-            title: "Credits Not Added",
-            description: "We couldn't add credits to your account. Please contact support.",
+            title: "Payment Successful",
+            description: "Your payment was processed but there was an issue adding credits. Please contact support.",
             variant: "destructive",
           });
         }
@@ -77,11 +82,27 @@ export const PayPalPaymentButton = ({
       onSuccess();
     } catch (error: any) {
       console.error('Payment recording error:', error);
-      onError(error.message);
+      onError(error.message || 'Failed to process payment');
     } finally {
       setIsProcessing(false);
     }
   };
+
+  if (hasError) {
+    return (
+      <div className="w-full min-h-[200px] flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">PayPal is temporarily unavailable</p>
+          <button 
+            onClick={() => setHasError(false)}
+            className="text-blue-600 hover:text-blue-800 underline"
+          >
+            Try again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-[200px] flex items-center justify-center">
@@ -92,6 +113,7 @@ export const PayPalPaymentButton = ({
           color: "gold"
         }}
         createOrder={(data, actions) => {
+          console.log('Creating PayPal order');
           return actions.order.create({
             intent: "CAPTURE",
             purchase_units: [{
@@ -104,14 +126,28 @@ export const PayPalPaymentButton = ({
           });
         }}
         onApprove={async (data, actions) => {
-          if (actions.order) {
-            const order = await actions.order.capture();
-            await handlePaymentSuccess(order.id);
+          console.log('PayPal payment approved:', data);
+          try {
+            if (actions.order) {
+              const order = await actions.order.capture();
+              await handlePaymentSuccess(order.id);
+            }
+          } catch (error) {
+            console.error('PayPal capture error:', error);
+            onError("Failed to capture payment");
           }
         }}
         onError={(err) => {
           console.error('PayPal error:', err);
-          onError("There was an error processing your PayPal payment.");
+          setHasError(true);
+          onError("PayPal is currently unavailable. Please try Razorpay or contact support.");
+        }}
+        onCancel={() => {
+          console.log('PayPal payment cancelled');
+          toast({
+            title: "Payment Cancelled",
+            description: "You can try again when ready",
+          });
         }}
         disabled={isProcessing}
       />
