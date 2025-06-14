@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { enhancePost } from "../services/enhancePost";
@@ -23,13 +24,17 @@ export const usePostEnhancer = () => {
       .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'")
-      // Remove formatting artifacts
+      // Remove formatting artifacts but preserve line breaks
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<\/?(div|p|span)[^>]*>/gi, '\n')
-      // Clean up extra whitespace and asterisks
+      // Remove markdown asterisks that might interfere
+      .replace(/\*\*/g, '')
       .replace(/\*/g, '')
-      .replace(/\s+/g, ' ')
-      .replace(/\n\s*\n\s*\n/g, '\n\n')
+      // Clean up excessive whitespace but preserve line structure
+      .replace(/[ \t]+/g, ' ') // Only collapse horizontal whitespace
+      .replace(/\n[ \t]+/g, '\n') // Remove spaces at beginning of lines
+      .replace(/[ \t]+\n/g, '\n') // Remove spaces at end of lines
+      .replace(/\n{3,}/g, '\n\n') // Limit to max 2 consecutive line breaks
       .trim();
   };
 

@@ -1,3 +1,4 @@
+
 export class ContentGenerator {
   private apiKey: string;
   private apiUrl: string;
@@ -17,66 +18,77 @@ export class ContentGenerator {
       .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'")
-      // Remove formatting artifacts
+      // Convert HTML line breaks to actual line breaks
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<\/?(div|p|span)[^>]*>/gi, '\n')
-      // Clean up extra whitespace but preserve intentional line breaks
-      .replace(/\n\s*\n\s*\n/g, '\n\n')
-      .replace(/[ \t]+/g, ' ')
+      // Remove markdown formatting that might interfere
+      .replace(/\*\*/g, '')
+      .replace(/\*/g, '')
+      // Clean up excessive whitespace but preserve intentional line breaks
+      .replace(/[ \t]+/g, ' ') // Only collapse spaces and tabs, not newlines
+      .replace(/\n[ \t]+/g, '\n') // Remove spaces at the beginning of lines
+      .replace(/[ \t]+\n/g, '\n') // Remove spaces at the end of lines
+      .replace(/\n{3,}/g, '\n\n') // Limit consecutive line breaks to maximum 2
       .trim();
   }
 
   private getLinkedInPrompt(post: string, category: string, styleTone: string): string {
-    return `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post with PERFECT formatting and structure.
+    return `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post with PERFECT line-by-line formatting.
 
-CRITICAL FORMATTING RULES:
+CRITICAL FORMATTING REQUIREMENTS:
 - Output ONLY plain text with natural line breaks
 - NO HTML tags, NO <br>, NO formatting symbols, NO markdown
-- Use single line breaks between points for readability
-- Use double line breaks to separate sections
-- Each line should be scannable and impactful
+- Each important point on its own line for maximum readability
+- Use single line breaks between related points
+- Use double line breaks to separate major sections
+- Structure must be scannable and professional
 
 Original post: "${post}"
 
-Create a LinkedIn post with this EXACT structure:
+Create a LinkedIn post with this EXACT line-by-line structure:
 
-**DYNAMIC HOOK** (Choose based on content):
+**HOOK LINE** (Choose based on content - make it attention-grabbing):
 For success stories: "Just achieved something incredible 🚀"
 For challenges: "Ever felt completely overwhelmed by..."
 For tips: "Here's what nobody tells you about..."
 For achievements: "Today marks a milestone..."
 For business insights: "Building something taught me..."
-For personal stories: "Sometimes the best lessons come from..."
-For failures: "Failure taught me something valuable..."
-For industry updates: "The industry is shifting..."
 
-**ENGAGING STORY BODY** with proper spacing:
-- Write in story format with clear line breaks
-- Use ➡️ for challenges/pain points
-- Use ✅ for solutions/achievements/results
-- Use 👉 for key insights/takeaways
-- Make each line scannable and impactful
-- Build narrative tension and resolution
-- Add emotional elements and personal touches
+**STORY SECTION** (Each point on separate lines):
 
-**POWERFUL CTA** (Call-to-Action):
-End with engaging questions like:
+Main story point 1
+Key detail or challenge faced
+Important insight discovered
+
+➡️ The main challenge was...
+➡️ What made it difficult was...
+
+✅ Here's what changed everything...
+✅ The breakthrough moment came when...
+✅ Results exceeded expectations because...
+
+**KEY TAKEAWAYS** (Each on separate line):
+
+👉 First major lesson learned
+👉 Second crucial insight  
+👉 Third actionable tip
+
+**STRONG CTA** (Separate line):
 "What's your experience with this?"
 "Which point resonates most with you?"
-"What would you add to this list?"
 "Share your story in the comments!"
 
-**HASHTAGS**:
-Add 2-3 line breaks, then 5-8 relevant hashtags
+**HASHTAGS** (After 2 line breaks):
 
-REQUIREMENTS:
+#RelevantHashtag #SecondHashtag #ThirdHashtag #FourthHashtag #FifthHashtag
+
+FORMATTING RULES:
+- Each section separated by double line breaks
+- Each point within sections on single line breaks
+- Strategic emojis (3-5 total maximum)
 - ${styleTone} yet conversational tone
-- Strategic emojis (3-5 total, not overwhelming)
-- Story-driven with personal elements
-- Clear line spacing for readability
-- Professional structure with proper breaks
-- Compelling and actionable content
-- Strong engagement elements
+- Professional structure with clear spacing
+- Make it scannable and engaging
 
 Write the perfectly formatted LinkedIn post:`;
   }
