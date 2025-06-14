@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { enhancePost } from "../services/enhancePost";
@@ -16,8 +15,21 @@ export const usePostEnhancer = () => {
 
   const cleanContent = (content: string) => {
     return content
-      .replace(/\*/g, '') // Remove all asterisk symbols
-      .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+      // Remove HTML tags and symbols that could disturb the post
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      // Remove formatting artifacts
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/?(div|p|span)[^>]*>/gi, '\n')
+      // Clean up extra whitespace and asterisks
+      .replace(/\*/g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/\n\s*\n\s*\n/g, '\n\n')
       .trim();
   };
 

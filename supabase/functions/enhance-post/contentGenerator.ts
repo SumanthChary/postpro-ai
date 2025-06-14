@@ -1,4 +1,3 @@
-
 export class ContentGenerator {
   private apiKey: string;
   private apiUrl: string;
@@ -8,60 +7,76 @@ export class ContentGenerator {
     this.apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
   }
 
+  private cleanGeneratedContent(content: string): string {
+    return content
+      // Remove HTML tags and symbols
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      // Remove formatting artifacts
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/?(div|p|span)[^>]*>/gi, '\n')
+      // Clean up extra whitespace
+      .replace(/\n\s*\n\s*\n/g, '\n\n')
+      .replace(/[ \t]+/g, ' ')
+      .trim();
+  }
+
   private getLinkedInPrompt(post: string, category: string, styleTone: string): string {
-    return `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post following this EXACT structure:
+    return `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post. 
+
+CRITICAL: Output ONLY plain text. No HTML tags, no <br>, no formatting symbols, no markdown formatting.
 
 Original post: "${post}"
 
-STRUCTURE REQUIREMENTS:
-1. **Dynamic Hook** - Create a compelling opener that matches the post content:
-   - For success stories: "Just achieved something incredible 🚀" or "Three years ago, I never imagined..."
-   - For challenges/struggles: "Ever felt completely overwhelmed by..." or "That moment when reality hits..."
-   - For tips/advice: "Here's what nobody tells you about..." or "After [X] years in [field]..."
-   - For achievements: "Today marks a milestone..." or "Remember when [situation]..."
-   - For business posts: "Building [something] taught me..." or "The hardest lesson in [field]..."
-   - For personal stories: "Sometimes the best lessons come from..." or "I'll never forget the day when..."
-   - For insights: "Here's something that completely changed my perspective..." or "What I wish I knew before..."
-   - For failures/setbacks: "Failure taught me something valuable..." or "The mistake that changed everything..."
-   - For industry updates: "The industry is shifting and here's what it means..." or "Something big just happened in [field]..."
-   - Use relevant emoji that fits the context (1-2 max in hook)
+Create a LinkedIn post with this EXACT structure:
 
-2. **Engaging Body** - Transform into story format with:
+1. **Dynamic Hook** - Choose the most appropriate opener based on the post content:
+   - For success stories: "Just achieved something incredible 🚀" or "Three years ago, I never imagined..."
+   - For challenges: "Ever felt completely overwhelmed by..." or "That moment when reality hits..."
+   - For tips/advice: "Here's what nobody tells you about..." or "After years in this field..."
+   - For achievements: "Today marks a milestone..." or "Remember when..."
+   - For business: "Building something taught me..." or "The hardest lesson in business..."
+   - For personal stories: "Sometimes the best lessons come from..." or "I'll never forget when..."
+   - For insights: "Something completely changed my perspective..." or "What I wish I knew before..."
+   - For failures: "Failure taught me something valuable..." or "The mistake that changed everything..."
+   - For industry updates: "The industry is shifting..." or "Something big just happened..."
+
+2. **Engaging Body** - Write in story format with:
    - Single line breaks between key points
-   - Strategic bullet points with ➡️ for challenges/pain points
-   - Use ✅ for solutions/achievements/results
-   - Use 👉 for key insights or important points
-   - Include emotional relatability and personal touch
+   - Use ➡️ for challenges/pain points
+   - Use ✅ for solutions/achievements/results  
+   - Use 👉 for key insights
    - Make each line scannable and impactful
    - Build narrative tension and resolution
 
-3. **Strong CTA** - End with engagement-driving questions:
-   - "What's your experience with [topic]? 👇"
+3. **Strong CTA** - End with engagement questions:
+   - "What's your experience with this?"
    - "Which point resonates most with you?"
    - "What would you add to this list?"
-   - "Share your [relevant] story below!"
+   - "Share your story below!"
 
-4. **Hashtags** - Separate with 3 line breaks, use 5-8 relevant hashtags
+4. **Hashtags** - Add 3 line breaks, then 5-8 relevant hashtags
 
-TONE & STYLE:
-- ${styleTone} yet conversational and authentic
+REQUIREMENTS:
+- ${styleTone} yet conversational tone
 - Strategic emojis (3-5 total, not overwhelming)
 - Story-driven with personal elements
-- Include credibility and social proof
-- Create urgency or curiosity
-
-FORMATTING RULES:
-- Each major thought = new line
-- ➡️ for problems/challenges
-- ✅ for wins/solutions
-- 👉 for key insights
 - Clear line spacing for readability
+- NO HTML tags, NO <br>, NO formatting symbols
+- Output pure text only
 
 Write the enhanced LinkedIn post:`;
   }
 
   private getTwitterPrompt(post: string, styleTone: string): string {
     return `Create a compelling ${styleTone} Twitter/X post from: "${post}"
+
+CRITICAL: Output ONLY plain text. No HTML tags, no <br>, no formatting symbols.
 
 Requirements:
 - Under 280 characters
@@ -70,12 +85,15 @@ Requirements:
 - Add 2-3 hashtags
 - End with engagement element
 - ${styleTone} tone
+- Pure text output only
 
 Enhanced Twitter post:`;
   }
 
   private getInstagramPrompt(post: string, styleTone: string): string {
     return `Transform into engaging ${styleTone} Instagram caption: "${post}"
+
+CRITICAL: Output ONLY plain text. No HTML tags, no <br>, no formatting symbols.
 
 Structure:
 - Attention-grabbing opening
@@ -84,6 +102,7 @@ Structure:
 - Clear call-to-action
 - 5-8 hashtags at end
 - ${styleTone} tone
+- Pure text output only
 
 Instagram caption:`;
   }
@@ -91,12 +110,15 @@ Instagram caption:`;
   private getFacebookPrompt(post: string, styleTone: string): string {
     return `Create ${styleTone} Facebook post from: "${post}"
 
+CRITICAL: Output ONLY plain text. No HTML tags, no <br>, no formatting symbols.
+
 Style:
 - Personal, community-focused
 - Conversational ${styleTone} tone
 - 2-3 emojis
 - Encourage discussion
 - 1-2 hashtags maximum
+- Pure text output only
 
 Facebook post:`;
   }
@@ -154,8 +176,10 @@ Facebook post:`;
         return null;
       }
       
-      console.log(`Successfully generated content for ${platform}`);
-      return generatedText;
+      // Clean the generated content before returning
+      const cleanedContent = this.cleanGeneratedContent(generatedText);
+      console.log(`Successfully generated clean content for ${platform}`);
+      return cleanedContent;
     } catch (fetchError) {
       console.error(`Network error for ${platform}:`, fetchError);
       return null;
