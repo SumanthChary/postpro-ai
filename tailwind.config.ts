@@ -49,10 +49,11 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Clash Display", "Inter", "system-ui", "sans-serif"],
-        heading: ["Clash Display", "Inter", "system-ui", "sans-serif"],
-        body: ["Clash Display", "Inter", "system-ui", "sans-serif"],
-        clash: ["Clash Display", "Inter", "system-ui", "sans-serif"],
+        sans: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
+        heading: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
+        body: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
+        clash: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
+        cabinet: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

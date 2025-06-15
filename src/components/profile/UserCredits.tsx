@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Coins, Info, Gift, Crown } from "lucide-react";
+import { Coins, Info, Gift, Crown, Star } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,6 +18,7 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
   const [credits, setCredits] = useState<UserCredit[]>([]);
   const [totalCredits, setTotalCredits] = useState(0);
   const [isUnlimited, setIsUnlimited] = useState(false);
+  const [isCreator, setIsCreator] = useState(false);
   const [maxCredits, setMaxCredits] = useState(50); // Default to trial max
   const navigate = useNavigate();
 
@@ -40,9 +41,10 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
           setCredits(data.credits || []);
           setTotalCredits(data.totalCredits || 0);
           setIsUnlimited(data.unlimited || false);
+          setIsCreator(data.isCreator || false);
           
           // Set max credits based on account type
-          if (data.unlimited) {
+          if (data.unlimited || data.isCreator) {
             setMaxCredits(999999);
           } else {
             // For trial users, max is 50. For paid users, use highest tier or current credits
@@ -68,14 +70,16 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
     );
   }
 
-  const isTrialUser = !isUnlimited && totalCredits <= 50;
-  const progressValue = isUnlimited ? 100 : (totalCredits / maxCredits) * 100;
+  const isTrialUser = !isUnlimited && !isCreator && totalCredits <= 50;
+  const progressValue = (isUnlimited || isCreator) ? 100 : (totalCredits / maxCredits) * 100;
 
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold flex items-center">
-          {isUnlimited ? (
+        <h3 className="text-xl font-semibold flex items-center font-cabinet">
+          {isCreator ? (
+            <Star className="w-5 h-5 mr-2 text-purple-600" />
+          ) : isUnlimited ? (
             <Crown className="w-5 h-5 mr-2 text-yellow-600" />
           ) : (
             <Coins className="w-5 h-5 mr-2 text-green-600" />
@@ -91,12 +95,14 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
               </button>
             </TooltipTrigger>
             <TooltipContent>
-              <p className="max-w-xs">
-                {isUnlimited 
-                  ? "You have unlimited credits as an admin account."
-                  : isTrialUser 
-                    ? "You're on a free trial with 50 credits. Each post enhancement uses 1 credit."
-                    : "Credits can be used for premium features. They expire 3 months after being earned."
+              <p className="max-w-xs font-cabinet">
+                {isCreator 
+                  ? "You have unlimited credits as a creator account."
+                  : isUnlimited 
+                    ? "You have unlimited credits as an admin account."
+                    : isTrialUser 
+                      ? "You're on a free trial with 50 credits. Each post enhancement uses 1 credit."
+                      : "Credits can be used for premium features. They expire 3 months after being earned."
                 }
               </p>
             </TooltipContent>
@@ -106,34 +112,35 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
       
       <div className="mb-4">
         <div className="flex justify-between mb-2">
-          <span className="text-sm text-gray-600">
-            {isUnlimited ? "Unlimited Credits" : "Available Credits"}
+          <span className="text-sm text-gray-600 font-cabinet">
+            {(isUnlimited || isCreator) ? "Unlimited Credits" : "Available Credits"}
           </span>
-          <span className="font-semibold">
-            {isUnlimited ? "∞" : totalCredits}
-            {isTrialUser && <span className="text-blue-500 text-xs ml-1">(Free Trial)</span>}
+          <span className="font-semibold font-cabinet">
+            {(isUnlimited || isCreator) ? "∞" : totalCredits}
+            {isTrialUser && <span className="text-blue-500 text-xs ml-1 font-cabinet">(Free Trial)</span>}
+            {isCreator && <span className="text-purple-500 text-xs ml-1 font-cabinet">(Creator)</span>}
           </span>
         </div>
         <Progress value={progressValue} className="h-2" />
         {isTrialUser && totalCredits > 0 && (
-          <p className="text-xs text-blue-600 mt-1">
+          <p className="text-xs text-blue-600 mt-1 font-cabinet">
             {totalCredits} free credits remaining
           </p>
         )}
       </div>
 
-      {!isUnlimited && (
+      {!isUnlimited && !isCreator && (
         <>
           {totalCredits === 0 && (
             <div className="text-center py-4 bg-red-50 rounded-lg border border-red-200 mb-4">
-              <h4 className="font-medium text-red-800 mb-2">No Credits Available</h4>
-              <p className="text-sm text-red-600 mb-3">
+              <h4 className="font-medium text-red-800 mb-2 font-cabinet">No Credits Available</h4>
+              <p className="text-sm text-red-600 mb-3 font-cabinet">
                 You've used all your {isTrialUser ? "free trial" : ""} credits. 
                 Upgrade to a paid plan to continue using premium features.
               </p>
               <Button 
                 onClick={() => navigate("/subscription")}
-                className="bg-red-600 hover:bg-red-700 text-white"
+                className="bg-red-600 hover:bg-red-700 text-white font-cabinet"
               >
                 Upgrade Now
               </Button>
@@ -142,7 +149,7 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
 
           {credits.length > 0 ? (
             <div className="space-y-3">
-              <h4 className="text-sm font-medium">Credit Breakdown</h4>
+              <h4 className="text-sm font-medium font-cabinet">Credit Breakdown</h4>
               {credits.map((credit) => {
                 const expiryDate = new Date(credit.expires_at);
                 const now = new Date();
@@ -150,8 +157,8 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
                 
                 return (
                   <div key={credit.id} className="flex justify-between text-sm">
-                    <span>{credit.balance} credits</span>
-                    <span className="text-gray-500">
+                    <span className="font-cabinet">{credit.balance} credits</span>
+                    <span className="text-gray-500 font-cabinet">
                       {credit.id === 'unlimited' ? 'Never expires' : `Expires in ${daysLeft} days`}
                     </span>
                   </div>
@@ -160,21 +167,21 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
             </div>
           ) : totalCredits === 0 && (
             <div className="text-center py-4 text-gray-500">
-              No credits available. Subscribe to a plan to earn credits!
+              <p className="font-cabinet">No credits available. Subscribe to a plan to earn credits!</p>
             </div>
           )}
 
           {isTrialUser && totalCredits > 0 && (
             <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <h4 className="text-sm font-medium text-blue-800 mb-1">Free Trial Active</h4>
-              <p className="text-xs text-blue-600 mb-2">
+              <h4 className="text-sm font-medium text-blue-800 mb-1 font-cabinet">Free Trial Active</h4>
+              <p className="text-xs text-blue-600 mb-2 font-cabinet">
                 You're using our free trial. Each post enhancement costs 1 credit.
               </p>
               <Button 
                 variant="outline" 
                 size="sm"
                 onClick={() => navigate("/subscription")}
-                className="w-full border-blue-300 text-blue-700 hover:bg-blue-100"
+                className="w-full border-blue-300 text-blue-700 hover:bg-blue-100 font-cabinet"
               >
                 Upgrade for More Credits
               </Button>
@@ -183,11 +190,19 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
         </>
       )}
 
-      {isUnlimited && (
+      {isCreator && (
+        <div className="text-center py-4 bg-purple-50 rounded-lg border border-purple-200">
+          <Star className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+          <h4 className="font-medium text-purple-800 font-cabinet">Creator Account</h4>
+          <p className="text-sm text-purple-600 font-cabinet">You have unlimited access to all features</p>
+        </div>
+      )}
+
+      {isUnlimited && !isCreator && (
         <div className="text-center py-4 bg-yellow-50 rounded-lg border border-yellow-200">
           <Crown className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
-          <h4 className="font-medium text-yellow-800">Admin Account</h4>
-          <p className="text-sm text-yellow-600">You have unlimited access to all features</p>
+          <h4 className="font-medium text-yellow-800 font-cabinet">Admin Account</h4>
+          <p className="text-sm text-yellow-600 font-cabinet">You have unlimited access to all features</p>
         </div>
       )}
     </Card>

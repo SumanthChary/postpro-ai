@@ -9,6 +9,8 @@ const corsHeaders = {
 
 // Your account ID for unlimited credits
 const UNLIMITED_ACCOUNT_ID = "4a91da53-3366-487d-9fef-b02d9b49d339";
+// Creator emails with unlimited access
+const CREATOR_EMAILS = ["enjoywithpandu@gmail.com"];
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -25,8 +27,19 @@ serve(async (req) => {
     const { action, userId, amount, expiresAt, creditId } = await req.json();
     console.log(`Credits function called with action: ${action}`, { userId, amount, expiresAt, creditId });
 
-    // Check if this is the unlimited account
+    // Check if this is the unlimited account or creator email
     const isUnlimitedAccount = userId === UNLIMITED_ACCOUNT_ID;
+    
+    // Check if user email is in creator list
+    let isCreatorAccount = false;
+    if (!isUnlimitedAccount) {
+      const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
+      if (!userError && userData?.user?.email && CREATOR_EMAILS.includes(userData.user.email)) {
+        isCreatorAccount = true;
+      }
+    }
+
+    const hasUnlimitedAccess = isUnlimitedAccount || isCreatorAccount;
 
     switch (action) {
       case 'add': {
@@ -58,12 +71,12 @@ serve(async (req) => {
       }
       
       case 'use': {
-        // For unlimited account, always return success without deducting
-        if (isUnlimitedAccount) {
+        // For unlimited accounts, always return success without deducting
+        if (hasUnlimitedAccess) {
           return new Response(
             JSON.stringify({ 
               success: true, 
-              message: `Unlimited account - ${amount} credits used (not deducted)`,
+              message: `${isCreatorAccount ? 'Creator' : 'Unlimited'} account - ${amount} credits used (not deducted)`,
               unlimited: true
             }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -152,8 +165,8 @@ serve(async (req) => {
       }
       
       case 'get': {
-        // For unlimited account, return a large number
-        if (isUnlimitedAccount) {
+        // For unlimited accounts, return a large number
+        if (hasUnlimitedAccess) {
           return new Response(
             JSON.stringify({ 
               success: true,
@@ -166,7 +179,8 @@ serve(async (req) => {
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
               }],
-              unlimited: true
+              unlimited: true,
+              isCreator: isCreatorAccount
             }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
@@ -193,7 +207,8 @@ serve(async (req) => {
             success: true,
             totalCredits,
             credits: data,
-            unlimited: false
+            unlimited: false,
+            isCreator: false
           }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
@@ -201,12 +216,13 @@ serve(async (req) => {
 
       case 'check': {
         // Check if user has enough credits for an operation
-        if (isUnlimitedAccount) {
+        if (hasUnlimitedAccess) {
           return new Response(
             JSON.stringify({ 
               success: true,
               hasEnoughCredits: true,
-              unlimited: true
+              unlimited: true,
+              isCreator: isCreatorAccount
             }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
@@ -233,7 +249,8 @@ serve(async (req) => {
             hasEnoughCredits,
             availableCredits: totalCredits,
             requiredCredits: amount || 1,
-            unlimited: false
+            unlimited: false,
+            isCreator: false
           }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );

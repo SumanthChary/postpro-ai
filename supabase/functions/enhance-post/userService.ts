@@ -12,15 +12,16 @@ export async function fetchUserPlanFromDatabase(userId: string) {
 }
 
 export async function getUserPlanFeatures(userId: string, email: string) {
-  const testingAccountEmail = 'enjoywithpandu@gmail.com';
+  const creatorEmails = ['enjoywithpandu@gmail.com'];
 
-  if (email === testingAccountEmail) {
+  if (creatorEmails.includes(email)) {
     return {
       maxPosts: Infinity,
       accessTemplates: true,
       accessViralityTips: true,
       accessAdvancedAI: true,
       allFeatures: true,
+      unlimited: true,
     };
   }
 
