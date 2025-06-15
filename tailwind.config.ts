@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -49,11 +48,12 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
-        heading: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
-        body: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
-        clash: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
-        cabinet: ["Cabinet Grotesk", "Inter", "system-ui", "sans-serif"],
+        sans: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        heading: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        body: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        clash: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        cabinet: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        europa: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
