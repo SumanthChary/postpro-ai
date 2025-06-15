@@ -7,6 +7,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Your account ID for unlimited credits
+const UNLIMITED_ACCOUNT_ID = "4a91da53-3366-487d-9fef-b02d9b49d339";
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -21,6 +24,9 @@ serve(async (req) => {
 
     const { action, userId, amount, expiresAt, creditId } = await req.json();
     console.log(`Credits function called with action: ${action}`, { userId, amount, expiresAt, creditId });
+
+    // Check if this is the unlimited account
+    const isUnlimitedAccount = userId === UNLIMITED_ACCOUNT_ID;
 
     switch (action) {
       case 'add': {
@@ -52,14 +58,26 @@ serve(async (req) => {
       }
       
       case 'use': {
-        // Use credits (deduct from balance)
+        // For unlimited account, always return success without deducting
+        if (isUnlimitedAccount) {
+          return new Response(
+            JSON.stringify({ 
+              success: true, 
+              message: `Unlimited account - ${amount} credits used (not deducted)`,
+              unlimited: true
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        // Use credits (deduct from balance) for regular users
         // First get the user's credits ordered by expiration date (use oldest credits first)
         const { data: credits, error: fetchError } = await supabase
           .from('user_credits')
           .select('*')
           .eq('user_id', userId)
           .gt('balance', 0)
-          .lt('expires_at', new Date(Date.now() + 86400000).toISOString()) // Only use non-expired credits (comparing to tomorrow to avoid timezone issues)
+          .gt('expires_at', new Date().toISOString()) // Only use non-expired credits
           .order('expires_at', { ascending: true });
 
         if (fetchError) {
@@ -71,7 +89,27 @@ serve(async (req) => {
           return new Response(
             JSON.stringify({ 
               success: false, 
-              message: 'No credits available' 
+              message: 'No credits available. Please upgrade your plan to continue using this feature.',
+              insufficientCredits: true
+            }),
+            { 
+              status: 400,
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+            }
+          );
+        }
+
+        // Calculate total available credits
+        const totalAvailable = credits.reduce((sum, credit) => sum + credit.balance, 0);
+        
+        if (totalAvailable < amount) {
+          return new Response(
+            JSON.stringify({ 
+              success: false, 
+              message: `Insufficient credits. You have ${totalAvailable} credits but need ${amount}. Please upgrade your plan.`,
+              insufficientCredits: true,
+              availableCredits: totalAvailable,
+              requiredCredits: amount
             }),
             { 
               status: 400,
@@ -103,36 +141,44 @@ serve(async (req) => {
           await Promise.all(updates);
         }
 
-        if (remaining > 0) {
-          return new Response(
-            JSON.stringify({ 
-              success: false, 
-              message: `Insufficient credits. ${amount - remaining} credits used, ${remaining} more needed.` 
-            }),
-            { 
-              status: 400,
-              headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-            }
-          );
-        }
-
         return new Response(
           JSON.stringify({ 
             success: true, 
-            message: `${amount} credits used successfully` 
+            message: `${amount} credits used successfully`,
+            remainingCredits: totalAvailable - amount
           }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
       
       case 'get': {
-        // Get user's available credits
+        // For unlimited account, return a large number
+        if (isUnlimitedAccount) {
+          return new Response(
+            JSON.stringify({ 
+              success: true,
+              totalCredits: 999999,
+              credits: [{
+                id: 'unlimited',
+                user_id: userId,
+                balance: 999999,
+                expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 year from now
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+              }],
+              unlimited: true
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        // Get user's available credits for regular users
         const { data, error } = await supabase
           .from('user_credits')
           .select('*')
           .eq('user_id', userId)
           .gt('balance', 0)
-          .lt('expires_at', new Date(Date.now() + 86400000).toISOString()); // Only get non-expired credits
+          .gt('expires_at', new Date().toISOString()); // Only get non-expired credits
 
         if (error) {
           console.error('Error fetching credits:', error);
@@ -146,7 +192,48 @@ serve(async (req) => {
           JSON.stringify({ 
             success: true,
             totalCredits,
-            credits: data
+            credits: data,
+            unlimited: false
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      case 'check': {
+        // Check if user has enough credits for an operation
+        if (isUnlimitedAccount) {
+          return new Response(
+            JSON.stringify({ 
+              success: true,
+              hasEnoughCredits: true,
+              unlimited: true
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        const { data, error } = await supabase
+          .from('user_credits')
+          .select('balance')
+          .eq('user_id', userId)
+          .gt('balance', 0)
+          .gt('expires_at', new Date().toISOString());
+
+        if (error) {
+          console.error('Error checking credits:', error);
+          throw error;
+        }
+
+        const totalCredits = data.reduce((sum, credit) => sum + credit.balance, 0);
+        const hasEnoughCredits = totalCredits >= (amount || 1);
+        
+        return new Response(
+          JSON.stringify({ 
+            success: true,
+            hasEnoughCredits,
+            availableCredits: totalCredits,
+            requiredCredits: amount || 1,
+            unlimited: false
           }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );

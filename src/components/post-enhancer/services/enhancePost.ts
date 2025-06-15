@@ -5,7 +5,7 @@ import { EnhancePostResponse } from "../types";
 export async function enhancePost(
   post: string, 
   category: string, 
-  useCredits: boolean = false,
+  useCredits: boolean = true, // Default to using credits
   styleTone: string = "professional"
 ): Promise<EnhancePostResponse> {
   // Input validation
@@ -30,6 +30,26 @@ export async function enhancePost(
     if (authError) {
       console.error('Authentication error:', authError);
       throw new Error('Authentication failed. Please sign in again.');
+    }
+
+    // Check credits before making the enhancement request if useCredits is true
+    if (useCredits && user?.id) {
+      const { data: creditCheck, error: creditError } = await supabase.functions.invoke('handle-credits', {
+        body: { 
+          action: 'check',
+          userId: user.id,
+          amount: 1
+        }
+      });
+
+      if (creditError) {
+        console.error('Credit check error:', creditError);
+        throw new Error('Unable to verify credits. Please try again.');
+      }
+
+      if (!creditCheck.hasEnoughCredits && !creditCheck.unlimited) {
+        throw new Error('No credits available. Please upgrade your plan to continue enhancing posts.');
+      }
     }
 
     const requestBody = { 
@@ -59,6 +79,10 @@ export async function enhancePost(
       console.error('Supabase function error:', error);
       
       // Handle specific error types
+      if (error.message?.includes('No credits available') || error.message?.includes('Insufficient credits')) {
+        throw new Error('No credits available. Please upgrade your plan to continue enhancing posts.');
+      }
+      
       if (error.message?.includes('Post limit reached')) {
         throw new Error('You have reached your post enhancement limit. Please upgrade your plan to continue.');
       }
@@ -128,14 +152,17 @@ export async function enhancePost(
       throw new Error('Service error: The enhancement service is temporarily unavailable. Please try again later.');
     }
     
-    // Re-throw known errors
+    // Re-throw known errors (including credit-related ones)
     if (error.message?.includes('Post content is required') ||
         error.message?.includes('Category is required') ||
         error.message?.includes('Style tone is required') ||
         error.message?.includes('Authentication failed') ||
+        error.message?.includes('No credits available') ||
+        error.message?.includes('Insufficient credits') ||
         error.message?.includes('post enhancement limit') ||
         error.message?.includes('Pro plan') ||
-        error.message?.includes('Service temporarily unavailable')) {
+        error.message?.includes('Service temporarily unavailable') ||
+        error.message?.includes('Unable to verify credits')) {
       throw error;
     }
     

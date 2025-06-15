@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { enhancePost } from "../services/enhancePost";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 export const usePostEnhancer = () => {
   const { user } = useAuth();
@@ -38,6 +39,27 @@ export const usePostEnhancer = () => {
       .trim();
   };
 
+  const checkCredits = async () => {
+    if (!user) return false;
+
+    try {
+      const { data, error } = await supabase.functions.invoke('handle-credits', {
+        body: { 
+          action: 'check',
+          userId: user.id,
+          amount: 1 // Each enhancement costs 1 credit
+        }
+      });
+
+      if (error) throw error;
+      
+      return data.hasEnoughCredits;
+    } catch (error) {
+      console.error('Error checking credits:', error);
+      return false;
+    }
+  };
+
   const handleEnhancePost = async (post: string, category: string, styleTone: string) => {
     if (!user) {
       toast({
@@ -58,12 +80,33 @@ export const usePostEnhancer = () => {
       return false;
     }
 
+    // Check if user has enough credits
+    const hasCredits = await checkCredits();
+    if (!hasCredits) {
+      toast({
+        title: "No Credits Available",
+        description: "You've used all your free trial credits. Please upgrade to a paid plan to continue enhancing posts.",
+        variant: "destructive",
+        action: (
+          <button 
+            onClick={() => navigate("/subscription")}
+            className="bg-white text-black px-3 py-1 rounded text-sm hover:bg-gray-100"
+          >
+            Upgrade Plan
+          </button>
+        ),
+      });
+      return false;
+    }
+
     setIsEnhancing(true);
     setOriginalPost(post);
 
     try {
       console.log('Enhancing post with:', { post, category, styleTone });
-      const data = await enhancePost(post, category, false, styleTone);
+      
+      // Use credits for enhancement
+      const data = await enhancePost(post, category, true, styleTone); // Set useCredits to true
       console.log('Enhanced post response:', data);
       
       if (data.platforms) {
@@ -78,7 +121,7 @@ export const usePostEnhancer = () => {
         
         toast({
           title: "Post Enhanced Successfully!",
-          description: "Your post has been enhanced with professional writing style and platform-specific optimization.",
+          description: "Your post has been enhanced with professional writing style and platform-specific optimization. 1 credit used.",
         });
         
         return updatedPosts;
@@ -88,11 +131,29 @@ export const usePostEnhancer = () => {
     } catch (error: unknown) {
       const err = error as Error;
       console.error('Error enhancing post:', err);
-      toast({
-        title: "Enhancement Failed",
-        description: err.message || "There was an error enhancing your post. Please try again.",
-        variant: "destructive",
-      });
+      
+      // Handle specific credit-related errors
+      if (err.message?.includes('No credits available') || err.message?.includes('Insufficient credits')) {
+        toast({
+          title: "No Credits Available",
+          description: "You've used all your free trial credits. Please upgrade to a paid plan to continue.",
+          variant: "destructive",
+          action: (
+            <button 
+              onClick={() => navigate("/subscription")}
+              className="bg-white text-black px-3 py-1 rounded text-sm hover:bg-gray-100"
+            >
+              Upgrade Plan
+            </button>
+          ),
+        });
+      } else {
+        toast({
+          title: "Enhancement Failed",
+          description: err.message || "There was an error enhancing your post. Please try again.",
+          variant: "destructive",
+        });
+      }
       return false;
     } finally {
       setIsEnhancing(false);
