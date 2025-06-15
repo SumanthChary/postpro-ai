@@ -6,7 +6,6 @@ import { LinkedinIcon, TwitterIcon, InstagramIcon, FacebookIcon } from "lucide-r
 import { BrainIcon, UsersIcon, TrendingUpIcon, PenToolIcon, SmileIcon } from "lucide-react";
 import { EnhancerFormProps } from "../types";
 import { useState, useEffect } from "react";
-
 export const EnhancerForm = ({
   post,
   category,
@@ -19,18 +18,14 @@ export const EnhancerForm = ({
   onEnhance
 }: EnhancerFormProps) => {
   const [charCount, setCharCount] = useState(0);
-  
   useEffect(() => {
     setCharCount(post.length);
   }, [post]);
-  
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onPostChange(e.target.value);
     setCharCount(e.target.value.length);
   };
-
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 mb-4">
         <div className="flex items-center space-x-2">
           <SparklesIcon className="w-5 h-5 text-electric-purple animate-pulse" />
@@ -46,10 +41,7 @@ export const EnhancerForm = ({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <Select
-            value={category}
-            onValueChange={onCategoryChange}
-          >
+          <Select value={category} onValueChange={onCategoryChange}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select post category" />
             </SelectTrigger>
@@ -89,11 +81,7 @@ export const EnhancerForm = ({
         </div>
         
         <div>
-          {onStyleToneChange && (
-            <Select
-              value={styleTone}
-              onValueChange={onStyleToneChange}
-            >
+          {onStyleToneChange && <Select value={styleTone} onValueChange={onStyleToneChange}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select writing tone" />
               </SelectTrigger>
@@ -123,57 +111,36 @@ export const EnhancerForm = ({
                   </div>
                 </SelectItem>
               </SelectContent>
-            </Select>
-          )}
+            </Select>}
         </div>
       </div>
       
       <div className="relative">
-        <Textarea
-          value={post}
-          onChange={handlePostChange}
-          placeholder="Paste your post here to enhance it with AI magic ✨"
-          className="min-h-[150px] sm:min-h-[200px] text-sm sm:text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200 scrollbar-hide overflow-y-auto"
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
-        />
+        <Textarea value={post} onChange={handlePostChange} placeholder="Paste your post here to enhance it with AI magic ✨" className="min-h-[150px] sm:min-h-[200px] text-sm sm:text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200 scrollbar-hide overflow-y-auto" style={{
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none'
+      }} />
         <div className="absolute bottom-2 right-2 text-xs text-gray-500">
           {charCount} characters
         </div>
       </div>
       
       <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-3">
-        <Button 
-          variant="outline" 
-          className="w-full sm:w-auto text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans"
-          onClick={onReset}
-          disabled={isEnhancing || !post}
-        >
+        <Button variant="outline" className="w-full sm:w-auto text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans" onClick={onReset} disabled={isEnhancing || !post}>
           Reset
         </Button>
-        <Button 
-          className="w-full sm:w-auto bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans group relative overflow-hidden"
-          onClick={onEnhance}
-          disabled={isEnhancing}
-        >
-          {isEnhancing ? (
-            <>
+        <Button className="w-full sm:w-auto bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans group relative overflow-hidden" onClick={onEnhance} disabled={isEnhancing}>
+          {isEnhancing ? <>
               <Loader2Icon className="w-4 h-4 mr-2 animate-spin" />
               Enhancing...
-            </>
-          ) : (
-            <>
+            </> : <>
               <RocketIcon className="w-4 h-4 mr-2 transition-all duration-500 group-hover:rotate-[360deg] group-hover:scale-110 group-hover:translate-y-[-2px]" />
-              <span className="relative z-10 group-hover:scale-105 transition-transform duration-300">
+              <span className="relative z-10 group-hover:scale-105 transition-transform duration-300 text-zinc-50">
                 Enhance Post
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-electric-purple to-bright-teal opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </>
-          )}
+            </>}
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
