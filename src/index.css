@@ -69,29 +69,34 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border font-clash;
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-gray-50 text-gray-900 antialiased font-clash;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
     background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
     min-height: 100vh;
+    font-weight: 500;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-semibold tracking-tight text-gray-900;
+    @apply font-clash font-medium tracking-tight text-gray-900;
   }
 
-  p, li, input, textarea {
-    @apply font-body text-gray-700;
+  p, li, input, textarea, button, a, span, div {
+    @apply font-clash text-gray-700 font-medium;
+  }
+
+  button {
+    @apply font-clash font-medium;
   }
 
   textarea, input {
-    @apply transition-all duration-200 ease-in-out;
+    @apply transition-all duration-200 ease-in-out font-clash font-medium;
   }
 
   .aesthetic-card {
@@ -100,11 +105,11 @@
 
   .aesthetic-button {
     background-color: rgba(57,107,255,1);
-    @apply text-white font-medium transition-all duration-200 hover:shadow-lg;
+    @apply text-white font-clash font-medium transition-all duration-200 hover:shadow-lg;
   }
 
   .aesthetic-input {
-    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all duration-200;
+    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all duration-200 font-clash font-medium;
   }
 
   .glass-effect {
@@ -141,15 +146,15 @@
 
   /* Ensure all text is black instead of gradient */
   .text-black-theme {
-    @apply text-gray-900;
+    @apply text-gray-900 font-clash font-medium;
   }
 
   .heading-black {
-    @apply text-gray-900 font-bold;
+    @apply text-gray-900 font-clash font-medium;
   }
 
   .subheading-black {
-    @apply text-gray-700 font-medium;
+    @apply text-gray-700 font-clash font-medium;
   }
 
   /* Enhanced aesthetic elements */
@@ -167,31 +172,31 @@
 
   /* Mobile-first responsive utilities */
   .responsive-text-xs {
-    @apply text-xs sm:text-sm md:text-base lg:text-lg;
+    @apply text-xs sm:text-sm md:text-base lg:text-lg font-clash font-medium;
   }
 
   .responsive-text-sm {
-    @apply text-sm sm:text-base md:text-lg lg:text-xl;
+    @apply text-sm sm:text-base md:text-lg lg:text-xl font-clash font-medium;
   }
 
   .responsive-text-base {
-    @apply text-base sm:text-lg md:text-xl lg:text-2xl;
+    @apply text-base sm:text-lg md:text-xl lg:text-2xl font-clash font-medium;
   }
 
   .responsive-text-lg {
-    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl font-clash font-medium;
   }
 
   .responsive-text-xl {
-    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl font-clash font-medium;
   }
 
   .responsive-text-2xl {
-    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-clash font-medium;
   }
 
   .responsive-text-3xl {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-clash font-medium;
   }
 
   /* Responsive spacing utilities */
@@ -226,7 +231,7 @@
     }
     
     .mobile-text-small {
-      @apply text-sm leading-relaxed;
+      @apply text-sm leading-relaxed font-clash font-medium;
     }
     
     .mobile-spacing-tight {
@@ -249,7 +254,7 @@
   /* Touch-friendly button sizes on mobile */
   @media (max-width: 640px) {
     .btn-mobile {
-      @apply min-h-[44px] min-w-[44px] text-sm;
+      @apply min-h-[44px] min-w-[44px] text-sm font-clash font-medium;
     }
   }
 }

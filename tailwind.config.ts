@@ -49,9 +49,10 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        heading: ["Inter", "system-ui", "sans-serif"],
-        body: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Clash Display", "Inter", "system-ui", "sans-serif"],
+        heading: ["Clash Display", "Inter", "system-ui", "sans-serif"],
+        body: ["Clash Display", "Inter", "system-ui", "sans-serif"],
+        clash: ["Clash Display", "Inter", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
