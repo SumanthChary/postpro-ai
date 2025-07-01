@@ -18,10 +18,10 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
   const { toast } = useToast();
   const { currency, formatPrice, convertPrice } = useCurrency();
 
-  // Fix the filtering logic to avoid type comparison issues
+  // Filter plans based on yearly toggle - remove weekly plan
   const filteredPlans = isYearly 
     ? pricingPlans.filter(plan => plan.period === "year" || plan.period === "forever" || plan.name === "Enterprise Plan")
-    : pricingPlans.filter(plan => plan.period === "month" || plan.period === "week" || plan.period === "forever");
+    : pricingPlans.filter(plan => plan.period === "month" || plan.period === "forever");
 
   const handleSelectPlan = async (plan: Plan) => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -95,6 +95,11 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
                 : convertPrice(plan.price, 'INR')}
               <span className="text-lg font-normal">/{plan.period}</span>
             </p>
+            {plan.name === "Yearly Plan" && (
+              <p className="text-sm text-green-600 font-medium mb-2">
+                50% OFF - Save $96/year!
+              </p>
+            )}
             <p className="text-sm text-green-600 flex items-center gap-1">
               <span>🚀</span>
               {plan.credits} credits included

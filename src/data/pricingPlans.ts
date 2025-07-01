@@ -7,62 +7,57 @@ export const pricingPlans: Plan[] = [
     price: "0",
     period: "forever",
     features: [
+      "7-Day Free Trial",
       "5 Post Enhancements/Month",
       "Basic AI Features",
       "Manual Posting",
       "Real-Time Trending Hashtags",
       "Watermark on AI-Enhanced Posts",
     ],
-    cta: "Start Free",
+    cta: "Start Free Trial",
     credits: 50
   },
   {
-    name: "Weekly Plan",
-    price: "5.99",
-    period: "week",
-    features: [
-      "Unlimited Post Enhancements",
-      "AI Tone & Style Suggestions",
-      "Trending Hashtag Generator",
-      "Premium Templates (20+)",
-      "Virality Score Predictor",
-    ],
-    popular: true,
-    icon: "🔥",
-    cta: "Choose Plan",
-    credits: 200
-  },
-  {
     name: "Monthly Plan",
-    price: "24.99",
+    price: "8",
     period: "month",
     features: [
-      "All Weekly Features + More!",
+      "Unlimited Post Enhancements",
+      "Advanced AI Tone & Style Suggestions",
+      "Premium Templates (20+)",
+      "Virality Score Predictor",
+      "Trending Hashtag Generator",
+      "CTA Generator",
+      "A/B Testing for Posts",
+      "Custom Templates",
       "Advanced AI Chatbot",
       "AI-Powered Smart Dashboard",
-      "A/B Testing for Posts",
-      "CTA Generator",
-      "Custom Templates",
     ],
+    popular: true,
     icon: "💎",
     cta: "Choose Plan",
-    credits: 500
+    credits: 320 // Calculated based on $8 pricing (40 credits per dollar)
   },
   {
     name: "Yearly Plan",
-    price: "129.99",
+    price: "80",
     period: "year",
     features: [
       "All Monthly Features + More!",
+      "50% OFF - Save $96/year",
       "Premium Customer Support",
       "Advanced AI for Content Strategy",
       "Early Access to New Features",
       "Personal Branding Toolkit",
       "Monthly Bonus Credits",
+      "Priority Support",
+      "Advanced Analytics Dashboard",
+      "Cross-Platform Sharing",
+      "Teams Collaboration",
     ],
     icon: "🎉",
     cta: "Choose Plan",
-    credits: 2000
+    credits: 3200 // Calculated based on $80 pricing (40 credits per dollar)
   },
   {
     name: "Enterprise Plan",
@@ -75,9 +70,12 @@ export const pricingPlans: Plan[] = [
       "Dedicated Account Manager",
       "Custom Solutions",
       "Custom Credit Allocation",
+      "White-label Options",
+      "Custom Integrations",
+      "24/7 Priority Support",
     ],
     icon: "💼",
     cta: "Contact Sales",
-    credits: 5000
+    credits: 19960 // Calculated based on $499 pricing (40 credits per dollar)
   },
 ];
