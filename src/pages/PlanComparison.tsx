@@ -10,7 +10,7 @@ const PlanComparison = () => {
     free: {
       included: [
         "7-Day Free Trial",
-        "5 Post Enhancements/Month",
+        "3 Post Enhancements",
         "50 Credits Included",
         "Basic AI Features",
         "Real-Time Trending Hashtags",
@@ -110,7 +110,7 @@ const PlanComparison = () => {
           </div>
           <div className="mb-6">
             <h2 className="text-2xl font-bold mb-2">Monthly Plan</h2>
-            <p className="text-3xl font-bold mb-2">$8<span className="text-lg font-normal">/month</span></p>
+            <p className="text-3xl font-bold mb-2">$8</p>
             <p className="text-sm text-green-600">320 Credits Included</p>
           </div>
           <div className="space-y-4">

@@ -8,7 +8,7 @@ export const pricingPlans: Plan[] = [
     period: "forever",
     features: [
       "7-Day Free Trial",
-      "5 Post Enhancements/Month",
+      "3 Post Enhancements",
       "Basic AI Features",
       "Manual Posting",
       "Real-Time Trending Hashtags",

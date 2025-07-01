@@ -93,7 +93,11 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
               {currency === 'USD' 
                 ? plan.price 
                 : convertPrice(plan.price, 'INR')}
-              <span className="text-lg font-normal">/{plan.period}</span>
+              {plan.period !== "forever" && (
+                <span className="text-lg font-normal">
+                  {plan.period === "month" ? "" : `/${plan.period}`}
+                </span>
+              )}
             </p>
             {plan.name === "Yearly Plan" && (
               <p className="text-sm text-green-600 font-medium mb-2">
