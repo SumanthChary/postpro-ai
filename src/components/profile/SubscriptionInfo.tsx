@@ -21,7 +21,7 @@ const SubscriptionInfo = () => {
 
   if (!subscription) return null;
 
-  const isFreePlan = subscription.plan_name === 'Free Plan';
+  const isStarterPlan = subscription.plan_name === 'Starter Plan';
   const progressValue = usageStats.monthlyLimit === -1 ? 100 : 
     (usageStats.currentCount / usageStats.monthlyLimit) * 100;
 
@@ -32,7 +32,7 @@ const SubscriptionInfo = () => {
           <Crown className="w-5 h-5 mr-2 text-yellow-600" />
           Current Plan
         </h3>
-        <Badge variant={isFreePlan ? "secondary" : "default"} className="font-cabinet">
+        <Badge variant={isStarterPlan ? "secondary" : "default"} className="font-cabinet">
           {subscription.plan_name}
         </Badge>
       </div>
@@ -90,7 +90,7 @@ const SubscriptionInfo = () => {
           </div>
         </div>
 
-        {isFreePlan && (
+        {isStarterPlan && (
           <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
             <p className="text-sm text-blue-800 mb-2 font-cabinet">
               Upgrade to unlock unlimited enhancements and premium features!

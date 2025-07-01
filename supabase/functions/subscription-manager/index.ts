@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.48.1";
 
@@ -43,14 +42,14 @@ serve(async (req) => {
           throw error;
         }
 
-        // If no subscription exists, create a free plan subscription
+        // If no subscription exists, create a starter plan subscription
         if (!subscription) {
           const { data: newSubscription, error: insertError } = await supabase
             .from('subscribers')
             .insert([{
               user_id: userId,
               email: email,
-              plan_name: 'Free Plan',
+              plan_name: 'Starter Plan',
               subscribed: true,
               monthly_reset_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
             }])
@@ -141,7 +140,7 @@ serve(async (req) => {
             .eq('user_id', userId);
         }
 
-        const monthlyLimit = subscription.subscription_limits?.monthly_post_limit || 3;
+        const monthlyLimit = subscription.subscription_limits?.monthly_post_limit || 5; // Changed from 3 to 5
         const currentCount = subscription.monthly_post_count || 0;
         const canUse = monthlyLimit === -1 || currentCount < monthlyLimit;
 

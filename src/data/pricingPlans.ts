@@ -3,12 +3,12 @@ import { Plan } from "@/types/pricing";
 
 export const pricingPlans: Plan[] = [
   {
-    name: "Free Plan",
+    name: "Starter Plan",
     price: "0",
     period: "forever",
     features: [
       "7-Day Free Trial",
-      "3 Post Enhancements",
+      "5 Post Enhancements",
       "Basic AI Features",
       "Manual Posting",
       "Real-Time Trending Hashtags",

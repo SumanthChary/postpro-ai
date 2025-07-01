@@ -7,10 +7,10 @@ const PlanComparison = () => {
   const navigate = useNavigate();
 
   const features = {
-    free: {
+    starter: {
       included: [
         "7-Day Free Trial",
-        "3 Post Enhancements",
+        "5 Post Enhancements",
         "50 Credits Included",
         "Basic AI Features",
         "Real-Time Trending Hashtags",
@@ -69,23 +69,23 @@ const PlanComparison = () => {
       </h1>
 
       <div className="grid lg:grid-cols-3 gap-8 mb-12">
-        {/* Free Plan */}
+        {/* Starter Plan */}
         <div className="bg-white rounded-lg p-8 shadow-lg border border-gray-100">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold mb-2">Free Plan</h2>
+            <h2 className="text-2xl font-bold mb-2">Starter Plan</h2>
             <p className="text-3xl font-bold mb-2">$0<span className="text-lg font-normal">/forever</span></p>
             <p className="text-sm text-green-600">7-Day Free Trial + 50 Credits</p>
           </div>
           <div className="space-y-4">
             <h3 className="font-semibold text-lg">Included Features:</h3>
-            {features.free.included.map((feature, index) => (
+            {features.starter.included.map((feature, index) => (
               <div key={index} className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
                 <span>{feature}</span>
               </div>
             ))}
             <h3 className="font-semibold text-lg pt-4">Not Included:</h3>
-            {features.free.notIncluded.map((feature, index) => (
+            {features.starter.notIncluded.map((feature, index) => (
               <div key={index} className="flex items-start text-gray-400">
                 <X className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" />
                 <span>{feature}</span>

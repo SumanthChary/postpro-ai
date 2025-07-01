@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -29,8 +28,8 @@ export const useSubscription = () => {
   const [usageStats, setUsageStats] = useState({
     canUse: true,
     currentCount: 0,
-    monthlyLimit: 3,
-    remainingUses: 3
+    monthlyLimit: 5, // Changed from 3 to 5
+    remainingUses: 5
   });
   const { toast } = useToast();
 
