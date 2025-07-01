@@ -10,7 +10,7 @@ const corsHeaders = {
 
 const PAYPAL_CLIENT_ID = Deno.env.get('PAYPAL_CLIENT_ID');
 const PAYPAL_SECRET = Deno.env.get('PAYPAL_SECRET');
-const PAYPAL_API_URL = 'https://api-m.paypal.com'; // Use sandbox URL for testing
+const PAYPAL_API_URL = 'https://api-m.paypal.com';
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -18,8 +18,8 @@ serve(async (req) => {
   }
 
   try {
-    const { orderId, subscriptionTier, userId, credits } = await req.json();
-    console.log('Payment handler called with:', { orderId, subscriptionTier, userId, credits });
+    const { orderId, subscriptionTier, userId, credits, planName } = await req.json();
+    console.log('Payment handler called with:', { orderId, subscriptionTier, userId, credits, planName });
 
     // Get access token from PayPal
     const authResponse = await fetch(`${PAYPAL_API_URL}/v1/oauth2/token`, {
@@ -49,12 +49,15 @@ serve(async (req) => {
     console.log('PayPal payment data:', paymentData);
 
     if (paymentData.status === 'COMPLETED' || paymentData.status === 'APPROVED') {
-      // Create Supabase client
       const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
       const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
       const supabase = createClient(supabaseUrl, supabaseKey);
 
-      // Record the payment in database
+      // Get user information
+      const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
+      if (userError) throw userError;
+
+      // Record the payment
       const { error: paymentError } = await supabase
         .from('payments')
         .insert([
@@ -74,9 +77,36 @@ serve(async (req) => {
         throw new Error('Failed to record payment in database');
       }
 
-      // If credits are provided, add them to the user account
+      // Update subscription
+      const subscriptionEnd = new Date();
+      if (planName === 'Yearly Plan') {
+        subscriptionEnd.setFullYear(subscriptionEnd.getFullYear() + 1);
+      } else {
+        subscriptionEnd.setMonth(subscriptionEnd.getMonth() + 1);
+      }
+
+      const { error: subscriptionError } = await supabase
+        .from('subscribers')
+        .upsert([
+          {
+            user_id: userId,
+            email: userData.user?.email || '',
+            plan_name: planName,
+            subscription_tier: subscriptionTier,
+            subscribed: true,
+            subscription_end: subscriptionEnd.toISOString(),
+            monthly_reset_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+            monthly_post_count: 0
+          }
+        ]);
+
+      if (subscriptionError) {
+        console.error('Subscription update error:', subscriptionError);
+        throw new Error('Failed to update subscription');
+      }
+
+      // Add credits if provided
       if (credits && credits > 0) {
-        // Calculate expiration date (3 months from now)
         const expiresAt = new Date();
         expiresAt.setMonth(expiresAt.getMonth() + 3);
         
@@ -92,11 +122,10 @@ serve(async (req) => {
         
         if (creditError) {
           console.error('Error adding credits:', creditError);
-          // Continue with subscription but note credit error in response
           return new Response(
             JSON.stringify({ 
               success: true, 
-              message: 'Payment processed successfully, but credits could not be added',
+              message: 'Payment processed but credits could not be added',
               data: paymentData,
               creditError: creditError.message
             }),
@@ -108,7 +137,7 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ 
           success: true, 
-          message: 'Payment processed successfully',
+          message: 'Payment and subscription processed successfully',
           data: paymentData 
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

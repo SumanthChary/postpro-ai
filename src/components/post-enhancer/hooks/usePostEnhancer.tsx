@@ -5,11 +5,13 @@ import { enhancePost } from "../services/enhancePost";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useSubscription } from "@/hooks/useSubscription";
 
 export const usePostEnhancer = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { checkUsageLimit, incrementUsage } = useSubscription();
 
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [originalPost, setOriginalPost] = useState("");
@@ -17,7 +19,6 @@ export const usePostEnhancer = () => {
 
   const cleanContent = (content: string) => {
     return content
-      // Remove HTML tags and symbols that could disturb the post
       .replace(/<[^>]*>/g, '')
       .replace(/&nbsp;/g, ' ')
       .replace(/&amp;/g, '&')
@@ -25,17 +26,14 @@ export const usePostEnhancer = () => {
       .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'")
-      // Remove formatting artifacts but preserve line breaks
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<\/?(div|p|span)[^>]*>/gi, '\n')
-      // Remove markdown asterisks that might interfere
       .replace(/\*\*/g, '')
       .replace(/\*/g, '')
-      // Clean up excessive whitespace but preserve line structure
-      .replace(/[ \t]+/g, ' ') // Only collapse horizontal whitespace
-      .replace(/\n[ \t]+/g, '\n') // Remove spaces at beginning of lines
-      .replace(/[ \t]+\n/g, '\n') // Remove spaces at end of lines
-      .replace(/\n{3,}/g, '\n\n') // Limit to max 2 consecutive line breaks
+      .replace(/[ \t]+/g, ' ')
+      .replace(/\n[ \t]+/g, '\n')
+      .replace(/[ \t]+\n/g, '\n')
+      .replace(/\n{3,}/g, '\n\n')
       .trim();
   };
 
@@ -47,7 +45,7 @@ export const usePostEnhancer = () => {
         body: { 
           action: 'check',
           userId: user.id,
-          amount: 1 // Each enhancement costs 1 credit
+          amount: 1
         }
       });
 
@@ -80,12 +78,31 @@ export const usePostEnhancer = () => {
       return false;
     }
 
+    // Check subscription usage limits
+    const canUse = await checkUsageLimit();
+    if (!canUse) {
+      toast({
+        title: "Usage Limit Reached",
+        description: "You've reached your monthly post enhancement limit. Please upgrade your plan to continue.",
+        variant: "destructive",
+        action: (
+          <button 
+            onClick={() => navigate("/subscription")}
+            className="bg-white text-black px-3 py-1 rounded text-sm hover:bg-gray-100"
+          >
+            Upgrade Plan
+          </button>
+        ),
+      });
+      return false;
+    }
+
     // Check if user has enough credits
     const hasCredits = await checkCredits();
     if (!hasCredits) {
       toast({
         title: "No Credits Available",
-        description: "You've used all your free trial credits. Please upgrade to a paid plan to continue enhancing posts.",
+        description: "You've used all your credits. Please upgrade to a paid plan to continue enhancing posts.",
         variant: "destructive",
         action: (
           <button 
@@ -105,8 +122,7 @@ export const usePostEnhancer = () => {
     try {
       console.log('Enhancing post with:', { post, category, styleTone });
       
-      // Use credits for enhancement
-      const data = await enhancePost(post, category, true, styleTone); // Set useCredits to true
+      const data = await enhancePost(post, category, true, styleTone);
       console.log('Enhanced post response:', data);
       
       if (data.platforms) {
@@ -118,6 +134,9 @@ export const usePostEnhancer = () => {
         };
         
         setEnhancedPosts(updatedPosts);
+        
+        // Increment usage count
+        await incrementUsage();
         
         toast({
           title: "Post Enhanced Successfully!",
@@ -132,11 +151,10 @@ export const usePostEnhancer = () => {
       const err = error as Error;
       console.error('Error enhancing post:', err);
       
-      // Handle specific credit-related errors
       if (err.message?.includes('No credits available') || err.message?.includes('Insufficient credits')) {
         toast({
           title: "No Credits Available",
-          description: "You've used all your free trial credits. Please upgrade to a paid plan to continue.",
+          description: "You've used all your credits. Please upgrade to a paid plan to continue.",
           variant: "destructive",
           action: (
             <button 

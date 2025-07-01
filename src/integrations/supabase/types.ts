@@ -90,6 +90,90 @@ export type Database = {
         }
         Relationships: []
       }
+      subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          monthly_post_count: number | null
+          monthly_reset_date: string | null
+          plan_name: string | null
+          stripe_customer_id: string | null
+          subscribed: boolean
+          subscription_end: string | null
+          subscription_tier: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          monthly_post_count?: number | null
+          monthly_reset_date?: string | null
+          plan_name?: string | null
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          monthly_post_count?: number | null
+          monthly_reset_date?: string | null
+          plan_name?: string | null
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      subscription_limits: {
+        Row: {
+          created_at: string
+          credits_included: number | null
+          has_ab_testing: boolean | null
+          has_advanced_ai: boolean | null
+          has_premium_templates: boolean | null
+          has_priority_support: boolean | null
+          has_virality_score: boolean | null
+          id: string
+          monthly_post_limit: number | null
+          plan_name: string
+        }
+        Insert: {
+          created_at?: string
+          credits_included?: number | null
+          has_ab_testing?: boolean | null
+          has_advanced_ai?: boolean | null
+          has_premium_templates?: boolean | null
+          has_priority_support?: boolean | null
+          has_virality_score?: boolean | null
+          id?: string
+          monthly_post_limit?: number | null
+          plan_name: string
+        }
+        Update: {
+          created_at?: string
+          credits_included?: number | null
+          has_ab_testing?: boolean | null
+          has_advanced_ai?: boolean | null
+          has_premium_templates?: boolean | null
+          has_priority_support?: boolean | null
+          has_virality_score?: boolean | null
+          id?: string
+          monthly_post_limit?: number | null
+          plan_name?: string
+        }
+        Relationships: []
+      }
       user_credits: {
         Row: {
           balance: number
@@ -117,12 +201,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_usage: {
+        Row: {
+          action_type: string
+          created_at: string
+          credits_used: number | null
+          id: string
+          metadata: Json | null
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          credits_used?: number | null
+          id?: string
+          metadata?: Json | null
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          credits_used?: number | null
+          id?: string
+          metadata?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      reset_monthly_usage: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
