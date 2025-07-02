@@ -133,7 +133,15 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_subscribers_plan_name"
+            columns: ["plan_name"]
+            isOneToOne: false
+            referencedRelation: "subscription_limits"
+            referencedColumns: ["plan_name"]
+          },
+        ]
       }
       subscription_limits: {
         Row: {
