@@ -1,42 +1,137 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
+import NeuralBackground from "@/components/ui/neural-background";
+import QuantumButton from "@/components/ui/quantum-button";
+import { Sparkles, Zap, Brain, Rocket } from "lucide-react";
+
 const HeroSection = () => {
   const [post, setPost] = useState("");
   const [category, setCategory] = useState("business");
   const [styleTone, setStyleTone] = useState("professional");
-  return <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden">
-      {/* Professional floating elements */}
-      <div className="absolute top-10 sm:top-20 left-5 sm:left-10 w-32 sm:w-48 md:w-64 lg:w-80 h-32 sm:h-48 md:h-64 lg:h-80 bg-gradient-to-r from-blue-100/40 to-indigo-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float"></div>
-      <div className="absolute top-20 sm:top-40 right-5 sm:right-10 w-24 sm:w-40 md:w-56 lg:w-72 h-24 sm:h-40 md:h-56 lg:h-72 bg-gradient-to-r from-purple-100/40 to-pink-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{
-      animationDelay: '2s'
-    }}></div>
-      <div className="absolute bottom-10 sm:bottom-20 left-1/2 w-28 sm:w-36 md:w-48 lg:w-60 h-28 sm:h-36 md:h-48 lg:h-60 bg-gradient-to-r from-cyan-100/40 to-blue-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{
-      animationDelay: '4s'
-    }}></div>
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Neural Network Background */}
+      {mounted && <NeuralBackground />}
       
-      <div className="relative z-10 pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-6 sm:pb-8">
-        <div className="max-w-5xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14 px-3 sm:px-4 md:px-6 lg:px-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.1] text-gray-900">
-            <span className="font-bold text-gray-950">Transform Your</span>{" "}
-            <span className="text-gray-800 font-bold block sm:inline">
-              Social Media Presence
+      {/* Revolutionary floating orbs with AI essence */}
+      <div className="absolute top-20 left-10 w-64 h-64 rounded-full opacity-30 animate-float"
+           style={{
+             background: 'radial-gradient(circle, hsl(263, 70%, 64%, 0.4) 0%, transparent 70%)',
+             filter: 'blur(60px)',
+           }} />
+      <div className="absolute top-40 right-10 w-96 h-96 rounded-full opacity-20 animate-float"
+           style={{
+             background: 'radial-gradient(circle, hsl(193, 82%, 55%, 0.4) 0%, transparent 70%)',
+             filter: 'blur(80px)',
+             animationDelay: '2s'
+           }} />
+      <div className="absolute bottom-20 left-1/2 w-80 h-80 rounded-full opacity-25 animate-float"
+           style={{
+             background: 'radial-gradient(circle, hsl(290, 84%, 60%, 0.4) 0%, transparent 70%)',
+             filter: 'blur(70px)',
+             animationDelay: '4s'
+           }} />
+      
+      {/* Main Content */}
+      <div className="relative z-10 pt-20 pb-12">
+        {/* Revolutionary Hero Text */}
+        <div className="max-w-6xl mx-auto text-center mb-16 px-6">
+          {/* AI Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-8 group hover:border-primary/40 transition-all duration-300">
+            <Brain className="w-4 h-4 text-primary animate-pulse" />
+            <span className="text-sm font-medium text-foreground/80">Powered by Advanced AI</span>
+            <Sparkles className="w-4 h-4 text-accent animate-pulse" />
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-8 tracking-tight leading-[0.9]">
+            <span className="block mb-2">Transform Your</span>
+            <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-pulse">
+              Social Presence
+            </span>
+            <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mt-4 text-foreground/60 font-normal">
+              with AI Magic ✨
             </span>
           </h1>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
-            Enhance your LinkedIn, Twitter & Instagram posts with AI magic. Create content that
-            captivates and converts with professional precision.
+          
+          <p className="text-lg sm:text-xl md:text-2xl text-foreground/70 mb-12 leading-relaxed max-w-4xl mx-auto font-light">
+            Revolutionary AI that transforms ordinary posts into viral content. 
+            <span className="text-accent font-medium"> 10x your engagement</span> with neural-powered enhancement.
           </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <QuantumButton variant="neural" size="lg" glowing className="group">
+              <Rocket className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+              Start Creating Magic
+              <Zap className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+            </QuantumButton>
+            <QuantumButton variant="secondary" size="lg">
+              <Brain className="w-5 h-5" />
+              Watch AI in Action
+            </QuantumButton>
+          </div>
+
+          {/* Live Metrics */}
+          <div className="flex flex-wrap justify-center gap-8 text-sm text-foreground/60">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+              <span>2M+ Posts Enhanced</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+              <span>500% Avg. Engagement Boost</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-neural-glow rounded-full animate-pulse" />
+              <span>AI Processing Live</span>
+            </div>
+          </div>
         </div>
 
-        <div className="flex justify-center px-3 sm:px-4 md:px-6">
-          <div className="backdrop-blur-lg bg-white/60 rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-4 sm:p-6 md:p-8 lg:p-10 shadow-2xl border border-white/40 max-w-5xl w-full relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl sm:rounded-3xl md:rounded-[2rem]"></div>
-            <div className="relative z-10">
-              <PostEnhancer post={post} setPost={setPost} category={category} setCategory={setCategory} styleTone={styleTone} setStyleTone={setStyleTone} />
+        {/* Revolutionary Post Enhancer Interface */}
+        <div className="flex justify-center px-4">
+          <div className="relative max-w-6xl w-full">
+            {/* Glass Morphism Container */}
+            <div className="backdrop-blur-xl bg-card/60 rounded-3xl border border-card-border p-8 shadow-neural relative overflow-hidden group hover:shadow-[0_0_60px_hsl(263_70%_64%_/_0.4)] transition-all duration-700">
+              {/* Animated border glow */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse" />
+              
+              {/* Neural grid overlay */}
+              <div className="absolute inset-0 opacity-[0.02]"
+                   style={{
+                     backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
+                     backgroundSize: '24px 24px'
+                   }} />
+              
+              {/* Content */}
+              <div className="relative z-10">
+                <PostEnhancer 
+                  post={post} 
+                  setPost={setPost} 
+                  category={category} 
+                  setCategory={setCategory} 
+                  styleTone={styleTone} 
+                  setStyleTone={setStyleTone} 
+                />
+              </div>
+              
+              {/* Corner accents */}
+              <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-primary/40 rounded-tl-lg" />
+              <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-accent/40 rounded-tr-lg" />
+              <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-accent/40 rounded-bl-lg" />
+              <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-primary/40 rounded-br-lg" />
             </div>
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default HeroSection;

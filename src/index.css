@@ -4,35 +4,69 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    /* AI-First Revolutionary Color System */
+    --background: 210 15% 6%;
+    --foreground: 210 5% 98%;
+    
+    /* Neural Network Inspired Palette */
+    --neural-primary: 263 70% 64%;     /* Electric Purple */
+    --neural-secondary: 193 82% 55%;   /* Cyber Cyan */
+    --neural-accent: 290 84% 60%;      /* Neon Magenta */
+    --neural-glow: 195 100% 70%;       /* Bright Electric Blue */
+    
+    /* Glass Morphism System */
+    --glass-bg: 210 15% 8% / 0.4;
+    --glass-border: 210 20% 25% / 0.2;
+    --glass-highlight: 210 5% 98% / 0.1;
+    
+    /* Advanced Gradients */
+    --gradient-neural: linear-gradient(135deg, hsl(263 70% 64%) 0%, hsl(193 82% 55%) 50%, hsl(290 84% 60%) 100%);
+    --gradient-mesh: radial-gradient(circle at 25% 25%, hsl(263 70% 64% / 0.3) 0%, transparent 50%), 
+                     radial-gradient(circle at 75% 75%, hsl(193 82% 55% / 0.3) 0%, transparent 50%),
+                     radial-gradient(circle at 50% 50%, hsl(290 84% 60% / 0.2) 0%, transparent 50%);
+    
+    /* Shadows & Glows */
+    --shadow-neural: 0 0 40px hsl(263 70% 64% / 0.3), 0 20px 60px hsl(263 70% 64% / 0.1);
+    --glow-intense: 0 0 20px hsl(var(--neural-glow) / 0.6), 0 0 40px hsl(var(--neural-glow) / 0.4);
+    --glow-subtle: 0 0 10px hsl(var(--neural-primary) / 0.3);
+    
+    /* Component Tokens */
+    --card: 210 15% 8% / 0.6;
+    --card-foreground: 210 5% 98%;
+    --card-border: 210 20% 25% / 0.3;
+    
+    --popover: 210 15% 6% / 0.95;
+    --popover-foreground: 210 5% 98%;
+    
+    --primary: 263 70% 64%;
+    --primary-foreground: 210 5% 98%;
+    --primary-glow: 263 70% 74%;
+    
+    --secondary: 210 15% 12%;
+    --secondary-foreground: 210 5% 95%;
+    
+    --muted: 210 15% 10%;
+    --muted-foreground: 210 5% 70%;
+    
+    --accent: 193 82% 55%;
+    --accent-foreground: 210 15% 6%;
+    --accent-glow: 193 82% 65%;
+    
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 210 5% 98%;
+    
+    --border: 210 20% 20% / 0.3;
+    --input: 210 15% 8% / 0.8;
+    --ring: 263 70% 64% / 0.8;
+    
+    /* Interactive States */
+    --hover-lift: 0 10px 40px hsl(var(--neural-primary) / 0.2);
+    --active-press: inset 0 2px 8px hsl(210 15% 6% / 0.3);
+    
+    /* Typography Scales */
+    --text-gradient: linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(var(--neural-primary)) 100%);
+    
+    --radius: 1rem;
   }
 
   .dark {
@@ -73,25 +107,31 @@
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased font-europa;
-    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+    @apply bg-background text-foreground antialiased font-europa;
+    font-family: 'SF Pro Display', 'Geist', 'Inter', system-ui, sans-serif !important;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+    background: hsl(var(--background));
+    background-image: var(--gradient-mesh);
     min-height: 100vh;
-    font-weight: 500;
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-europa font-medium tracking-tight text-gray-900;
-    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+    @apply font-europa font-semibold tracking-tight text-foreground;
+    font-family: 'SF Pro Display', 'Geist', 'Inter', system-ui, sans-serif !important;
+    background: var(--text-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   p, li, input, textarea, button, a, span, div {
-    @apply font-europa text-gray-700 font-medium;
-    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+    @apply font-europa text-foreground/90 font-normal;
+    font-family: 'SF Pro Display', 'Geist', 'Inter', system-ui, sans-serif !important;
   }
 
   button {
