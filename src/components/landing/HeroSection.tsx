@@ -1,42 +1,164 @@
 import { useState } from "react";
-import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Star, Users, TrendingUp } from "lucide-react";
+
 const HeroSection = () => {
   const [post, setPost] = useState("");
-  const [category, setCategory] = useState("business");
-  const [styleTone, setStyleTone] = useState("professional");
-  return <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden">
-      {/* Professional floating elements */}
-      <div className="absolute top-10 sm:top-20 left-5 sm:left-10 w-32 sm:w-48 md:w-64 lg:w-80 h-32 sm:h-48 md:h-64 lg:h-80 bg-gradient-to-r from-blue-100/40 to-indigo-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float"></div>
-      <div className="absolute top-20 sm:top-40 right-5 sm:right-10 w-24 sm:w-40 md:w-56 lg:w-72 h-24 sm:h-40 md:h-56 lg:h-72 bg-gradient-to-r from-purple-100/40 to-pink-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{
-      animationDelay: '2s'
-    }}></div>
-      <div className="absolute bottom-10 sm:bottom-20 left-1/2 w-28 sm:w-36 md:w-48 lg:w-60 h-28 sm:h-36 md:h-48 lg:h-60 bg-gradient-to-r from-cyan-100/40 to-blue-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{
-      animationDelay: '4s'
-    }}></div>
-      
-      <div className="relative z-10 pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-6 sm:pb-8">
-        <div className="max-w-5xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14 px-3 sm:px-4 md:px-6 lg:px-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.1] text-gray-900">
-            <span className="font-bold text-gray-950">Transform Your</span>{" "}
-            <span className="text-gray-800 font-bold block sm:inline">
-              Social Media Presence
-            </span>
-          </h1>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
-            Enhance your LinkedIn, Twitter & Instagram posts with AI magic. Create content that
-            captivates and converts with professional precision.
-          </p>
-        </div>
+  const [enhancedPost, setEnhancedPost] = useState("");
+  const [isEnhancing, setIsEnhancing] = useState(false);
 
-        <div className="flex justify-center px-3 sm:px-4 md:px-6">
-          <div className="backdrop-blur-lg bg-white/60 rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-4 sm:p-6 md:p-8 lg:p-10 shadow-2xl border border-white/40 max-w-5xl w-full relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl sm:rounded-3xl md:rounded-[2rem]"></div>
-            <div className="relative z-10">
-              <PostEnhancer post={post} setPost={setPost} category={category} setCategory={setCategory} styleTone={styleTone} setStyleTone={setStyleTone} />
+  const handleEnhance = () => {
+    setIsEnhancing(true);
+    // Simulate API call
+    setTimeout(() => {
+      setEnhancedPost("🚀 Just launched my new project! Excited to see where this goes. 💼 #entrepreneur #innovation #growth");
+      setIsEnhancing(false);
+    }, 2000);
+  };
+
+  return (
+    <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Header Section */}
+      <div className="relative z-10 pt-20 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Hero Title */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-6">
+              Turn Every Social Post Into Your{" "}
+              <span className="block">Next Big Break</span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              The AI-powered content enhancer that transforms average posts into viral-worthy content
+            </p>
+            
+            {/* Trust Indicators */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                <span>Join 12,847+ creators</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex text-yellow-400">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-current" />
+                  ))}
+                </div>
+                <span>4.9/5 rating</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span>Featured in</span>
+                <Badge variant="secondary" className="font-semibold">TechCrunch</Badge>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="max-w-6xl mx-auto">
+            {/* Problem Statement */}
+            <div className="text-center mb-8">
+              <p className="text-lg text-gray-600 flex items-center justify-center gap-2">
+                Tired of posts that get lost in the feed? 📉
+              </p>
+            </div>
+
+            {/* Two Column Layout */}
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+              {/* Left Column - Input */}
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Current Post</h3>
+                  <Textarea
+                    placeholder="Paste your social media post here... (e.g., 'Just launched my new project! Excited to see where this goes.')"
+                    value={post}
+                    onChange={(e) => setPost(e.target.value)}
+                    className="min-h-[200px] resize-none border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                  />
+                </div>
+
+                {/* Enhancement Features */}
+                <div className="flex flex-wrap gap-3">
+                  <Badge variant="outline" className="text-yellow-600 border-yellow-200 bg-yellow-50">
+                    😊 Add Emojis
+                  </Badge>
+                  <Badge variant="outline" className="text-blue-600 border-blue-200 bg-blue-50">
+                    # Optimize Hashtags
+                  </Badge>
+                  <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50">
+                    🚀 Boost Engagement
+                  </Badge>
+                </div>
+
+                {/* CTA Button */}
+                <Button 
+                  onClick={handleEnhance}
+                  disabled={!post.trim() || isEnhancing}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 text-lg rounded-xl shadow-lg"
+                >
+                  {isEnhancing ? "✨ ENHANCING..." : "✨ ENHANCE MY POST FREE"}
+                </Button>
+
+                <p className="text-sm text-gray-500 text-center flex items-center justify-center gap-2">
+                  🔒 Your content stays private and secure
+                </p>
+              </div>
+
+              {/* Right Column - Output */}
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">AI-Enhanced Version</h3>
+                  <div className="min-h-[200px] p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                    {enhancedPost ? (
+                      <p className="text-gray-900 whitespace-pre-wrap">{enhancedPost}</p>
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <div className="text-center text-gray-400">
+                          <TrendingUp className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                          <p>Your enhanced post will appear here</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Process Steps */}
+                <div className="flex justify-between items-center text-sm text-gray-600">
+                  <div className="text-center">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2 mx-auto">
+                      <span className="text-blue-600 font-semibold">1</span>
+                    </div>
+                    <p>Paste</p>
+                  </div>
+                  <div className="flex-1 h-px bg-gray-200 mx-4"></div>
+                  <div className="text-center">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2 mx-auto">
+                      <span className="text-blue-600 font-semibold">2</span>
+                    </div>
+                    <p>AI Enhances</p>
+                  </div>
+                  <div className="flex-1 h-px bg-gray-200 mx-4"></div>
+                  <div className="text-center">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2 mx-auto">
+                      <span className="text-blue-600 font-semibold">3</span>
+                    </div>
+                    <p>Get Results</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Proof */}
+            <div className="text-center mt-12">
+              <div className="flex items-center justify-center gap-2 text-sm text-green-600">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span>15 people enhancing posts right now</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 export default HeroSection;
