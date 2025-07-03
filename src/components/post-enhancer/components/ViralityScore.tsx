@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge"; 
-import { Sparkles, TrendingUp, AlertCircle, Zap, Target, Lightbulb } from "lucide-react";
+import { TrendingUp, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -27,10 +27,10 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
   };
 
   const getScoreBadge = (score: number) => {
-    if (score >= 85) return "🚀 Viral Ready";
-    if (score >= 70) return "⚡ High Potential";
-    if (score >= 50) return "📈 Good Engagement";
-    return "🔧 Needs Work";
+    if (score >= 85) return "Viral Ready";
+    if (score >= 70) return "High Potential";
+    if (score >= 50) return "Good Engagement";
+    return "Needs Work";
   };
 
   const getBadgeVariant = (score: number): "default" | "secondary" | "destructive" | "outline" => {
@@ -112,7 +112,7 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
         : `Score: ${data.score}% - Follow the insights to boost engagement`;
 
       toast({
-        title: "Analysis Complete! 🎯",
+        title: "Analysis Complete",
         description: scoreMessage,
         variant: data.score >= 60 ? "default" : "destructive",
       });
@@ -150,8 +150,8 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
     <div className="mt-8 pt-6 border-t border-gray-100">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg">
-            <TrendingUp className="text-purple-600" size={20} />
+          <div className="p-2 bg-gray-50 rounded-lg">
+            <TrendingUp className="text-gray-700" size={18} />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900">
@@ -167,7 +167,7 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
           onClick={analyzePotential} 
           disabled={loading || !post.trim()}
           size="sm"
-          className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200"
+          className="flex items-center gap-2"
         >
           {analyzing ? (
             <>
@@ -175,21 +175,17 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
               Analyzing...
             </>
           ) : (
-            <>
-              <Sparkles size={16} />
-              Analyze
-            </>
+            "Analyze"
           )}
         </Button>
       </div>
 
       {score !== null && (
-        <div className="space-y-6 bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-gray-100 shadow-sm">
+        <div className="space-y-6 bg-white p-6 rounded-xl border border-gray-100">
           {/* Score Display */}
           <div className="flex items-center justify-between">
             <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-600 flex items-center gap-2">
-                <Target size={16} />
+              <p className="text-sm font-medium text-gray-600">
                 Virality Score
               </p>
               <div className="flex items-center gap-3">
@@ -201,13 +197,6 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
                 </Badge>
               </div>
             </div>
-            
-            {score >= 80 && (
-              <div className="text-right">
-                <Zap className="text-yellow-500 mb-1" size={24} />
-                <p className="text-xs text-yellow-600 font-medium">Viral Ready!</p>
-              </div>
-            )}
           </div>
           
           {/* Progress Bar */}
@@ -228,14 +217,11 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
           {/* Insights */}
           {insights.length > 0 && (
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Lightbulb className="text-amber-500" size={18} />
-                <h4 className="font-semibold text-gray-900">Improvement Insights</h4>
-              </div>
+              <h4 className="font-semibold text-gray-900">Improvement Insights</h4>
               
               <div className="space-y-3">
                 {insights.map((insight, index) => (
-                  <div key={index} className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-100">
+                  <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                     <div className="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
                       {index + 1}
                     </div>
@@ -250,7 +236,7 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
 
           {/* Call to Action */}
           {score !== null && score < 70 && (
-            <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
               <div className="flex items-center gap-2 mb-2">
                 <AlertCircle className="text-blue-600" size={16} />
                 <p className="text-sm font-medium text-blue-800">
