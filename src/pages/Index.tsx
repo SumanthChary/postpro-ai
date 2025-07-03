@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -6,9 +5,10 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/layout/Navigation";
 import VideoShowcase from "@/components/landing/VideoShowcase";
-import ComparisonSection from "@/components/landing/ComparisonSection";
+import ProfessionalHeroSection from "@/components/landing/ProfessionalHeroSection";
+import ConversionOptimizedSection from "@/components/landing/ConversionOptimizedSection";
+import ProfessionalComparisonSection from "@/components/landing/ProfessionalComparisonSection";
 import EnhancedPostsShowcase from "@/components/landing/EnhancedPostsShowcase";
-import HeroSection from "@/components/landing/HeroSection";
 import AboutSection from "@/components/landing/AboutSection";
 import ComingSoonSection from "@/components/landing/ComingSoonSection";
 import TemplatesSection from "@/components/post-enhancer/TemplatesSection";
@@ -112,7 +112,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="min-h-screen professional-gradient">
       <Navigation
         session={session}
         username={username}
@@ -124,17 +124,16 @@ const Index = () => {
       />
 
       <main>
-        <HeroSection />
-        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-          <VideoShowcase />
-          <ComparisonSection />
-          <EnhancedPostsShowcase />
-          <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
-          <AboutSection />
-          <ComingSoonSection />
-          <Testimonials />
-          <FAQ />
-        </div>
+        <ProfessionalHeroSection />
+        <ConversionOptimizedSection />
+        <VideoShowcase />
+        <ProfessionalComparisonSection />
+        <EnhancedPostsShowcase />
+        <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
+        <AboutSection />
+        <ComingSoonSection />
+        <Testimonials />
+        <FAQ />
       </main>
 
       <Footer />
