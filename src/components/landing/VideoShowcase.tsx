@@ -78,8 +78,70 @@ const VideoShowcase = () => {
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 -mt-6 sm:-mt-8">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-        {/* Featured On Section - moved above the main heading */}
-        <div className="flex justify-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight">
+            See PostProAI in Action
+          </h2>
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed px-2">
+            Watch how PostProAI transforms ordinary posts into engagement magnets with professional precision
+          </p>
+        </div>
+        
+        <div className="max-w-6xl mx-auto mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+          <Card className="overflow-hidden relative shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
+            <AspectRatio ratio={16/9}>
+              {isLoading && (
+                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse absolute top-0 left-0 z-10" />
+              )}
+              {videoError && !isLoading && (
+                <div className="w-full h-full bg-gray-100 flex items-center justify-center absolute top-0 left-0 z-10">
+                  <p className="text-gray-600 text-sm sm:text-base">Video could not be loaded</p>
+                </div>
+              )}
+              <video 
+                ref={videoRef}
+                className="w-full h-full object-cover"
+                playsInline
+                poster={thumbnailUrl}
+                onLoadedData={handleVideoLoadedData}
+                onError={handleVideoError}
+                muted={isMuted}
+                preload="auto"
+                style={{ opacity: isLoading ? 0 : 1 }}
+              >
+                <source src={videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </AspectRatio>
+            
+            <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 left-2 sm:left-4 right-2 sm:right-4 z-10">
+              <Progress value={progress} className="h-1 bg-white/30" />
+            </div>
+            
+            <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 flex justify-between items-center z-20">
+              <Button 
+                onClick={togglePlay} 
+                variant="secondary"
+                size="sm"
+                className="bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm"
+              >
+                {isPlaying ? <Pause size={16} className="sm:w-5 sm:h-5" /> : <Play size={16} className="sm:w-5 sm:h-5" />}
+              </Button>
+              
+              <Button 
+                onClick={toggleMute} 
+                variant="secondary"
+                size="sm"
+                className="bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm"
+              >
+                {isMuted ? <VolumeX size={16} className="sm:w-5 sm:h-5" /> : <Volume2 size={16} className="sm:w-5 sm:h-5" />}
+              </Button>
+            </div>
+          </Card>
+        </div>
+
+        {/* Featured On Section - moved below the video */}
+        <div className="flex justify-center">
           <div className="text-center">
             <h3 className="text-sm sm:text-base text-gray-600 font-medium mb-4 sm:mb-6">Featured on:</h3>
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8">
@@ -154,68 +216,6 @@ const VideoShowcase = () => {
               </a>
             </div>
           </div>
-        </div>
-        
-        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight">
-            See PostProAI in Action
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed px-2">
-            Watch how PostProAI transforms ordinary posts into engagement magnets with professional precision
-          </p>
-        </div>
-        
-        <div className="max-w-6xl mx-auto">
-          <Card className="overflow-hidden relative shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
-            <AspectRatio ratio={16/9}>
-              {isLoading && (
-                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse absolute top-0 left-0 z-10" />
-              )}
-              {videoError && !isLoading && (
-                <div className="w-full h-full bg-gray-100 flex items-center justify-center absolute top-0 left-0 z-10">
-                  <p className="text-gray-600 text-sm sm:text-base">Video could not be loaded</p>
-                </div>
-              )}
-              <video 
-                ref={videoRef}
-                className="w-full h-full object-cover"
-                playsInline
-                poster={thumbnailUrl}
-                onLoadedData={handleVideoLoadedData}
-                onError={handleVideoError}
-                muted={isMuted}
-                preload="auto"
-                style={{ opacity: isLoading ? 0 : 1 }}
-              >
-                <source src={videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </AspectRatio>
-            
-            <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 left-2 sm:left-4 right-2 sm:right-4 z-10">
-              <Progress value={progress} className="h-1 bg-white/30" />
-            </div>
-            
-            <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 flex justify-between items-center z-20">
-              <Button 
-                onClick={togglePlay} 
-                variant="secondary"
-                size="sm"
-                className="bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm"
-              >
-                {isPlaying ? <Pause size={16} className="sm:w-5 sm:h-5" /> : <Play size={16} className="sm:w-5 sm:h-5" />}
-              </Button>
-              
-              <Button 
-                onClick={toggleMute} 
-                variant="secondary"
-                size="sm"
-                className="bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm"
-              >
-                {isMuted ? <VolumeX size={16} className="sm:w-5 sm:h-5" /> : <Volume2 size={16} className="sm:w-5 sm:h-5" />}
-              </Button>
-            </div>
-          </Card>
         </div>
       </div>
     </section>
