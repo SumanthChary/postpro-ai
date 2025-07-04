@@ -1,41 +1,27 @@
 
 import { useState } from "react";
 import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
-
 const HeroSection = () => {
   const [post, setPost] = useState("");
   const [category, setCategory] = useState("business");
   const [styleTone, setStyleTone] = useState("professional");
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden">
+  return <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden">
       {/* Professional floating elements */}
       <div className="absolute top-10 sm:top-20 left-5 sm:left-10 w-32 sm:w-48 md:w-64 lg:w-80 h-32 sm:h-48 md:h-64 lg:h-80 bg-gradient-to-r from-blue-100/40 to-indigo-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float"></div>
       <div className="absolute top-20 sm:top-40 right-5 sm:right-10 w-24 sm:w-40 md:w-56 lg:w-72 h-24 sm:h-40 md:h-56 lg:h-72 bg-gradient-to-r from-purple-100/40 to-pink-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{
-        animationDelay: '2s'
-      }}></div>
+      animationDelay: '2s'
+    }}></div>
       <div className="absolute bottom-10 sm:bottom-20 left-1/2 w-28 sm:w-36 md:w-48 lg:w-60 h-28 sm:h-36 md:h-48 lg:h-60 bg-gradient-to-r from-cyan-100/40 to-blue-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" style={{
-        animationDelay: '4s'
-      }}></div>
+      animationDelay: '4s'
+    }}></div>
       
       <div className="relative z-10 pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-6 sm:pb-8">
         <div className="max-w-5xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14 px-3 sm:px-4 md:px-6 lg:px-8">
-          {/* Customer Badge */}
-          <div className="flex justify-center mb-6 sm:mb-8">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105">
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-              <span className="text-sm sm:text-base font-medium text-purple-700">
-                35+ Satisfied customers
-              </span>
-            </div>
-          </div>
-
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.1] text-gray-900">
             <span className="font-bold text-gray-950">Transform Your</span>{" "}
-            <span className="text-purple-600 font-bold italic block sm:inline">
-              Social Media
-            </span>{" "}
-            <span className="text-gray-800 font-bold italic">Presence</span>
+            <span className="text-gray-800 font-bold block sm:inline">
+              Social Media Presence
+            </span>
           </h1>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
             Enhance your LinkedIn, Twitter & Instagram posts with AI magic. Create content that
@@ -52,8 +38,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default HeroSection;

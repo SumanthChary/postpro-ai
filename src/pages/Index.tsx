@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -10,8 +11,6 @@ import EnhancedPostsShowcase from "@/components/landing/EnhancedPostsShowcase";
 import HeroSection from "@/components/landing/HeroSection";
 import AboutSection from "@/components/landing/AboutSection";
 import ComingSoonSection from "@/components/landing/ComingSoonSection";
-import HowItWorks from "@/components/landing/HowItWorks";
-import AboutAuthor from "@/components/landing/AboutAuthor";
 import TemplatesSection from "@/components/post-enhancer/TemplatesSection";
 import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
@@ -128,14 +127,12 @@ const Index = () => {
         <HeroSection />
         <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <VideoShowcase />
-          <HowItWorks />
           <ComparisonSection />
           <EnhancedPostsShowcase />
           <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
           <AboutSection />
-          <Testimonials />
-          <AboutAuthor />
           <ComingSoonSection />
+          <Testimonials />
           <FAQ />
         </div>
       </main>
