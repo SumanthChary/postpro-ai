@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -72,6 +73,17 @@
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
+  /* Purple text selection like Perplexity */
+  ::selection {
+    background-color: rgba(147, 51, 234, 0.2);
+    color: rgb(147, 51, 234);
+  }
+
+  ::-moz-selection {
+    background-color: rgba(147, 51, 234, 0.2);
+    color: rgb(147, 51, 234);
+  }
+
   body {
     @apply bg-gray-50 text-gray-900 antialiased font-europa;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
@@ -102,6 +114,11 @@
   textarea, input {
     @apply transition-all duration-200 ease-in-out font-europa font-medium;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+  }
+
+  /* Header with thin black border */
+  header, nav {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   }
 
   .aesthetic-card {
