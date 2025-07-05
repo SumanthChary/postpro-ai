@@ -21,28 +21,34 @@ const ChatInput = ({ onSubmit, loading }: ChatInputProps) => {
     setInput("");
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="p-2 sm:p-3 border-t border-gray-200/50 bg-gray-50/50">
-      <div className="flex gap-1.5 sm:gap-2">
+    <form onSubmit={handleSubmit} className="flex gap-3 items-end">
+      <div className="flex-1">
         <Textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Ask me about social media strategy, content ideas..."
-          className="resize-none bg-white/80 border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 text-xs sm:text-sm"
-          rows={1}
+          className="resize-none border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl min-h-[50px]"
+          rows={2}
           disabled={loading}
         />
-        <Button 
-          type="submit" 
-          size="icon" 
-          disabled={loading || !input.trim()}
-          className="h-6 w-6 sm:h-8 sm:w-8 text-white flex-shrink-0"
-          style={{ backgroundColor: 'rgba(57,107,255,1)' }}
-        >
-          <Send className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-          <span className="sr-only">Send</span>
-        </Button>
       </div>
+      <Button 
+        type="submit" 
+        disabled={loading || !input.trim()}
+        className="h-12 w-12 rounded-xl"
+        style={{ backgroundColor: 'rgba(57,107,255,1)' }}
+      >
+        <Send size={18} />
+      </Button>
     </form>
   );
 };

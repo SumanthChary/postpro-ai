@@ -19,25 +19,24 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
       }`}
     >
       <div
-        className={`max-w-[90%] sm:max-w-[85%] p-2 sm:p-3 rounded-lg sm:rounded-xl ${
+        className={`max-w-[80%] p-4 rounded-2xl ${
           message.role === "user"
-            ? "text-white rounded-tr-sm"
-            : "bg-gray-50 text-gray-800 rounded-tl-sm border border-gray-200/50"
+            ? "bg-blue-600 text-white rounded-br-md"
+            : "bg-gray-100 text-gray-900 rounded-bl-md"
         }`}
-        style={message.role === "user" ? { backgroundColor: 'rgba(57,107,255,1)' } : {}}
       >
-        <div className="flex items-center gap-1 sm:gap-1.5 mb-1 sm:mb-1.5">
+        <div className="flex items-center gap-2 mb-2">
           {message.role === "assistant" ? (
-            <Bot className="w-2.5 h-2.5 sm:w-3 sm:h-3" style={{ color: 'rgba(57,107,255,1)' }} />
+            <Bot size={16} className="text-blue-600" />
           ) : (
-            <User className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+            <User size={16} className="text-blue-100" />
           )}
-          <span className="text-xs font-medium opacity-70">
+          <span className="text-sm font-medium opacity-80">
             {message.role === "user" ? "You" : "AI Assistant"}
           </span>
         </div>
-        <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
-        <span className="text-xs opacity-50 block text-right mt-1 sm:mt-1.5">
+        <p className="leading-relaxed whitespace-pre-wrap">{message.content}</p>
+        <span className="text-xs opacity-60 block text-right mt-2">
           {message.timestamp.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",

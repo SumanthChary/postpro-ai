@@ -21,7 +21,7 @@ interface Message {
 
 const initialMessage: Message = {
   role: "assistant",
-  content: "👋 Hi! I'm your AI social media assistant. Ask me about content creation, strategy, or post improvement!",
+  content: "Hi! I'm your AI social media assistant. Ask me about content creation, strategy, or post improvement!",
   timestamp: new Date(),
 };
 
@@ -89,28 +89,29 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 py-3 sm:py-4 px-2 sm:px-3">
-      <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4">
-        {/* Back Button */}
-        <div className="mb-2">
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="border-b border-gray-100 p-4">
           <Link to="/">
-            <Button variant="outline" size="sm" className="gap-1 bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white/90 text-xs px-2 py-1.5">
-              <ArrowLeft size={12} className="sm:w-3 sm:h-3" />
-              <span className="hidden xs:inline">Back to Home</span>
-              <span className="xs:hidden">Back</span>
+            <Button variant="ghost" size="sm" className="gap-2 text-gray-600 hover:text-gray-900">
+              <ArrowLeft size={16} />
+              Back to Home
             </Button>
           </Link>
         </div>
 
-        {/* Header Section */}
-        <PageHeader />
+        {/* Page Header */}
+        <div className="p-6 border-b border-gray-100">
+          <PageHeader />
+        </div>
 
         {/* Chat Interface */}
-        <Card className="max-w-3xl mx-auto shadow-md sm:shadow-lg border-0 bg-white/80 backdrop-blur-sm overflow-hidden">
+        <div className="flex flex-col h-[calc(100vh-200px)]">
           <ChatHeader onReset={resetConversation} />
           
-          <ScrollArea className="h-[300px] sm:h-[350px] p-2 sm:p-3" ref={scrollAreaRef}>
-            <div className="space-y-2 sm:space-y-3">
+          <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+            <div className="space-y-4 max-w-3xl mx-auto">
               {messages.map((message, index) => (
                 <ChatMessage key={index} message={message} />
               ))}
@@ -118,8 +119,12 @@ const Chatbot = () => {
             </div>
           </ScrollArea>
           
-          <ChatInput onSubmit={handleSubmit} loading={loading} />
-        </Card>
+          <div className="border-t border-gray-100 p-4">
+            <div className="max-w-3xl mx-auto">
+              <ChatInput onSubmit={handleSubmit} loading={loading} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

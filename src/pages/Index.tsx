@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -12,6 +11,8 @@ import HeroSection from "@/components/landing/HeroSection";
 import AboutSection from "@/components/landing/AboutSection";
 import ComingSoonSection from "@/components/landing/ComingSoonSection";
 import TemplatesSection from "@/components/post-enhancer/TemplatesSection";
+import HowItWorksSection from "@/components/landing/HowItWorksSection";
+import AboutFounderSection from "@/components/landing/AboutFounderSection";
 import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
@@ -127,9 +128,11 @@ const Index = () => {
         <HeroSection />
         <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <VideoShowcase />
+          <HowItWorksSection />
           <ComparisonSection />
           <EnhancedPostsShowcase />
           <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
+          <AboutFounderSection />
           <AboutSection />
           <ComingSoonSection />
           <Testimonials />
@@ -140,8 +143,10 @@ const Index = () => {
       <Footer />
 
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
-        <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-y-auto bg-white p-0 rounded-lg">
-          <PricingSection />
+        <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-hidden bg-white p-0 rounded-lg">
+          <div className="overflow-y-auto max-h-[95vh]">
+            <PricingSection />
+          </div>
         </DialogContent>
       </Dialog>
     </div>
