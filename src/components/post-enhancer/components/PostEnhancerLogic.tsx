@@ -50,38 +50,29 @@ export const PostEnhancerLogic = ({
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      {/* Main Enhancement Card */}
-      <Card className="p-8 shadow-xl border border-gray-100 bg-white rounded-2xl backdrop-blur-sm">
-        <EnhancerForm
-          post={post}
-          category={category}
-          styleTone={styleTone}
-          isEnhancing={isEnhancing}
-          onPostChange={setPost}
-          onCategoryChange={setCategory}
-          onStyleToneChange={setStyleTone}
-          onReset={onReset}
-          onEnhance={onEnhance}
-        />
-      </Card>
+    <Card className="p-4 sm:p-6 shadow-lg border-0 bg-white/70 backdrop-blur-[2px]">
+      <EnhancerForm
+        post={post}
+        category={category}
+        styleTone={styleTone}
+        isEnhancing={isEnhancing}
+        onPostChange={setPost}
+        onCategoryChange={setCategory}
+        onStyleToneChange={setStyleTone}
+        onReset={onReset}
+        onEnhance={onEnhance}
+      />
       
-      {/* Results Section */}
       {Object.keys(enhancedPosts).length > 0 && (
-        <div className="mt-8">
-          <Card className="p-6 shadow-lg border border-gray-100 bg-white rounded-2xl">
-            <ShareOptions 
-              enhancedPosts={enhancedPosts} 
-              onPlatformSelect={onPlatformSelect} 
-            />
-          </Card>
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <ShareOptions 
+            enhancedPosts={enhancedPosts} 
+            onPlatformSelect={onPlatformSelect} 
+          />
         </div>
       )}
 
-      {/* Virality Score - Secondary Focus */}
-      <div className="mt-6">
-        <ViralityScore post={post} category={category} />
-      </div>
-    </div>
+      <ViralityScore post={post} category={category} />
+    </Card>
   );
 };
