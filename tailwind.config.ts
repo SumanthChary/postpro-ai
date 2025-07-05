@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -49,13 +48,12 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Aeonik Grotesque", "system-ui", "sans-serif"],
-        heading: ["Aeonik Grotesque", "system-ui", "sans-serif"],
-        body: ["Aeonik Grotesque", "system-ui", "sans-serif"],
-        clash: ["Aeonik Grotesque", "system-ui", "sans-serif"],
-        cabinet: ["Aeonik Grotesque", "system-ui", "sans-serif"],
-        europa: ["Aeonik Grotesque", "system-ui", "sans-serif"],
-        aeonik: ["Aeonik Grotesque", "system-ui", "sans-serif"],
+        sans: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        heading: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        body: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        clash: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        cabinet: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        europa: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
