@@ -1,63 +1,52 @@
 
-import { useState, useRef, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CornerDownLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import PageHeader from "@/components/chatbot/PageHeader";
-import ChatHeader from "@/components/chatbot/ChatHeader";
-import ChatMessage from "@/components/chatbot/ChatMessage";
-import LoadingIndicator from "@/components/chatbot/LoadingIndicator";
-import ChatInput from "@/components/chatbot/ChatInput";
+import { ChatMessageList } from "@/components/ui/chat-message-list";
+import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from "@/components/ui/chat-bubble";
+import { ChatInput } from "@/components/ui/chat-input";
 
 interface Message {
-  role: "user" | "assistant";
+  id: number;
   content: string;
-  timestamp: Date;
+  sender: "user" | "ai";
 }
 
 const initialMessage: Message = {
-  role: "assistant",
+  id: 1,
   content: "Hi! I'm your AI social media assistant. Ask me about content creation, strategy, or post improvement!",
-  timestamp: new Date(),
+  sender: "ai",
 };
 
 const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([initialMessage]);
-  const [loading, setLoading] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
 
-  const scrollToBottom = () => {
-    if (scrollAreaRef.current) {
-      const scrollElement = scrollAreaRef.current;
-      scrollElement.scrollTop = scrollElement.scrollHeight;
-    }
-  };
-
-  const handleSubmit = async (input: string) => {
     const userMessage: Message = {
-      role: "user",
+      id: messages.length + 1,
       content: input,
-      timestamp: new Date(),
+      sender: "user",
     };
     
     setMessages((prev) => [...prev, userMessage]);
-    setLoading(true);
+    setInput("");
+    setIsLoading(true);
     
     try {
       const { data, error } = await supabase.functions.invoke('chat-assistant', {
         body: {
           message: input,
           history: messages.map(msg => ({
-            role: msg.role,
+            role: msg.sender === "user" ? "user" : "assistant",
             content: msg.content
           }))
         }
@@ -66,9 +55,9 @@ const Chatbot = () => {
       if (error) throw error;
       
       const assistantMessage: Message = {
-        role: "assistant",
+        id: messages.length + 2,
         content: data.response,
-        timestamp: new Date(),
+        sender: "ai",
       };
       
       setMessages((prev) => [...prev, assistantMessage]);
@@ -80,7 +69,7 @@ const Chatbot = () => {
         variant: "destructive",
       });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -89,10 +78,10 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="border-b border-gray-100 p-4">
+        <div className="bg-white border-b border-gray-200 p-4">
           <Link to="/">
             <Button variant="ghost" size="sm" className="gap-2 text-gray-600 hover:text-gray-900">
               <ArrowLeft size={16} />
@@ -101,28 +90,76 @@ const Chatbot = () => {
           </Link>
         </div>
 
-        {/* Page Header */}
-        <div className="p-6 border-b border-gray-100">
-          <PageHeader />
-        </div>
-
         {/* Chat Interface */}
-        <div className="flex flex-col h-[calc(100vh-200px)]">
-          <ChatHeader onReset={resetConversation} />
+        <div className="bg-white shadow-sm rounded-t-lg mx-4 mt-4 h-[calc(100vh-120px)] flex flex-col">
+          {/* Chat Header */}
+          <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900">AI Assistant</h2>
+              <p className="text-sm text-gray-500">Ask me anything about social media strategy</p>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={resetConversation} 
+              className="text-gray-600 hover:text-gray-900"
+            >
+              New Chat
+            </Button>
+          </div>
           
-          <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-            <div className="space-y-4 max-w-3xl mx-auto">
-              {messages.map((message, index) => (
-                <ChatMessage key={index} message={message} />
+          {/* Messages */}
+          <div className="flex-1 overflow-hidden">
+            <ChatMessageList>
+              {messages.map((message) => (
+                <ChatBubble
+                  key={message.id}
+                  variant={message.sender === "user" ? "sent" : "received"}
+                >
+                  <ChatBubbleAvatar
+                    fallback={message.sender === "user" ? "You" : "AI"}
+                  />
+                  <ChatBubbleMessage
+                    variant={message.sender === "user" ? "sent" : "received"}
+                  >
+                    {message.content}
+                  </ChatBubbleMessage>
+                </ChatBubble>
               ))}
-              {loading && <LoadingIndicator />}
-            </div>
-          </ScrollArea>
+
+              {isLoading && (
+                <ChatBubble variant="received">
+                  <ChatBubbleAvatar fallback="AI" />
+                  <ChatBubbleMessage isLoading />
+                </ChatBubble>
+              )}
+            </ChatMessageList>
+          </div>
           
+          {/* Input */}
           <div className="border-t border-gray-100 p-4">
-            <div className="max-w-3xl mx-auto">
-              <ChatInput onSubmit={handleSubmit} loading={loading} />
-            </div>
+            <form
+              onSubmit={handleSubmit}
+              className="relative rounded-xl border border-gray-200 bg-white focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500 p-1"
+            >
+              <ChatInput
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Type your message..."
+                className="border-0 bg-transparent focus-visible:ring-0 focus-visible:border-0"
+              />
+              <div className="flex items-center justify-end p-3 pt-0">
+                <Button 
+                  type="submit" 
+                  size="sm" 
+                  className="ml-auto gap-1.5 bg-blue-600 hover:bg-blue-700" 
+                  disabled={!input.trim() || isLoading}
+                >
+                  Send
+                  <CornerDownLeft className="size-3.5" />
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
