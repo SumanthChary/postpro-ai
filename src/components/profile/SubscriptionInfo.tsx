@@ -13,7 +13,7 @@ const SubscriptionInfo = () => {
 
   if (loading) {
     return (
-      <Card className="p-6 animate-pulse">
+      <Card className="p-6">
         <div className="h-20 bg-gray-200 rounded mb-4"></div>
       </Card>
     );

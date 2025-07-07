@@ -45,7 +45,7 @@ const UsageHistory = () => {
 
   if (loading) {
     return (
-      <Card className="p-6 animate-pulse">
+      <Card className="p-6">
         <div className="h-40 bg-gray-200 rounded"></div>
       </Card>
     );

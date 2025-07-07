@@ -64,7 +64,7 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
 
   if (loading) {
     return (
-      <Card className="p-4 animate-pulse">
+      <Card className="p-4">
         <div className="h-16 bg-gray-200 rounded mb-4"></div>
       </Card>
     );

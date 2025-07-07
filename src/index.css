@@ -244,15 +244,10 @@
     }
   }
 
-  /* Smooth animations for mobile */
+  /* Smooth transitions for mobile */
   @media (prefers-reduced-motion: no-preference) {
-    .animate-float {
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
+    .transition-smooth {
+      transition: all 0.3s ease-in-out;
     }
   }
 

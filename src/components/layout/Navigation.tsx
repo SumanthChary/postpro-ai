@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon } from "lucide-react";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface NavigationProps {
   session: any;
@@ -36,7 +37,7 @@ const Navigation = ({
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
-            <img 
+            <OptimizedImage 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI Logo" 
               className="w-8 h-8 rounded-lg object-contain"

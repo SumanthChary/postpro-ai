@@ -28,7 +28,7 @@ export const EnhancerForm = ({
   return <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 mb-4">
         <div className="flex items-center space-x-2">
-          <SparklesIcon className="w-5 h-5 text-electric-purple animate-pulse" />
+          <SparklesIcon className="w-5 h-5 text-electric-purple" />
           <h2 className="text-base sm:text-lg font-montserrat font-extrabold text-custom-text">Professional Post Enhancer</h2>
         </div>
         <div className="flex items-center gap-3">
@@ -131,7 +131,7 @@ export const EnhancerForm = ({
         </Button>
         <Button className="w-full sm:w-auto bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans group relative overflow-hidden" onClick={onEnhance} disabled={isEnhancing}>
           {isEnhancing ? <>
-              <Loader2Icon className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2Icon className="w-4 h-4 mr-2" />
               Enhancing...
             </> : <>
               <RocketIcon className="w-4 h-4 mr-2 transition-all duration-500 group-hover:rotate-[360deg] group-hover:scale-110 group-hover:translate-y-[-2px]" />

@@ -39,7 +39,7 @@ const Enhance = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 py-12 px-4 flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="text-gray-600 font-medium">Loading enhance page...</p>
         </div>
       </div>

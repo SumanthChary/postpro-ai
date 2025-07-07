@@ -145,7 +145,7 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl }: VideoPlayerProps) => {
           onMouseLeave={() => !isPlaying && setShowControls(true)}
         >
           {isLoading && (
-            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse absolute top-0 left-0 z-10" />
+            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 absolute top-0 left-0 z-10" />
           )}
           {videoError && !isLoading && (
             <div className="w-full h-full bg-gray-100 flex items-center justify-center absolute top-0 left-0 z-10">

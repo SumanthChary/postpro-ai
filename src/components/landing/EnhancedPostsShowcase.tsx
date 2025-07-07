@@ -40,7 +40,7 @@ const EnhancedPostsShowcase = () => {
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
           {posts.map((post, index) => (
-            <Card key={index} className="p-4 sm:p-5 lg:p-6 xl:p-8 flex flex-col gap-4 sm:gap-5 lg:gap-6 bg-white/80 backdrop-blur-sm shadow-xl border border-gray-200/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+            <Card key={index} className="p-4 sm:p-5 lg:p-6 xl:p-8 flex flex-col gap-4 sm:gap-5 lg:gap-6 bg-white/80 backdrop-blur-sm shadow-xl border border-gray-200/50 hover:shadow-2xl transition-all duration-300">
               <div className="flex items-center gap-3 sm:gap-4 mb-1 sm:mb-2">
                 <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl text-white shadow-lg">
                   {post.icon}

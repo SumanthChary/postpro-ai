@@ -10,9 +10,9 @@ const LoadingIndicator = () => {
           <span className="text-sm font-medium opacity-80">AI Assistant</span>
         </div>
         <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"></div>
-          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{animationDelay: '150ms'}}></div>
-          <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{animationDelay: '300ms'}}></div>
+          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
         </div>
       </div>
     </div>
