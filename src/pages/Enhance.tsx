@@ -14,7 +14,7 @@ const Enhance = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth('/auth', true);
 
   useEffect(() => {
     // Simulate page loading and check for any initialization errors
