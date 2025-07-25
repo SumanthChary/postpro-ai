@@ -2,7 +2,7 @@
 import React from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useSubscription } from '@/hooks/useSubscription';
-import PostEnhancerLogic from './PostEnhancerLogic';
+import { PostEnhancerLogic } from './PostEnhancerLogic';
 import { AutoShare } from './AutoShare';
 import type { PostEnhancerProps, ScheduleData } from '@/types/postEnhancer';
 
