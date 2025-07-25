@@ -1,4 +1,14 @@
 -- Create scheduled shares table
+CREATE TABLE IF NOT EXISTS public.scheduled_shares (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  platforms TEXT[] NOT NULL,
+  scheduled_time TIMESTAMPTZ NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);cheduled shares table
 CREATE TABLE public.scheduled_shares (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,

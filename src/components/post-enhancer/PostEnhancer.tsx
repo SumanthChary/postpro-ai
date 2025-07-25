@@ -6,14 +6,14 @@ import { PostEnhancerLogic } from './PostEnhancerLogic';
 import { AutoShare } from './AutoShare';
 import type { PostEnhancerProps, ScheduleData } from '@/types/postEnhancer';
 
-const PostEnhancer = ({
+const PostEnhancer: React.FC<PostEnhancerProps> = ({
   post,
   setPost,
   category,
   setCategory,
   styleTone,
   setStyleTone,
-}: PostEnhancerProps) => {
+}) => {
   const { usageStats } = useSubscription();
 
   const handleSchedule = async (scheduleData: ScheduleData) => {
@@ -31,7 +31,9 @@ const PostEnhancer = ({
           content: scheduleData.post,
           platforms: scheduleData.platforms,
           scheduled_time: scheduleData.scheduledTime.toISOString(),
-          status: 'pending'
+          status: 'pending',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         });
 
       if (error) throw error;
@@ -42,8 +44,8 @@ const PostEnhancer = ({
   };
 
   return (
-    <div className="space-y-8 w-full px-4 sm:px-0">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="space-y-8 w-full">
+      <div className="space-y-8">
         <PostEnhancerLogic
           post={post}
           setPost={setPost}
@@ -53,7 +55,6 @@ const PostEnhancer = ({
           setStyleTone={setStyleTone}
         />
         
-        {/* Auto-share section */}
         {usageStats?.userPlan && (
           <div className="mt-8 pt-8 border-t">
             <AutoShare
@@ -63,19 +64,6 @@ const PostEnhancer = ({
             />
           </div>
         )}
-      </div>
-    </div>
-  );
-};
-
-export default PostEnhancer;
-};
-          setCategory={setCategory}
-          styleTone={styleTone}
-          setStyleTone={setStyleTone}
-        />
-
-        <PaymentTrustBadges />
       </div>
     </div>
   );
