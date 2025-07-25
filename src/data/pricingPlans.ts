@@ -3,19 +3,36 @@ import { Plan } from "@/types/pricing";
 
 export const pricingPlans: Plan[] = [
   {
-    name: "Starter Plan",
+    name: "Free",
     price: "0",
-    period: "forever",
+    period: "month",
     features: [
-      "7-Day Free Trial",
       "5 Post Enhancements",
-      "Basic AI Features",
-      "Manual Posting",
-      "Real-Time Trending Hashtags",
-      "Watermark on AI-Enhanced Posts",
+      "Basic Post Analytics",
+      "Manual Post Sharing",
+      "Standard Support",
+      "Real-Time Trending Hashtags"
     ],
-    cta: "Start Free Trial",
-    credits: 50
+    cta: "Start Free",
+    credits: 5,
+    currency: 'USD'
+  },
+  {
+    name: "Plus",
+    price: "3",
+    period: "week",
+    features: [
+      "25 Post Enhancements/week",
+      "Unlimited Auto-Share",
+      "Advanced Analytics",
+      "Priority Support",
+      "Schedule up to 10 posts"
+    ],
+    cta: "Try Plus",
+    popular: true,
+    credits: 25,
+    currency: 'USD',
+    displayPrice: "~$5~ $3"
   },
   {
     name: "Monthly Plan",
