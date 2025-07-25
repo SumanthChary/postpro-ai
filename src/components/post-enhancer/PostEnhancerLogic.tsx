@@ -1,7 +1,5 @@
 import React from 'react';
-import { supabase } from '../../integrations/supabase/client';
-import { useSubscription } from '../../hooks/useSubscription';
-import type { PostEnhancerProps } from '../../types/postEnhancer';
+import type { PostEnhancerProps } from '@/types/postEnhancer';
 
 const PostEnhancerLogic: React.FC<PostEnhancerProps> = ({
   post,

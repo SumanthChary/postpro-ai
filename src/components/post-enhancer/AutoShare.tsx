@@ -4,10 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { toast } from "@/components/ui/use-toast";
 
-interface AutoShareProps {
-  post: string;
-  onSchedule: (data: ScheduleData) => Promise<void>;
-}
+import type { AutoShareProps, ScheduleData } from '@/types/postEnhancer';
 
 export interface ScheduleData {
   post: string;

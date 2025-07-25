@@ -1,17 +1,10 @@
 
-import { PostEnhancerProps } from "./types";
-import { PostEnhancerLogic } from "./components/PostEnhancerLogic";
-import { PaymentTrustBadges } from "./components/PaymentTrustBadges";
-import { AutoShare } from "./AutoShare";
-import { useSubscription } from "@/hooks/useSubscription";
-import { supabase } from "@/integrations/supabase/client";
-
 import React from 'react';
-import { supabase } from '../../integrations/supabase/client';
-import { useSubscription } from '../../hooks/useSubscription';
+import { supabase } from '@/integrations/supabase/client';
+import { useSubscription } from '@/hooks/useSubscription';
 import PostEnhancerLogic from './PostEnhancerLogic';
-import AutoShare from './AutoShare';
-import type { PostEnhancerProps, ScheduleData } from '../../types/postEnhancer';
+import { AutoShare } from './AutoShare';
+import type { PostEnhancerProps, ScheduleData } from '@/types/postEnhancer';
 
 const PostEnhancer: React.FC<PostEnhancerProps> = ({
   post,
