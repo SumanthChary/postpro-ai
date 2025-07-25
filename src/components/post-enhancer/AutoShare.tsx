@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import type { AutoShareProps } from '@/types/postEnhancer';
-
-import type { AutoShareProps, ScheduleData } from '@/types/postEnhancer';
-
-export interface ScheduleData {
-  post: string;
-  platforms: string[];
-  scheduledTime: Date;
-}
 
 export const AutoShare = ({ post, onSchedule }: AutoShareProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [isScheduling, setIsScheduling] = useState(false);
+  const { toast } = useToast();
 
   const platforms = [
     { id: 'linkedin', name: 'LinkedIn', icon: '📊' },
