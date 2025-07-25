@@ -6,14 +6,14 @@ import { PostEnhancerLogic } from './PostEnhancerLogic';
 import { AutoShare } from './AutoShare';
 import type { PostEnhancerProps, ScheduleData } from '@/types/postEnhancer';
 
-const PostEnhancer: React.FC<PostEnhancerProps> = ({
+const PostEnhancer = ({
   post,
   setPost,
   category,
   setCategory,
   styleTone,
   setStyleTone,
-}) => {
+}: PostEnhancerProps) => {
   const { usageStats } = useSubscription();
 
   const handleSchedule = async (scheduleData: ScheduleData) => {

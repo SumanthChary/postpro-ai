@@ -1,8 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
-import { toast } from "@/components/ui/use-toast";
+import type { AutoShareProps } from '@/types/postEnhancer';
 
 import type { AutoShareProps, ScheduleData } from '@/types/postEnhancer';
 
