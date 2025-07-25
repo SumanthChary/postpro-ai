@@ -28,7 +28,6 @@ export const useSubscription = () => {
   const [usageStats, setUsageStats] = useState({
     canUse: true,
     currentCount: 0,
-    userPlan: 'free' as 'free' | 'plus' | 'pro' | 'enterprise',
     monthlyLimit: 5, // Changed from 3 to 5
     remainingUses: 5
   });
