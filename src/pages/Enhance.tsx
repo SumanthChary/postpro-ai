@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
+import { SocialConnections } from "@/components/post-enhancer/SocialConnections";
 import { ArrowLeft, AlertCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Enhance = () => {
   const [post, setPost] = useState("");
@@ -105,14 +107,27 @@ const Enhance = () => {
 
         {/* Main Content */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-4 sm:p-6 md:p-8">
-          <PostEnhancer 
-            post={post} 
-            setPost={setPost} 
-            category={category} 
-            setCategory={setCategory} 
-            styleTone={styleTone}
-            setStyleTone={setStyleTone}
-          />
+          <Tabs defaultValue="enhance" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="enhance">Enhance Post</TabsTrigger>
+              <TabsTrigger value="connections">Social Connections</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="enhance">
+              <PostEnhancer 
+                post={post} 
+                setPost={setPost} 
+                category={category} 
+                setCategory={setCategory} 
+                styleTone={styleTone}
+                setStyleTone={setStyleTone}
+              />
+            </TabsContent>
+
+            <TabsContent value="connections">
+              <SocialConnections />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
