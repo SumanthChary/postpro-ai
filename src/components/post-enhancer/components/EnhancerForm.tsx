@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { SparklesIcon, RocketIcon, Loader2Icon } from "lucide-react";
+import { SparklesIcon, RocketIcon, Loader2Icon, HashIcon, TrendingUpIcon, SmileIcon } from "lucide-react";
 import { LinkedinIcon, TwitterIcon, InstagramIcon, FacebookIcon } from "lucide-react";
-import { BrainIcon, UsersIcon, TrendingUpIcon, PenToolIcon, SmileIcon } from "lucide-react";
+import { BrainIcon, UsersIcon, PenToolIcon } from "lucide-react";
 import { EnhancerFormProps } from "../types";
 import { useState, useEffect } from "react";
 export const EnhancerForm = ({
@@ -116,30 +116,42 @@ export const EnhancerForm = ({
       </div>
       
       <div className="relative">
-        <Textarea value={post} onChange={handlePostChange} placeholder="Paste your post here to enhance it with AI magic ✨" className="min-h-[150px] sm:min-h-[200px] text-sm sm:text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-electric-purple focus:ring-electric-purple transition-all duration-200 scrollbar-hide overflow-y-auto" style={{
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none'
-      }} />
+        <Textarea 
+          value={post} 
+          onChange={handlePostChange} 
+          placeholder="Paste your post here to enhance it with AI magic ✨" 
+          className="min-h-[180px] sm:min-h-[200px] text-sm sm:text-base resize-none rounded-lg border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition-all duration-200 bg-gray-50" 
+        />
         <div className="absolute bottom-2 right-2 text-xs text-gray-500">
           {charCount} characters
         </div>
       </div>
       
-      <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-3">
-        <Button variant="outline" className="w-full sm:w-auto text-custom-text border-electric-purple hover:bg-electric-purple/5 font-opensans" onClick={onReset} disabled={isEnhancing || !post}>
-          Reset
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-2 sm:gap-4">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="flex items-center space-x-1 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-300"
+        >
+          <SmileIcon className="w-4 h-4" />
+          <span>Add Emojis</span>
         </Button>
-        <Button className="w-full sm:w-auto bg-gradient-to-r from-electric-purple to-bright-teal text-white hover:opacity-90 font-opensans group relative overflow-hidden" onClick={onEnhance} disabled={isEnhancing}>
-          {isEnhancing ? <>
-              <Loader2Icon className="w-4 h-4 mr-2" />
-              Enhancing...
-            </> : <>
-              <RocketIcon className="w-4 h-4 mr-2 transition-all duration-500 group-hover:rotate-[360deg] group-hover:scale-110 group-hover:translate-y-[-2px]" />
-              <span className="relative z-10 group-hover:scale-105 transition-transform duration-300 text-zinc-50">
-                Enhance Post
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-electric-purple to-bright-teal opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </>}
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="flex items-center space-x-1 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-300"
+        >
+          <HashIcon className="w-4 h-4" />
+          <span>Optimize Hashtags</span>
+        </Button>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="flex items-center space-x-1 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-300"
+        >
+          <TrendingUpIcon className="w-4 h-4" />
+          <span>Boost Engagement</span>
         </Button>
       </div>
     </div>;

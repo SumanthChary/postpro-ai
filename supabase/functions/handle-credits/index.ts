@@ -7,10 +7,21 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Your account ID for unlimited credits
-const UNLIMITED_ACCOUNT_ID = "4a91da53-3366-487d-9fef-b02d9b49d339";
-// Creator emails with unlimited access
-const CREATOR_EMAILS = ["enjoywithpandu@gmail.com"];
+// Admin account configuration - moved to database-based role system for security
+const UNLIMITED_ACCOUNT_ID = Deno.env.get('ADMIN_ACCOUNT_ID');
+
+// Function to check if user has admin privileges
+async function isAdminUser(userId: string, supabase: any): Promise<boolean> {
+  // Check if user has admin role in database
+  const { data: userRole } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', userId)
+    .eq('role', 'admin')
+    .single();
+    
+  return !!userRole || userId === UNLIMITED_ACCOUNT_ID;
+}
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -27,19 +38,8 @@ serve(async (req) => {
     const { action, userId, amount, expiresAt, creditId } = await req.json();
     console.log(`Credits function called with action: ${action}`, { userId, amount, expiresAt, creditId });
 
-    // Check if this is the unlimited account or creator email
-    const isUnlimitedAccount = userId === UNLIMITED_ACCOUNT_ID;
-    
-    // Check if user email is in creator list
-    let isCreatorAccount = false;
-    if (!isUnlimitedAccount) {
-      const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
-      if (!userError && userData?.user?.email && CREATOR_EMAILS.includes(userData.user.email)) {
-        isCreatorAccount = true;
-      }
-    }
-
-    const hasUnlimitedAccess = isUnlimitedAccount || isCreatorAccount;
+    // Check if user has admin privileges using database-based role system
+    const hasUnlimitedAccess = await isAdminUser(userId, supabase);
 
     switch (action) {
       case 'add': {
@@ -71,12 +71,12 @@ serve(async (req) => {
       }
       
       case 'use': {
-        // For unlimited accounts, always return success without deducting
+        // For admin accounts, always return success without deducting
         if (hasUnlimitedAccess) {
           return new Response(
             JSON.stringify({ 
               success: true, 
-              message: `${isCreatorAccount ? 'Creator' : 'Unlimited'} account - ${amount} credits used (not deducted)`,
+              message: `Admin account - ${amount} credits used (not deducted)`,
               unlimited: true
             }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -180,7 +180,7 @@ serve(async (req) => {
                 updated_at: new Date().toISOString()
               }],
               unlimited: true,
-              isCreator: isCreatorAccount
+              isAdmin: true
             }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
@@ -208,7 +208,7 @@ serve(async (req) => {
             totalCredits,
             credits: data,
             unlimited: false,
-            isCreator: false
+            isAdmin: false
           }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
@@ -221,8 +221,8 @@ serve(async (req) => {
             JSON.stringify({ 
               success: true,
               hasEnoughCredits: true,
-              unlimited: true,
-              isCreator: isCreatorAccount
+            unlimited: true,
+            isAdmin: true
             }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
@@ -250,7 +250,7 @@ serve(async (req) => {
             availableCredits: totalCredits,
             requiredCredits: amount || 1,
             unlimited: false,
-            isCreator: false
+            isAdmin: false
           }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
