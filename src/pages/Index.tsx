@@ -17,6 +17,7 @@ import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import { FloatingChatButton } from "@/components/ui/floating-chat-button";
 
 const Index = () => {
   const [showPricing, setShowPricing] = useState(false);
@@ -141,6 +142,8 @@ const Index = () => {
       </main>
 
       <Footer />
+
+      <FloatingChatButton onClick={() => navigate('/chatbot')} />
 
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
         <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-hidden bg-white p-0 rounded-lg">
