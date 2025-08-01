@@ -9,14 +9,9 @@ const corsHeaders = {
 };
 
 // Razorpay API configuration
-const RAZORPAY_KEY_ID = Deno.env.get('RAZORPAY_KEY_ID');
-const RAZORPAY_KEY_SECRET = Deno.env.get('RAZORPAY_KEY_SECRET');
+const RAZORPAY_KEY_ID = Deno.env.get('RAZORPAY_KEY_ID') || 'rzp_live_L9cXXNKWlP9tYl';
+const RAZORPAY_KEY_SECRET = Deno.env.get('RAZORPAY_KEY_SECRET') || 'h3Pg1rY8iuWjJoFmnUzbtKbi';
 const RAZORPAY_API_URL = 'https://api.razorpay.com/v1';
-
-// Validate required secrets
-if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
-  console.error('Missing required Razorpay credentials');
-}
 
 // Function to create HMAC signature for payment verification
 function createHmacSignature(data: string, secret: string): string {
@@ -67,11 +62,6 @@ serve(async (req) => {
   }
 
   try {
-    // Validate required environment variables
-    if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
-      throw new Error('Razorpay credentials not configured. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in secrets.');
-    }
-
     const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
     const supabase = createClient(supabaseUrl, supabaseKey);
