@@ -12,7 +12,6 @@ interface PostEnhancerLogicProps {
   setCategory: (category: string) => void;
   styleTone: string;
   setStyleTone: (tone: string) => void;
-  isCurrentPost?: boolean;
 }
 
 export const PostEnhancerLogic = ({
@@ -22,7 +21,6 @@ export const PostEnhancerLogic = ({
   setCategory,
   styleTone,
   setStyleTone,
-  isCurrentPost = true,
 }: PostEnhancerLogicProps) => {
   const {
     isEnhancing,
@@ -51,40 +49,30 @@ export const PostEnhancerLogic = ({
     }
   };
 
-  if (isCurrentPost) {
-    return (
-      <div className="space-y-4">
-        <EnhancerForm
-          post={post}
-          category={category}
-          styleTone={styleTone}
-          isEnhancing={isEnhancing}
-          onPostChange={setPost}
-          onCategoryChange={setCategory}
-          onStyleToneChange={setStyleTone}
-          onReset={onReset}
-          onEnhance={onEnhance}
-        />
-        <ViralityScore post={post} category={category} />
-      </div>
-    );
-  }
-
-  // Enhanced version display
   return (
-    <div className="flex-grow space-y-4">
-      {Object.keys(enhancedPosts).length > 0 ? (
-        <div className="space-y-4">
+    <Card className="p-4 sm:p-6 shadow-lg border-0 bg-white/70 backdrop-blur-[2px]">
+      <EnhancerForm
+        post={post}
+        category={category}
+        styleTone={styleTone}
+        isEnhancing={isEnhancing}
+        onPostChange={setPost}
+        onCategoryChange={setCategory}
+        onStyleToneChange={setStyleTone}
+        onReset={onReset}
+        onEnhance={onEnhance}
+      />
+      
+      {Object.keys(enhancedPosts).length > 0 && (
+        <div className="mt-6 pt-6 border-t border-gray-200">
           <ShareOptions 
             enhancedPosts={enhancedPosts} 
             onPlatformSelect={onPlatformSelect} 
           />
         </div>
-      ) : (
-        <div className="flex-grow bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-center min-h-[200px]">
-          <p className="text-gray-400 text-center">Your enhanced post will appear here.</p>
-        </div>
       )}
-    </div>
+
+      <ViralityScore post={post} category={category} />
+    </Card>
   );
 };
