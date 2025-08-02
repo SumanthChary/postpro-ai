@@ -87,11 +87,20 @@ serve(async (req) => {
       case 'create_order': {
         const { amount, currency, receipt, notes } = data;
         
+        // Razorpay requires amount in smallest currency unit (paise for INR, cents for USD)
+        const amountInSmallestUnit = Math.round(amount * 100);
+        
         // Create basic auth header
         const authString = `${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`;
         const authHeader = `Basic ${btoa(authString)}`;
         
-        console.log('Creating Razorpay order with Key ID:', RAZORPAY_KEY_ID ? `${RAZORPAY_KEY_ID.substring(0, 8)}...` : 'undefined');
+        console.log('Creating Razorpay order:', {
+          amount: amountInSmallestUnit,
+          currency,
+          receipt,
+          keyIdPresent: !!RAZORPAY_KEY_ID,
+          keySecretPresent: !!RAZORPAY_KEY_SECRET
+        });
         
         // Create an order on Razorpay
         const response = await fetch(`${RAZORPAY_API_URL}/orders`, {
@@ -101,8 +110,8 @@ serve(async (req) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            amount,
-            currency, // Now using the currency passed from the client (USD or INR)
+            amount: amountInSmallestUnit,
+            currency,
             receipt,
             notes
           }),
@@ -111,9 +120,15 @@ serve(async (req) => {
         const orderData = await response.json();
         
         if (!response.ok) {
-          console.error('Razorpay order creation error:', orderData);
-          throw new Error(orderData.error?.description || 'Failed to create order');
+          console.error('Razorpay order creation failed:', {
+            status: response.status,
+            statusText: response.statusText,
+            error: orderData
+          });
+          throw new Error(`Razorpay API Error: ${orderData.error?.description || 'Unknown error'}`);
         }
+        
+        console.log('Razorpay order created successfully:', orderData.id);
         
         return new Response(
           JSON.stringify(orderData),
