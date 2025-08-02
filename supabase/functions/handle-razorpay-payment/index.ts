@@ -69,7 +69,11 @@ serve(async (req) => {
   try {
     // Validate required environment variables
     if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
-      throw new Error('Razorpay credentials not configured. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in secrets.');
+      console.error('Missing Razorpay credentials:', { 
+        keyId: RAZORPAY_KEY_ID ? 'present' : 'missing',
+        keySecret: RAZORPAY_KEY_SECRET ? 'present' : 'missing'
+      });
+      throw new Error('Authentication failed');
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
@@ -83,11 +87,17 @@ serve(async (req) => {
       case 'create_order': {
         const { amount, currency, receipt, notes } = data;
         
+        // Create basic auth header
+        const authString = `${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`;
+        const authHeader = `Basic ${btoa(authString)}`;
+        
+        console.log('Creating Razorpay order with Key ID:', RAZORPAY_KEY_ID ? `${RAZORPAY_KEY_ID.substring(0, 8)}...` : 'undefined');
+        
         // Create an order on Razorpay
         const response = await fetch(`${RAZORPAY_API_URL}/orders`, {
           method: 'POST',
           headers: {
-            'Authorization': `Basic ${btoa(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`)}`,
+            'Authorization': authHeader,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -129,10 +139,13 @@ serve(async (req) => {
         }
         
         // Get payment details from Razorpay
+        const authString = `${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`;
+        const authHeader = `Basic ${btoa(authString)}`;
+        
         const response = await fetch(`${RAZORPAY_API_URL}/payments/${razorpay_payment_id}`, {
           method: 'GET',
           headers: {
-            'Authorization': `Basic ${btoa(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`)}`,
+            'Authorization': authHeader,
             'Content-Type': 'application/json',
           },
         });
