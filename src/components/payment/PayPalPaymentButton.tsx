@@ -138,9 +138,10 @@ export const PayPalPaymentButton = ({
           }
         }}
         onError={(err) => {
-          console.error('PayPal error:', err);
+          console.error('PayPal detailed error:', err);
+          console.error('PayPal error details:', JSON.stringify(err, null, 2));
           setHasError(true);
-          onError("PayPal is currently unavailable. Please try Razorpay or contact support.");
+          onError("PayPal error: " + (err.message || JSON.stringify(err)));
         }}
         onCancel={() => {
           console.log('PayPal payment cancelled');

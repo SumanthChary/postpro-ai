@@ -20,6 +20,8 @@ export const PaymentOptions = ({
   onError,
   paypalClientId,
 }: PaymentOptionsProps) => {
+  console.log('PayPal Client ID being used:', paypalClientId);
+  
   return (
     <div className="space-y-4">
       <PayPalScriptProvider 
