@@ -113,7 +113,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="min-h-screen hero-gradient">
       <Navigation
         session={session}
         username={username}
@@ -126,7 +126,7 @@ const Index = () => {
 
       <main>
         <HeroSection />
-        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        <div className="bg-gradient-to-br from-gray-50 via-white to-gray-50/50">
           <VideoShowcase />
           <HowItWorksSection />
           <ComparisonSection />
