@@ -1,124 +1,39 @@
-import { useState } from "react";
-import { ArrowRight, Sparkles, Zap, TrendingUp } from "lucide-react";
-import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
 
+import { useState } from "react";
+import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
 const HeroSection = () => {
   const [post, setPost] = useState("");
   const [category, setCategory] = useState("business");
   const [styleTone, setStyleTone] = useState("professional");
-
-  return (
-    <section className="relative min-h-screen hero-gradient overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        <div className="floating-element absolute top-20 left-[10%] w-72 h-72 bg-gradient-to-r from-accent/10 to-indigo-500/10 rounded-full blur-3xl"></div>
-        <div className="floating-element-delayed absolute top-40 right-[15%] w-96 h-96 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl"></div>
-        <div className="floating-element absolute bottom-32 left-[20%] w-80 h-80 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl"></div>
-      </div>
-
-      {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-hero-pattern opacity-30"></div>
-
-      <div className="relative z-10 container-custom pt-32 pb-20">
-        {/* Status Badge */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-accent/10 to-indigo-500/10 border border-accent/20 backdrop-blur-sm">
-            <div className="w-2 h-2 bg-accent rounded-full animate-pulse-soft"></div>
-            <span className="text-sm font-medium text-foreground">✨ Transform your content with AI magic</span>
-          </div>
-        </div>
-
-        {/* Main Heading */}
-        <div className="text-center max-w-5xl mx-auto mb-16">
-          <h1 className="font-space text-5xl md:text-6xl lg:text-7xl font-bold mb-6 fade-in-up">
-            Transform Your{" "}
-            <span className="text-gradient">Social Media</span>{" "}
-            Into a{" "}
-            <span className="text-gradient">Growth Engine</span>
+  return <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative overflow-hidden">
+      {/* Subtle background elements */}
+      <div className="absolute top-10 sm:top-20 left-5 sm:left-10 w-32 sm:w-48 md:w-64 lg:w-80 h-32 sm:h-48 md:h-64 lg:h-80 bg-gradient-to-r from-blue-100/20 to-indigo-100/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+      <div className="absolute top-20 sm:top-40 right-5 sm:right-10 w-24 sm:w-40 md:w-56 lg:w-72 h-24 sm:h-40 md:h-56 lg:h-72 bg-gradient-to-r from-purple-100/20 to-pink-100/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+      <div className="absolute bottom-10 sm:bottom-20 left-1/2 w-28 sm:w-36 md:w-48 lg:w-60 h-28 sm:h-36 md:h-48 lg:h-60 bg-gradient-to-r from-cyan-100/20 to-blue-100/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+      
+      <div className="relative z-10 pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-6 sm:pb-8">
+        <div className="max-w-5xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14 px-3 sm:px-4 md:px-6 lg:px-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.1] text-gray-900">
+            <span className="font-bold text-gray-950">Transform Your</span>{" "}
+            <span className="text-gray-800 font-bold block sm:inline">
+              Social Media Presence
+            </span>
           </h1>
-          
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed fade-in-up-delay-1">
-            Create captivating LinkedIn, Twitter & Instagram posts that drive engagement, 
-            build authority, and convert followers into customers. Join 10,000+ professionals 
-            who've transformed their social presence.
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
+            Enhance your LinkedIn, Twitter & Instagram posts with AI magic. Create content that
+            captivates and converts with professional precision.
           </p>
-
-          {/* Key Benefits */}
-          <div className="flex flex-wrap justify-center gap-6 mb-12 fade-in-up-delay-2">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm shadow-soft border border-gray-200/60">
-              <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium">AI-Powered Content</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm shadow-soft border border-gray-200/60">
-              <Zap className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium">Instant Results</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm shadow-soft border border-gray-200/60">
-              <TrendingUp className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium">10x Engagement</span>
-            </div>
-          </div>
         </div>
 
-        {/* Interactive Demo Section */}
-        <div className="max-w-6xl mx-auto">
-          <div className="glass-card rounded-3xl p-8 lg:p-12 border-2 border-white/30 shadow-large">
-            {/* Demo Header */}
-            <div className="text-center mb-8">
-              <h2 className="font-space text-2xl md:text-3xl font-bold mb-3">
-                Try It Live — See The Magic Happen
-              </h2>
-              <p className="text-muted-foreground">
-                Paste any social media post below and watch AI transform it into engaging content
-              </p>
-            </div>
-
-            {/* Post Enhancer Component */}
-            <div className="relative">
-              <PostEnhancer 
-                post={post} 
-                setPost={setPost} 
-                category={category} 
-                setCategory={setCategory} 
-                styleTone={styleTone} 
-                setStyleTone={setStyleTone} 
-              />
+        <div className="flex justify-center px-3 sm:px-4 md:px-6">
+          <div className="backdrop-blur-lg bg-white/60 rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-4 sm:p-6 md:p-8 lg:p-10 border border-white/40 max-w-5xl w-full relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl sm:rounded-3xl md:rounded-[2rem]"></div>
+            <div className="relative z-10">
+              <PostEnhancer post={post} setPost={setPost} category={category} setCategory={setCategory} styleTone={styleTone} setStyleTone={setStyleTone} />
             </div>
           </div>
-        </div>
-
-        {/* Trust Indicators */}
-        <div className="text-center mt-16 fade-in-up">
-          <p className="text-sm text-muted-foreground mb-6">Trusted by professionals at</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-            <div className="bg-white rounded-lg px-6 py-3 shadow-soft">
-              <span className="font-semibold text-gray-600">Microsoft</span>
-            </div>
-            <div className="bg-white rounded-lg px-6 py-3 shadow-soft">
-              <span className="font-semibold text-gray-600">Google</span>
-            </div>
-            <div className="bg-white rounded-lg px-6 py-3 shadow-soft">
-              <span className="font-semibold text-gray-600">Amazon</span>
-            </div>
-            <div className="bg-white rounded-lg px-6 py-3 shadow-soft">
-              <span className="font-semibold text-gray-600">Meta</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-accent to-indigo-600 text-white rounded-xl font-semibold shadow-glow hover:shadow-large transform transition-all duration-300 hover:scale-105 cursor-pointer">
-            <span>Start Growing Your Audience</span>
-            <ArrowRight className="w-5 h-5" />
-          </div>
-          <p className="text-sm text-muted-foreground mt-3">
-            No credit card required • Free forever plan available
-          </p>
         </div>
       </div>
-    </section>
-  );
+    </div>;
 };
-
 export default HeroSection;
