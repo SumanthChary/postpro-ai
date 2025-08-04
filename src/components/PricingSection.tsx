@@ -18,18 +18,18 @@ const PricingSection = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2 sm:mb-4 tracking-tight">
-            Choose Your Perfect Plan
+    <div className="pro-section">
+      <div className="pro-container">
+        <div className="text-center space-responsive-md mb-12">
+          <h2 className="pro-heading text-responsive-2xl mb-4">
+            Choose Your Growth Plan
           </h2>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Select the perfect plan to supercharge your social media presence
+          <p className="pro-subheading text-responsive-base max-w-2xl mx-auto">
+            Join thousands of professionals already growing their LinkedIn presence
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto">
+        <div className="pro-grid pro-grid-3 max-w-5xl mx-auto">
           {pricingPlans.map((plan) => (
             <PlanCard 
               key={plan.name} 
@@ -39,7 +39,7 @@ const PricingSection = () => {
           ))}
         </div>
         
-        <div className="text-center mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        <div className="text-center mt-12 space-responsive-sm flex flex-col sm:flex-row items-center justify-center gap-4">
           <SeeFullFeaturesButton onClick={handleSeeFullFeatures} />
           <RedeemCodeDialog />
         </div>

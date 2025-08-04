@@ -5,34 +5,52 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 220 13% 13%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 13% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 13% 13%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 262 52% 47%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 13% 95%;
+    --secondary-foreground: 220 13% 13%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 13% 95%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 11 93% 58%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --highlight: 168 76% 42%;
+    --highlight-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 262 52% 47%;
+
+    --radius: 0.75rem;
+    
+    /* Professional spacing scale */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+    
+    /* Professional shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
   .dark {
@@ -68,193 +86,170 @@
 
 @layer base {
   * {
-    @apply border-border font-europa;
-    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+    @apply border-border;
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased font-europa;
-    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
-    min-height: 100vh;
-    font-weight: 500;
+    font-weight: 400;
+    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-europa font-medium tracking-tight text-gray-900;
-    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+    @apply font-semibold tracking-tight text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.2;
   }
 
-  p, li, input, textarea, button, a, span, div {
-    @apply font-europa text-gray-700 font-medium;
-    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+  h1 { @apply text-4xl sm:text-5xl lg:text-6xl; }
+  h2 { @apply text-3xl sm:text-4xl lg:text-5xl; }
+  h3 { @apply text-2xl sm:text-3xl lg:text-4xl; }
+  h4 { @apply text-xl sm:text-2xl lg:text-3xl; }
+  h5 { @apply text-lg sm:text-xl lg:text-2xl; }
+  h6 { @apply text-base sm:text-lg lg:text-xl; }
+
+  p, li, span {
+    @apply text-muted-foreground leading-relaxed;
   }
 
   button {
-    @apply font-europa font-medium;
-    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+    @apply font-medium transition-all duration-200;
   }
 
-  textarea, input {
-    @apply transition-all duration-200 ease-in-out font-europa font-medium;
-    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
+  input, textarea {
+    @apply transition-all duration-200 ease-in-out;
   }
 
-  .aesthetic-card {
-    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 font-europa;
+  /* Professional Cards */
+  .pro-card {
+    @apply bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-all duration-300;
   }
 
-  .aesthetic-button {
-    background-color: rgba(57,107,255,1);
-    @apply text-white font-europa font-medium transition-all duration-200 hover:shadow-lg;
+  .pro-card-elevated {
+    @apply bg-card border border-border rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1;
   }
 
-  .aesthetic-input {
-    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all duration-200 font-europa font-medium;
+  /* Professional Buttons */
+  .pro-button {
+    @apply bg-primary text-primary-foreground hover:opacity-90 transition-all duration-200 font-medium rounded-lg;
   }
 
-  .glass-effect {
-    @apply bg-white/60 backdrop-blur-lg border border-white/40;
+  .pro-button-outline {
+    @apply border border-border bg-background hover:bg-muted transition-all duration-200 font-medium rounded-lg;
   }
 
-  .minimalist-gradient {
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+  /* Professional Inputs */
+  .pro-input {
+    @apply bg-background border border-input focus:border-ring focus:ring-2 focus:ring-ring/20 transition-all duration-200 rounded-lg;
   }
 
-  .section-aesthetic {
-    @apply py-12 sm:py-16 lg:py-24;
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+  /* Professional Sections */
+  .pro-section {
+    @apply py-16 sm:py-20 lg:py-24;
   }
 
-  /* Page backgrounds with consistent gradient */
-  .page-gradient {
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
-    min-height: 100vh;
+  .pro-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Brand color utilities */
-  .brand-color {
-    color: rgba(57,107,255,1);
+  /* Responsive Grid System */
+  .pro-grid {
+    @apply grid gap-6 sm:gap-8 lg:gap-10;
   }
 
-  .brand-bg {
-    background-color: rgba(57,107,255,1);
+  .pro-grid-1 { @apply grid-cols-1; }
+  .pro-grid-2 { @apply grid-cols-1 md:grid-cols-2; }
+  .pro-grid-3 { @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3; }
+  .pro-grid-4 { @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-4; }
+
+  /* Professional Spacing */
+  .pro-space-y { @apply space-y-6 sm:space-y-8 lg:space-y-10; }
+  .pro-space-x { @apply space-x-6 sm:space-x-8 lg:space-x-10; }
+
+  /* Professional Text Styles */
+  .pro-heading {
+    @apply text-foreground font-semibold tracking-tight;
   }
 
-  .brand-border {
-    border-color: rgba(57,107,255,1);
+  .pro-subheading {
+    @apply text-muted-foreground leading-relaxed;
   }
 
-  /* Ensure all text is black instead of gradient */
-  .text-black-theme {
-    @apply text-gray-900 font-europa font-medium;
+  .pro-body {
+    @apply text-muted-foreground leading-relaxed;
   }
 
-  .heading-black {
-    @apply text-gray-900 font-europa font-medium;
-  }
+  /* Responsive Breakpoint System */
+  .container-xs { @apply max-w-sm mx-auto px-4; }
+  .container-sm { @apply max-w-2xl mx-auto px-4 sm:px-6; }
+  .container-md { @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .container-lg { @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .container-xl { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
 
-  .subheading-black {
-    @apply text-gray-700 font-europa font-medium;
-  }
+  /* Professional Responsive Text */
+  .text-responsive-xs { @apply text-xs sm:text-sm lg:text-base; }
+  .text-responsive-sm { @apply text-sm sm:text-base lg:text-lg; }
+  .text-responsive-base { @apply text-base sm:text-lg lg:text-xl; }
+  .text-responsive-lg { @apply text-lg sm:text-xl lg:text-2xl; }
+  .text-responsive-xl { @apply text-xl sm:text-2xl lg:text-3xl; }
+  .text-responsive-2xl { @apply text-2xl sm:text-3xl lg:text-4xl; }
+  .text-responsive-3xl { @apply text-3xl sm:text-4xl lg:text-5xl; }
+  .text-responsive-4xl { @apply text-4xl sm:text-5xl lg:text-6xl; }
 
-  /* Enhanced aesthetic elements */
-  .modern-card {
-    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 rounded-2xl;
-  }
+  /* Mobile-First Responsive Spacing */
+  .space-responsive-sm { @apply space-y-4 sm:space-y-6 lg:space-y-8; }
+  .space-responsive-md { @apply space-y-6 sm:space-y-8 lg:space-y-12; }
+  .space-responsive-lg { @apply space-y-8 sm:space-y-12 lg:space-y-16; }
 
-  .premium-gradient {
-    background: linear-gradient(135deg, rgba(57,107,255,0.1) 0%, rgba(147,51,234,0.1) 100%);
-  }
+  .gap-responsive-sm { @apply gap-4 sm:gap-6 lg:gap-8; }
+  .gap-responsive-md { @apply gap-6 sm:gap-8 lg:gap-12; }
+  .gap-responsive-lg { @apply gap-8 sm:gap-12 lg:gap-16; }
 
-  .floating-element {
-    @apply shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105;
-  }
-
-  /* Mobile-first responsive utilities */
-  .responsive-text-xs {
-    @apply text-xs sm:text-sm md:text-base lg:text-lg font-europa font-medium;
-  }
-
-  .responsive-text-sm {
-    @apply text-sm sm:text-base md:text-lg lg:text-xl font-europa font-medium;
-  }
-
-  .responsive-text-base {
-    @apply text-base sm:text-lg md:text-xl lg:text-2xl font-europa font-medium;
-  }
-
-  .responsive-text-lg {
-    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl font-europa font-medium;
-  }
-
-  .responsive-text-xl {
-    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl font-europa font-medium;
-  }
-
-  .responsive-text-2xl {
-    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-europa font-medium;
-  }
-
-  .responsive-text-3xl {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-europa font-medium;
-  }
-
-  /* Responsive spacing utilities */
-  .responsive-p-sm {
-    @apply p-3 sm:p-4 md:p-5 lg:p-6;
-  }
-
-  .responsive-p-md {
-    @apply p-4 sm:p-6 md:p-8 lg:p-10;
-  }
-
-  .responsive-p-lg {
-    @apply p-6 sm:p-8 md:p-10 lg:p-12;
-  }
-
-  .responsive-m-sm {
-    @apply m-3 sm:m-4 md:m-5 lg:m-6;
-  }
-
-  .responsive-m-md {
-    @apply m-4 sm:m-6 md:m-8 lg:m-10;
-  }
-
-  .responsive-m-lg {
-    @apply m-6 sm:m-8 md:m-10 lg:m-12;
-  }
-
-  /* Enhanced mobile optimization */
+  /* Professional Mobile Optimizations */
   @media (max-width: 640px) {
-    .mobile-optimized {
-      @apply px-3 py-4;
+    .mobile-stack {
+      @apply flex-col space-y-4 space-x-0;
     }
     
-    .mobile-text-small {
-      @apply text-sm leading-relaxed font-europa font-medium;
+    .mobile-full {
+      @apply w-full;
     }
     
-    .mobile-spacing-tight {
-      @apply space-y-3;
+    .mobile-center {
+      @apply text-center mx-auto;
+    }
+    
+    .mobile-padding {
+      @apply px-4 py-6;
     }
   }
 
-  /* Smooth transitions for mobile */
-  @media (prefers-reduced-motion: no-preference) {
-    .transition-smooth {
-      transition: all 0.3s ease-in-out;
+  /* Touch-Friendly Interactive Elements */
+  @media (max-width: 768px) {
+    .touch-target {
+      @apply min-h-[44px] min-w-[44px];
+    }
+    
+    .touch-button {
+      @apply min-h-[48px] px-6 text-base;
+    }
+    
+    .touch-input {
+      @apply min-h-[48px] text-base;
     }
   }
 
-  /* Touch-friendly button sizes on mobile */
-  @media (max-width: 640px) {
-    .btn-mobile {
-      @apply min-h-[44px] min-w-[44px] text-sm font-europa font-medium;
-    }
+  /* Professional Transitions */
+  .transition-micro { transition: all 0.15s ease-out; }
+  .transition-smooth { transition: all 0.3s ease-out; }
+  .transition-slow { transition: all 0.5s ease-out; }
+
+  /* Focus States for Accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
   }
 }

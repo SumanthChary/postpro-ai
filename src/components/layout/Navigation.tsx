@@ -33,24 +33,24 @@ const Navigation = ({
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
+    <nav className="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border z-50 transition-smooth">
+      <div className="container-xl">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center space-x-3 cursor-pointer transition-smooth hover:opacity-80" onClick={() => navigate("/")}>
             <OptimizedImage 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI Logo" 
               className="w-8 h-8 rounded-lg object-contain"
             />
-            <span className="text-2xl font-montserrat font-extrabold text-black">
+            <span className="text-xl font-semibold text-foreground">
               PostPro AI
             </span>
           </div>
           
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex items-center space-x-1">
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-electric-purple font-opensans"
+              className="text-muted-foreground hover:text-foreground hover:bg-muted transition-smooth"
               onClick={() => navigate("/blogs")}
             >
               <BookOpenIcon className="w-4 h-4 mr-2" />
@@ -58,14 +58,14 @@ const Navigation = ({
             </Button>
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-electric-purple font-opensans"
+              className="text-muted-foreground hover:text-foreground hover:bg-muted transition-smooth"
               onClick={() => navigate("/affiliate")}
             >
               Affiliate
             </Button>
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-electric-purple font-opensans"
+              className="text-muted-foreground hover:text-foreground hover:bg-muted transition-smooth"
               onClick={() => setShowPricing(true)}
             >
               Pricing
@@ -73,7 +73,7 @@ const Navigation = ({
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="font-opensans">
+                  <Button variant="outline" className="ml-2">
                     <Avatar className="w-6 h-6 mr-2">
                       <AvatarImage src={avatarUrl} alt={username} />
                       <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
@@ -82,7 +82,7 @@ const Navigation = ({
                     <ChevronDownIcon className="w-4 h-4 ml-2" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="bg-popover border-border">
                   <DropdownMenuItem onClick={() => navigate("/profile")}>
                     <Avatar className="w-4 h-4 mr-2">
                       <AvatarImage src={avatarUrl} alt={username} />
@@ -98,7 +98,7 @@ const Navigation = ({
               </DropdownMenu>
             ) : (
               <Button
-                className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white font-opensans"
+                className="ml-2 bg-primary text-primary-foreground hover:opacity-90 transition-smooth"
                 onClick={() => navigate("/auth")}
               >
                 Sign In
@@ -107,23 +107,23 @@ const Navigation = ({
           </div>
 
           <button 
-            className="md:hidden"
+            className="md:hidden touch-target transition-smooth hover:bg-muted rounded-lg p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <XIcon className="w-6 h-6 text-electric-purple" />
+              <XIcon className="w-5 h-5 text-foreground" />
             ) : (
-              <MenuIcon className="w-6 h-6 text-electric-purple" />
+              <MenuIcon className="w-5 h-5 text-foreground" />
             )}
           </button>
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4">
-            <div className="flex flex-col space-y-4">
+          <div className="md:hidden border-t border-border mt-4 pt-4 pb-4">
+            <div className="space-responsive-sm">
               <Button 
                 variant="ghost" 
-                className="text-custom-text hover:text-electric-purple w-full font-opensans"
+                className="text-muted-foreground hover:text-foreground hover:bg-muted w-full justify-start touch-button"
                 onClick={() => {
                   navigate("/blogs");
                   setMobileMenuOpen(false);
@@ -134,7 +134,7 @@ const Navigation = ({
               </Button>
               <Button 
                 variant="ghost" 
-                className="text-custom-text hover:text-electric-purple w-full font-opensans"
+                className="text-muted-foreground hover:text-foreground hover:bg-muted w-full justify-start touch-button"
                 onClick={() => {
                   navigate("/affiliate");
                   setMobileMenuOpen(false);
@@ -144,7 +144,7 @@ const Navigation = ({
               </Button>
               <Button 
                 variant="ghost" 
-                className="text-custom-text hover:text-electric-purple w-full font-opensans"
+                className="text-muted-foreground hover:text-foreground hover:bg-muted w-full justify-start touch-button"
                 onClick={() => {
                   setShowPricing(true);
                   setMobileMenuOpen(false);
@@ -160,7 +160,7 @@ const Navigation = ({
                       navigate("/profile");
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full font-opensans"
+                    className="w-full justify-start touch-button"
                   >
                     <Avatar className="w-4 h-4 mr-2">
                       <AvatarImage src={avatarUrl} alt={username} />
@@ -174,7 +174,7 @@ const Navigation = ({
                       handleSignOut();
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full font-opensans"
+                    className="w-full justify-start touch-button"
                   >
                     <LogOutIcon className="w-4 h-4 mr-2" />
                     Sign Out
@@ -182,7 +182,7 @@ const Navigation = ({
                 </>
               ) : (
                 <Button
-                  className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white w-full font-opensans"
+                  className="bg-primary text-primary-foreground hover:opacity-90 w-full touch-button"
                   onClick={() => {
                     navigate("/auth");
                     setMobileMenuOpen(false);
