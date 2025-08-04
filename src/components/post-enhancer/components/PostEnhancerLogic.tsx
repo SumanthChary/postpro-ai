@@ -50,7 +50,7 @@ export const PostEnhancerLogic = ({
   };
 
   return (
-    <div className="pro-card-elevated p-6 sm:p-8">
+    <Card className="p-4 sm:p-6 shadow-lg border-0 bg-white/70 backdrop-blur-[2px]">
       <EnhancerForm
         post={post}
         category={category}
@@ -64,7 +64,7 @@ export const PostEnhancerLogic = ({
       />
       
       {Object.keys(enhancedPosts).length > 0 && (
-        <div className="mt-8 pt-8 border-t border-border">
+        <div className="mt-6 pt-6 border-t border-gray-200">
           <ShareOptions 
             enhancedPosts={enhancedPosts} 
             onPlatformSelect={onPlatformSelect} 
@@ -73,6 +73,6 @@ export const PostEnhancerLogic = ({
       )}
 
       <ViralityScore post={post} category={category} />
-    </div>
+    </Card>
   );
 };

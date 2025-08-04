@@ -113,7 +113,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <Navigation
         session={session}
         username={username}
@@ -124,9 +124,9 @@ const Index = () => {
         mobileMenuOpen={mobileMenuOpen}
       />
 
-      <main className="pt-16">
+      <main>
         <HeroSection />
-        <div className="space-responsive-lg">
+        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <VideoShowcase />
           <HowItWorksSection />
           <ComparisonSection />
@@ -143,7 +143,7 @@ const Index = () => {
       <Footer />
 
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
-        <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-hidden bg-card border-border p-0">
+        <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-hidden bg-white p-0 rounded-lg">
           <div className="overflow-y-auto max-h-[95vh]">
             <PricingSection />
           </div>
