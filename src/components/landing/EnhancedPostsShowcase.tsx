@@ -7,21 +7,21 @@ import { SparklesIcon, TrendingUpIcon, UsersIcon } from "lucide-react";
 const EnhancedPostsShowcase = () => {
   const posts = [
     {
-      original: "Just launched our new product!",
-      enhanced: "🚀 Thrilled to announce the launch of our revolutionary product! After months of dedicated development and customer feedback, we're bringing innovation to your doorstep. #ProductLaunch #Innovation #Tech",
-      improvements: ["Engaging emoji", "Emotional context", "Strategic hashtags"],
+      original: "I got promoted at work",
+      enhanced: "🎉 BREAKING: Just secured the promotion I've been working towards for 2 years! From countless late nights to learning new skills, every step was worth it. To everyone grinding - your breakthrough is coming! 💪 #CareerGrowth #Promotion #NeverGiveUp #WorkHard #Success #Motivation",
+      improvements: ["Emotional storytelling", "Personal journey", "Inspirational CTA", "Premium hashtag strategy"],
       icon: <SparklesIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
     },
     {
-      original: "Looking for feedback on our service",
-      enhanced: "📊 Your insights shape our future! We're on a mission to elevate our service quality and we'd love to hear your thoughts. Share your experience with us and be part of our improvement journey. #CustomerFeedback #Growth #ContinuousImprovement",
-      improvements: ["Clear call-to-action", "Value proposition", "Community building"],
+      original: "Had coffee with a client today",
+      enhanced: "☕ Game-changing client meeting today! What started as a simple coffee chat turned into a $50K partnership discussion. Sometimes the best deals happen outside the boardroom. Key lesson: Relationships before revenue, always. #ClientMeeting #BusinessDevelopment #Networking #SalesStrategy #EntrepreneurLife",
+      improvements: ["Revenue hook", "Story arc", "Value-driven insight", "Multiple engagement angles"],
       icon: <TrendingUpIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
     },
     {
-      original: "Check out our latest blog post",
-      enhanced: "🎯 Unlock the Secrets of Digital Success: Our latest blog post reveals 5 game-changing strategies that transformed our clients' online presence. Dive in to discover actionable insights backed by real case studies. #DigitalStrategy #Success #BusinessGrowth",
-      improvements: ["Benefit-focused", "Curiosity hook", "Social proof"],
+      original: "Attended a conference yesterday",
+      enhanced: "🚀 Mind = BLOWN at yesterday's tech conference! Met 3 industry leaders, discovered 5 game-changing tools, and sparked 2 potential collaborations. ROI on one day: Priceless. Who else believes in the power of showing up? Drop your best conference insights below! 👇 #TechConference #Networking #Innovation #ROI #ShowUp",
+      improvements: ["Specific metrics", "Community engagement", "Direct CTA", "FOMO creation"],
       icon: <UsersIcon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
     }
   ];
@@ -31,10 +31,10 @@ const EnhancedPostsShowcase = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight">
-            Transform Your Posts
+            Worth Every Premium Credit
           </h2>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto font-medium leading-relaxed px-2">
-            See real examples of how AI enhancement transforms ordinary posts into viral content
+            Real transformations using our 10-credit premium AI enhancement system. Each post becomes a viral masterpiece.
           </p>
         </div>
         
