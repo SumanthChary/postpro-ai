@@ -15,8 +15,6 @@ import HowItWorksSection from "@/components/landing/HowItWorksSection";
 import AboutFounderSection from "@/components/landing/AboutFounderSection";
 import PricingSection from "@/components/PricingSection";
 import Testimonials from "@/components/Testimonials";
-import TestimonialsEnhanced from "@/components/premium/TestimonialsEnhanced";
-import TrustBadges from "@/components/premium/TrustBadges";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 
@@ -133,12 +131,11 @@ const Index = () => {
           <HowItWorksSection />
           <ComparisonSection />
           <EnhancedPostsShowcase />
-          <TrustBadges />
           <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
-          <TestimonialsEnhanced />
           <AboutFounderSection />
           <AboutSection />
           <ComingSoonSection />
+          <Testimonials />
           <FAQ />
         </div>
       </main>

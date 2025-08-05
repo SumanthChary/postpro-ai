@@ -241,14 +241,14 @@ serve(async (req) => {
         }
 
         const totalCredits = data.reduce((sum, credit) => sum + credit.balance, 0);
-        const hasEnoughCredits = totalCredits >= (amount || 10);
+        const hasEnoughCredits = totalCredits >= (amount || 1);
         
         return new Response(
           JSON.stringify({ 
             success: true,
             hasEnoughCredits,
             availableCredits: totalCredits,
-            requiredCredits: amount || 10,
+            requiredCredits: amount || 1,
             unlimited: false,
             isAdmin: false
           }),

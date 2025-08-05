@@ -45,7 +45,7 @@ export const usePostEnhancer = () => {
         body: { 
           action: 'check',
           userId: user.id,
-          amount: 10 // Premium 10-credit system
+          amount: 1
         }
       });
 
@@ -140,7 +140,7 @@ export const usePostEnhancer = () => {
         
         toast({
           title: "Post Enhanced Successfully!",
-          description: "Your post has been enhanced with premium AI technology and platform-specific optimization. 10 credits used.",
+          description: "Your post has been enhanced with professional writing style and platform-specific optimization. 1 credit used.",
         });
         
         return updatedPosts;
