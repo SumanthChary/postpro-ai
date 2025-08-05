@@ -6,14 +6,16 @@ export interface PlanFeature {
 export interface Plan {
   name: string;
   price: string;
-  period: "week" | "month" | "year" | "forever";
+  period: "week" | "month" | "year" | "forever" | "lifetime";
   features: string[];
   cta: string;
   popular?: boolean;
+  badge?: string;
+  urgency?: string;
   icon?: string;
-  credits?: number; // Credits field for the plan
-  currency?: 'USD' | 'INR'; // Added currency field
-  displayPrice?: string; // Added display price field for converted amounts
+  credits: number | string; // Allow both number and "unlimited"
+  currency?: 'USD' | 'INR';
+  displayPrice?: string;
 }
 
 export interface UserCredit {
