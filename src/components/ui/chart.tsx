@@ -38,7 +38,7 @@ const ChartContainer = React.forwardRef<
     config: ChartConfig
     children: React.ComponentProps<
       typeof RechartsPrimitive.ResponsiveContainer
-    >[({ children }) => children]
+    >["children"]
   }
 >(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId()
