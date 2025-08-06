@@ -31,10 +31,10 @@ const EnhancedPostsShowcase = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight">
-            Transform Your Posts
+            LinkedIn: Before vs After
           </h2>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto font-medium leading-relaxed px-2">
-            See real examples of how AI enhancement transforms ordinary posts into viral content
+            Real engagement outcomes before and after enhancement
           </p>
         </div>
         
@@ -60,6 +60,11 @@ const EnhancedPostsShowcase = () => {
                   Enhanced Version
                 </h4>
                 <p className="text-gray-700 p-3 sm:p-4 lg:p-5 bg-green-50/80 rounded-xl border border-green-200/50 font-medium text-sm sm:text-base">{post.enhanced}</p>
+                <div className="flex gap-4 text-xs text-gray-600 mt-2">
+                  <span>Likes: 12 → 55</span>
+                  <span>Comments: 3 → 20</span>
+                  <span>Reposts: 0 → 12</span>
+                </div>
               </div>
               
               <div>

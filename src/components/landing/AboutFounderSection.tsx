@@ -8,39 +8,29 @@ const AboutFounderSection = () => {
         
         <div className="bg-white rounded-lg p-8 shadow-sm">
           <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">SD</div>
+            <img src="/lovable-uploads/e055f783-4b8b-47c8-a842-0449cddb238b.png" alt="Founder" className="w-32 h-32 rounded-full object-cover ring-4 ring-blue-100" />
             
             <div className="flex-1 text-center md:text-left">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Sumanth Dev</h3>
-              <p className="text-blue-600 font-medium mb-4">Founder & CEO</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Founder</h3>
+              <p className="text-blue-600 font-medium mb-4">LinkedIn Growth Enthusiast</p>
               
               <div className="space-y-3 text-gray-600">
                 <p>
-                  After years of struggling with social media growth and seeing countless creators 
-                  face the same challenges, I decided to build PostPro AI.
-                </p>
-                <p>
-                  My journey started when I got suspended multiple times on various platforms, 
-                  just like many others. Through trial and error, I learned what works.
-                </p>
-                <p>
-                  Today, I've built an audience of thousands across platforms by understanding 
-                  what each platform wants. PostPro AI is my way of helping others achieve 
-                  the same success without the painful learning curve.
+                  Building a focused LinkedIn growth engine so professionals get noticed, not ignored. We obsess over outcomes: reach, clicks, and pipeline.
                 </p>
               </div>
               
-              <div className="mt-6 flex flex-wrap gap-4 justify-center md:justify-start">
+              <div className="mt-6 flex flex-wrap gap-6 justify-center md:justify-start">
                 <div className="text-center">
-                  <div className="font-bold text-xl text-gray-900">90+</div>
+                  <div className="font-bold text-xl text-gray-900">150+</div>
                   <div className="text-sm text-gray-600">LinkedIn Followers</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold text-xl text-gray-900">5+</div>
-                  <div className="text-sm text-gray-600">Twitter Followers</div>
+                  <div className="font-bold text-xl text-gray-900">25</div>
+                  <div className="text-sm text-gray-600">X Followers</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold text-xl text-gray-900">50k+</div>
+                  <div className="font-bold text-xl text-gray-900">10k</div>
                   <div className="text-sm text-gray-600">Content Views</div>
                 </div>
               </div>
