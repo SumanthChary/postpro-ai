@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -28,12 +28,65 @@ export const useSubscription = () => {
   const [usageStats, setUsageStats] = useState({
     canUse: true,
     currentCount: 0,
-    monthlyLimit: -1, // -1 means unlimited for your account
+    monthlyLimit: -1,
     remainingUses: -1
   });
   const { toast } = useToast();
 
-  const fetchSubscription = async () => {
+  const checkUsageLimit = useCallback(async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Set unlimited usage for admin account
+      if (user?.email === 'enjoywithpandu@gmail.com') {
+        setUsageStats({
+          canUse: true,
+          currentCount: 0,
+          monthlyLimit: -1, // Unlimited
+          remainingUses: -1
+        });
+        return;
+      }
+
+      // Get current usage from subscription
+      const currentUsage = subscription?.monthly_post_count || 0;
+      
+      // For new users (within 7 days), give them 50 free enhancements
+      const userCreatedAt = new Date(user?.created_at || '');
+      const isNewUser = (Date.now() - userCreatedAt.getTime()) < 7 * 24 * 60 * 60 * 1000;
+
+      if (isNewUser) {
+        const remainingUses = Math.max(50 - currentUsage, 0);
+        setUsageStats({
+          canUse: remainingUses > 0,
+          currentCount: currentUsage,
+          monthlyLimit: 50,
+          remainingUses: remainingUses
+        });
+        return;
+      }
+
+      // For regular users, give them 15 uses per month
+      const remainingUses = Math.max(15 - currentUsage, 0);
+      setUsageStats({
+        canUse: remainingUses > 0,
+        currentCount: currentUsage,
+        monthlyLimit: 15,
+        remainingUses: remainingUses
+      });
+    } catch (error) {
+      console.error('Error checking usage limit:', error);
+      // Default to allowing usage if there's an error
+      setUsageStats({
+        canUse: true,
+        currentCount: 0,
+        monthlyLimit: 15,
+        remainingUses: 15
+      });
+    }
+  }, [subscription]);
+
+  const fetchSubscription = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -50,6 +103,7 @@ export const useSubscription = () => {
       
       if (data.success) {
         setSubscription(data.subscription);
+        checkUsageLimit(); // Update usage stats after subscription is fetched
       }
     } catch (error) {
       console.error('Error fetching subscription:', error);
@@ -61,57 +115,9 @@ export const useSubscription = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast, checkUsageLimit]);
 
-  const checkUsageLimit = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      // Set unlimited usage for your account
-      if (user?.email === 'your-email@example.com') {
-        setUsageStats({
-          canUse: true,
-          currentCount: 0,
-          monthlyLimit: -1,
-          remainingUses: -1
-        });
-        return;
-      }
-
-      // For other users, check if they're new (within 24 hours)
-      const userCreatedAt = new Date(user?.created_at || '');
-      const isNewUser = (Date.now() - userCreatedAt.getTime()) < 24 * 60 * 60 * 1000;
-
-      if (isNewUser) {
-        setUsageStats({
-          canUse: true,
-          currentCount: 0,
-          monthlyLimit: 50,  // Give new users 50 free enhancements
-          remainingUses: 50
-        });
-        return;
-      }
-
-      // For regular users, always allow usage but track it
-      setUsageStats({
-        canUse: true,
-        currentCount: 0,
-        monthlyLimit: 15,  // Show limit but don't enforce
-        remainingUses: 15
-      });
-    } catch (error) {
-      console.error('Error checking usage limit:', error);
-      // Default to allowing usage if there's an error
-      setUsageStats({
-        canUse: true,
-        currentCount: 0,
-        monthlyLimit: 15,
-        remainingUses: 15
-      });
-    }
-  };
-
-  const incrementUsage = async () => {
+  const incrementUsage = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return false;
@@ -127,7 +133,7 @@ export const useSubscription = () => {
       
       if (data.success) {
         // Refresh usage stats
-        await checkUsageLimit();
+        checkUsageLimit();
         return true;
       }
       return false;
@@ -135,11 +141,11 @@ export const useSubscription = () => {
       console.error('Error incrementing usage:', error);
       return false;
     }
-  };
+  }, [checkUsageLimit]);
 
   useEffect(() => {
     fetchSubscription();
-  }, []);
+  }, [fetchSubscription]);
 
   return {
     subscription,
