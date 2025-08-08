@@ -21,12 +21,10 @@ import Chatbot from "./pages/Chatbot";
 import Affiliate from "./pages/Affiliate";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 
-const App = () => {
+function App() {
   const queryClient = new QueryClient();
   // Enable unlimited access
   useUnlimitedAccess();
-
-function App() {
   return (
     <StrictMode>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

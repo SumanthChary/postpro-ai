@@ -63,7 +63,7 @@ export const useSubscription = () => {
     }
   };
 
-    const checkUsageLimit = async (userId: string) => {
+  const checkUsageLimit = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
@@ -109,6 +109,7 @@ export const useSubscription = () => {
         remainingUses: 15
       });
     }
+  };
 
   const incrementUsage = async () => {
     try {
