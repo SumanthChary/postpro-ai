@@ -28,6 +28,8 @@ function App() {
   return (
     <StrictMode>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <Toaster />
+        <Sonner />
         <CurrencyProvider>
           <QueryClientProvider client={queryClient}>
             <TooltipProvider>
@@ -46,8 +48,6 @@ function App() {
                   <Route path="/affiliate" element={<Affiliate />} />
                 </Routes>
                 <FloatingChatButton />
-                <Toaster />
-                <Sonner />
               </BrowserRouter>
             </TooltipProvider>
           </QueryClientProvider>
