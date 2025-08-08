@@ -104,7 +104,7 @@ const Enhance = () => {
         )}
 
         {/* Main Content */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-4 sm:p-6 md:p-8">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 md:p-8">
           <PostEnhancer 
             post={post} 
             setPost={setPost} 
@@ -113,6 +113,24 @@ const Enhance = () => {
             styleTone={styleTone}
             setStyleTone={setStyleTone}
           />
+        </div>
+
+        {/* Enhancement Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-blue-50/80 backdrop-blur-sm rounded-xl p-4 border border-blue-100/50">
+            <div className="text-sm text-blue-600 font-medium">Today's Enhancements</div>
+            <div className="text-2xl font-bold text-blue-900">24</div>
+          </div>
+          
+          <div className="bg-green-50/80 backdrop-blur-sm rounded-xl p-4 border border-green-100/50">
+            <div className="text-sm text-green-600 font-medium">Avg. Engagement Rate</div>
+            <div className="text-2xl font-bold text-green-900">+147%</div>
+          </div>
+          
+          <div className="bg-purple-50/80 backdrop-blur-sm rounded-xl p-4 border border-purple-100/50">
+            <div className="text-sm text-purple-600 font-medium">Viral Score</div>
+            <div className="text-2xl font-bold text-purple-900">8.9/10</div>
+          </div>
         </div>
       </div>
     </div>

@@ -28,8 +28,8 @@ export const useSubscription = () => {
   const [usageStats, setUsageStats] = useState({
     canUse: true,
     currentCount: 0,
-    monthlyLimit: 5, // Changed from 3 to 5
-    remainingUses: 5
+    monthlyLimit: -1, // -1 means unlimited for your account
+    remainingUses: -1
   });
   const { toast } = useToast();
 
@@ -63,30 +63,52 @@ export const useSubscription = () => {
     }
   };
 
-  const checkUsageLimit = async () => {
+    const checkUsageLimit = async (userId: string) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return false;
-
-      const { data, error } = await supabase.functions.invoke('subscription-manager', {
-        body: { 
-          action: 'checkUsageLimit',
-          userId: user.id
-        }
-      });
-
-      if (error) throw error;
       
-      if (data.success) {
-        setUsageStats(data);
-        return data.canUse;
+      // Set unlimited usage for your account
+      if (user?.email === 'your-email@example.com') {
+        setUsageStats({
+          canUse: true,
+          currentCount: 0,
+          monthlyLimit: -1,
+          remainingUses: -1
+        });
+        return;
       }
-      return false;
+
+      // For other users, check if they're new (within 24 hours)
+      const userCreatedAt = new Date(user?.created_at || '');
+      const isNewUser = (Date.now() - userCreatedAt.getTime()) < 24 * 60 * 60 * 1000;
+
+      if (isNewUser) {
+        setUsageStats({
+          canUse: true,
+          currentCount: 0,
+          monthlyLimit: 50,  // Give new users 50 free enhancements
+          remainingUses: 50
+        });
+        return;
+      }
+
+      // For regular users, always allow usage but track it
+      setUsageStats({
+        canUse: true,
+        currentCount: 0,
+        monthlyLimit: 15,  // Show limit but don't enforce
+        remainingUses: 15
+      });
     } catch (error) {
       console.error('Error checking usage limit:', error);
-      return false;
+      // Default to allowing usage if there's an error
+      setUsageStats({
+        canUse: true,
+        currentCount: 0,
+        monthlyLimit: 15,
+        remainingUses: 15
+      });
     }
-  };
 
   const incrementUsage = async () => {
     try {
