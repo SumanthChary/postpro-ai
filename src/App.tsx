@@ -3,7 +3,6 @@ import { StrictMode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useUnlimitedAccess } from "@/hooks/useUnlimitedAccess";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
@@ -21,15 +20,12 @@ import Chatbot from "./pages/Chatbot";
 import Affiliate from "./pages/Affiliate";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 
+const queryClient = new QueryClient();
+
 function App() {
-  const queryClient = new QueryClient();
-  // Enable unlimited access
-  useUnlimitedAccess();
   return (
     <StrictMode>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Toaster />
-        <Sonner />
         <CurrencyProvider>
           <QueryClientProvider client={queryClient}>
             <TooltipProvider>
@@ -48,6 +44,8 @@ function App() {
                   <Route path="/affiliate" element={<Affiliate />} />
                 </Routes>
                 <FloatingChatButton />
+                <Toaster />
+                <Sonner />
               </BrowserRouter>
             </TooltipProvider>
           </QueryClientProvider>

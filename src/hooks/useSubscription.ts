@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -28,64 +28,12 @@ export const useSubscription = () => {
   const [usageStats, setUsageStats] = useState({
     canUse: true,
     currentCount: 0,
-    monthlyLimit: -1,
-    remainingUses: -1
+    monthlyLimit: 5, // Changed from 3 to 5
+    remainingUses: 5
   });
   const { toast } = useToast();
 
-  const checkUsageLimit = useCallback(async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      // Set unlimited usage for admin account
-      if (user?.email === 'enjoywithpandu@gmail.com') {
-        setUsageStats({
-          canUse: true,
-          currentCount: 0,
-          monthlyLimit: -1, // Unlimited
-          remainingUses: -1
-        });
-        return;
-      }
-
-      // Get current usage from subscription
-      const currentUsage = subscription?.monthly_post_count || 0;
-      
-      // For new users (within 24 hours), give them 50 free enhancements
-      const userCreatedAt = new Date(user?.created_at || '');
-      const isNewUser = (Date.now() - userCreatedAt.getTime()) < 24 * 60 * 60 * 1000;
-
-      if (isNewUser) {
-        setUsageStats({
-          canUse: true, // Always allow usage
-          currentCount: currentUsage,
-          monthlyLimit: 50,
-          remainingUses: Math.max(50 - currentUsage, 0)
-        });
-        return;
-      }
-
-      // For regular users, track usage but allow them to continue
-      const remainingUses = Math.max(15 - currentUsage, 0);
-      setUsageStats({
-        canUse: true, // Always allow usage
-        currentCount: currentUsage,
-        monthlyLimit: 15,
-        remainingUses: remainingUses
-      });
-    } catch (error) {
-      console.error('Error checking usage limit:', error);
-      // Default to allowing usage if there's an error
-      setUsageStats({
-        canUse: true,
-        currentCount: 0,
-        monthlyLimit: 15,
-        remainingUses: 15
-      });
-    }
-  }, [subscription?.monthly_post_count]);
-
-  const fetchSubscription = useCallback(async () => {
+  const fetchSubscription = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -102,7 +50,6 @@ export const useSubscription = () => {
       
       if (data.success) {
         setSubscription(data.subscription);
-        checkUsageLimit(); // Update usage stats after subscription is fetched
       }
     } catch (error) {
       console.error('Error fetching subscription:', error);
@@ -114,9 +61,34 @@ export const useSubscription = () => {
     } finally {
       setLoading(false);
     }
-  }, [toast, checkUsageLimit]);
+  };
 
-  const incrementUsage = useCallback(async () => {
+  const checkUsageLimit = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return false;
+
+      const { data, error } = await supabase.functions.invoke('subscription-manager', {
+        body: { 
+          action: 'checkUsageLimit',
+          userId: user.id
+        }
+      });
+
+      if (error) throw error;
+      
+      if (data.success) {
+        setUsageStats(data);
+        return data.canUse;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error checking usage limit:', error);
+      return false;
+    }
+  };
+
+  const incrementUsage = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return false;
@@ -132,7 +104,7 @@ export const useSubscription = () => {
       
       if (data.success) {
         // Refresh usage stats
-        checkUsageLimit();
+        await checkUsageLimit();
         return true;
       }
       return false;
@@ -140,11 +112,11 @@ export const useSubscription = () => {
       console.error('Error incrementing usage:', error);
       return false;
     }
-  }, [checkUsageLimit]);
+  };
 
   useEffect(() => {
     fetchSubscription();
-  }, [fetchSubscription]);
+  }, []);
 
   return {
     subscription,

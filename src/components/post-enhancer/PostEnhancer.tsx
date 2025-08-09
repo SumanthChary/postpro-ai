@@ -1,7 +1,7 @@
 
 import { PostEnhancerProps } from "./types";
 import { PostEnhancerLogic } from "./components/PostEnhancerLogic";
-
+import { PaymentTrustBadges } from "./components/PaymentTrustBadges";
 
 const PostEnhancer = ({
   post,
@@ -22,6 +22,8 @@ const PostEnhancer = ({
           styleTone={styleTone}
           setStyleTone={setStyleTone}
         />
+
+        <PaymentTrustBadges />
       </div>
     </div>
   );

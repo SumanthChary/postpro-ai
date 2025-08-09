@@ -24,12 +24,12 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
   return (
     <Card
       className={`p-3 sm:p-4 lg:p-6 flex flex-col relative bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300 ${
-        plan.popular ? "border-2 border-blue-600 shadow-lg" : ""
+        plan.popular ? "border-2 border-electric-purple shadow-lg" : ""
       }`}
     >
       {plan.popular && (
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+          <span className="bg-electric-purple text-white px-3 py-1 rounded-full text-xs font-medium">
             Most Popular
           </span>
         </div>
@@ -59,7 +59,7 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
       <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 lg:mb-8 flex-grow">
         {plan.features.map((feature) => (
           <div key={feature} className="flex items-start">
-            <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+            <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
             <span className="text-xs sm:text-sm lg:text-base text-gray-700 leading-relaxed">{feature}</span>
           </div>
         ))}
@@ -68,8 +68,8 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
       <Button
         className={`w-full text-xs sm:text-sm lg:text-base py-2 sm:py-2.5 ${
           plan.popular 
-            ? "bg-blue-600 hover:bg-blue-700 text-white" 
-            : "border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+            ? "bg-electric-purple hover:bg-electric-purple/90 text-white" 
+            : "border border-electric-purple text-electric-purple hover:bg-electric-purple hover:text-white"
         }`}
         variant={plan.popular ? "default" : "outline"}
         onClick={() => onSubscribe(plan)}

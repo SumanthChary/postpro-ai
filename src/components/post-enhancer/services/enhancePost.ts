@@ -47,8 +47,9 @@ export async function enhancePost(
         throw new Error('Unable to verify credits. Please try again.');
       }
 
-      // Track credits but don't block
-      console.log('Credit status:', creditCheck);
+      if (!creditCheck.hasEnoughCredits && !creditCheck.unlimited) {
+        throw new Error('No credits available. Please upgrade your plan to continue enhancing posts.');
+      }
     }
 
     const requestBody = { 
@@ -77,12 +78,17 @@ export async function enhancePost(
     if (error) {
       console.error('Supabase function error:', error);
       
-      // Track errors but don't block
-      if (error.message?.includes('No credits available') || 
-          error.message?.includes('Insufficient credits') ||
-          error.message?.includes('Post limit reached') ||
-          error.message?.includes('Upgrade to the Pro plan')) {
-        console.log('Usage tracking:', error.message);
+      // Handle specific error types
+      if (error.message?.includes('No credits available') || error.message?.includes('Insufficient credits')) {
+        throw new Error('No credits available. Please upgrade your plan to continue enhancing posts.');
+      }
+      
+      if (error.message?.includes('Post limit reached')) {
+        throw new Error('You have reached your post enhancement limit. Please upgrade your plan to continue.');
+      }
+      
+      if (error.message?.includes('Upgrade to the Pro plan')) {
+        throw new Error('This feature requires a Pro plan. Please upgrade to access post templates.');
       }
       
       if (error.message?.includes('API configuration error')) {

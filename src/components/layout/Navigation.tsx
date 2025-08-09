@@ -50,7 +50,7 @@ const Navigation = ({
           <div className="hidden md:flex space-x-4">
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className="text-custom-text hover:text-electric-purple font-opensans"
               onClick={() => navigate("/blogs")}
             >
               <BookOpenIcon className="w-4 h-4 mr-2" />
@@ -58,28 +58,14 @@ const Navigation = ({
             </Button>
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className="text-custom-text hover:text-electric-purple font-opensans"
               onClick={() => navigate("/affiliate")}
             >
               Affiliate
             </Button>
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => navigate("/contact")}
-            >
-              Contact
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => navigate("/support")}
-            >
-              Support
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className="text-custom-text hover:text-electric-purple font-opensans"
               onClick={() => setShowPricing(true)}
             >
               Pricing
@@ -112,7 +98,7 @@ const Navigation = ({
               </DropdownMenu>
             ) : (
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-opensans"
+                className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white font-opensans"
                 onClick={() => navigate("/auth")}
               >
                 Sign In
@@ -125,9 +111,9 @@ const Navigation = ({
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <XIcon className="w-6 h-6 text-blue-600" />
+              <XIcon className="w-6 h-6 text-electric-purple" />
             ) : (
-              <MenuIcon className="w-6 h-6 text-blue-600" />
+              <MenuIcon className="w-6 h-6 text-electric-purple" />
             )}
           </button>
         </div>
@@ -137,7 +123,7 @@ const Navigation = ({
             <div className="flex flex-col space-y-4">
               <Button 
                 variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
+                className="text-custom-text hover:text-electric-purple w-full font-opensans"
                 onClick={() => {
                   navigate("/blogs");
                   setMobileMenuOpen(false);
@@ -148,7 +134,7 @@ const Navigation = ({
               </Button>
               <Button 
                 variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
+                className="text-custom-text hover:text-electric-purple w-full font-opensans"
                 onClick={() => {
                   navigate("/affiliate");
                   setMobileMenuOpen(false);
@@ -158,27 +144,7 @@ const Navigation = ({
               </Button>
               <Button 
                 variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  navigate("/contact");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Contact
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  navigate("/support");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Support
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
+                className="text-custom-text hover:text-electric-purple w-full font-opensans"
                 onClick={() => {
                   setShowPricing(true);
                   setMobileMenuOpen(false);
@@ -216,7 +182,7 @@ const Navigation = ({
                 </>
               ) : (
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white w-full font-opensans"
+                  className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white w-full font-opensans"
                   onClick={() => {
                     navigate("/auth");
                     setMobileMenuOpen(false);
