@@ -70,8 +70,19 @@ export async function enhancePost(
       body: requestBody
     });
 
-    const { data, error } = await Promise.race([enhancePromise, timeoutPromise]) as any;
+    const result = await Promise.race([enhancePromise, timeoutPromise]);
+    if (!result || typeof result !== 'object') {
+      throw new Error('Invalid response format');
+    }
 
+    type SupabaseResponse = {
+  data?: {
+    platforms: EnhancePostResponse['platforms'];
+  };
+  error?: Error;
+};
+
+const { data, error } = result as SupabaseResponse;
     console.log('Response from enhance-post:', { data, error });
 
     if (error) {
@@ -124,40 +135,41 @@ export async function enhancePost(
     }
 
     return data;
-  } catch (error: any) {
+  } catch (error) {
+    const err = error as Error;
     console.error('Error in enhancePost function:', error);
     
     // Handle network errors
-    if (error.message?.includes('Failed to fetch') || 
-        error.message?.includes('NetworkError') ||
-        error.name === 'TypeError') {
+    if (err.message?.includes('Failed to fetch') || 
+        err.message?.includes('NetworkError') ||
+        err.name === 'TypeError') {
       throw new Error('Network error: Please check your internet connection and try again.');
     }
     
     // Handle timeout errors
-    if (error.message?.includes('timeout') || error.message?.includes('Request timeout')) {
+    if (err.message?.includes('timeout') || err.message?.includes('Request timeout')) {
       throw new Error('Request timeout: The service is taking too long to respond. Please try again.');
     }
     
     // Handle function invocation errors
-    if (error.message?.includes('FunctionInvocationError') || 
-        error.message?.includes('Edge Function returned a non-2xx status code')) {
-      console.error('Function invocation details:', error);
+    if (err.message?.includes('FunctionInvocationError') || 
+        err.message?.includes('Edge Function returned a non-2xx status code')) {
+      console.error('Function invocation details:', err);
       throw new Error('Service error: The enhancement service is temporarily unavailable. Please try again later.');
     }
     
     // Re-throw known errors (including credit-related ones)
-    if (error.message?.includes('Post content is required') ||
-        error.message?.includes('Category is required') ||
-        error.message?.includes('Style tone is required') ||
-        error.message?.includes('Authentication failed') ||
-        error.message?.includes('No credits available') ||
-        error.message?.includes('Insufficient credits') ||
-        error.message?.includes('post enhancement limit') ||
-        error.message?.includes('Pro plan') ||
-        error.message?.includes('Service temporarily unavailable') ||
-        error.message?.includes('Unable to verify credits')) {
-      throw error;
+    if (err.message?.includes('Post content is required') ||
+        err.message?.includes('Category is required') ||
+        err.message?.includes('Style tone is required') ||
+        err.message?.includes('Authentication failed') ||
+        err.message?.includes('No credits available') ||
+        err.message?.includes('Insufficient credits') ||
+        err.message?.includes('post enhancement limit') ||
+        err.message?.includes('Pro plan') ||
+        err.message?.includes('Service temporarily unavailable') ||
+        err.message?.includes('Unable to verify credits')) {
+      throw err;
     }
     
     // Generic fallback

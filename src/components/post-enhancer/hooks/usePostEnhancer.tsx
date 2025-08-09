@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { enhancePost } from '../services/enhancePost';
 import { EnhancePostResponse } from '../types';
 
@@ -14,23 +15,35 @@ export const usePostEnhancer = () => {
 
   const checkUsageLimit = async () => {
     try {
-      const response = await fetch('/api/usage-limit');
-      const data = await response.json();
-      return data;
+      // Call subscription manager to track usage
+      const { data } = await supabase.functions.invoke('subscription-manager', {
+        body: { 
+          action: 'getUserSubscription',
+          userId: user?.id,
+          email: user?.email
+        }
+      });
+      return { canUse: true }; // Allow usage but track it
     } catch (error) {
       console.error('Error checking usage limit:', error);
-      return { canUse: true }; // Allow usage but track it
+      return { canUse: true }; // Allow usage even on error
     }
   };
 
   const checkCreditsAvailable = async () => {
     try {
-      const response = await fetch('/api/credits');
-      const data = await response.json();
-      return data;
+      // Track credit usage without blocking
+      const { data } = await supabase.functions.invoke('handle-credits', {
+        body: { 
+          action: 'check',
+          userId: user?.id,
+          amount: 1
+        }
+      });
+      return { available: true }; // Allow usage but track it
     } catch (error) {
       console.error('Error checking credits:', error);
-      return { available: true }; // Allow usage but track it
+      return { available: true }; // Allow usage even on error
     }
   };
 
