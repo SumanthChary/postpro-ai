@@ -4,6 +4,9 @@ import { EnhancerForm } from "./EnhancerForm";
 import { ShareOptions } from "./ShareOptions";
 import { ViralityScore } from "./ViralityScore";
 import { usePostEnhancer } from "../hooks/usePostEnhancer";
+import { EnhancePostResponse } from "../types";
+
+type Platform = keyof EnhancePostResponse['platforms'];
 
 interface PostEnhancerLogicProps {
   post: string;
@@ -32,8 +35,8 @@ export const PostEnhancerLogic = ({
 
   const onEnhance = async () => {
     const result = await handleEnhancePost(post, category, styleTone);
-    if (result && result.linkedin) {
-      setPost(result.linkedin);
+    if (result && result.platforms?.linkedin) {
+      setPost(result.platforms.linkedin);
     }
   };
 
@@ -42,7 +45,7 @@ export const PostEnhancerLogic = ({
     setPost("");
   };
 
-  const onPlatformSelect = (platform: string) => {
+  const onPlatformSelect = (platform: Platform) => {
     const platformPost = handlePlatformSelect(platform);
     if (platformPost) {
       setPost(platformPost);
@@ -63,7 +66,7 @@ export const PostEnhancerLogic = ({
         onEnhance={onEnhance}
       />
       
-      {Object.keys(enhancedPosts).length > 0 && (
+      {enhancedPosts && Object.keys(enhancedPosts).length > 0 && (
         <div className="mt-6 pt-6 border-t border-gray-200">
           <ShareOptions 
             enhancedPosts={enhancedPosts} 

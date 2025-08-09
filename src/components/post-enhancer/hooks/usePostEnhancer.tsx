@@ -88,9 +88,20 @@ export const usePostEnhancer = () => {
     }
   };
 
+  const handleReset = () => {
+    setEnhancedPost(null);
+  };
+
+  const handlePlatformSelect = (platform: keyof EnhancePostResponse['platforms']) => {
+    if (!enhancedPost?.platforms) return '';
+    return enhancedPost.platforms[platform] || '';
+  };
+
   return {
-    loading,
-    enhancedPost,
-    enhance,
+    isEnhancing: loading,
+    enhancedPosts: enhancedPost?.platforms || {},
+    handleEnhancePost: enhance,
+    handleReset,
+    handlePlatformSelect,
   };
 };
