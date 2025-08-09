@@ -134,16 +134,10 @@ const Profile = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 {userId && <SubscriptionInfo />}
                 <Card className="p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900 font-cabinet">Manage Subscription</h3>
+                  <h3 className="text-xl font-semibold mb-4 text-gray-900 font-cabinet">Your Account Status</h3>
                   <p className="text-gray-600 mb-4 font-cabinet">
-                    Upgrade or modify your subscription plan to access more features and unlimited enhancements.
+                    You have unlimited access to all features.
                   </p>
-                  <Button 
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 font-cabinet"
-                    onClick={() => navigate("/subscription")}
-                  >
-                    View All Plans
-                  </Button>
                 </Card>
               </div>
             </TabsContent>
@@ -152,13 +146,11 @@ const Profile = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 {userId && <UserCredits userId={userId} />}
                 <Card className="p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900 font-cabinet">How Credits Work</h3>
+                  <h3 className="text-xl font-semibold mb-4 text-gray-900 font-cabinet">Post Enhancements</h3>
                   <div className="space-y-3 text-sm text-gray-600 font-cabinet">
-                    <p>• Each post enhancement uses 1 credit</p>
-                    <p>• Credits are included with your subscription plan</p>
-                    <p>• Free plan includes 50 credits to get you started</p>
-                    <p>• Credits expire 3 months after being earned</p>
-                    <p>• Upgrade your plan for more credits and features</p>
+                    <p>• You can enhance unlimited posts</p>
+                    <p>• All features are available to you</p>
+                    <p>• No credit limits or restrictions</p>
                   </div>
                 </Card>
               </div>
