@@ -73,11 +73,11 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
     <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
       {filteredPlans.map((plan) => (
         <Card key={plan.name} className={`p-8 hover:shadow-lg transition-all duration-300 ${
-          plan.popular ? "border-electric-purple shadow-lg relative" : ""
+          plan.popular ? "border-blue-600 shadow-lg relative" : ""
         }`}>
           {plan.popular && (
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <span className="bg-electric-purple text-white px-4 py-1 rounded-full text-sm font-medium">
+              <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
                 Most Popular
               </span>
             </div>
@@ -114,7 +114,7 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
             <ul className="space-y-3">
               {plan.features.map((feature) => (
                 <li key={feature} className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-electric-purple mr-2 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0" />
                   <span>{feature}</span>
                 </li>
               ))}
@@ -122,7 +122,7 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
           </div>
 
           <Button 
-            className={`w-full ${plan.popular ? "bg-electric-purple hover:bg-electric-purple/90" : ""}`}
+            className={`w-full ${plan.popular ? "bg-blue-600 hover:bg-blue-700" : ""}`}
             variant={plan.popular ? "default" : "outline"}
             onClick={() => handleSelectPlan(plan)}
           >

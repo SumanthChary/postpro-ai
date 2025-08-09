@@ -51,24 +51,25 @@ export const useSubscription = () => {
       // Get current usage from subscription
       const currentUsage = subscription?.monthly_post_count || 0;
       
-      // For new users (within 24 hours), give them 50 free enhancements
+      // For new users (within 7 days), give them 50 free enhancements
       const userCreatedAt = new Date(user?.created_at || '');
-      const isNewUser = (Date.now() - userCreatedAt.getTime()) < 24 * 60 * 60 * 1000;
+      const isNewUser = (Date.now() - userCreatedAt.getTime()) < 7 * 24 * 60 * 60 * 1000;
 
       if (isNewUser) {
+        const remainingUses = Math.max(50 - currentUsage, 0);
         setUsageStats({
-          canUse: true, // Always allow usage
+          canUse: remainingUses > 0,
           currentCount: currentUsage,
           monthlyLimit: 50,
-          remainingUses: Math.max(50 - currentUsage, 0)
+          remainingUses: remainingUses
         });
         return;
       }
 
-      // For regular users, track usage but allow them to continue
+      // For regular users, give them 15 uses per month
       const remainingUses = Math.max(15 - currentUsage, 0);
       setUsageStats({
-        canUse: true, // Always allow usage
+        canUse: remainingUses > 0,
         currentCount: currentUsage,
         monthlyLimit: 15,
         remainingUses: remainingUses
@@ -83,7 +84,7 @@ export const useSubscription = () => {
         remainingUses: 15
       });
     }
-  }, [subscription?.monthly_post_count]);
+  }, [subscription]);
 
   const fetchSubscription = useCallback(async () => {
     try {
