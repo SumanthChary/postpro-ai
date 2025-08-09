@@ -37,25 +37,53 @@ export const useSubscription = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
-      // Set unlimited usage for everyone
-      setUsageStats({
-        canUse: true,
-        currentCount: 0,
-        monthlyLimit: -1, // -1 means unlimited
-        remainingUses: -1
-      });
+      // Set unlimited usage for admin account
+      if (user?.email === 'enjoywithpandu@gmail.com') {
+        setUsageStats({
+          canUse: true,
+          currentCount: 0,
+          monthlyLimit: -1, // Unlimited
+          remainingUses: -1
+        });
+        return;
+      }
 
+      // Get current usage from subscription
+      const currentUsage = subscription?.monthly_post_count || 0;
+      
+      // For new users (within 24 hours), give them 50 free enhancements
+      const userCreatedAt = new Date(user?.created_at || '');
+      const isNewUser = (Date.now() - userCreatedAt.getTime()) < 24 * 60 * 60 * 1000;
+
+      if (isNewUser) {
+        setUsageStats({
+          canUse: true, // Always allow usage
+          currentCount: currentUsage,
+          monthlyLimit: 50,
+          remainingUses: Math.max(50 - currentUsage, 0)
+        });
+        return;
+      }
+
+      // For regular users, track usage but allow them to continue
+      const remainingUses = Math.max(15 - currentUsage, 0);
+      setUsageStats({
+        canUse: true, // Always allow usage
+        currentCount: currentUsage,
+        monthlyLimit: 15,
+        remainingUses: remainingUses
+      });
     } catch (error) {
       console.error('Error checking usage limit:', error);
       // Default to allowing usage if there's an error
       setUsageStats({
         canUse: true,
         currentCount: 0,
-        monthlyLimit: -1,
-        remainingUses: -1
+        monthlyLimit: 15,
+        remainingUses: 15
       });
     }
-  }, []);
+  }, [subscription?.monthly_post_count]);
 
   const fetchSubscription = useCallback(async () => {
     try {
