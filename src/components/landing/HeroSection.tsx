@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
 const HeroSection = () => {
@@ -32,25 +31,8 @@ const HeroSection = () => {
 
         <div className="mt-6 max-w-5xl mx-auto px-3 sm:px-4 md:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-white/90 rounded-xl border border-gray-200 p-4 shadow-sm">
-              <div className="text-sm font-semibold text-gray-700 mb-2">Before (LinkedIn)</div>
-              <p className="text-gray-700 text-sm">"Just launched our new product!"</p>
-              <div className="mt-3 flex gap-4 text-xs text-gray-600">
-                <span>12 likes</span>
-                <span>3 comments</span>
-                <span>0 reposts</span>
-              </div>
-            </div>
-            <div className="bg-white/90 rounded-xl border border-gray-200 p-4 shadow-sm">
-              <div className="text-sm font-semibold text-gray-700 mb-2">After (Enhanced)</div>
-              <p className="text-gray-700 text-sm">"🚀 Thrilled to launch our new product! Built with customer feedback and months of iteration. Details inside → #ProductLaunch #Innovation"</p>
-              <div className="mt-3 flex flex-wrap gap-4 text-xs text-gray-600">
-                <span>55 likes</span>
-                <span>20 comments</span>
-                <span>12 reposts</span>
-              </div>
-              <div className="mt-2 text-emerald-600 text-xs font-semibold">Engagement +340%</div>
-            </div>
+            
+            
           </div>
         </div>
       </div>
