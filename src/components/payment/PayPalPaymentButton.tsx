@@ -80,9 +80,10 @@ export const PayPalPaymentButton = ({
       });
 
       onSuccess();
-    } catch (error: any) {
-      console.error('Payment recording error:', error);
-      onError(error.message || 'Failed to process payment');
+    } catch (error) {
+      const err = error as Error;
+      console.error('Payment recording error:', err);
+      onError(err.message || 'Failed to process payment');
     } finally {
       setIsProcessing(false);
     }
@@ -107,10 +108,14 @@ export const PayPalPaymentButton = ({
   return (
     <div className="w-full min-h-[200px] flex items-center justify-center">
       <PayPalButtons
+        forceReRender={[planDetails.price]}
+        fundingSource="paypal"
         style={{ 
           layout: "vertical",
           shape: "rect",
-          color: "gold"
+          color: "gold",
+          label: "pay",
+          height: 55
         }}
         createOrder={(data, actions) => {
           console.log('Creating PayPal order');
@@ -119,9 +124,24 @@ export const PayPalPaymentButton = ({
             purchase_units: [{
               amount: {
                 value: planDetails.price,
-                currency_code: "USD"
+                currency_code: "USD",
+                breakdown: {
+                  item_total: {
+                    currency_code: "USD",
+                    value: planDetails.price
+                  }
+                }
               },
-              description: `${planDetails.name} Subscription`
+              description: `${planDetails.name} Subscription`,
+              items: [{
+                name: planDetails.name,
+                description: `${planDetails.name} Plan${planDetails.credits ? ` with ${planDetails.credits} credits` : ''}`,
+                unit_amount: {
+                  currency_code: "USD",
+                  value: planDetails.price
+                },
+                quantity: "1"
+              }]
             }]
           });
         }}

@@ -10,14 +10,14 @@ import { PaymentOptions } from "@/components/payment/PaymentOptions";
 import { supabase } from "@/integrations/supabase/client";
 
 // Use environment variable or fallback to test key
-const PAYPAL_CLIENT_ID = "AcMOTd_eHtcroLW42q8FTQidzmFP9x-eaoMqWbt6e82YDX4uvQsIl64bOnLCO-TKEJ2lspI_cL5zEO34";
+const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID || "AcMOTd_eHtcroLW42q8FTQidzmFP9x-eaoMqWbt6e82YDX4uvQsIl64bOnLCO-TKEJ2lspI_cL5zEO34";
 
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ id: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
   
@@ -57,8 +57,9 @@ const Payment = () => {
         
         setUser(session.user);
         setAuthError(null);
-      } catch (error: any) {
-        console.error("Payment auth check error:", error);
+      } catch (error) {
+        const err = error as Error;
+        console.error("Payment auth check error:", err);
         setAuthError("Unable to verify authentication");
       } finally {
         if (mounted) {

@@ -28,7 +28,11 @@ export const PaymentOptions = ({
         options={{ 
           clientId: paypalClientId,
           currency: "USD",
-          intent: "capture"
+          intent: "capture",
+          components: "buttons",
+          'enable-funding': "paylater,venmo",
+          'disable-funding': "card",
+          'data-sdk-integration-source': "button-factory"
         }}
       >
         <PayPalPaymentButton 
