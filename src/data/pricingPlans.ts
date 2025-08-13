@@ -19,23 +19,23 @@ export const pricingPlans: Plan[] = [
   },
   {
     name: "Professional",
-    price: "15",
+    price: "20",
     period: "month",
     features: [
-      "Unlimited Premium AI Enhancements",
+      "1000 Monthly AI Enhancements",
       "Advanced Tone & Style Mastery",
       "50+ Professional Templates",
       "Viral Score Intelligence",
-      "Real-Time Trending Hashtag Research",
-      "Strategic CTA Generator",
-      "A/B Testing for Maximum Engagement",
-      "Custom Brand Voice Training",
-      "Advanced AI Content Strategist",
-      "Priority Support & Consultation"
+      "Real-Time Hashtag Research",
+      "Strategic Post Planning",
+      "A/B Testing for Posts",
+      "Custom Brand Settings",
+      "Priority Support",
+      "Enhanced Analytics"
     ],
     cta: "Start Professional Plan",
     popular: true,
-    credits: -1, // Unlimited
+    credits: 1000, // Monthly credits (50 credits per dollar)
     currency: 'USD'
   },
   {
@@ -43,60 +43,59 @@ export const pricingPlans: Plan[] = [
     price: "45",
     period: "lifetime",
     features: [
-      "Unlimited Post Enhancements",
-      "Advanced AI Tone & Style Suggestions",
+      "500 Post Enhancements",
+      "Advanced Tone & Style Options",
       "Premium Templates (20+)",
       "Virality Score Predictor",
       "Trending Hashtag Generator",
       "CTA Generator",
       "A/B Testing for Posts",
       "Custom Templates",
-      "Advanced AI Chatbot",
-      "AI-Powered Smart Dashboard",
+      "Enhanced Analytics",
+      "Priority Support"
     ],
     popular: true,
     icon: "💎",
     cta: "Choose Plan",
-    credits: 320 // Calculated based on $8 pricing (40 credits per dollar)
+    credits: 500 // Lifetime credits
   },
   {
     name: "Yearly Plan",
     price: "80",
     period: "year",
     features: [
-      "All Monthly Features + More!",
-      "50% OFF - Save $96/year",
+      "All Pro Features + More!",
+      "50% OFF - Save $160/year",
       "Premium Customer Support",
-      "Advanced AI for Content Strategy",
-      "Early Access to New Features",
-      "Personal Branding Toolkit",
+      "Advanced Content Strategy",
+      "Early Access Features",
+      "Personal Branding Tools",
       "Monthly Bonus Credits",
-      "Priority Support",
-      "Advanced Analytics Dashboard",
-      "Cross-Platform Sharing",
-      "Teams Collaboration",
+      "VIP Support Access",
+      "Advanced Analytics",
+      "Cross-Platform Analytics"
     ],
     icon: "🎉",
     cta: "Choose Plan",
-    credits: 3200 // Calculated based on $80 pricing (40 credits per dollar)
+    credits: 4000 // Yearly credits (50 credits per dollar)
   },
   {
     name: "Enterprise Plan",
-    price: "499",
+    price: "299",
     period: "month",
     features: [
       "All Yearly Features + More!",
-      "API Access for Bulk Enhancements",
-      "Team Collaboration & Multi-Account",
-      "Dedicated Account Manager",
-      "Custom Solutions",
-      "Custom Credit Allocation",
+      "Unlimited Enhancements",
+      "Custom Brand Solutions",
+      "Dedicated Support Manager",
+      "Custom Analytics Reports",
       "White-label Options",
-      "Custom Integrations",
-      "24/7 Priority Support",
+      "Priority Feature Requests",
+      "1-on-1 Strategy Sessions",
+      "24/7 VIP Support"
     ],
     icon: "💼",
     cta: "Contact Sales",
-    credits: 19960 // Calculated based on $499 pricing (40 credits per dollar)
+    credits: 15000 // Monthly credits (50 credits per dollar)
   },
 ];
