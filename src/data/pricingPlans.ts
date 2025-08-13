@@ -20,6 +20,8 @@ export const pricingPlans: Plan[] = [
   {
     name: "Professional",
     price: "20",
+    originalPrice: "33",
+    discountPercentage: 40,
     period: "month",
     features: [
       "1000 Monthly AI Enhancements",
@@ -41,6 +43,8 @@ export const pricingPlans: Plan[] = [
   {
     name: "Lifetime Creator",
     price: "45",
+    originalPrice: "75",
+    discountPercentage: 40,
     period: "lifetime",
     features: [
       "500 Post Enhancements",

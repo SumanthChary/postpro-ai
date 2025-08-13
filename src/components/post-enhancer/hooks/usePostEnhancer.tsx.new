@@ -1,0 +1,83 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { enhancePost } from '../services/enhancePost';
+import { EnhancePostResponse } from '../types';
+
+export const usePostEnhancer = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [enhancedPost, setEnhancedPost] = useState<EnhancePostResponse | null>(null);
+
+  const checkUsageLimit = async () => {
+    try {
+      const response = await fetch('/api/usage-limit');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error checking usage limit:', error);
+      return { canUse: true }; // Allow usage but track it
+    }
+  };
+
+  const checkCreditsAvailable = async () => {
+    try {
+      const response = await fetch('/api/credits');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error checking credits:', error);
+      return { available: true }; // Allow usage but track it
+    }
+  };
+
+  const enhance = async (post: string, category: string, styleTone: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to enhance your post",
+        variant: "destructive",
+        action: (
+          <button 
+            onClick={() => navigate("/auth")}
+            className="bg-white text-black px-3 py-1 rounded text-sm hover:bg-gray-100"
+          >
+            Sign In
+          </button>
+        ),
+      });
+      return false;
+    }
+
+    setLoading(true);
+
+    try {
+      // Track usage without blocking
+      checkUsageLimit();
+      checkCreditsAvailable();
+
+      const data = await enhancePost(post, category, true, styleTone);
+      setEnhancedPost(data);
+      return data;
+    } catch (error) {
+      console.error('Error enhancing post:', error);
+      toast({
+        title: "Error",
+        description: "An error occurred while enhancing your post. Please try again.",
+        variant: "destructive",
+      });
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    loading,
+    enhancedPost,
+    enhance,
+  };
+};

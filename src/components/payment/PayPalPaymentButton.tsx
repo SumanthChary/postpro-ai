@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,33 +26,34 @@ export const PayPalPaymentButton = ({
     try {
       setIsProcessing(true);
       console.log('Processing PayPal payment:', orderId);
-      
-      // 1. Insert payment record
-      const { error: paymentError } = await supabase
-        .from('payments')
-        .insert([
-          {
-            user_id: userId,
-            amount: parseFloat(planDetails.price),
-            currency: 'USD',
-            payment_method: 'paypal',
-            status: 'completed',
-            transaction_id: orderId,
-            subscription_tier: planDetails.name
-          }
-        ]);
 
-      if (paymentError) {
-        console.error('Payment recording error:', paymentError);
-        throw new Error('Failed to record payment: ' + paymentError.message);
+      // Verify payment with our backend
+      const { data: verificationData, error: verificationError } = await supabase.functions.invoke('handle-payment', {
+        body: {
+          orderId,
+          userId,
+          subscriptionTier: planDetails.name,
+          credits: planDetails.credits,
+          planName: planDetails.name
+        }
+      });
+
+      console.log('Payment verification response:', { verificationData, verificationError });
+
+      if (verificationError) {
+        throw new Error(verificationError.message || 'Payment verification failed');
+      }
+      
+      if (!verificationData?.success) {
+        throw new Error(verificationData?.error || 'Payment verification failed');
       }
 
-      // 2. Add credits to user account
+      // Handle credits if they're part of the plan
       if (planDetails.credits) {
         console.log(`Adding ${planDetails.credits} credits for user ${userId}`);
         
         const expiresAt = new Date();
-        expiresAt.setMonth(expiresAt.getMonth() + 3);
+        expiresAt.setMonth(expiresAt.getMonth() + (planDetails.name.toLowerCase().includes('yearly') ? 12 : 3));
         
         const { error: creditError } = await supabase.functions.invoke('handle-credits', {
           body: { 
@@ -82,7 +83,7 @@ export const PayPalPaymentButton = ({
       onSuccess();
     } catch (error) {
       const err = error as Error;
-      console.error('Payment recording error:', err);
+      console.error('Payment processing error:', err);
       onError(err.message || 'Failed to process payment');
     } finally {
       setIsProcessing(false);
@@ -108,7 +109,7 @@ export const PayPalPaymentButton = ({
   return (
     <div className="w-full min-h-[200px] flex items-center justify-center">
       <PayPalButtons
-        forceReRender={[planDetails.price]}
+        forceReRender={[planDetails.price]} // Re-render when price changes
         fundingSource="paypal"
         style={{ 
           layout: "vertical",
@@ -118,7 +119,11 @@ export const PayPalPaymentButton = ({
           height: 55
         }}
         createOrder={(data, actions) => {
-          console.log('Creating PayPal order');
+          console.log('Creating PayPal order with details:', {
+            price: planDetails.price,
+            name: planDetails.name,
+            credits: planDetails.credits
+          });
           return actions.order.create({
             intent: "CAPTURE",
             purchase_units: [{
@@ -148,20 +153,22 @@ export const PayPalPaymentButton = ({
         onApprove={async (data, actions) => {
           console.log('PayPal payment approved:', data);
           try {
-            if (actions.order) {
-              const order = await actions.order.capture();
-              await handlePaymentSuccess(order.id);
+            if (!actions.order) {
+              throw new Error('Invalid PayPal order object');
             }
+            const order = await actions.order.capture();
+            console.log('PayPal order captured:', order);
+            await handlePaymentSuccess(order.id);
           } catch (error) {
             console.error('PayPal capture error:', error);
-            onError("Failed to capture payment");
+            setHasError(true);
+            onError(error instanceof Error ? error.message : "Failed to capture payment. Please try again or contact support.");
           }
         }}
         onError={(err) => {
-          console.error('PayPal detailed error:', err);
-          console.error('PayPal error details:', JSON.stringify(err, null, 2));
+          console.error('PayPal error:', err);
           setHasError(true);
-          onError("PayPal error: " + (err.message || JSON.stringify(err)));
+          onError("There was an error processing your PayPal payment. Please try again.");
         }}
         onCancel={() => {
           console.log('PayPal payment cancelled');

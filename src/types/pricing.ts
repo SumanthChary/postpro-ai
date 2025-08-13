@@ -14,6 +14,8 @@ export interface Plan {
   credits?: number; // Credits field for the plan
   currency?: 'USD' | 'INR'; // Added currency field
   displayPrice?: string; // Added display price field for converted amounts
+  originalPrice?: string; // Original price before discount
+  discountPercentage?: number; // Discount percentage
 }
 
 export interface UserCredit {

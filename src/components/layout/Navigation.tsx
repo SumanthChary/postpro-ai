@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon } from "lucide-react";
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import { PromoBanner } from "./PromoBanner";
 
 interface NavigationProps {
   session: any;
@@ -33,7 +34,10 @@ const Navigation = ({
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+    <div className="relative">
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <PromoBanner />
+        <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
@@ -230,6 +234,8 @@ const Navigation = ({
         )}
       </div>
     </nav>
+      </div>
+    </div>
   );
 };
 

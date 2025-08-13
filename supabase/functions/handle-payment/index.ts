@@ -8,9 +8,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const PAYPAL_CLIENT_ID = Deno.env.get('PAYPAL_CLIENT_ID');
-const PAYPAL_SECRET = Deno.env.get('PAYPAL_SECRET');
+const PAYPAL_CLIENT_ID = Deno.env.get('PAYPAL_CLIENT_ID') || '';
+const PAYPAL_SECRET = Deno.env.get('PAYPAL_SECRET') || '';
 const PAYPAL_API_URL = 'https://api-m.paypal.com';
+
+if (!PAYPAL_CLIENT_ID || !PAYPAL_SECRET) {
+  console.error('PayPal credentials are not configured');
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -21,10 +25,16 @@ serve(async (req) => {
     const { orderId, subscriptionTier, userId, credits, planName } = await req.json();
     console.log('Payment handler called with:', { orderId, subscriptionTier, userId, credits, planName });
 
+    if (!orderId || !userId) {
+      throw new Error('Missing required parameters');
+    }
+
     // Get access token from PayPal
     const authResponse = await fetch(`${PAYPAL_API_URL}/v1/oauth2/token`, {
       method: 'POST',
       headers: {
+        'Accept': 'application/json',
+        'Accept-Language': 'en_US',
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Basic ${btoa(`${PAYPAL_CLIENT_ID}:${PAYPAL_SECRET}`)}`,
       },
@@ -34,11 +44,12 @@ serve(async (req) => {
     const authData = await authResponse.json();
     if (!authResponse.ok) {
       console.error('PayPal auth error:', authData);
-      throw new Error('Failed to authenticate with PayPal');
+      throw new Error(`Failed to authenticate with PayPal: ${authData.error_description || 'Unknown error'}`);
     }
 
     // Verify the payment with PayPal
     const response = await fetch(`${PAYPAL_API_URL}/v2/checkout/orders/${orderId}`, {
+      method: 'GET',
       headers: {
         'Authorization': `Bearer ${authData.access_token}`,
         'Content-Type': 'application/json',
@@ -48,10 +59,37 @@ serve(async (req) => {
     const paymentData = await response.json();
     console.log('PayPal payment data:', paymentData);
 
+    if (!paymentData.purchase_units?.[0]?.amount?.value) {
+      throw new Error('Invalid payment data received from PayPal');
+    }
+
+    // Verify payment amount matches plan price
+    const paymentAmount = parseFloat(paymentData.purchase_units[0].amount.value);
+    const expectedAmount = parseFloat(planName.toLowerCase().includes('yearly') ? '3200' : '320');
+    
+    if (Math.abs(paymentAmount - expectedAmount) > 0.01) { // Using a small threshold for floating point comparison
+      console.error('Payment amount mismatch:', { paymentAmount, expectedAmount });
+      throw new Error('Payment amount does not match plan price');
+    }
+
+    if (paymentData.status !== 'COMPLETED' && paymentData.status !== 'APPROVED') {
+      throw new Error(`Invalid payment status: ${paymentData.status}`);
+    }
+
     if (paymentData.status === 'COMPLETED' || paymentData.status === 'APPROVED') {
-      const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
-      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-      const supabase = createClient(supabaseUrl, supabaseKey);
+      const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+      
+      if (!supabaseUrl || !supabaseKey) {
+        console.error('Supabase configuration missing');
+        throw new Error('Server configuration error');
+      }
+
+      const supabase = createClient(supabaseUrl, supabaseKey, {
+        auth: {
+          persistSession: false
+        }
+      });
 
       // Get user information
       const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId);
@@ -79,7 +117,7 @@ serve(async (req) => {
 
       // Update subscription
       const subscriptionEnd = new Date();
-      if (planName === 'Yearly Plan') {
+      if (planName.toLowerCase().includes('yearly')) {
         subscriptionEnd.setFullYear(subscriptionEnd.getFullYear() + 1);
       } else {
         subscriptionEnd.setMonth(subscriptionEnd.getMonth() + 1);
@@ -138,7 +176,11 @@ serve(async (req) => {
         JSON.stringify({ 
           success: true, 
           message: 'Payment and subscription processed successfully',
-          data: paymentData 
+          data: {
+            paymentId: orderId,
+            subscriptionEnd: subscriptionEnd.toISOString(),
+            plan: planName
+          }
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
