@@ -29,7 +29,7 @@ export const EnhancerForm = ({
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 mb-4">
         <div className="flex items-center space-x-2">
           <SparklesIcon className="w-5 h-5 text-blue-600" />
-          <h2 className="text-base sm:text-lg font-montserrat font-extrabold text-gray-900">LinkedIn Post Enhancer</h2>
+          <h2 className="text-base sm:text-lg font-montserrat font-extrabold text-gray-900">Post Enhancer</h2>
         </div>
         <div className="flex items-center gap-3">
           <LinkedinIcon className="w-5 h-5 text-[#0077B5]" />
@@ -127,17 +127,13 @@ export const EnhancerForm = ({
           Reset
         </Button>
         <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-opensans" onClick={onEnhance} disabled={isEnhancing}>
-          {isEnhancing ? (
-            <>
+          {isEnhancing ? <>
               <Loader2Icon className="w-4 h-4 mr-2" />
               Generating...
-            </>
-          ) : (
-            <>
+            </> : <>
               <RocketIcon className="w-4 h-4 mr-2" />
               Generate My First Viral Post (Free)
-            </>
-          )}
+            </>}
         </Button>
       </div>
     </div>;
