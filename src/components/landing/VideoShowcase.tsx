@@ -4,7 +4,7 @@ import VideoPlayer from './video/VideoPlayer';
 import FeaturedSection from './video/FeaturedSection';
 
 const VideoShowcase = () => {
-  const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Video%20Project%204.mp4";
+  const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video/demo.mp4";
   const thumbnailUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Screenshot%20(495).png";
 
   return (

@@ -132,7 +132,7 @@ export const EnhancerForm = ({
               Generating...
             </> : <>
               <RocketIcon className="w-4 h-4 mr-2" />
-              Generate My First Viral Post (Free)
+              Enhance Post
             </>}
         </Button>
       </div>

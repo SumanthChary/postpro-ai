@@ -4,12 +4,12 @@ export function PromoBanner() {
   const [isVisible, setIsVisible] = useState(true);
 
   return isVisible ? (
-    <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 text-center relative">
+    <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-3 px-4 text-center relative border-b border-slate-700">
       <div className="container mx-auto flex items-center justify-center">
-        <span className="animate-pulse mr-2">🎉</span>
-        <p className="font-medium">
-          Limited Time Offer: <span className="font-bold">40% OFF</span> on All Plans!
-          <span className="hidden sm:inline"> Don't Miss Out on Lifetime Deals!</span>
+        <div className="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse"></div>
+        <p className="font-medium text-sm">
+          <span className="font-semibold">Limited Time:</span> <span className="text-green-400">40% OFF</span> All Premium Plans
+          <span className="hidden sm:inline"> • Trusted by 2,847+ professionals</span>
         </p>
         <button
           onClick={() => setIsVisible(false)}
