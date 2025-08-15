@@ -1,9 +1,10 @@
 
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useUnlimitedAccess } from "@/hooks/useUnlimitedAccess";
+import { useReferralTracking } from "@/hooks/useReferralTracking";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
@@ -25,6 +26,9 @@ function App() {
   const queryClient = new QueryClient();
   // Enable unlimited access
   useUnlimitedAccess();
+  // Initialize referral tracking
+  useReferralTracking();
+  
   return (
     <StrictMode>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

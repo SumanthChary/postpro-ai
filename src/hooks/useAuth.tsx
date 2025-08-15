@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useReferralTracking } from "./useReferralTracking";
 
 export const useAuth = (redirectPath = "/auth", requireAuth = false) => {
   const [user, setUser] = useState<any>(null);
@@ -10,6 +11,7 @@ export const useAuth = (redirectPath = "/auth", requireAuth = false) => {
   const [hasRedirected, setHasRedirected] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { processReferral } = useReferralTracking();
 
   useEffect(() => {
     let mounted = true;
@@ -31,6 +33,14 @@ export const useAuth = (redirectPath = "/auth", requireAuth = false) => {
         } else if (event === "SIGNED_IN" && session) {
           setUser(session.user);
           setHasRedirected(false);
+          
+          // Process referral for new users
+          const isNewUser = session.user.created_at && 
+            new Date(session.user.created_at).getTime() > (Date.now() - 60000); // Within last minute
+          
+          if (isNewUser) {
+            processReferral(session.user.id, 'free');
+          }
         } else if (event === "TOKEN_REFRESHED" && session) {
           setUser(session.user);
         }
@@ -91,7 +101,7 @@ export const useAuth = (redirectPath = "/auth", requireAuth = false) => {
       mounted = false;
       authListener?.subscription.unsubscribe();
     };
-  }, [navigate, toast, redirectPath, requireAuth]);
+  }, [navigate, toast, redirectPath, requireAuth, processReferral]);
 
-  return { user, loading };
+  return { user, loading, processReferral };
 };

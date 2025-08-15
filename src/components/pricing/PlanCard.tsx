@@ -41,7 +41,7 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
           {plan.name}
         </h3>
         <div className="flex items-end mb-2 sm:mb-4">
-          {plan.name !== "Free" && (
+          {plan.name !== "Free" && plan.name === "Professional" && (
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="text-xl sm:text-2xl line-through text-gray-400">
@@ -53,6 +53,11 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
                 {plan.price === "Custom" ? "Custom" : `${currencySymbol}${plan.price}`}
               </span>
             </div>
+          )}
+          {(plan.name !== "Free" && plan.name !== "Professional") && (
+            <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
+              {plan.price === "Custom" ? "Custom" : `${currencySymbol}${plan.price}`}
+            </span>
           )}
           {plan.name === "Free" && (
             <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
