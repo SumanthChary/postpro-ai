@@ -50,125 +50,114 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50">
-      <div className="max-w-7xl mx-auto p-4 space-y-8">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2 bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white/90 transition-all duration-200"
-              onClick={() => navigate(-1)}
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back
-            </Button>
-          </div>
+      <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="flex items-center justify-between mb-8">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2 bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white/90 transition-all duration-200"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Button>
           
-          <div className="flex items-center gap-4">
-            <UserCredits userId={userId} />
-          </div>
-        </div>
-        
-        {/* Real-time Activity and Metrics Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <EnhancedMetrics userId={userId} />
-          </div>
-          <div className="lg:col-span-1">
-            <RealTimeActivity />
-          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-cabinet">Profile & Settings</h1>
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8 text-gray-900 font-cabinet">Profile & Settings</h1>
-          
-          <Tabs defaultValue="profile" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 bg-white/80 backdrop-blur-sm">
-              <TabsTrigger value="profile" className="font-cabinet">Profile</TabsTrigger>
-              <TabsTrigger value="subscription" className="font-cabinet">Subscription</TabsTrigger>
-              <TabsTrigger value="credits" className="font-cabinet">Credits</TabsTrigger>
-              <TabsTrigger value="activity" className="font-cabinet">Activity</TabsTrigger>
-              <TabsTrigger value="settings" className="font-cabinet">Settings</TabsTrigger>
-            </TabsList>
+        <Tabs defaultValue="profile" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 bg-white/80 backdrop-blur-sm">
+            <TabsTrigger value="profile" className="font-cabinet text-xs sm:text-sm">Profile</TabsTrigger>
+            <TabsTrigger value="subscription" className="font-cabinet text-xs sm:text-sm">Subscription</TabsTrigger>
+            <TabsTrigger value="credits" className="font-cabinet text-xs sm:text-sm">Credits</TabsTrigger>
+            <TabsTrigger value="activity" className="font-cabinet text-xs sm:text-sm">Activity</TabsTrigger>
+            <TabsTrigger value="settings" className="font-cabinet text-xs sm:text-sm">Settings</TabsTrigger>
+          </TabsList>
 
-            <TabsContent value="profile">
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-2">
-                  <Card className="p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
-                    <h2 className="text-2xl font-bold mb-6 text-gray-900 font-cabinet">Profile Information</h2>
-                    
-                    <div className="space-y-6">
-                      <AvatarUpload
-                        avatarUrl={avatarUrl}
-                        username={username}
-                        setAvatarUrl={setAvatarUrl}
-                        uploading={uploading}
-                        setUploading={setUploading}
-                      />
+          <TabsContent value="profile">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-6 text-gray-900 font-cabinet">Profile Information</h2>
+                  
+                  <div className="space-y-6">
+                    <AvatarUpload
+                      avatarUrl={avatarUrl}
+                      username={username}
+                      setAvatarUrl={setAvatarUrl}
+                      uploading={uploading}
+                      setUploading={setUploading}
+                    />
 
-                      <ProfileForm
-                        username={username}
-                        setUsername={setUsername}
-                        bio={bio}
-                        setBio={setBio}
-                        suggestions={suggestions}
-                        setSuggestions={setSuggestions}
-                        profileScore={profileScore}
-                        improvements={improvements}
-                        loading={loading}
-                        setLoading={setLoading}
-                        getProfileScore={getProfileScore}
-                      />
-                    </div>
-                  </Card>
-                </div>
-                
-                <div className="space-y-6">
-                  {userId && <SubscriptionInfo />}
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="subscription">
-              <div className="grid md:grid-cols-2 gap-6">
-                {userId && <SubscriptionInfo />}
-                <Card className="p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900 font-cabinet">Your Account Status</h3>
-                  <p className="text-gray-600 mb-4 font-cabinet">
-                    You have unlimited access to all features.
-                  </p>
-                </Card>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="credits">
-              <div className="grid md:grid-cols-2 gap-6">
-                {userId && <UserCredits userId={userId} />}
-                <Card className="p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900 font-cabinet">Post Enhancements</h3>
-                  <div className="space-y-3 text-sm text-gray-600 font-cabinet">
-                    <p>• You can enhance unlimited posts</p>
-                    <p>• All features are available to you</p>
-                    <p>• No credit limits or restrictions</p>
+                    <ProfileForm
+                      username={username}
+                      setUsername={setUsername}
+                      bio={bio}
+                      setBio={setBio}
+                      suggestions={suggestions}
+                      setSuggestions={setSuggestions}
+                      profileScore={profileScore}
+                      improvements={improvements}
+                      loading={loading}
+                      setLoading={setLoading}
+                      getProfileScore={getProfileScore}
+                    />
                   </div>
                 </Card>
               </div>
-            </TabsContent>
-
-            <TabsContent value="activity">
-              <div className="grid md:grid-cols-1 gap-6">
-                <UsageHistory />
+              
+              <div className="lg:col-span-1 space-y-6">
+                {userId && <SubscriptionInfo />}
               </div>
-            </TabsContent>
+            </div>
+          </TabsContent>
 
-            <TabsContent value="settings">
-              <div className="grid md:grid-cols-1 gap-6">
-                <AccountSettings />
+          <TabsContent value="subscription">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {userId && <SubscriptionInfo />}
+              <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
+                <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 font-cabinet">Your Account Status</h3>
+                <p className="text-gray-600 mb-4 font-cabinet text-sm sm:text-base">
+                  You have unlimited access to all features.
+                </p>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="credits">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {userId && <UserCredits userId={userId} />}
+              <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
+                <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 font-cabinet">Post Enhancements</h3>
+                <div className="space-y-3 text-sm text-gray-600 font-cabinet">
+                  <p>• You can enhance unlimited posts</p>
+                  <p>• All features are available to you</p>
+                  <p>• No credit limits or restrictions</p>
+                </div>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="activity">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <div className="xl:col-span-2">
+                  <EnhancedMetrics userId={userId} />
+                </div>
+                <div className="xl:col-span-1">
+                  <RealTimeActivity />
+                </div>
               </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+              <UsageHistory />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="settings">
+            <div className="max-w-4xl">
+              <AccountSettings />
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
