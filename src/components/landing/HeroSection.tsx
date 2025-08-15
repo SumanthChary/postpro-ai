@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
+import { AnimatedTooltipPreview } from "@/components/ui/animated-tooltip-preview";
 
 interface HeroSectionProps {
   isAuthenticated?: boolean;
@@ -54,10 +55,9 @@ const HeroSection = ({ isAuthenticated = false, username }: HeroSectionProps) =>
           </div>
         </div>
 
-        <div className="mt-6 max-w-5xl mx-auto px-3 sm:px-4 md:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-            
+        <div className="mt-8 max-w-5xl mx-auto px-3 sm:px-4 md:px-6">
+          <div className="backdrop-blur-lg bg-white/40 rounded-2xl p-6 border border-white/30">
+            <AnimatedTooltipPreview />
           </div>
         </div>
       </div>
