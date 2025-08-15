@@ -125,7 +125,7 @@ const Index = () => {
       />
 
       <main>
-        <HeroSection />
+        <HeroSection isAuthenticated={!!session} username={username} />
         <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <VideoShowcase />
           <HowItWorksSection />
