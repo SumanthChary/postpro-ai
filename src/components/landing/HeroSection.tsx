@@ -10,7 +10,7 @@ const HeroSection = () => {
       <div className="absolute top-20 sm:top-40 right-5 sm:right-10 w-24 sm:w-40 md:w-56 lg:w-72 h-24 sm:h-40 md:h-56 lg:h-72 bg-gradient-to-r from-purple-100/20 to-pink-100/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
       <div className="absolute bottom-10 sm:bottom-20 left-1/2 w-28 sm:w-36 md:w-48 lg:w-60 h-28 sm:h-36 md:h-48 lg:h-60 bg-gradient-to-r from-cyan-100/20 to-blue-100/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
       
-      <div className="relative z-10 pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-6 sm:pb-8">
+      <div className="relative z-10 pt-24 sm:pt-32 md:pt-40 lg:pt-48 xl:pt-56 pb-8 sm:pb-12 md:pb-16 lg:pb-20">
         <div className="max-w-5xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14 px-3 sm:px-4 md:px-6 lg:px-8">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.1] text-gray-900">
             <span className="font-bold text-gray-950">LinkedIn Posts That Actually <span className="italic bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold">Get Noticed</span></span>
