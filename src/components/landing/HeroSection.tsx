@@ -13,7 +13,7 @@ const HeroSection = () => {
       <div className="relative z-10 pt-24 sm:pt-32 md:pt-40 lg:pt-48 xl:pt-56 pb-8 sm:pb-12 md:pb-16 lg:pb-20">
         <div className="max-w-5xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14 px-3 sm:px-4 md:px-6 lg:px-8">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.1] text-gray-900">
-            <span className="font-bold text-gray-950">LinkedIn Posts That Actually <span className="italic bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold">Get Noticed</span></span>
+            <span className="font-bold text-gray-950">LinkedIn Posts That Actually <span className="italic bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold">Get Noticed </span></span>
           </h1>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
             Join 2,847 professionals who increased their LinkedIn engagement by 340% in 30 days
