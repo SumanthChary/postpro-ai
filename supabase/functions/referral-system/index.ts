@@ -33,25 +33,43 @@ async function trackReferral(referrerId: string, referredUserId: string, referre
       throw referralError;
     }
 
+    console.log('Referral record created successfully');
+
     // Reward logic for free plan users
     if (referredUserPlan === 'free') {
       console.log(`Referrer ${referrerId} gets 2 free post enhancements.`);
       
-      // Update referrer's post count in the database
+      // Get current free enhancements count
+      const { data: currentProfile, error: fetchError } = await supabase
+        .from('profiles')
+        .select('free_enhancements')
+        .eq('id', referrerId)
+        .single();
+
+      if (fetchError) {
+        console.error('Error fetching referrer profile:', fetchError);
+        return;
+      }
+
+      const currentEnhancements = currentProfile?.free_enhancements || 0;
+      
+      // Update referrer's free enhancements
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ 
-          free_enhancements: supabase.sql`free_enhancements + 2`
+          free_enhancements: currentEnhancements + 2
         })
         .eq('id', referrerId);
 
       if (updateError) {
         console.error('Error updating referrer credits:', updateError);
+      } else {
+        console.log(`Referrer ${referrerId} awarded 2 free enhancements`);
       }
     } else {
       console.log(`Referred user ${referredUserId} purchased a plan: ${referredUserPlan}`);
       
-      // Check if referrer qualifies for plan upgrade
+      // Check if referrer qualifies for plan upgrade rewards
       const { data: referralCount, error: countError } = await supabase
         .from('referrals')
         .select('*', { count: 'exact' })
@@ -64,25 +82,34 @@ async function trackReferral(referrerId: string, referredUserId: string, referre
       }
 
       const payingReferrals = referralCount || 0;
+      console.log(`Referrer ${referrerId} has ${payingReferrals} paying referrals`);
       
-      // If 2 paying users referred, grant the same plan
-      if (payingReferrals >= 2) {
-        const { error: upgradeError } = await supabase
+      // Award more free enhancements for paying referrals
+      const { data: currentProfile, error: fetchError } = await supabase
+        .from('profiles')
+        .select('free_enhancements')
+        .eq('id', referrerId)
+        .single();
+
+      if (!fetchError && currentProfile) {
+        const currentEnhancements = currentProfile.free_enhancements || 0;
+        const bonusEnhancements = referredUserPlan === 'annual' ? 20 : 10; // More for annual plans
+        
+        const { error: updateError } = await supabase
           .from('profiles')
           .update({ 
-            subscription_plan: referredUserPlan,
-            plan_upgraded_via_referral: true
+            free_enhancements: currentEnhancements + bonusEnhancements
           })
           .eq('id', referrerId);
 
-        if (upgradeError) {
-          console.error('Error upgrading referrer plan:', upgradeError);
+        if (updateError) {
+          console.error('Error updating referrer bonus credits:', updateError);
         } else {
-          console.log(`Referrer ${referrerId} upgraded to ${referredUserPlan} plan`);
+          console.log(`Referrer ${referrerId} awarded ${bonusEnhancements} bonus enhancements`);
         }
       }
 
-      // Check for weekly referral bonus (10 paying users in a week)
+      // Check for weekly referral bonus (5 paying users in a week gets 50 bonus enhancements)
       const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
       
@@ -93,19 +120,29 @@ async function trackReferral(referrerId: string, referredUserId: string, referre
         .neq('referred_user_plan', 'free')
         .gte('created_at', oneWeekAgo.toISOString());
 
-      if (!weeklyError && weeklyCount && weeklyCount >= 10) {
-        const { error: annualUpgradeError } = await supabase
+      if (!weeklyError && weeklyCount && weeklyCount >= 5) {
+        const { data: currentProfile, error: fetchError } = await supabase
           .from('profiles')
-          .update({ 
-            subscription_plan: 'annual',
-            plan_upgraded_via_referral: true
-          })
-          .eq('id', referrerId);
+          .select('free_enhancements')
+          .eq('id', referrerId)
+          .single();
 
-        if (annualUpgradeError) {
-          console.error('Error upgrading to annual plan:', annualUpgradeError);
-        } else {
-          console.log(`Referrer ${referrerId} upgraded to annual plan for 10 weekly referrals`);
+        if (!fetchError && currentProfile) {
+          const currentEnhancements = currentProfile.free_enhancements || 0;
+          
+          const { error: weeklyBonusError } = await supabase
+            .from('profiles')
+            .update({ 
+              free_enhancements: currentEnhancements + 50,
+              plan_upgraded_via_referral: true
+            })
+            .eq('id', referrerId);
+
+          if (weeklyBonusError) {
+            console.error('Error awarding weekly bonus:', weeklyBonusError);
+          } else {
+            console.log(`Referrer ${referrerId} awarded 50 bonus enhancements for 5 weekly referrals`);
+          }
         }
       }
     }

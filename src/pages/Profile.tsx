@@ -13,6 +13,7 @@ import UserCredits from "@/components/profile/UserCredits";
 import SubscriptionInfo from "@/components/profile/SubscriptionInfo";
 import UsageHistory from "@/components/profile/UsageHistory";
 import AccountSettings from "@/components/profile/AccountSettings";
+import ReferralSystem from "@/components/profile/ReferralSystem";
 import { useProfileData } from "@/hooks/useProfileData";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -56,10 +57,10 @@ const Profile = () => {
             variant="outline"
             size="sm"
             className="gap-2 bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white/90 transition-all duration-200"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
           >
             <ArrowLeft className="h-4 w-4" />
-            Back
+            Back to Home
           </Button>
           
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 font-cabinet">Profile & Settings</h1>
@@ -125,16 +126,25 @@ const Profile = () => {
           </TabsContent>
 
           <TabsContent value="credits">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {userId && <UserCredits userId={userId} />}
-              <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
-                <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 font-cabinet">Post Enhancements</h3>
-                <div className="space-y-3 text-sm text-gray-600 font-cabinet">
-                  <p>• You can enhance unlimited posts</p>
-                  <p>• All features are available to you</p>
-                  <p>• No credit limits or restrictions</p>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {userId && <UserCredits userId={userId} />}
+                <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 font-cabinet">Post Enhancements</h3>
+                  <div className="space-y-3 text-sm text-gray-600 font-cabinet">
+                    <p>• You can enhance unlimited posts</p>
+                    <p>• All features are available to you</p>
+                    <p>• No credit limits or restrictions</p>
+                  </div>
+                </Card>
+              </div>
+              
+              {/* Referral System */}
+              {userId && (
+                <div className="mt-6">
+                  <ReferralSystem userId={userId} />
                 </div>
-              </Card>
+              )}
             </div>
           </TabsContent>
 
