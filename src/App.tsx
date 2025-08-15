@@ -20,6 +20,8 @@ import Blogs from "./pages/Blogs";
 import BlogArticle from "./pages/BlogArticle";
 import Chatbot from "./pages/Chatbot";
 import Affiliate from "./pages/Affiliate";
+import Contact from "./pages/Contact";
+import Support from "./pages/Support";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 
 function App() {
@@ -50,6 +52,8 @@ function App() {
                   <Route path="/blog/:id" element={<BlogArticle />} />
                   <Route path="/chatbot" element={<Chatbot />} />
                   <Route path="/affiliate" element={<Affiliate />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/support" element={<Support />} />
                 </Routes>
                 <FloatingChatButton />
               </BrowserRouter>

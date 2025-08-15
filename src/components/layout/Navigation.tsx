@@ -70,20 +70,6 @@ const Navigation = ({
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => navigate("/contact")}
-            >
-              Contact
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => navigate("/support")}
-            >
-              Support
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
               onClick={() => setShowPricing(true)}
             >
               Pricing
@@ -159,26 +145,6 @@ const Navigation = ({
                 }}
               >
                 Affiliate
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  navigate("/contact");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Contact
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  navigate("/support");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Support
               </Button>
               <Button 
                 variant="ghost" 
