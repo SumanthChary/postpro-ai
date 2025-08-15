@@ -48,7 +48,7 @@ const HeroSection = ({ isAuthenticated = false, username }: HeroSectionProps) =>
 
         <div className="flex justify-center px-3 sm:px-4 md:px-6">
           <div className="backdrop-blur-lg bg-white/60 rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-4 sm:p-6 md:p-8 lg:p-10 border border-white/40 max-w-5xl w-full relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl sm:rounded-3xl md:rounded-[2rem]"></div>
+            <div className="hidden absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl sm:rounded-3xl md:rounded-[2rem]"></div>
             <div className="relative z-10">
               <PostEnhancer post={post} setPost={setPost} category={category} setCategory={setCategory} styleTone={styleTone} setStyleTone={setStyleTone} />
             </div>
