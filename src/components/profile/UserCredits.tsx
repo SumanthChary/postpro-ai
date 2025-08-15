@@ -1,10 +1,11 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Coins, Info, Gift, Crown, Star } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Coins, Crown, Star, Gift, ArrowUpRight, Zap, Target, TrendingUp, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { UserCredit } from "@/types/pricing";
@@ -19,7 +20,7 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
   const [totalCredits, setTotalCredits] = useState(0);
   const [isUnlimited, setIsUnlimited] = useState(false);
   const [isCreator, setIsCreator] = useState(false);
-  const [maxCredits, setMaxCredits] = useState(50); // Default to trial max
+  const [maxCredits, setMaxCredits] = useState(50);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,12 +44,10 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
           setIsUnlimited(data.unlimited || false);
           setIsCreator(data.isCreator || false);
           
-          // Set max credits based on account type
           if (data.unlimited || data.isCreator) {
             setMaxCredits(999999);
           } else {
-            // For trial users, max is 50. For paid users, use highest tier or current credits
-            const highestTier = 2000; // Based on yearly plan
+            const highestTier = 2000;
             setMaxCredits(Math.max(50, highestTier, data.totalCredits));
           }
         }
@@ -62,149 +61,185 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
     fetchCredits();
   }, [userId]);
 
+  const progressValue = useMemo(() => {
+    if (isUnlimited || isCreator) return 100;
+    return Math.min((totalCredits / maxCredits) * 100, 100);
+  }, [totalCredits, maxCredits, isUnlimited, isCreator]);
+
+  const isTrialUser = !isUnlimited && !isCreator && totalCredits <= 50;
+
   if (loading) {
     return (
-      <Card className="p-4">
-        <div className="h-16 bg-gray-200 rounded mb-4"></div>
+      <Card className="p-4 sm:p-6 bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-xl animate-pulse">
+        <div className="h-8 bg-gray-200 rounded mb-4"></div>
+        <div className="h-4 bg-gray-200 rounded mb-4"></div>
+        <div className="h-16 bg-gray-200 rounded"></div>
       </Card>
     );
   }
 
-  const isTrialUser = !isUnlimited && !isCreator && totalCredits <= 50;
-  const progressValue = (isUnlimited || isCreator) ? 100 : (totalCredits / maxCredits) * 100;
+  const getStatusConfig = () => {
+    if (isUnlimited) {
+      return {
+        icon: <Star className="w-5 h-5 text-yellow-500" />,
+        title: "Admin Access",
+        description: "Unlimited everything",
+        color: "from-yellow-500 to-orange-500",
+        bgColor: "bg-gradient-to-br from-yellow-50 to-orange-50",
+        borderColor: "border-yellow-200"
+      };
+    }
+    if (isCreator) {
+      return {
+        icon: <Crown className="w-5 h-5 text-purple-500" />,
+        title: "Creator Plan",
+        description: "Premium features unlocked",
+        color: "from-purple-500 to-pink-500",
+        bgColor: "bg-gradient-to-br from-purple-50 to-pink-50",
+        borderColor: "border-purple-200"
+      };
+    }
+    if (isTrialUser) {
+      return {
+        icon: <Gift className="w-5 h-5 text-blue-500" />,
+        title: "Trial User",
+        description: "Limited free credits",
+        color: "from-blue-500 to-cyan-500",
+        bgColor: "bg-gradient-to-br from-blue-50 to-cyan-50",
+        borderColor: "border-blue-200"
+      };
+    }
+    return {
+      icon: <Coins className="w-5 h-5 text-green-500" />,
+      title: "Your Credits",
+      description: "Basic features available",
+      color: "from-green-500 to-emerald-500",
+      bgColor: "bg-gradient-to-br from-green-50 to-emerald-50",
+      borderColor: "border-green-200"
+    };
+  };
+
+  const status = getStatusConfig();
 
   return (
-    <Card className="p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-semibold flex items-center font-cabinet">
-          {isCreator ? (
-            <Star className="w-5 h-5 mr-2 text-purple-600" />
-          ) : isUnlimited ? (
-            <Crown className="w-5 h-5 mr-2 text-yellow-600" />
-          ) : (
-            <Coins className="w-5 h-5 mr-2 text-green-600" />
-          )}
-          Your Credits
-          {isTrialUser && <Gift className="w-4 h-4 ml-2 text-blue-500" />}
-        </h3>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className="text-gray-400 hover:text-gray-600">
-                <Info className="w-5 h-5" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="max-w-xs font-cabinet">
-                {isCreator 
-                  ? "You have unlimited credits as a creator account."
-                  : isUnlimited 
-                    ? "You have unlimited credits as an admin account."
-                    : isTrialUser 
-                      ? "You're on a free trial with 50 credits. Each post enhancement uses 1 credit."
-                      : "Credits can be used for premium features. They expire 3 months after being earned."
-                }
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-      
-      <div className="mb-4">
-        <div className="flex justify-between mb-2">
-          <span className="text-sm text-gray-600 font-cabinet">
-            {(isUnlimited || isCreator) ? "Unlimited Credits" : "Available Credits"}
-          </span>
-          <span className="font-semibold font-cabinet">
-            {(isUnlimited || isCreator) ? "∞" : totalCredits}
-            {isTrialUser && <span className="text-blue-500 text-xs ml-1 font-cabinet">(Free Trial)</span>}
-            {isCreator && <span className="text-purple-500 text-xs ml-1 font-cabinet">(Creator)</span>}
-          </span>
+    <Card className={`p-4 sm:p-6 ${status.bgColor} backdrop-blur-sm border ${status.borderColor} shadow-xl hover:shadow-2xl transition-all duration-300 animate-fade-in hover-scale`}>
+      <div className="space-y-4">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className={`p-2 bg-gradient-to-r ${status.color} rounded-lg`}>
+              {status.icon}
+            </div>
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 font-cabinet">{status.title}</h3>
+              <p className="text-sm text-gray-600 font-cabinet">{status.description}</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="bg-white/80 hover:bg-white transition-colors duration-200">
+              {isUnlimited || isCreator ? "∞" : totalCredits.toLocaleString()} credits
+            </Badge>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="text-gray-400 hover:text-gray-600">
+                    <Info className="w-4 h-4" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="max-w-xs font-cabinet">
+                    {isCreator 
+                      ? "You have unlimited credits as a creator account."
+                      : isUnlimited 
+                        ? "You have unlimited credits as an admin account."
+                        : isTrialUser 
+                          ? "You're on a free trial with 50 credits. Each post enhancement uses 1 credit."
+                          : "Credits can be used for premium features. They expire 3 months after being earned."
+                    }
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
-        <Progress value={progressValue} className="h-2" />
-        {isTrialUser && totalCredits > 0 && (
-          <p className="text-xs text-blue-600 mt-1 font-cabinet">
-            {totalCredits} free credits remaining
-          </p>
+
+        {/* Progress Section */}
+        {!isUnlimited && !isCreator && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between text-sm font-cabinet">
+              <span className="text-gray-600">Usage</span>
+              <span className="font-semibold text-gray-900">
+                {totalCredits} / {maxCredits === 999999 ? "∞" : maxCredits.toLocaleString()}
+              </span>
+            </div>
+            
+            <Progress 
+              value={progressValue} 
+              className="h-3 bg-white/50"
+            />
+            
+            <div className="flex items-center justify-between text-xs text-gray-500 font-cabinet">
+              <span>
+                {totalCredits === 0 ? "No credits remaining" : `${totalCredits} credits left`}
+              </span>
+              <span>
+                {Math.round(progressValue)}% used
+              </span>
+            </div>
+          </div>
         )}
+
+        {/* Action Buttons & Stats */}
+        <div className="space-y-3">
+          {/* Quick Stats */}
+          <div className="grid grid-cols-3 gap-3 text-center">
+            <div className="p-3 bg-white/50 rounded-lg border border-white/30">
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <Zap className="w-4 h-4 text-blue-500" />
+              </div>
+              <div className="text-lg font-bold text-gray-900">{totalCredits || "—"}</div>
+              <div className="text-xs text-gray-600">Available</div>
+            </div>
+            
+            <div className="p-3 bg-white/50 rounded-lg border border-white/30">
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <Target className="w-4 h-4 text-green-500" />
+              </div>
+              <div className="text-lg font-bold text-gray-900">97%</div>
+              <div className="text-xs text-gray-600">Success</div>
+            </div>
+            
+            <div className="p-3 bg-white/50 rounded-lg border border-white/30">
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <TrendingUp className="w-4 h-4 text-purple-500" />
+              </div>
+              <div className="text-lg font-bold text-gray-900">+284%</div>
+              <div className="text-xs text-gray-600">Boost</div>
+            </div>
+          </div>
+
+          {/* Status Messages */}
+          {totalCredits === 0 && !isUnlimited && !isCreator && (
+            <div className="p-4 bg-white/60 rounded-lg border border-white/40">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                  <h4 className="font-semibold text-gray-900 font-cabinet">Credits Exhausted</h4>
+                  <p className="text-sm text-gray-600 font-cabinet">Upgrade to continue enhancing your posts</p>
+                </div>
+                <Button 
+                  onClick={() => navigate('/subscription')}
+                  size="sm"
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 font-cabinet"
+                >
+                  Upgrade Now
+                  <ArrowUpRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-
-      {!isUnlimited && !isCreator && (
-        <>
-          {totalCredits === 0 && (
-            <div className="text-center py-4 bg-red-50 rounded-lg border border-red-200 mb-4">
-              <h4 className="font-medium text-red-800 mb-2 font-cabinet">No Credits Available</h4>
-              <p className="text-sm text-red-600 mb-3 font-cabinet">
-                You've used all your {isTrialUser ? "free trial" : ""} credits. 
-                Upgrade to a paid plan to continue using premium features.
-              </p>
-              <Button 
-                onClick={() => navigate("/subscription")}
-                className="bg-red-600 hover:bg-red-700 text-white font-cabinet"
-              >
-                Upgrade Now
-              </Button>
-            </div>
-          )}
-
-          {credits.length > 0 ? (
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium font-cabinet">Credit Breakdown</h4>
-              {credits.map((credit) => {
-                const expiryDate = new Date(credit.expires_at);
-                const now = new Date();
-                const daysLeft = Math.ceil((expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-                
-                return (
-                  <div key={credit.id} className="flex justify-between text-sm">
-                    <span className="font-cabinet">{credit.balance} credits</span>
-                    <span className="text-gray-500 font-cabinet">
-                      {credit.id === 'unlimited' ? 'Never expires' : `Expires in ${daysLeft} days`}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          ) : totalCredits === 0 && (
-            <div className="text-center py-4 text-gray-500">
-              <p className="font-cabinet">No credits available. Subscribe to a plan to earn credits!</p>
-            </div>
-          )}
-
-          {isTrialUser && totalCredits > 0 && (
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <h4 className="text-sm font-medium text-blue-800 mb-1 font-cabinet">Free Trial Active</h4>
-              <p className="text-xs text-blue-600 mb-2 font-cabinet">
-                You're using our free trial. Each post enhancement costs 1 credit.
-              </p>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => navigate("/subscription")}
-                className="w-full border-blue-300 text-blue-700 hover:bg-blue-100 font-cabinet"
-              >
-                Upgrade for More Credits
-              </Button>
-            </div>
-          )}
-        </>
-      )}
-
-      {isCreator && (
-        <div className="text-center py-4 bg-purple-50 rounded-lg border border-purple-200">
-          <Star className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-          <h4 className="font-medium text-purple-800 font-cabinet">Creator Account</h4>
-          <p className="text-sm text-purple-600 font-cabinet">You have unlimited access to all features</p>
-        </div>
-      )}
-
-      {isUnlimited && !isCreator && (
-        <div className="text-center py-4 bg-yellow-50 rounded-lg border border-yellow-200">
-          <Crown className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
-          <h4 className="font-medium text-yellow-800 font-cabinet">Admin Account</h4>
-          <p className="text-sm text-yellow-600 font-cabinet">You have unlimited access to all features</p>
-        </div>
-      )}
     </Card>
   );
 };
