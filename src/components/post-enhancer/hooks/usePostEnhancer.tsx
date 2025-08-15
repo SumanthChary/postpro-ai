@@ -12,6 +12,7 @@ export const usePostEnhancer = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [enhancedPost, setEnhancedPost] = useState<EnhancePostResponse | null>(null);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const checkUsageLimit = async () => {
     try {
@@ -74,6 +75,12 @@ export const usePostEnhancer = () => {
 
       const data = await enhancePost(post, category, true, styleTone);
       setEnhancedPost(data);
+      
+      // Show feedback popup randomly (30% chance)
+      if (Math.random() < 0.3) {
+        setTimeout(() => setShowFeedback(true), 2000); // Show after 2 seconds
+      }
+      
       return data;
     } catch (error) {
       console.error('Error enhancing post:', error);
@@ -103,5 +110,7 @@ export const usePostEnhancer = () => {
     handleEnhancePost: enhance,
     handleReset,
     handlePlatformSelect,
+    showFeedback,
+    setShowFeedback,
   };
 };

@@ -5,6 +5,8 @@ import { ShareOptions } from "./ShareOptions";
 import { ViralityScore } from "./ViralityScore";
 import { usePostEnhancer } from "../hooks/usePostEnhancer";
 import { EnhancePostResponse } from "../types";
+import { FeedbackPopup } from "@/components/feedback/FeedbackPopup";
+import { useFeedback } from "@/hooks/useFeedback";
 
 type Platform = keyof EnhancePostResponse['platforms'];
 
@@ -31,7 +33,11 @@ export const PostEnhancerLogic = ({
     handleEnhancePost,
     handleReset,
     handlePlatformSelect,
+    showFeedback,
+    setShowFeedback,
   } = usePostEnhancer();
+
+  const { submitFeedback, isSubmitting } = useFeedback();
 
   const onEnhance = async () => {
     const result = await handleEnhancePost(post, category, styleTone);
@@ -49,6 +55,13 @@ export const PostEnhancerLogic = ({
     const platformPost = handlePlatformSelect(platform);
     if (platformPost) {
       setPost(platformPost);
+    }
+  };
+
+  const handleFeedbackSubmit = async (rating: number, feedback: string) => {
+    const success = await submitFeedback(rating, feedback);
+    if (success) {
+      setShowFeedback(false);
     }
   };
 
@@ -76,6 +89,13 @@ export const PostEnhancerLogic = ({
       )}
 
       <ViralityScore post={post} category={category} />
+
+      <FeedbackPopup
+        isOpen={showFeedback}
+        onClose={() => setShowFeedback(false)}
+        onSubmit={handleFeedbackSubmit}
+        isSubmitting={isSubmitting}
+      />
     </Card>
   );
 };
