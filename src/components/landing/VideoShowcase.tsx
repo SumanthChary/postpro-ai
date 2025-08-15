@@ -5,7 +5,7 @@ import FeaturedSection from './video/FeaturedSection';
 
 const VideoShowcase = () => {
   const videoUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video/demo.mp4";
-  const thumbnailUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video//Screenshot%20(495).png";
+  const thumbnailUrl = "https://rskzizedzagohmvyhuyu.supabase.co/storage/v1/object/public/video/Screenshot%20(583).png";
 
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 -mt-6 sm:-mt-8">
