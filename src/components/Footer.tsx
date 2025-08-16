@@ -1,7 +1,7 @@
 import { Twitter, Linkedin, Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 const Footer = () => {
-  return <footer className="bg-gradient-to-br from-primary/5 via-background to-accent/5 text-foreground py-12 sm:py-16 lg:py-20">
+  return <footer className="bg-gradient-to-br from-gray-900 via-slate-800 to-black text-white py-12 sm:py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mb-8 sm:mb-10 lg:mb-12 xl:mb-16">
           <div className="sm:col-span-2">

@@ -43,7 +43,7 @@ export function ViralityScore({ post, category }: ViralityScoreProps) {
   const getProgressBarColor = (score: number) => {
     if (score >= 85) return "bg-gradient-to-r from-emerald-500 to-green-600";
     if (score >= 70) return "bg-gradient-to-r from-blue-500 to-indigo-600";
-    if (score >= 50) return "bg-gradient-to-r from-primary to-accent";
+    if (score >= 50) return "bg-gradient-to-r from-amber-500 to-orange-600";
     return "bg-gradient-to-r from-red-500 to-pink-600";
   };
 

@@ -176,7 +176,7 @@ const SocialProofWall = () => {
               <span className="text-sm text-muted-foreground">24/7 Support</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-primary rounded-full"></div>
+              <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
               <span className="text-sm text-muted-foreground">30-Day Money Back</span>
             </div>
           </div>
