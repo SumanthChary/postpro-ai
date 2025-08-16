@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/Footer";
@@ -6,10 +5,11 @@ import PlanCard from "@/components/pricing/PlanCard";
 import RedeemCodeDialog from "@/components/pricing/RedeemCodeDialog";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-const Pricing: React.FC = () => {
+const Pricing = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [session, setSession] = useState<any>(null);
