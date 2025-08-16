@@ -43,34 +43,34 @@ export const EnhancerForm = ({
               <SelectValue placeholder="Select post category" />
             </SelectTrigger>
             <SelectContent className="bg-white text-gray-900">
-              <SelectItem value="business" className="flex items-center">
+              <SelectItem value="business" className="flex items-center text-gray-900">
                 <div className="flex items-center">
                   <TrendingUpIcon className="w-4 h-4 mr-2 text-blue-600" />
-                  <span>Business & Entrepreneurship</span>
+                  <span className="text-gray-900">Business & Entrepreneurship</span>
                 </div>
               </SelectItem>
-              <SelectItem value="technology">
+              <SelectItem value="technology" className="text-gray-900">
                 <div className="flex items-center">
                   <BrainIcon className="w-4 h-4 mr-2 text-bright-teal" />
-                  <span>Technology & Innovation</span>
+                  <span className="text-gray-900">Technology & Innovation</span>
                 </div>
               </SelectItem>
-              <SelectItem value="lifestyle">
+              <SelectItem value="lifestyle" className="text-gray-900">
                 <div className="flex items-center">
                   <UsersIcon className="w-4 h-4 mr-2 text-[#FF5733]" />
-                  <span>Lifestyle & Personal Development</span>
+                  <span className="text-gray-900">Lifestyle & Personal Development</span>
                 </div>
               </SelectItem>
-              <SelectItem value="marketing">
+              <SelectItem value="marketing" className="text-gray-900">
                 <div className="flex items-center">
                   <TrendingUpIcon className="w-4 h-4 mr-2 text-[#1877F2]" />
-                  <span>Marketing & Digital Media</span>
+                  <span className="text-gray-900">Marketing & Digital Media</span>
                 </div>
               </SelectItem>
-              <SelectItem value="creative">
+              <SelectItem value="creative" className="text-gray-900">
                 <div className="flex items-center">
                   <PenToolIcon className="w-4 h-4 mr-2 text-[#E4405F]" />
-                  <span>Creative & Design</span>
+                  <span className="text-gray-900">Creative & Design</span>
                 </div>
               </SelectItem>
             </SelectContent>
@@ -83,28 +83,28 @@ export const EnhancerForm = ({
                 <SelectValue placeholder="Select writing tone" />
               </SelectTrigger>
               <SelectContent className="bg-white text-gray-900">
-                <SelectItem value="professional">
+                <SelectItem value="professional" className="text-gray-900">
                   <div className="flex items-center">
                     <BrainIcon className="w-4 h-4 mr-2 text-blue-600" />
-                    <span>Professional</span>
+                    <span className="text-gray-900">Professional</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="conversational">
+                <SelectItem value="conversational" className="text-gray-900">
                   <div className="flex items-center">
                     <SmileIcon className="w-4 h-4 mr-2 text-bright-teal" />
-                    <span>Conversational</span>
+                    <span className="text-gray-900">Conversational</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="enthusiastic">
+                <SelectItem value="enthusiastic" className="text-gray-900">
                   <div className="flex items-center">
                     <SparklesIcon className="w-4 h-4 mr-2 text-[#FF5733]" />
-                    <span>Enthusiastic</span>
+                    <span className="text-gray-900">Enthusiastic</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="authoritative">
+                <SelectItem value="authoritative" className="text-gray-900">
                   <div className="flex items-center">
                     <TrendingUpIcon className="w-4 h-4 mr-2 text-[#1877F2]" />
-                    <span>Authoritative</span>
+                    <span className="text-gray-900">Authoritative</span>
                   </div>
                 </SelectItem>
               </SelectContent>
