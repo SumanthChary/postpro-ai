@@ -22,7 +22,6 @@ import FinalCTA from "@/components/landing/FinalCTA";
 
 // Additional Components
 import VideoShowcase from "@/components/landing/VideoShowcase";
-import LinkedInGrowthSection from "@/components/landing/LinkedInGrowthSection";
 import PricingSection from "@/components/PricingSection";
 import FAQ from "@/components/FAQ";
 
@@ -142,7 +141,6 @@ const Index = () => {
         <FeaturesGrid />
         <VideoShowcase />
         <SocialProofWall />
-        <LinkedInGrowthSection />
         <PricingOptimized />
         <FAQ />
         <FinalCTA />
