@@ -15,16 +15,15 @@ const HeroSectionNew = ({ isAuthenticated = false, username }: HeroSectionNewPro
   const [styleTone, setStyleTone] = useState("professional");
 
   return (
-    <section className="relative min-h-screen bg-background pt-20 overflow-hidden">
+    <section className="relative min-h-screen hero-gradient pt-20 overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-muted/50"></div>
-      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
-      <div className="absolute top-40 right-10 w-56 h-56 bg-accent/10 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
+      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/8 rounded-full mix-blend-multiply filter blur-3xl opacity-60"></div>
+      <div className="absolute top-40 right-10 w-56 h-56 bg-accent/8 rounded-full mix-blend-multiply filter blur-3xl opacity-60"></div>
       
       <div className="relative z-10 container mx-auto px-4 py-16">
-        <div className="grid lg:grid-cols-5 gap-12 items-center min-h-[80vh]">
-          {/* Content Left - 3 columns */}
-          <div className="lg:col-span-3 space-y-8">
+        <div className="flex flex-col lg:flex-row gap-12 items-start min-h-[80vh]">
+          {/* Content Left */}
+          <div className="lg:w-1/2 space-y-8 lg:pt-16">
             {/* Trust Badge */}
             <Badge variant="secondary" className="inline-flex items-center space-x-2 px-4 py-2 text-sm font-medium">
               <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
@@ -104,49 +103,51 @@ const HeroSectionNew = ({ isAuthenticated = false, username }: HeroSectionNewPro
             </p>
           </div>
 
-          {/* Visual Right - 2 columns */}
-          <div className="lg:col-span-2">
-            <div className="bg-card/60 backdrop-blur-lg rounded-2xl p-6 border border-border shadow-2xl">
-              <div className="space-y-6">
-                {/* Before/After Comparison */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-semibold text-destructive">BEFORE</h3>
-                    <div className="bg-muted/50 rounded-lg p-3 border">
-                      <p className="text-sm text-muted-foreground">
-                        "Had a great day at work! #blessed"
-                      </p>
-                      <div className="flex space-x-4 mt-2 text-xs text-muted-foreground">
-                        <span>23 likes</span>
-                        <span>2 comments</span>
+          {/* Visual Right - Post Enhancer */}
+          <div className="lg:w-1/2 flex justify-center">
+            <div className="w-full max-w-2xl">
+              <div className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 border border-border shadow-xl">
+                <div className="space-y-6">
+                  {/* Before/After Comparison */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-semibold text-destructive">BEFORE</h3>
+                      <div className="bg-muted/50 rounded-lg p-3 border">
+                        <p className="text-sm text-muted-foreground">
+                          "Had a great day at work! #blessed"
+                        </p>
+                        <div className="flex space-x-4 mt-2 text-xs text-muted-foreground">
+                          <span>23 likes</span>
+                          <span>2 comments</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-semibold text-primary">AFTER</h3>
+                      <div className="bg-primary/5 rounded-lg p-3 border border-primary/20">
+                        <p className="text-sm text-foreground font-medium">
+                          "3 lessons from today's breakthrough meeting..."
+                        </p>
+                        <div className="flex space-x-4 mt-2 text-xs text-primary">
+                          <span>1,247 likes</span>
+                          <span>156 comments</span>
+                          <span>89 shares</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-semibold text-primary">AFTER</h3>
-                    <div className="bg-primary/5 rounded-lg p-3 border border-primary/20">
-                      <p className="text-sm text-foreground font-medium">
-                        "3 lessons from today's breakthrough meeting..."
-                      </p>
-                      <div className="flex space-x-4 mt-2 text-xs text-primary">
-                        <span>1,247 likes</span>
-                        <span>156 comments</span>
-                        <span>89 shares</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Post Enhancer Component */}
-                <div className="border-t pt-4">
-                  <PostEnhancer 
-                    post={post} 
-                    setPost={setPost}
-                    category={category} 
-                    setCategory={setCategory}
-                    styleTone={styleTone} 
-                    setStyleTone={setStyleTone}
-                  />
+                  {/* Post Enhancer Component */}
+                  <div className="border-t pt-4">
+                    <PostEnhancer 
+                      post={post} 
+                      setPost={setPost}
+                      category={category} 
+                      setCategory={setCategory}
+                      styleTone={styleTone} 
+                      setStyleTone={setStyleTone}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
