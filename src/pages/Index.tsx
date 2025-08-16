@@ -115,8 +115,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-      <WhopBanner />
+    <div className="min-h-screen bg-white">
       <Navigation
         session={session}
         username={username}
@@ -129,24 +128,7 @@ const Index = () => {
 
       <main>
         <HeroSection isAuthenticated={!!session} username={username} />
-        
-        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-          <VideoShowcase />
-          <HowItWorksSection />
-          <ComparisonSection />
-          <EnhancedPostsShowcase />
-          <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
-          <AboutFounderSection />
-          <AboutSection />
-          <ComingSoonSection />
-          <Testimonials />
-          <FAQ />
-        </div>
       </main>
-
-      <Footer />
-      
-      <WhopTrustPopup />
 
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
         <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-hidden bg-white p-0 rounded-lg">

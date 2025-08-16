@@ -35,7 +35,7 @@ const Navigation = ({
   return (
     <div className="relative">
       <div className="fixed top-0 left-0 right-0 z-50">
-        <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <nav className="bg-white border-b border-gray-200">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
@@ -44,7 +44,7 @@ const Navigation = ({
               alt="PostPro AI Logo" 
               className="w-8 h-8 rounded-lg object-contain"
             />
-            <span className="text-2xl font-montserrat font-extrabold text-black">
+            <span className="text-2xl font-bold text-black">
               PostPro AI
             </span>
           </div>
@@ -52,22 +52,21 @@ const Navigation = ({
           <div className="hidden md:flex space-x-4">
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className="text-gray-600 hover:text-gray-900"
               onClick={() => navigate("/blogs")}
             >
-              <BookOpenIcon className="w-4 h-4 mr-2" />
               Blog
             </Button>
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className="text-gray-600 hover:text-gray-900"
               onClick={() => navigate("/affiliate")}
             >
               Affiliate
             </Button>
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className="text-gray-600 hover:text-gray-900"
               onClick={() => setShowPricing(true)}
             >
               Pricing
@@ -100,7 +99,7 @@ const Navigation = ({
               </DropdownMenu>
             ) : (
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-opensans"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
                 onClick={() => navigate("/auth")}
               >
                 Sign In
