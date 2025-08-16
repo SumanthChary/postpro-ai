@@ -43,13 +43,18 @@ export const useWhopAuth = () => {
 
   // Initialize Whop authentication
   const initializeWhopAuth = useCallback(async () => {
+    console.log('Initializing Whop auth, isWhopContext:', isWhopContext());
+    
     if (!isWhopContext()) {
-      setAuthState(prev => ({ ...prev, loading: false }));
+      // For testing purposes, allow the app to work in standalone mode
+      console.log('Not in Whop context, setting as not authenticated');
+      setAuthState(prev => ({ ...prev, loading: false, isAuthenticated: false }));
       return;
     }
 
     try {
       const context = getWhopContext();
+      console.log('Whop context:', context);
       
       if (context.token && context.userId) {
         // Verify token with Whop API
@@ -76,8 +81,9 @@ export const useWhopAuth = () => {
           localStorage.setItem('whop_user', JSON.stringify(data.data));
         }
       } else {
-        // Redirect to Whop OAuth if no token
-        redirectToWhopAuth();
+        // For testing, just set loading to false
+        console.log('No token/userId in context, user needs to authenticate');
+        setAuthState(prev => ({ ...prev, loading: false, isAuthenticated: false }));
       }
     } catch (error) {
       console.error('Whop auth initialization failed:', error);
@@ -92,8 +98,10 @@ export const useWhopAuth = () => {
 
   // Redirect to Whop OAuth
   const redirectToWhopAuth = useCallback(() => {
+    // Use hardcoded app ID since we can't access environment variables in browser
+    const appId = 'app_tOxwzuc0RwXQfw';
     const redirectUri = encodeURIComponent(`${window.location.origin}/whop/callback`);
-    const whopAuthUrl = `https://whop.com/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_WHOP_APP_ID}&redirect_uri=${redirectUri}&response_type=code&scope=user:read`;
+    const whopAuthUrl = `https://whop.com/oauth2/authorize?client_id=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=user:read`;
     
     if (window.parent !== window) {
       // If in iframe, use postMessage to parent

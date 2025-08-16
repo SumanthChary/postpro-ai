@@ -15,10 +15,7 @@ export const WhopAuthWrapper: React.FC<WhopAuthWrapperProps> = ({
 }) => {
   const { loading, isAuthenticated, user, redirectToWhopAuth, isWhopContext } = useWhopAuth();
 
-  // If not in Whop context, render children normally
-  if (!isWhopContext) {
-    return <>{children}</>;
-  }
+  console.log('WhopAuthWrapper state:', { loading, isAuthenticated, user, isWhopContext });
 
   // Show loading state
   if (loading) {
@@ -32,8 +29,34 @@ export const WhopAuthWrapper: React.FC<WhopAuthWrapperProps> = ({
     );
   }
 
-  // Show authentication required
-  if (!isAuthenticated) {
+  // If not in Whop context, show authentication option but still allow access
+  if (!isWhopContext) {
+    return (
+      <div className="space-y-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div className="flex items-center space-x-2 mb-2">
+            <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
+            <span className="text-sm font-medium text-blue-800">Demo Mode</span>
+          </div>
+          <p className="text-sm text-blue-700">
+            You're viewing the Whop app in demo mode. Install this app in your Whop community for full functionality.
+          </p>
+          <Button 
+            onClick={() => window.open('https://whop.com/apps/app_tOxwzuc0RwXQfw/install/', '_blank')} 
+            variant="outline" 
+            size="sm" 
+            className="mt-2 border-blue-300 text-blue-700 hover:bg-blue-100"
+          >
+            Install on Whop
+          </Button>
+        </div>
+        {children}
+      </div>
+    );
+  }
+
+  // Show authentication required for Whop context
+  if (!isAuthenticated && isWhopContext) {
     if (fallback) {
       return <>{fallback}</>;
     }
@@ -57,11 +80,11 @@ export const WhopAuthWrapper: React.FC<WhopAuthWrapperProps> = ({
     );
   }
 
-  // User is authenticated, show the app
+  // User is authenticated or in demo mode, show the app
   return (
     <div className="whop-app-container">
       {/* Optional Whop user info bar */}
-      {user && (
+      {user && isWhopContext && (
         <div className="bg-primary/10 border-b px-4 py-2 text-sm">
           <div className="flex items-center justify-between">
             <span>
