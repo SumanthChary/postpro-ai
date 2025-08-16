@@ -1,34 +1,23 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import WhopBanner from "@/components/layout/WhopBanner";
-import WhopTrustPopup from "@/components/whop/WhopTrustPopup";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/layout/Navigation";
-import VideoShowcase from "@/components/landing/VideoShowcase";
-import ComparisonSection from "@/components/landing/ComparisonSection";
-import EnhancedPostsShowcase from "@/components/landing/EnhancedPostsShowcase";
-import HeroSection from "@/components/landing/HeroSection";
-import AboutSection from "@/components/landing/AboutSection";
-import ComingSoonSection from "@/components/landing/ComingSoonSection";
-import TemplatesSection from "@/components/post-enhancer/TemplatesSection";
-import HowItWorksSection from "@/components/landing/HowItWorksSection";
-import AboutFounderSection from "@/components/landing/AboutFounderSection";
-import PricingSection from "@/components/PricingSection";
-import Testimonials from "@/components/Testimonials";
-import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import PlanCard from "@/components/pricing/PlanCard";
+import RedeemCodeDialog from "@/components/pricing/RedeemCodeDialog";
+import { pricingPlans } from "@/data/pricingPlans";
+import { Plan } from "@/types/pricing";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
-const Index = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const Pricing = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [session, setSession] = useState<any>(null);
   const [username, setUsername] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>("");
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // First set up the auth listener
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -41,7 +30,6 @@ const Index = () => {
       }
     });
 
-    // Then check for session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session?.user) {
@@ -74,19 +62,6 @@ const Index = () => {
     }
   };
 
-  const handleProTemplatesClick = () => {
-    if (!session) {
-      toast({
-        title: "Pro Templates",
-        description: "Sign in to access premium templates",
-        variant: "default",
-      });
-      return;
-    }
-    
-    navigate("/pricing");
-  };
-
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -106,43 +81,55 @@ const Index = () => {
       });
     }
   };
+  
+  const handleSubscribe = (plan: Plan) => {
+    navigate("/payment", { state: { plan } });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-      <WhopBanner />
       <Navigation
         session={session}
         username={username}
         avatarUrl={avatarUrl}
         handleSignOut={handleSignOut}
-        setShowPricing={() => navigate("/pricing")}
+        setShowPricing={() => {}}
         setMobileMenuOpen={setMobileMenuOpen}
         mobileMenuOpen={mobileMenuOpen}
       />
 
-      <main>
-        <HeroSection isAuthenticated={!!session} username={username} />
-        
-        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-          <VideoShowcase />
-          <HowItWorksSection />
-          <ComparisonSection />
-          <EnhancedPostsShowcase />
-          <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
-          <AboutFounderSection />
-          <AboutSection />
-          <ComingSoonSection />
-          <PricingSection />
-          <Testimonials />
-          <FAQ />
+      <main className="pt-24">
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center mb-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+              <span className="text-gray-900">Choose Your</span>
+              <br className="hidden sm:inline" />
+              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"> Perfect Plan</span>
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Select the perfect plan to supercharge your social media presence and create content that truly engages
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+            {pricingPlans.map((plan) => (
+              <PlanCard 
+                key={plan.name} 
+                plan={plan} 
+                onSubscribe={handleSubscribe} 
+              />
+            ))}
+          </div>
+          
+          <div className="text-center">
+            <RedeemCodeDialog />
+          </div>
         </div>
       </main>
 
       <Footer />
-      
-      <WhopTrustPopup />
     </div>
   );
 };
 
-export default Index;
+export default Pricing;

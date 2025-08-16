@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Enhance from "./pages/Enhance";
 import Features from "./pages/Features";
+import Pricing from "./pages/Pricing";
 import Subscription from "./pages/Subscription";
 import Payment from "./pages/Payment";
 import Profile from "./pages/Profile";
@@ -24,7 +25,6 @@ import Contact from "./pages/Contact";
 import Support from "./pages/Support";
 import WhopApp from "./pages/WhopApp";
 import WhopCallback from "./pages/WhopCallback";
-import { CurrencyProvider } from "./contexts/CurrencyContext";
 
 function App() {
   const queryClient = new QueryClient();
@@ -38,32 +38,31 @@ function App() {
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <Toaster />
         <Sonner />
-        <CurrencyProvider>
-          <QueryClientProvider client={queryClient}>
-            <TooltipProvider>
-              <BrowserRouter basename="/">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/enhance" element={<Enhance />} />
-                  <Route path="/features" element={<Features />} />
-                  <Route path="/subscription" element={<Subscription />} />
-                  <Route path="/payment" element={<Payment />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/blogs" element={<Blogs />} />
-                  <Route path="/blog/:id" element={<BlogArticle />} />
-                  <Route path="/chatbot" element={<Chatbot />} />
-                  <Route path="/affiliate" element={<Affiliate />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/support" element={<Support />} />
-                  <Route path="/whop-app" element={<WhopApp />} />
-                  <Route path="/whop/callback" element={<WhopCallback />} />
-                </Routes>
-                <FloatingChatButton />
-              </BrowserRouter>
-            </TooltipProvider>
-          </QueryClientProvider>
-        </CurrencyProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <BrowserRouter basename="/">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/enhance" element={<Enhance />} />
+                <Route path="/features" element={<Features />} />
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/subscription" element={<Subscription />} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/blog/:id" element={<BlogArticle />} />
+                <Route path="/chatbot" element={<Chatbot />} />
+                <Route path="/affiliate" element={<Affiliate />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/whop-app" element={<WhopApp />} />
+                <Route path="/whop/callback" element={<WhopCallback />} />
+              </Routes>
+              <FloatingChatButton />
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
       </ThemeProvider>
     </StrictMode>
   );

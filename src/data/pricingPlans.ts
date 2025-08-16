@@ -62,44 +62,5 @@ export const pricingPlans: Plan[] = [
     icon: "💎",
     cta: "Choose Plan",
     credits: 500 // Lifetime credits
-  },
-  {
-    name: "Yearly Plan",
-    price: "80",
-    period: "year",
-    features: [
-      "All Pro Features + More!",
-      "50% OFF - Save $160/year",
-      "Premium Customer Support",
-      "Advanced Content Strategy",
-      "Early Access Features",
-      "Personal Branding Tools",
-      "Monthly Bonus Credits",
-      "VIP Support Access",
-      "Advanced Analytics",
-      "Cross-Platform Analytics"
-    ],
-    icon: "🎉",
-    cta: "Choose Plan",
-    credits: 4000 // Yearly credits (50 credits per dollar)
-  },
-  {
-    name: "Enterprise Plan",
-    price: "299",
-    period: "month",
-    features: [
-      "All Yearly Features + More!",
-      "Unlimited Enhancements",
-      "Custom Brand Solutions",
-      "Dedicated Support Manager",
-      "Custom Analytics Reports",
-      "White-label Options",
-      "Priority Feature Requests",
-      "1-on-1 Strategy Sessions",
-      "24/7 VIP Support"
-    ],
-    icon: "💼",
-    cta: "Contact Sales",
-    credits: 15000 // Monthly credits (50 credits per dollar)
-  },
+  }
 ];

@@ -3,7 +3,6 @@ import { Plan } from "@/types/pricing";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, Coins } from "lucide-react";
-import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface PlanCardProps {
   plan: Plan;
@@ -11,15 +10,7 @@ interface PlanCardProps {
 }
 
 const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
-  // Safely use the currency context with a fallback
-  let currencySymbol = '$'; // Default to USD
-  try {
-    const { currency } = useCurrency();
-    currencySymbol = currency === 'USD' ? '$' : '₹';
-  } catch (error) {
-    console.warn('Currency context not available, using default currency symbol:', error);
-    // Continue with the default currency symbol
-  }
+  const currencySymbol = '$'; // USD only
 
   return (
     <Card

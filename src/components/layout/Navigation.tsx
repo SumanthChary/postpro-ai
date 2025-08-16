@@ -68,7 +68,7 @@ const Navigation = ({
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => setShowPricing(true)}
+              onClick={() => navigate("/pricing")}
             >
               Pricing
             </Button>
@@ -148,7 +148,7 @@ const Navigation = ({
                 variant="ghost" 
                 className="text-custom-text hover:text-blue-600 w-full font-opensans"
                 onClick={() => {
-                  setShowPricing(true);
+                  navigate("/pricing");
                   setMobileMenuOpen(false);
                 }}
               >
