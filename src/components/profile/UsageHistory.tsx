@@ -110,14 +110,14 @@ const UsageHistory = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h3 className="text-xl sm:text-2xl font-bold flex items-center gap-3 font-cabinet">
-            <div className="p-2 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg">
+            <div className="p-2 bg-gradient-to-r from-primary to-accent rounded-lg">
               <Activity className="w-5 h-5 text-white" />
             </div>
             Usage History
           </h3>
           
           <div className="flex items-center gap-3">
-            <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
               {stats.streak} day streak
             </Badge>
           </div>
@@ -140,9 +140,9 @@ const UsageHistory = () => {
             <div className="text-lg font-bold text-purple-900">{stats.avgPerDay.toFixed(1)}</div>
           </div>
           
-          <div className="p-3 rounded-lg bg-orange-50 border border-orange-200">
-            <div className="text-xs font-medium text-orange-600 mb-1">Active Days</div>
-            <div className="text-lg font-bold text-orange-900">{stats.streak}</div>
+          <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
+            <div className="text-xs font-medium text-primary mb-1">Active Days</div>
+            <div className="text-lg font-bold text-primary">{stats.streak}</div>
           </div>
         </div>
 

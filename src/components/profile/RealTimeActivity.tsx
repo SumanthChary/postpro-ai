@@ -74,7 +74,7 @@ export const RealTimeActivity = () => {
       case 'viral': return 'bg-purple-100 border-purple-200';
       case 'engagement': return 'bg-green-100 border-green-200';
       case 'professional': return 'bg-blue-100 border-blue-200';
-      case 'content': return 'bg-orange-100 border-orange-200';
+      case 'content': return 'bg-primary/10 border-primary/20';
       case 'timing': return 'bg-indigo-100 border-indigo-200';
       default: return 'bg-gray-100 border-gray-200';
     }

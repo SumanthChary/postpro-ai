@@ -10,19 +10,16 @@ import Footer from "@/components/Footer";
 import WhopBanner from "@/components/layout/WhopBanner";
 import WhopTrustPopup from "@/components/whop/WhopTrustPopup";
 
-// New Professional Landing Page Components
+// Landing Page Components
 import HeroSectionNew from "@/components/landing/HeroSectionNew";
 import ResultsShowcase from "@/components/landing/ResultsShowcase";
 import PainPointSection from "@/components/landing/PainPointSection";
-import SolutionDemo from "@/components/landing/SolutionDemo";
-import FeaturesGrid from "@/components/landing/FeaturesGrid";
 import SocialProofWall from "@/components/landing/SocialProofWall";
-import PricingOptimized from "@/components/landing/PricingOptimized";
 import FinalCTA from "@/components/landing/FinalCTA";
 
 // Additional Components
 import VideoShowcase from "@/components/landing/VideoShowcase";
-import PricingSection from "@/components/PricingSection";
+import PricingLandingSection from "@/components/landing/PricingLandingSection";
 import FAQ from "@/components/FAQ";
 
 const Index = () => {
@@ -132,28 +129,20 @@ const Index = () => {
         mobileMenuOpen={mobileMenuOpen}
       />
       
-      {/* New Professional Landing Page */}
+      {/* Landing Page */}
       <main>
         <HeroSectionNew isAuthenticated={!!session} username={username} />
+        <VideoShowcase />
         <ResultsShowcase />
         <PainPointSection />
-        <SolutionDemo />
-        <FeaturesGrid />
-        <VideoShowcase />
         <SocialProofWall />
-        <PricingOptimized />
+        <PricingLandingSection />
         <FAQ />
         <FinalCTA />
       </main>
 
       <Footer />
 
-      {/* Pricing Modal */}
-      <Dialog open={showPricing} onOpenChange={setShowPricing}>
-        <DialogContent className="max-w-7xl max-h-[90vh] overflow-auto p-0">
-          <PricingSection />
-        </DialogContent>
-      </Dialog>
 
       <WhopTrustPopup />
     </div>
