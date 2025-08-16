@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -33,49 +33,47 @@ const Navigation = ({
   const navigate = useNavigate();
 
   return (
-    <div className="relative">
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100">
-      <div className="container mx-auto px-4 py-4">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
+      <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <OptimizedImage 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI Logo" 
               className="w-8 h-8 rounded-lg object-contain"
             />
-            <span className="text-2xl font-montserrat font-extrabold text-black">
+            <span className="text-2xl font-bold text-foreground">
               PostPro AI
             </span>
-          </div>
+          </Link>
           
-          <div className="hidden md:flex space-x-4">
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => navigate("/blogs")}
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-6">
+            <Link 
+              to="/blogs"
+              className="text-muted-foreground hover:text-foreground font-medium transition-colors"
             >
-              <BookOpenIcon className="w-4 h-4 mr-2" />
               Blog
-            </Button>
-            <Button 
-              variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => navigate("/affiliate")}
+            </Link>
+            <Link 
+              to="/affiliate"
+              className="text-muted-foreground hover:text-foreground font-medium transition-colors"
             >
               Affiliate
-            </Button>
+            </Link>
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className="text-muted-foreground hover:text-foreground font-medium"
               onClick={() => setShowPricing(true)}
             >
               Pricing
             </Button>
+            
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="font-opensans">
+                  <Button variant="outline" className="font-medium">
                     <Avatar className="w-6 h-6 mr-2">
                       <AvatarImage src={avatarUrl} alt={username} />
                       <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
@@ -84,15 +82,21 @@ const Navigation = ({
                     <ChevronDownIcon className="w-4 h-4 ml-2" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => navigate("/profile")}>
+                <DropdownMenuContent align="end" className="bg-card border border-border">
+                  <DropdownMenuItem 
+                    onClick={() => navigate("/profile")}
+                    className="cursor-pointer"
+                  >
                     <Avatar className="w-4 h-4 mr-2">
                       <AvatarImage src={avatarUrl} alt={username} />
                       <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
                     </Avatar>
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleSignOut}>
+                  <DropdownMenuItem 
+                    onClick={handleSignOut}
+                    className="cursor-pointer"
+                  >
                     <LogOutIcon className="w-4 h-4 mr-2" />
                     Sign Out
                   </DropdownMenuItem>
@@ -100,7 +104,7 @@ const Navigation = ({
               </DropdownMenu>
             ) : (
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-opensans"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground font-medium px-6"
                 onClick={() => navigate("/auth")}
               >
                 Sign In
@@ -108,45 +112,41 @@ const Navigation = ({
             )}
           </div>
 
+          {/* Mobile Menu Button */}
           <button 
-            className="md:hidden"
+            className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <XIcon className="w-6 h-6 text-blue-600" />
+              <XIcon className="w-6 h-6 text-foreground" />
             ) : (
-              <MenuIcon className="w-6 h-6 text-blue-600" />
+              <MenuIcon className="w-6 h-6 text-foreground" />
             )}
           </button>
         </div>
 
+        {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4">
+          <div className="lg:hidden mt-4 pb-4 border-t border-border pt-4">
             <div className="flex flex-col space-y-4">
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  navigate("/blogs");
-                  setMobileMenuOpen(false);
-                }}
+              <Link 
+                to="/blogs"
+                className="text-muted-foreground hover:text-foreground font-medium transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
               >
-                <BookOpenIcon className="w-4 h-4 mr-2" />
+                <BookOpenIcon className="w-4 h-4 mr-2 inline" />
                 Blog
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  navigate("/affiliate");
-                  setMobileMenuOpen(false);
-                }}
+              </Link>
+              <Link 
+                to="/affiliate"
+                className="text-muted-foreground hover:text-foreground font-medium transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
               >
                 Affiliate
-              </Button>
+              </Link>
               <Button 
                 variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
+                className="text-muted-foreground hover:text-foreground w-full justify-start font-medium"
                 onClick={() => {
                   setShowPricing(true);
                   setMobileMenuOpen(false);
@@ -154,6 +154,7 @@ const Navigation = ({
               >
                 Pricing
               </Button>
+              
               {session ? (
                 <>
                   <Button
@@ -162,7 +163,7 @@ const Navigation = ({
                       navigate("/profile");
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full font-opensans"
+                    className="w-full justify-start font-medium"
                   >
                     <Avatar className="w-4 h-4 mr-2">
                       <AvatarImage src={avatarUrl} alt={username} />
@@ -176,7 +177,7 @@ const Navigation = ({
                       handleSignOut();
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full font-opensans"
+                    className="w-full justify-start font-medium"
                   >
                     <LogOutIcon className="w-4 h-4 mr-2" />
                     Sign Out
@@ -184,7 +185,7 @@ const Navigation = ({
                 </>
               ) : (
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white w-full font-opensans"
+                  className="bg-accent hover:bg-accent/90 text-accent-foreground w-full font-medium"
                   onClick={() => {
                     navigate("/auth");
                     setMobileMenuOpen(false);
@@ -196,10 +197,8 @@ const Navigation = ({
             </div>
           </div>
         )}
-      </div>
-    </nav>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };
 

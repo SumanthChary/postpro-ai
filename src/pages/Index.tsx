@@ -1,24 +1,29 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import WhopBanner from "@/components/layout/WhopBanner";
-import WhopTrustPopup from "@/components/whop/WhopTrustPopup";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+
+// Layout Components
 import Navigation from "@/components/layout/Navigation";
-import VideoShowcase from "@/components/landing/VideoShowcase";
-import ComparisonSection from "@/components/landing/ComparisonSection";
-import EnhancedPostsShowcase from "@/components/landing/EnhancedPostsShowcase";
-import HeroSection from "@/components/landing/HeroSection";
-import AboutSection from "@/components/landing/AboutSection";
-import ComingSoonSection from "@/components/landing/ComingSoonSection";
-import TemplatesSection from "@/components/post-enhancer/TemplatesSection";
-import HowItWorksSection from "@/components/landing/HowItWorksSection";
-import AboutFounderSection from "@/components/landing/AboutFounderSection";
-import PricingSection from "@/components/PricingSection";
-import Testimonials from "@/components/Testimonials";
-import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import WhopBanner from "@/components/layout/WhopBanner";
+import WhopTrustPopup from "@/components/whop/WhopTrustPopup";
+
+// New Professional Landing Page Components
+import HeroSectionNew from "@/components/landing/HeroSectionNew";
+import ResultsShowcase from "@/components/landing/ResultsShowcase";
+import PainPointSection from "@/components/landing/PainPointSection";
+import SolutionDemo from "@/components/landing/SolutionDemo";
+import FeaturesGrid from "@/components/landing/FeaturesGrid";
+import SocialProofWall from "@/components/landing/SocialProofWall";
+import PricingOptimized from "@/components/landing/PricingOptimized";
+import FinalCTA from "@/components/landing/FinalCTA";
+
+// Additional Components
+import VideoShowcase from "@/components/landing/VideoShowcase";
+import PricingSection from "@/components/PricingSection";
+import FAQ from "@/components/FAQ";
 
 const Index = () => {
   const [showPricing, setShowPricing] = useState(false);
@@ -115,7 +120,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="min-h-screen bg-background">
       <WhopBanner />
       <Navigation
         session={session}
@@ -126,35 +131,31 @@ const Index = () => {
         setMobileMenuOpen={setMobileMenuOpen}
         mobileMenuOpen={mobileMenuOpen}
       />
-
+      
+      {/* New Professional Landing Page */}
       <main>
-        <HeroSection isAuthenticated={!!session} username={username} />
-        
-        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-          <VideoShowcase />
-          <HowItWorksSection />
-          <ComparisonSection />
-          <EnhancedPostsShowcase />
-          <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
-          <AboutFounderSection />
-          <AboutSection />
-          <ComingSoonSection />
-          <Testimonials />
-          <FAQ />
-        </div>
+        <HeroSectionNew isAuthenticated={!!session} username={username} />
+        <ResultsShowcase />
+        <PainPointSection />
+        <SolutionDemo />
+        <FeaturesGrid />
+        <VideoShowcase />
+        <SocialProofWall />
+        <PricingOptimized />
+        <FAQ />
+        <FinalCTA />
       </main>
 
       <Footer />
-      
-      <WhopTrustPopup />
 
+      {/* Pricing Modal */}
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
-        <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-hidden bg-white p-0 rounded-lg">
-          <div className="overflow-y-auto max-h-[95vh]">
-            <PricingSection />
-          </div>
+        <DialogContent className="max-w-7xl max-h-[90vh] overflow-auto p-0">
+          <PricingSection />
         </DialogContent>
       </Dialog>
+
+      <WhopTrustPopup />
     </div>
   );
 };
