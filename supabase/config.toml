@@ -311,8 +311,9 @@ inspector_port = 8083
 # The Deno major version to use.
 deno_version = 1
 
-# [edge_runtime.secrets]
-# secret_key = "env(SECRET_VALUE)"
+# Configure functions that don't require JWT authentication
+[functions.whop-webhook]
+verify_jwt = false
 
 [analytics]
 enabled = true

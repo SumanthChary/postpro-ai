@@ -22,6 +22,8 @@ import Chatbot from "./pages/Chatbot";
 import Affiliate from "./pages/Affiliate";
 import Contact from "./pages/Contact";
 import Support from "./pages/Support";
+import WhopApp from "./pages/WhopApp";
+import WhopCallback from "./pages/WhopCallback";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 
 function App() {
@@ -54,6 +56,8 @@ function App() {
                   <Route path="/affiliate" element={<Affiliate />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/support" element={<Support />} />
+                  <Route path="/whop-app" element={<WhopApp />} />
+                  <Route path="/whop/callback" element={<WhopCallback />} />
                 </Routes>
                 <FloatingChatButton />
               </BrowserRouter>

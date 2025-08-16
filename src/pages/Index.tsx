@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { WhopLaunchBanner } from "@/components/whop/WhopLaunchBanner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -126,6 +127,12 @@ const Index = () => {
 
       <main>
         <HeroSection isAuthenticated={!!session} username={username} />
+        
+        {/* Whop Integration Banner */}
+        <div className="container mx-auto px-4 py-8">
+          <WhopLaunchBanner />
+        </div>
+        
         <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <VideoShowcase />
           <HowItWorksSection />
