@@ -84,8 +84,8 @@ const UserCredits = ({ userId }: UserCreditsProps) => {
         icon: <Star className="w-5 h-5 text-yellow-500" />,
         title: "Admin Access",
         description: "Unlimited everything",
-        color: "from-primary to-accent",
-        bgColor: "bg-gradient-to-br from-primary/10 to-accent/10",
+        color: "from-yellow-500 to-orange-500",
+        bgColor: "bg-gradient-to-br from-yellow-50 to-orange-50",
         borderColor: "border-yellow-200"
       };
     }

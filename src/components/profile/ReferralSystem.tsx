@@ -177,7 +177,7 @@ const ReferralSystem = ({ userId }: { userId: string }) => {
 
           <div className="p-4 bg-white/60 rounded-lg border border-white/40">
             <div className="flex items-center gap-2 mb-2">
-              <CheckCircle className="w-4 h-4 text-primary" />
+              <CheckCircle className="w-4 h-4 text-orange-500" />
               <span className="text-xs font-medium text-gray-600">Bonus</span>
             </div>
             <div className="text-2xl font-bold text-gray-900">{stats.bonusEnhancements}</div>
@@ -249,7 +249,7 @@ const ReferralSystem = ({ userId }: { userId: string }) => {
               <span>Annual plan: +20 bonus enhancements per referral</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-primary rounded-full"></div>
+              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
               <span>5 paid referrals in a week: +50 bonus enhancements</span>
             </div>
           </div>
