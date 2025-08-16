@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { WhopLaunchBanner } from "@/components/whop/WhopLaunchBanner";
+import WhopBanner from "@/components/layout/WhopBanner";
+import WhopTrustPopup from "@/components/whop/WhopTrustPopup";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -115,6 +116,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+      <WhopBanner />
       <Navigation
         session={session}
         username={username}
@@ -127,11 +129,6 @@ const Index = () => {
 
       <main>
         <HeroSection isAuthenticated={!!session} username={username} />
-        
-        {/* Whop Integration Banner */}
-        <div className="container mx-auto px-4 py-8">
-          <WhopLaunchBanner />
-        </div>
         
         <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <VideoShowcase />
@@ -148,6 +145,8 @@ const Index = () => {
       </main>
 
       <Footer />
+      
+      <WhopTrustPopup />
 
       <Dialog open={showPricing} onOpenChange={setShowPricing}>
         <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-hidden bg-white p-0 rounded-lg">

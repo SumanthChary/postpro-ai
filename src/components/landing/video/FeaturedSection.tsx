@@ -77,6 +77,20 @@ const FeaturedSection = () => {
             />
             <span className="text-xs sm:text-sm font-medium text-gray-700">Listing Cat</span>
           </a>
+          
+          <a 
+            href="https://whop.com/postpro-ai/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 sm:gap-3 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 shadow-sm border border-gray-200/50 hover:shadow-md transition-all duration-200"
+          >
+            <OptimizedImage 
+              src="/lovable-uploads/12ef785a-af3d-4cbb-b6d7-0d20e7562e96.png" 
+              alt="Whop" 
+              className="w-6 h-6 sm:w-8 sm:h-8"
+            />
+            <span className="text-xs sm:text-sm font-medium text-gray-700">Whop</span>
+          </a>
         </div>
       </div>
     </div>
