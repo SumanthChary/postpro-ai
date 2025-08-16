@@ -22,10 +22,11 @@ import FinalCTA from "@/components/landing/FinalCTA";
 
 // Additional Components
 import VideoShowcase from "@/components/landing/VideoShowcase";
-import PricingLandingSection from "@/components/landing/PricingLandingSection";
+import PricingSection from "@/components/PricingSection";
 import FAQ from "@/components/FAQ";
 
 const Index = () => {
+  const [showPricing, setShowPricing] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [username, setUsername] = useState<string>("");
@@ -90,12 +91,12 @@ const Index = () => {
       return;
     }
     
-      navigate("/subscription");
-      toast({
-        title: "Pro Templates Locked",
-        description: "Subscribe to our Pro Plan to access premium templates",
-        variant: "default",
-      });
+    setShowPricing(true);
+    toast({
+      title: "Pro Templates Locked",
+      description: "Subscribe to our Pro Plan to access premium templates",
+      variant: "default",
+    });
   };
 
   const handleSignOut = async () => {
@@ -126,7 +127,7 @@ const Index = () => {
         username={username}
         avatarUrl={avatarUrl}
         handleSignOut={handleSignOut}
-        setShowPricing={() => {}}
+        setShowPricing={setShowPricing}
         setMobileMenuOpen={setMobileMenuOpen}
         mobileMenuOpen={mobileMenuOpen}
       />
@@ -140,12 +141,20 @@ const Index = () => {
         <FeaturesGrid />
         <VideoShowcase />
         <SocialProofWall />
-        <PricingLandingSection />
+        <PricingOptimized />
         <FAQ />
         <FinalCTA />
       </main>
 
       <Footer />
+
+      {/* Pricing Modal */}
+      <Dialog open={showPricing} onOpenChange={setShowPricing}>
+        <DialogContent className="max-w-7xl max-h-[90vh] overflow-auto p-0">
+          <PricingSection />
+        </DialogContent>
+      </Dialog>
+
       <WhopTrustPopup />
     </div>
   );

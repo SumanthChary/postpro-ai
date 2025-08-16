@@ -62,12 +62,13 @@ const Navigation = ({
             >
               Affiliate
             </Link>
-            <Link 
-              to="/subscription"
-              className="text-muted-foreground hover:text-foreground font-medium transition-colors"
+            <Button 
+              variant="ghost" 
+              className="text-muted-foreground hover:text-foreground font-medium"
+              onClick={() => setShowPricing(true)}
             >
               Pricing
-            </Link>
+            </Button>
             
             {session ? (
               <DropdownMenu>
@@ -143,13 +144,16 @@ const Navigation = ({
               >
                 Affiliate
               </Link>
-              <Link 
-                to="/subscription"
-                className="text-muted-foreground hover:text-foreground font-medium transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
+              <Button 
+                variant="ghost" 
+                className="text-muted-foreground hover:text-foreground w-full justify-start font-medium"
+                onClick={() => {
+                  setShowPricing(true);
+                  setMobileMenuOpen(false);
+                }}
               >
                 Pricing
-              </Link>
+              </Button>
               
               {session ? (
                 <>

@@ -7,6 +7,7 @@ import { CheckCircle, CreditCard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface PlanGridProps {
   isYearly: boolean;
@@ -15,6 +16,7 @@ interface PlanGridProps {
 const PlansGrid = ({ isYearly }: PlanGridProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { currency, formatPrice, convertPrice } = useCurrency();
 
   // Filter plans based on yearly toggle - remove weekly plan
   const filteredPlans = isYearly 
@@ -47,13 +49,19 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
       console.error('Error checking user credits:', creditsError);
     }
 
-    // Prepare the plan details for navigation
+    // Prepare the converted price for display
+    const displayPrice = currency === 'INR' 
+      ? convertPrice(plan.price, 'INR')
+      : plan.price;
+
     navigate("/payment", { 
       state: { 
         plan: {
           name: plan.name,
           price: plan.price,
           period: plan.period,
+          currency: currency,
+          displayPrice: displayPrice,
           credits: plan.credits
         },
         existingCredits: userCredits && userCredits.length > 0
@@ -81,7 +89,10 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
               {plan.name}
             </h2>
             <p className="text-3xl font-bold mb-2">
-              ${plan.price}
+              {currency === 'USD' ? '$' : '₹'}
+              {currency === 'USD' 
+                ? plan.price 
+                : convertPrice(plan.price, 'INR')}
               {plan.period !== "forever" && (
                 <span className="text-lg font-normal">
                   {plan.period === "month" ? "" : `/${plan.period}`}

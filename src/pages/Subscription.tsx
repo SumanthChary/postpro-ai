@@ -6,6 +6,7 @@ import SubscriptionHeader from "@/components/pricing/SubscriptionHeader";
 import PlanToggle from "@/components/pricing/PlanToggle";
 import PlansGrid from "@/components/pricing/PlansGrid";
 import AdditionalInfo from "@/components/pricing/AdditionalInfo";
+import CurrencyToggle from "@/components/pricing/CurrencyToggle";
 
 const Subscription = () => {
   const [isYearly, setIsYearly] = useState(false);
@@ -18,6 +19,7 @@ const Subscription = () => {
         <PlanToggle isYearly={isYearly} setIsYearly={setIsYearly} />
         
         <div className="flex flex-col items-center mb-8">
+          <CurrencyToggle />
           <RedeemCodeDialog />
         </div>
 
