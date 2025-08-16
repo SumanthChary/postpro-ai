@@ -42,7 +42,7 @@ export const EnhancerForm = ({
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select post category" />
             </SelectTrigger>
-            <SelectContent className="bg-white">
+            <SelectContent className="bg-white text-gray-900">
               <SelectItem value="business" className="flex items-center">
                 <div className="flex items-center">
                   <TrendingUpIcon className="w-4 h-4 mr-2 text-blue-600" />
@@ -82,7 +82,7 @@ export const EnhancerForm = ({
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select writing tone" />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white text-gray-900">
                 <SelectItem value="professional">
                   <div className="flex items-center">
                     <BrainIcon className="w-4 h-4 mr-2 text-blue-600" />
