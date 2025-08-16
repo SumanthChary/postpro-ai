@@ -133,12 +133,12 @@
 
 @layer base {
   * {
-    @apply border-border font-europa;
+    @apply border-border;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased font-europa;
+    @apply bg-gray-50 text-gray-900 antialiased;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -150,22 +150,22 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-europa font-medium tracking-tight text-gray-900;
+    @apply font-medium tracking-tight text-gray-900;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   p, li, input, textarea, button, a, span, div {
-    @apply font-europa text-gray-700 font-medium;
+    @apply text-gray-700 font-medium;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   button {
-    @apply font-europa font-medium;
+    @apply font-medium;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   textarea, input {
-    @apply transition-all duration-200 ease-in-out font-europa font-medium;
+    @apply transition-all duration-200 ease-in-out font-medium;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 

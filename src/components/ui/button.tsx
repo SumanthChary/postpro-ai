@@ -58,7 +58,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(
           buttonVariants({ variant, size, className }),
-          "font-europa font-medium"
+          "font-medium"
         )}
         style={defaultStyle}
         ref={ref}
