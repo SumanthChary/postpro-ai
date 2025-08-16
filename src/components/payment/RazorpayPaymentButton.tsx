@@ -28,60 +28,25 @@ export const RazorpayPaymentButton = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
 
-  // Safe currency handling with fallbacks
-  const getCurrency = () => {
-    try {
-      // Try to use currency context
-      const { useCurrency } = require("@/contexts/CurrencyContext");
-      const { currency, convertPrice } = useCurrency();
-      return { currency: currency || 'USD', convertPrice };
-    } catch (error) {
-      console.warn('Currency context not available, using USD');
-      return { 
-        currency: 'USD', 
-        convertPrice: (price: string, targetCurrency: string) => {
-          // Simple fallback conversion
-          if (targetCurrency === 'INR') {
-            return (parseFloat(price) * 83).toFixed(0); // Approximate USD to INR
-          }
-          return price;
-        }
-      };
-    }
-  };
-
   const handlePayment = async () => {
     try {
       setIsProcessing(true);
       console.log('Starting Razorpay payment process');
       
-      const { currency, convertPrice } = getCurrency();
-      
-      // Get the appropriate currency and price
-      const currencyToUse = (planDetails as any).currency || currency || 'USD';
-      
-      // Convert price if needed
-      let priceToUse = planDetails.price;
-      if(currencyToUse === 'INR' && typeof planDetails.price === 'string') {
-        priceToUse = convertPrice(planDetails.price, 'INR');
-      } else if((planDetails as any).displayPrice) {
-        priceToUse = (planDetails as any).displayPrice;
-      }
-      
-      console.log('Payment details:', { priceToUse, currencyToUse, originalPrice: planDetails.price });
+      const priceInINR = parseFloat(planDetails.price) * 86; // Convert USD to INR using static rate
       
       // Create an order on the server
       const { data: orderData, error: orderError } = await supabase.functions.invoke('handle-razorpay-payment', {
         body: { 
           action: 'create_order',
-          amount: parseFloat(priceToUse), // Backend will handle conversion to smallest currency unit
-          currency: currencyToUse,
+          amount: priceInINR, // Backend will handle conversion to smallest currency unit
+          currency: 'INR',
           receipt: `plan_${planDetails.name.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}`,
           notes: {
             plan_name: planDetails.name,
             user_id: userId,
             original_currency: 'USD',
-            display_currency: currencyToUse,
+            display_currency: 'INR',
             credits: planDetails.credits
           }
         }
@@ -101,8 +66,8 @@ export const RazorpayPaymentButton = ({
       // Initialize Razorpay payment
       const options = {
         key: 'rzp_live_dUTvU9HscnAP9M',
-        amount: parseFloat(priceToUse) * 100,
-        currency: currencyToUse,
+        amount: priceInINR * 100,
+        currency: 'INR',
         name: 'PostPro AI',
         description: `${planDetails.name} Subscription`,
         order_id: orderData.id,
@@ -122,7 +87,7 @@ export const RazorpayPaymentButton = ({
                   name: planDetails.name,
                   price: planDetails.price,
                   credits: planDetails.credits,
-                  currency: currencyToUse,
+                  currency: 'INR',
                   period: planDetails.period
                 }
               }

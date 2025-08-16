@@ -3,7 +3,6 @@ import { Plan } from "@/types/pricing";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, Coins } from "lucide-react";
-import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface PlanCardProps {
   plan: Plan;
@@ -11,16 +10,6 @@ interface PlanCardProps {
 }
 
 const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
-  // Safely use the currency context with a fallback
-  let currencySymbol = '$'; // Default to USD
-  try {
-    const { currency } = useCurrency();
-    currencySymbol = currency === 'USD' ? '$' : '₹';
-  } catch (error) {
-    console.warn('Currency context not available, using default currency symbol:', error);
-    // Continue with the default currency symbol
-  }
-
   return (
     <Card
       className={`p-3 sm:p-4 lg:p-6 flex flex-col relative bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300 ${
@@ -45,23 +34,23 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="text-xl sm:text-2xl line-through text-gray-400">
-                  {plan.price === "Custom" ? "Custom" : `${currencySymbol}${Math.round(Number(plan.price) / 0.6)}`}
+                  {plan.price === "Custom" ? "Custom" : `$${Math.round(Number(plan.price) / 0.6)}`}
                 </span>
                 <span className="text-sm font-semibold bg-red-100 text-red-600 px-2 py-0.5 rounded">-40%</span>
               </div>
               <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-                {plan.price === "Custom" ? "Custom" : `${currencySymbol}${plan.price}`}
+                {plan.price === "Custom" ? "Custom" : `$${plan.price}`}
               </span>
             </div>
           )}
           {(plan.name !== "Free" && plan.name !== "Professional") && (
             <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-              {plan.price === "Custom" ? "Custom" : `${currencySymbol}${plan.price}`}
+              {plan.price === "Custom" ? "Custom" : `$${plan.price}`}
             </span>
           )}
           {plan.name === "Free" && (
             <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-              {currencySymbol}0
+              $0
             </span>
           )}
           {plan.price !== "Custom" && (
