@@ -360,10 +360,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      current_user_owns_profile: {
-        Args: { profile_id: string }
-        Returns: boolean
-      }
       reset_monthly_usage: {
         Args: Record<PropertyKey, never>
         Returns: undefined
