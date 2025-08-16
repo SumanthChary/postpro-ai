@@ -66,7 +66,7 @@ export const PostEnhancerLogic = ({
   };
 
   return (
-    <Card className="p-4 sm:p-6 shadow-lg border-0 bg-white/70 backdrop-blur-[2px]">
+    <div className="space-y-6">
       <EnhancerForm
         post={post}
         category={category}
@@ -80,7 +80,7 @@ export const PostEnhancerLogic = ({
       />
       
       {enhancedPosts && Object.keys(enhancedPosts).length > 0 && (
-        <div className="mt-6 pt-6 border-t border-gray-200">
+        <div className="pt-6 border-t border-gray-200">
           <ShareOptions 
             enhancedPosts={enhancedPosts} 
             onPlatformSelect={onPlatformSelect} 
@@ -96,6 +96,6 @@ export const PostEnhancerLogic = ({
         onSubmit={handleFeedbackSubmit}
         isSubmitting={isSubmitting}
       />
-    </Card>
+    </div>
   );
 };
