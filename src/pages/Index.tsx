@@ -22,7 +22,7 @@ import FinalCTA from "@/components/landing/FinalCTA";
 
 // Additional Components
 import VideoShowcase from "@/components/landing/VideoShowcase";
-import PricingLandingSection from "@/components/landing/PricingLandingSection";
+import PricingSection from "@/components/PricingSection";
 import FAQ from "@/components/FAQ";
 
 const Index = () => {
@@ -142,13 +142,18 @@ const Index = () => {
         <VideoShowcase />
         <SocialProofWall />
         <PricingOptimized />
-        <PricingLandingSection />
         <FAQ />
         <FinalCTA />
       </main>
 
       <Footer />
 
+      {/* Pricing Modal */}
+      <Dialog open={showPricing} onOpenChange={setShowPricing}>
+        <DialogContent className="max-w-7xl max-h-[90vh] overflow-auto p-0">
+          <PricingSection />
+        </DialogContent>
+      </Dialog>
 
       <WhopTrustPopup />
     </div>
