@@ -19,40 +19,41 @@ export default {
     },
     extend: {
       colors: {
+        "electric-purple": "#8E44AD",
+        "coral-red": "#FF5733",
+        "light-lavender": "#EAE2F8",
+        "bright-teal": "#1ABC9C",
+        "custom-bg": "#F4F6F8",
+        "custom-text": "#1D2226",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#F4F6F8",
+        foreground: "#1D2226",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#8E44AD",
+          foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#EAE2F8",
+          foreground: "#1D2226",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#FF5733",
+          foreground: "#FFFFFF",
         },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        highlight: {
+          DEFAULT: "#1ABC9C",
+          foreground: "#FFFFFF",
         },
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        heading: ["Inter", "system-ui", "sans-serif"],
-        body: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        heading: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        body: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        clash: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        cabinet: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
+        europa: ["Europa Grotesk", "Inter", "system-ui", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
