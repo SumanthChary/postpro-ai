@@ -129,10 +129,10 @@ const Index = () => {
           <ComparisonSection />
           <EnhancedPostsShowcase />
           <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
+          <PricingSection />
           <AboutFounderSection />
           <AboutSection />
           <ComingSoonSection />
-          <PricingSection />
           <Testimonials />
           <FAQ />
         </div>

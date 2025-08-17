@@ -13,38 +13,106 @@ const PricingSection = () => {
     navigate("/payment", { state: { plan } });
   };
 
-  const handleSeeFullFeatures = () => {
-    navigate("/subscription");
-  };
-
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-6 sm:mb-8">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2 sm:mb-4 tracking-tight">
-            Choose Your Perfect Plan
+    <section className="py-16 bg-white relative">
+      {/* Decorative lines */}
+      <div className="absolute top-8 left-8 w-16 h-px bg-black"></div>
+      <div className="absolute top-8 right-8 w-16 h-px bg-black"></div>
+      
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+            Choose Your Growth Plan
           </h2>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Select the perfect plan to supercharge your social media presence
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Start free, upgrade when you see results. No long-term commitments.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto">
-          {pricingPlans.map((plan) => (
-            <PlanCard 
-              key={plan.name} 
-              plan={plan} 
-              onSubscribe={handleSubscribe} 
-            />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-8">
+          {pricingPlans.map((plan, index) => (
+            <div
+              key={plan.name}
+              className={`relative p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-xl ${
+                plan.popular 
+                  ? "border-blue-600 bg-blue-50/50 transform scale-105" 
+                  : "border-gray-200 bg-white hover:border-gray-300"
+              }`}
+            >
+              {/* Badges */}
+              {plan.popular && (
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                    MOST POPULAR
+                  </span>
+                </div>
+              )}
+              {plan.name === "Lifetime Deal" && (
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-red-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                    LIMITED TIME
+                  </span>
+                </div>
+              )}
+              
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold mb-2 flex items-center justify-center gap-2">
+                  {plan.icon && <span className="text-2xl">{plan.icon}</span>}
+                  {plan.name}
+                </h3>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-gray-900">
+                    ${plan.price}
+                  </span>
+                  <span className="text-gray-600 ml-1">
+                    /{plan.period === "year" ? "year" : plan.period === "lifetime" ? "one-time" : "month"}
+                  </span>
+                </div>
+                {plan.originalPrice && (
+                  <p className="text-green-600 font-semibold">
+                    Save ${Number(plan.originalPrice) - Number(plan.price)} annually
+                  </p>
+                )}
+              </div>
+              
+              <div className="space-y-3 mb-8">
+                {plan.features.map((feature) => (
+                  <div key={feature} className="flex items-start">
+                    <svg className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-gray-700">{feature}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <button
+                onClick={() => handleSubscribe(plan)}
+                className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
+                  plan.popular || plan.name === "Lifetime Deal"
+                    ? "bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105"
+                    : "border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+                }`}
+              >
+                {plan.cta}
+              </button>
+              
+              {plan.name === "Lifetime Deal" && (
+                <p className="text-center text-sm text-red-600 font-medium mt-3">
+                  Only 500 lifetime deals available
+                </p>
+              )}
+            </div>
           ))}
         </div>
         
-        <div className="text-center mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-          <SeeFullFeaturesButton onClick={handleSeeFullFeatures} />
-          <RedeemCodeDialog />
+        <div className="text-center">
+          <p className="text-gray-600">
+            <span className="font-semibold">30-day money-back guarantee</span> • Cancel anytime • No questions asked
+          </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

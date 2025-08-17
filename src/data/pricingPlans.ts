@@ -3,64 +3,49 @@ import { Plan } from "@/types/pricing";
 
 export const pricingPlans: Plan[] = [
   {
-    name: "Free",
-    price: "0",
-    period: "month",
-    features: [
-      "3 Post Enhancements/day",
-      "Basic Analytics Dashboard",
-      "Standard Support",
-      "Basic Templates",
-      "Community Access"
-    ],
-    cta: "Start Free",
-    credits: 3,
-    currency: 'USD'
-  },
-  {
-    name: "Professional",
+    name: "Pro Monthly",
     price: "20",
-    originalPrice: "33",
-    discountPercentage: 40,
     period: "month",
     features: [
-      "1000 Monthly AI Enhancements",
-      "Advanced Tone & Style Mastery",
-      "50+ Professional Templates",
-      "Viral Score Intelligence",
-      "Real-Time Hashtag Research",
-      "Strategic Post Planning",
-      "A/B Testing for Posts",
-      "Custom Brand Settings",
-      "Priority Support",
-      "Enhanced Analytics"
+      "Unlimited post generation",
+      "All social platforms",
+      "Engagement analytics",
+      "Email support"
     ],
-    cta: "Start Professional Plan",
-    popular: true,
-    credits: 1000, // Monthly credits (50 credits per dollar)
+    cta: "Start Free Trial",
+    credits: 1000,
     currency: 'USD'
   },
   {
-    name: "Lifetime Creator",
-    price: "45",
-    originalPrice: "75",
-    discountPercentage: 40,
+    name: "Annual Plan",
+    price: "120",
+    originalPrice: "240",
+    period: "year",
+    features: [
+      "Everything in Pro Monthly",
+      "Save $120 annually",
+      "Priority support",
+      "Advanced templates"
+    ],
+    cta: "Start Free Trial",
+    popular: true,
+    credits: 12000,
+    currency: 'USD'
+  },
+  {
+    name: "Lifetime Deal",
+    price: "49",
     period: "lifetime",
     features: [
-      "500 Post Enhancements",
-      "Advanced Tone & Style Options",
-      "Premium Templates (20+)",
-      "Virality Score Predictor",
-      "Trending Hashtag Generator",
-      "CTA Generator",
-      "A/B Testing for Posts",
-      "Custom Templates",
-      "Enhanced Analytics",
-      "Priority Support"
+      "Pay once, use forever",
+      "All Pro features included",
+      "VIP community access",
+      "Exclusive masterclasses/guide",
+      "Priority feature requests"
     ],
-    popular: true,
-    icon: "💎",
-    cta: "Choose Plan",
-    credits: 500 // Lifetime credits
+    cta: "Get Lifetime Access",
+    icon: "🔥",
+    credits: 10000,
+    currency: 'USD'
   }
 ];
