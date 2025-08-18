@@ -8,37 +8,37 @@ const people = [
     id: 1,
     name: "Sarah Chen",
     designation: "Marketing Director",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+    image: "/lovable-uploads/97bd32e7-93e2-4645-94fe-abefa22c48b4.png",
   },
   {
     id: 2,
     name: "Marcus Johnson",
     designation: "Content Creator",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+    image: "/lovable-uploads/7efcb3c2-eb10-425c-b878-b591a526933c.png",
   },
   {
     id: 3,
     name: "Elena Rodriguez",
     designation: "LinkedIn Strategist",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80",
+    image: "/lovable-uploads/59dc33af-55be-49fa-a248-8d17d4a9da2e.png",
   },
   {
     id: 4,
     name: "David Kim",
     designation: "Business Coach",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+    image: "/lovable-uploads/0f24d879-0dfd-4159-9ff9-9c929de73b38.png",
   },
   {
     id: 5,
     name: "Priya Patel",
     designation: "Social Media Expert",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1976&q=80",
+    image: "/lovable-uploads/17220bae-5e9e-4d14-8cbc-7cc2072b88be.png",
   },
   {
     id: 6,
     name: "Alex Thompson",
     designation: "Growth Hacker",
-    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+    image: "/lovable-uploads/88f25795-9d15-4c46-97a2-63eebfef26dc.png",
   },
 ];
 
