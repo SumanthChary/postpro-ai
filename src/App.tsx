@@ -25,6 +25,8 @@ import Contact from "./pages/Contact";
 import Support from "./pages/Support";
 import WhopApp from "./pages/WhopApp";
 import WhopCallback from "./pages/WhopCallback";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 function App() {
   const queryClient = new QueryClient();
@@ -58,6 +60,8 @@ function App() {
                 <Route path="/support" element={<Support />} />
                 <Route path="/whop-app" element={<WhopApp />} />
                 <Route path="/whop/callback" element={<WhopCallback />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               </Routes>
               <FloatingChatButton />
             </BrowserRouter>
