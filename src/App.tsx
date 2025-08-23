@@ -1,5 +1,5 @@
 
-import { StrictMode, useEffect } from "react";
+import { StrictMode, Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,25 +8,34 @@ import { useReferralTracking } from "@/hooks/useReferralTracking";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
-import FloatingChatButton from "./components/chatbot/FloatingChatButton";
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import Enhance from "./pages/Enhance";
-import Features from "./pages/Features";
-import Pricing from "./pages/Pricing";
-import Subscription from "./pages/Subscription";
-import Payment from "./pages/Payment";
-import Profile from "./pages/Profile";
-import Blogs from "./pages/Blogs";
-import BlogArticle from "./pages/BlogArticle";
-import Chatbot from "./pages/Chatbot";
-import Affiliate from "./pages/Affiliate";
-import Contact from "./pages/Contact";
-import Support from "./pages/Support";
-import WhopApp from "./pages/WhopApp";
-import WhopCallback from "./pages/WhopCallback";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsAndConditions from "./pages/TermsAndConditions";
+
+// Lazy load pages for better performance
+const Index = lazy(() => import("./pages/Index"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Enhance = lazy(() => import("./pages/Enhance"));
+const Features = lazy(() => import("./pages/Features"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Subscription = lazy(() => import("./pages/Subscription"));
+const Payment = lazy(() => import("./pages/Payment"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Blogs = lazy(() => import("./pages/Blogs"));
+const BlogArticle = lazy(() => import("./pages/BlogArticle"));
+const Chatbot = lazy(() => import("./pages/Chatbot"));
+const Affiliate = lazy(() => import("./pages/Affiliate"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Support = lazy(() => import("./pages/Support"));
+const WhopApp = lazy(() => import("./pages/WhopApp"));
+const WhopCallback = lazy(() => import("./pages/WhopCallback"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const FloatingChatButton = lazy(() => import("./components/chatbot/FloatingChatButton"));
+
+// Loading component for lazy loaded routes
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+  </div>
+);
 
 function App() {
   const queryClient = new QueryClient();
@@ -43,27 +52,31 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
             <BrowserRouter basename="/">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/enhance" element={<Enhance />} />
-                <Route path="/features" element={<Features />} />
-                <Route path="/pricing" element={<Pricing />} />
-                <Route path="/subscription" element={<Subscription />} />
-                <Route path="/payment" element={<Payment />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/blog/:id" element={<BlogArticle />} />
-                <Route path="/chatbot" element={<Chatbot />} />
-                <Route path="/affiliate" element={<Affiliate />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/support" element={<Support />} />
-                <Route path="/whop-app" element={<WhopApp />} />
-                <Route path="/whop/callback" element={<WhopCallback />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              </Routes>
-              <FloatingChatButton />
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/enhance" element={<Enhance />} />
+                  <Route path="/features" element={<Features />} />
+                  <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/subscription" element={<Subscription />} />
+                  <Route path="/payment" element={<Payment />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/blogs" element={<Blogs />} />
+                  <Route path="/blog/:id" element={<BlogArticle />} />
+                  <Route path="/chatbot" element={<Chatbot />} />
+                  <Route path="/affiliate" element={<Affiliate />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/support" element={<Support />} />
+                  <Route path="/whop-app" element={<WhopApp />} />
+                  <Route path="/whop/callback" element={<WhopCallback />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                </Routes>
+                <Suspense fallback={<div />}>
+                  <FloatingChatButton />
+                </Suspense>
+              </Suspense>
             </BrowserRouter>
           </TooltipProvider>
         </QueryClientProvider>
