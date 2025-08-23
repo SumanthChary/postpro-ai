@@ -73,35 +73,30 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased font-europa;
+    @apply bg-gray-50 text-gray-900 antialiased font-europa;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
-    background: hsl(var(--background));
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
     min-height: 100vh;
     font-weight: 500;
-    /* Performance optimizations */
-    contain: layout style paint;
-    will-change: auto;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-europa font-medium tracking-tight text-foreground;
+    @apply font-europa font-medium tracking-tight text-gray-900;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
-    contain: layout style;
   }
 
   p, li, input, textarea, button, a, span, div {
-    @apply font-europa text-muted-foreground font-medium;
+    @apply font-europa text-gray-700 font-medium;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   button {
     @apply font-europa font-medium;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
-    contain: layout style;
   }
 
   textarea, input {
