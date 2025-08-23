@@ -35,7 +35,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       />
       {!isLoaded && !hasError && (
         <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-          <div className="w-8 h-8 rounded-full border-2 border-gray-300 border-t-gray-600"></div>
+          <div className="w-8 h-8 rounded-full border-2 border-gray-300 border-t-gray-600 animate-spin"></div>
         </div>
       )}
     </div>

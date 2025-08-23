@@ -1,10 +1,10 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SparklesIcon, TrendingUpIcon, UsersIcon } from "lucide-react";
 
-const EnhancedPostsShowcase = () => {
+const EnhancedPostsShowcase = memo(() => {
   const posts = [
     {
       original: "Just launched our new product!",
@@ -83,6 +83,8 @@ const EnhancedPostsShowcase = () => {
       </div>
     </section>
   );
-};
+});
+
+EnhancedPostsShowcase.displayName = 'EnhancedPostsShowcase';
 
 export default EnhancedPostsShowcase;

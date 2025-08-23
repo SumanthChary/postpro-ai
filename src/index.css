@@ -84,6 +84,31 @@
     font-weight: 500;
   }
 
+  /* Performance optimizations */
+  img {
+    content-visibility: auto;
+  }
+  
+  /* Smooth scrolling with reduced motion support */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-europa font-medium tracking-tight text-gray-900;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
@@ -255,6 +280,34 @@
   @media (max-width: 640px) {
     .btn-mobile {
       @apply min-h-[44px] min-w-[44px] text-sm font-europa font-medium;
+    }
+  }
+  
+  /* Performance utility classes */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
+
+  /* Optimized animations */
+  .animate-spin-fast {
+    animation: spin 0.75s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 }

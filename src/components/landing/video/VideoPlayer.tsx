@@ -3,6 +3,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Play } from 'lucide-react';
+import { PerformanceImage } from "@/components/ui/performance-image";
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -21,10 +22,11 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl }: VideoPlayerProps) => {
       <Card className="overflow-hidden relative shadow-xl border-0 bg-white/80 backdrop-blur-sm">
         <AspectRatio ratio={16/9}>
           <div className="relative w-full h-full">
-            <img 
+            <PerformanceImage 
               src={thumbnailUrl} 
               alt="Video thumbnail"
-              className="w-full h-full object-cover"
+              className="w-full h-full"
+              priority={true}
             />
             <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
               <Button 
@@ -49,6 +51,7 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl }: VideoPlayerProps) => {
           controls
           autoPlay
           poster={thumbnailUrl}
+          preload="metadata"
         >
           <source src={videoUrl} type="video/mp4" />
           Your browser does not support the video tag.
