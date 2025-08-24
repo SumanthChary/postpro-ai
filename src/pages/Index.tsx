@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 
 // Lazy load non-critical sections
 const VideoShowcase = lazy(() => import("@/components/landing/VideoShowcase"));
-const ComparisonSection = lazy(() => import("@/components/landing/ComparisonSection"));
+const InteractiveComparisonSlider = lazy(() => import("@/components/landing/InteractiveComparisonSlider"));
 const EnhancedPostsShowcase = lazy(() => import("@/components/landing/EnhancedPostsShowcase"));
 const AboutSection = lazy(() => import("@/components/landing/AboutSection"));
 const ComingSoonSection = lazy(() => import("@/components/landing/ComingSoonSection"));
@@ -140,7 +140,7 @@ const Index = () => {
             <HowItWorksSection />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
-            <ComparisonSection />
+            <InteractiveComparisonSlider />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <EnhancedPostsShowcase />
