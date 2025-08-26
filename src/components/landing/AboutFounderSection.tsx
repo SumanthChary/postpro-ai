@@ -25,16 +25,16 @@ const AboutFounderSection = () => {
               
               <div className="mt-6 flex flex-wrap gap-6 justify-center md:justify-start">
                 <div className="text-center">
-                  <div className="font-bold text-xl text-gray-900">47</div>
-                  <div className="text-sm text-gray-600">Beta Users</div>
+                  <div className="font-bold text-xl text-gray-900">200+</div>
+                  <div className="text-sm text-gray-600">Followers on LinkedIn</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold text-xl text-gray-900">117</div>
-                  <div className="text-sm text-gray-600">Posts Enhanced</div>
+                  <div className="font-bold text-xl text-gray-900">120+</div>
+                  <div className="text-sm text-gray-600">Followers on X</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold text-xl text-gray-900">Aug 2025</div>
-                  <div className="text-sm text-gray-600">Launch</div>
+                  <div className="font-bold text-xl text-gray-900">5+</div>
+                  <div className="text-sm text-gray-600">SaaS Built</div>
                 </div>
               </div>
               
