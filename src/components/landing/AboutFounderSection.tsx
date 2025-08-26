@@ -11,28 +11,35 @@ const AboutFounderSection = () => {
             <img src="/lovable-uploads/e055f783-4b8b-47c8-a842-0449cddb238b.png" alt="Founder" className="w-32 h-32 rounded-full object-cover ring-4 ring-blue-100" />
             
             <div className="flex-1 text-center md:text-left">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Founder</h3>
-              <p className="text-blue-600 font-medium mb-4">LinkedIn Growth Enthusiast</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Founder & Creator</h3>
+              <p className="text-blue-600 font-medium mb-4">LinkedIn Content Creator</p>
               
               <div className="space-y-3 text-gray-600">
                 <p>
-                  Building a focused LinkedIn growth engine so professionals get noticed, not ignored. We obsess over outcomes: reach, clicks, and pipeline.
+                  "After struggling with LinkedIn engagement myself, I built PostPro AI to help other creators improve their content. We're early-stage but growing fast based on real user feedback."
+                </p>
+                <p className="text-sm italic">
+                  Building with transparency - your feedback shapes every feature we develop.
                 </p>
               </div>
               
               <div className="mt-6 flex flex-wrap gap-6 justify-center md:justify-start">
                 <div className="text-center">
-                  <div className="font-bold text-xl text-gray-900">150+</div>
-                  <div className="text-sm text-gray-600">LinkedIn Followers</div>
+                  <div className="font-bold text-xl text-gray-900">47</div>
+                  <div className="text-sm text-gray-600">Beta Users</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold text-xl text-gray-900">25</div>
-                  <div className="text-sm text-gray-600">X Followers</div>
+                  <div className="font-bold text-xl text-gray-900">117</div>
+                  <div className="text-sm text-gray-600">Posts Enhanced</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-bold text-xl text-gray-900">10k</div>
-                  <div className="text-sm text-gray-600">Content Views</div>
+                  <div className="font-bold text-xl text-gray-900">Aug 2025</div>
+                  <div className="text-sm text-gray-600">Launch</div>
                 </div>
+              </div>
+              
+              <div className="mt-4 text-xs text-gray-500">
+                Data verified through internal analytics (Updated: August 26, 2025)
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@ const AboutSection = () => {
             About Our Platform
           </h2>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto font-medium leading-relaxed px-2">
-            Discover why thousands of professionals trust PostProAI to elevate their social media presence
+            We're building the future of LinkedIn content creation. Join our early community and help us perfect the tool that improves your posts.
           </p>
         </div>
         
@@ -61,20 +61,25 @@ const AboutSection = () => {
           <div className="bg-white/80 backdrop-blur-sm p-6 sm:p-8 lg:p-10 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200/50">
             <div className="grid grid-cols-2 gap-6 sm:gap-8">
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-blue-600 mb-2 sm:mb-3">10K+</div>
-                <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Active Users</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-blue-600 mb-2 sm:mb-3">47</div>
+                <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Early Adopters</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-purple-600 mb-2 sm:mb-3">500K+</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-purple-600 mb-2 sm:mb-3">117</div>
                 <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Posts Enhanced</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-green-600 mb-2 sm:mb-3">95%</div>
-                <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Satisfaction Rate</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-green-600 mb-2 sm:mb-3">Aug 2025</div>
+                <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Launch Date</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-orange-600 mb-2 sm:mb-3">24/7</div>
-                <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">AI Support</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-orange-600 mb-2 sm:mb-3">Beta</div>
+                <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Early Access</div>
+              </div>
+              <div className="col-span-2 text-center mt-4">
+                <p className="text-xs text-gray-500 italic">
+                  Data verified through internal analytics (Updated: August 26, 2025)
+                </p>
               </div>
             </div>
           </div>

@@ -5,25 +5,25 @@ import { Star, Quote } from "lucide-react";
 const Testimonials = () => {
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "Content Creator",
-      text: "PostPro AI transformed my social media game. My engagement rates have doubled and my followers love the enhanced content quality!",
+      name: "Beta User",
+      role: "Early Adopter",
+      text: "Be among our first success stories! We're collecting real user feedback to showcase here.",
       rating: 5,
-      avatar: "SJ"
+      avatar: "🚀"
     },
     {
-      name: "Michael Chen",
-      role: "Digital Marketer",
-      text: "The AI suggestions are spot-on. It's like having a professional editor by my side, helping me craft compelling posts every time.",
+      name: "Community Member",
+      role: "LinkedIn Creator", 
+      text: "Join our growing community of 47+ creators. Your testimonial could be featured here next!",
       rating: 5,
-      avatar: "MC"
+      avatar: "💫"
     },
     {
-      name: "Emma Davis",
-      role: "Entrepreneur",
-      text: "Worth every penny! My posts now get the attention they deserve. The ROI on my social media marketing has increased significantly.",
+      name: "You?",
+      role: "Future Success Story",
+      text: "Try PostPro AI and share your experience. Real user feedback shapes our development.",
       rating: 5,
-      avatar: "ED"
+      avatar: "⭐"
     },
   ];
 
@@ -32,10 +32,10 @@ const Testimonials = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight px-2">
-            What Our Users Say
+            Early User Feedback
           </h2>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-600 max-w-4xl mx-auto px-2 font-medium leading-relaxed">
-            Join thousands of satisfied users who have transformed their social media presence
+            Join our growing community of 47 creators. Be among our first success stories!
           </p>
         </div>
         

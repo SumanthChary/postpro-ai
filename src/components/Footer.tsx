@@ -10,8 +10,8 @@ const Footer = () => {
               <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-50">PostPro AI</h3>
             </div>
             <p className="text-gray-300 text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed mb-4 sm:mb-5 lg:mb-6 xl:mb-8 max-w-md font-medium">
-              Elevate your social media presence with AI-powered content enhancement. 
-              Transform ordinary posts into engagement magnets.
+              Early-stage LinkedIn content enhancement tool. Join 47 creators building better posts. 
+              Your feedback directly shapes our development.
             </p>
           </div>
           

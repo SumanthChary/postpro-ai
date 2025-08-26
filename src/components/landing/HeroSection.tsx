@@ -40,7 +40,7 @@ const HeroSection = ({ isAuthenticated = false, username }: HeroSectionProps) =>
                 <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold"> Get Noticed</span>
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
-                Join 2,847 professionals who increased their LinkedIn engagement by 340% in 30 days
+                Join 47 creators building authority through better content. Early access - help us perfect the tool!
               </p>
             </>
           )}

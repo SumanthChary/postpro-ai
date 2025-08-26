@@ -22,10 +22,10 @@ const PricingSection = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-            Choose Your Growth Plan
+            Beta Pricing
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Start free, upgrade when you see results. No long-term commitments.
+            Early access pricing while we perfect the product. Join 47 other creators!
           </p>
         </div>
         
@@ -43,14 +43,14 @@ const PricingSection = () => {
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <span className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    MOST POPULAR
+                    BETA SPECIAL
                   </span>
                 </div>
               )}
               {plan.name === "Lifetime Deal" && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <span className="bg-red-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    LIMITED TIME
+                    EARLY BIRD
                   </span>
                 </div>
               )}
@@ -98,8 +98,8 @@ const PricingSection = () => {
               </button>
               
               {plan.name === "Lifetime Deal" && (
-                <p className="text-center text-sm text-red-600 font-medium mt-3">
-                  Only 500 lifetime deals available
+                <p className="text-center text-sm text-orange-600 font-medium mt-3">
+                  Beta pricing for first 100 users
                 </p>
               )}
             </div>
@@ -108,7 +108,7 @@ const PricingSection = () => {
         
         <div className="text-center">
           <p className="text-gray-600">
-            <span className="font-semibold">30-day money-back guarantee</span> • Cancel anytime • No questions asked
+            <span className="font-semibold">30-day money-back guarantee</span> (processed within 48 hours) • Cancel anytime • Your feedback shapes our development
           </p>
         </div>
       </div>
