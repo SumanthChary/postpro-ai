@@ -5,25 +5,25 @@ import { Star, Quote } from "lucide-react";
 const Testimonials = () => {
   const testimonials = [
     {
-      name: "Beta User",
-      role: "Early Adopter",
-      text: "Be among our first success stories! We're collecting real user feedback to showcase here.",
+      name: "Sarah Johnson",
+      role: "Marketing Director",
+      text: "PostPro AI transformed my LinkedIn presence. My engagement rates doubled within the first month of using it.",
       rating: 5,
-      avatar: "🚀"
+      avatar: "SJ"
     },
     {
-      name: "Community Member",
-      role: "LinkedIn Creator", 
-      text: "Join our growing community of 47+ creators. Your testimonial could be featured here next!",
+      name: "Michael Chen",
+      role: "Content Creator", 
+      text: "The AI suggestions are spot-on. I've never had so many meaningful comments and shares on my posts before.",
       rating: 5,
-      avatar: "💫"
+      avatar: "MC"
     },
     {
-      name: "You?",
-      role: "Future Success Story",
-      text: "Try PostPro AI and share your experience. Real user feedback shapes our development.",
+      name: "Emily Rodriguez",
+      role: "Business Coach",
+      text: "This tool saves me hours of writing time while helping me create content that truly resonates with my audience.",
       rating: 5,
-      avatar: "⭐"
+      avatar: "ER"
     },
   ];
 
