@@ -4,8 +4,8 @@ import WhopBanner from "@/components/layout/WhopBanner";
 import WhopTrustPopup from "@/components/whop/WhopTrustPopup";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import Navigation from "@/components/layout/Navigation";
-import HeroSection from "@/components/landing/HeroSection";
+import NavigationNew from "@/components/layout/NavigationNew";
+import HeroSectionNew from "@/components/landing/HeroSectionNew";
 import Footer from "@/components/Footer";
 
 // Lazy load non-critical sections
@@ -119,7 +119,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <WhopBanner />
-      <Navigation
+      <NavigationNew
         session={session}
         username={username}
         avatarUrl={avatarUrl}
@@ -130,7 +130,7 @@ const Index = () => {
       />
 
       <main>
-        <HeroSection isAuthenticated={!!session} username={username} />
+        <HeroSectionNew isAuthenticated={!!session} username={username} />
         
         <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <Suspense fallback={<SectionLoader />}>
