@@ -167,36 +167,6 @@ export type Database = {
         }
         Relationships: []
       }
-      streak_rewards: {
-        Row: {
-          created_at: string
-          id: string
-          reward_description: string | null
-          reward_title: string
-          reward_type: string
-          reward_value: Json
-          streak_milestone: number
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          reward_description?: string | null
-          reward_title: string
-          reward_type: string
-          reward_value: Json
-          streak_milestone: number
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          reward_description?: string | null
-          reward_title?: string
-          reward_type?: string
-          reward_value?: Json
-          streak_milestone?: number
-        }
-        Relationships: []
-      }
       subscribers: {
         Row: {
           created_at: string
@@ -325,68 +295,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_streak_rewards: {
-        Row: {
-          claimed_at: string
-          id: string
-          streak_reward_id: string
-          user_id: string
-        }
-        Insert: {
-          claimed_at?: string
-          id?: string
-          streak_reward_id: string
-          user_id: string
-        }
-        Update: {
-          claimed_at?: string
-          id?: string
-          streak_reward_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_streak_rewards_streak_reward_id_fkey"
-            columns: ["streak_reward_id"]
-            isOneToOne: false
-            referencedRelation: "streak_rewards"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      user_streaks: {
-        Row: {
-          created_at: string
-          current_streak: number
-          id: string
-          last_activity_date: string | null
-          longest_streak: number
-          streak_freeze_count: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          current_streak?: number
-          id?: string
-          last_activity_date?: string | null
-          longest_streak?: number
-          streak_freeze_count?: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          current_streak?: number
-          id?: string
-          last_activity_date?: string | null
-          longest_streak?: number
-          streak_freeze_count?: number
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       user_usage: {
         Row: {
           action_type: string
@@ -452,22 +360,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      current_user_owns_profile: {
-        Args: { profile_id: string }
-        Returns: boolean
-      }
       reset_monthly_usage: {
         Args: Record<PropertyKey, never>
         Returns: undefined
-      }
-      update_user_streak: {
-        Args: { user_id_param: string }
-        Returns: {
-          current_streak: number
-          is_new_record: boolean
-          longest_streak: number
-          rewards_earned: Json
-        }[]
       }
     }
     Enums: {
