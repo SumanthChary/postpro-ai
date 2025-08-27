@@ -71,9 +71,7 @@ const PricingSection = () => {
                 {plan.cta}
               </button>
               
-              {plan.name === "Lifetime Deal" && <p className="text-center text-sm text-orange-600 font-medium mt-3">
-                  Beta pricing for first 100 users
-                </p>}
+              {plan.name === "Lifetime Deal" && <p className="text-center text-sm text-orange-600 font-medium mt-3">Limited for first 100 users</p>}
             </div>)}
         </div>
         
