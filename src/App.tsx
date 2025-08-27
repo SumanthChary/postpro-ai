@@ -12,6 +12,7 @@ import PreloadResources from "@/components/ui/preload-resources";
 
 // Lazy load components for better performance
 const FloatingChatButton = lazy(() => import("./components/chatbot/FloatingChatButton"));
+const PageSkeleton = lazy(() => import("@/components/ui/page-skeleton"));
 const Index = lazy(() => import("./pages/Index"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Enhance = lazy(() => import("./pages/Enhance"));
@@ -31,12 +32,6 @@ const WhopCallback = lazy(() => import("./pages/WhopCallback"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
 
-// Loading component
-const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-  </div>
-);
 
 function App() {
   const queryClient = new QueryClient();
@@ -54,7 +49,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
             <BrowserRouter basename="/">
-              <Suspense fallback={<PageLoader />}>
+              <Suspense fallback={<PageSkeleton />}>
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
