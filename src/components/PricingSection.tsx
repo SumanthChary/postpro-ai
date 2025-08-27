@@ -22,7 +22,7 @@ const PricingSection = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-            Beta Pricing
+            Choose your perfect plan
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Early access pricing while we perfect the product. Join 47 other creators!
@@ -43,7 +43,7 @@ const PricingSection = () => {
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <span className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    BETA SPECIAL
+                    MOST POPULAR
                   </span>
                 </div>
               )}
