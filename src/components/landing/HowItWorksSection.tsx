@@ -20,7 +20,15 @@ const HowItWorksSection = () => {
   return <section className="py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">How It Works 🚀?</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-2">
+            How It Works 
+            <img 
+              src="/lovable-uploads/69ec999d-b4b4-4483-a326-7d87d55920fc.png" 
+              alt="rocket" 
+              className="w-8 h-8 inline-block"
+            />
+            ?
+          </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Transform your social media presence in three simple steps
           </p>
