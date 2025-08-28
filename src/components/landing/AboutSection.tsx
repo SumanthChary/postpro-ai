@@ -1,9 +1,6 @@
-
 import { CheckCircleIcon, StarIcon, ZapIcon } from "lucide-react";
-
 const AboutSection = () => {
-  return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-purple-50/30">
+  return <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-purple-50/30">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight">
@@ -61,11 +58,11 @@ const AboutSection = () => {
           <div className="bg-white/80 backdrop-blur-sm p-6 sm:p-8 lg:p-10 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200/50">
             <div className="grid grid-cols-2 gap-6 sm:gap-8">
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-blue-600 mb-2 sm:mb-3">47</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-blue-600 mb-2 sm:mb-3">47+</div>
                 <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Early Adopters</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-purple-600 mb-2 sm:mb-3">117</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-purple-600 mb-2 sm:mb-3">200+</div>
                 <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Posts Enhanced</div>
               </div>
               <div className="text-center">
@@ -85,8 +82,6 @@ const AboutSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default AboutSection;
