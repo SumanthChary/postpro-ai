@@ -64,7 +64,7 @@ const Affiliate = () => {
   const [session, setSession] = useState<any>(null);
   const [username, setUsername] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [referralLink, setReferralLink] = useState("https://postpro.ai/?ref=your-unique-id");
+  const [referralLink, setReferralLink] = useState(window.location.origin + "/?ref=demo");
   const [copied, setCopied] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -78,8 +78,9 @@ const Affiliate = () => {
       setSession(session);
       if (session?.user) {
         fetchUserProfile(session.user.id);
-        // In a real app, you'd fetch the actual referral link from the database
-        setReferralLink(`https://postpro.ai/?ref=${session.user.id.substring(0, 8)}`);
+    // In a real app, you'd fetch the actual referral link from the database
+    const referralPath = session?.user?.id ? session.user.id.substring(0, 8) : 'signup';
+    setReferralLink(`${window.location.origin}/?ref=${referralPath}`);
       }
     });
 
@@ -89,7 +90,7 @@ const Affiliate = () => {
       setSession(session);
       if (session?.user) {
         fetchUserProfile(session.user.id);
-        setReferralLink(`https://postpro.ai/?ref=${session.user.id.substring(0, 8)}`);
+        setReferralLink(`${window.location.origin}/?ref=${session.user.id.substring(0, 8)}`);
       }
     });
 

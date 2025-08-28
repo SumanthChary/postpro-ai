@@ -12,6 +12,8 @@ import Footer from "@/components/Footer";
 const VideoShowcase = lazy(() => import("@/components/landing/VideoShowcase"));
 const ComparisonSection = lazy(() => import("@/components/landing/ComparisonSection"));
 const EnhancedPostsShowcase = lazy(() => import("@/components/landing/EnhancedPostsShowcase"));
+const TrustIndicators = lazy(() => import("@/components/landing/TrustIndicators"));
+const MobileTestimonials = lazy(() => import("@/components/landing/MobileTestimonials"));
 const AboutSection = lazy(() => import("@/components/landing/AboutSection"));
 const ComingSoonSection = lazy(() => import("@/components/landing/ComingSoonSection"));
 const TemplatesSection = lazy(() => import("@/components/post-enhancer/TemplatesSection"));
@@ -132,7 +134,11 @@ const Index = () => {
       <main>
         <HeroSection isAuthenticated={!!session} username={username} />
         
-        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        <Suspense fallback={<SectionLoader />}>
+          <TrustIndicators />
+        </Suspense>
+        
+        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30 space-y-0">
           <Suspense fallback={<SectionLoader />}>
             <VideoShowcase />
           </Suspense>
@@ -147,6 +153,9 @@ const Index = () => {
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <MobileTestimonials />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <PricingSection />
