@@ -15,8 +15,8 @@ const PricingSection = () => {
   };
   return <section className="py-16 bg-white relative">
       {/* Decorative lines */}
-      
-      
+      <div className="absolute top-8 left-8 w-16 h-px bg-black"></div>
+      <div className="absolute top-8 right-8 w-16 h-px bg-black"></div>
       
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
