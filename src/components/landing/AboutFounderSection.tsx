@@ -38,9 +38,7 @@ const AboutFounderSection = () => {
                 </div>
               </div>
               
-              <div className="mt-4 text-xs text-gray-500">
-                Data verified through internal analytics (Updated: August 26, 2025)
-              </div>
+              
             </div>
           </div>
         </div>
