@@ -71,7 +71,7 @@ const AboutSection = () => {
               </div>
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-orange-600 mb-2 sm:mb-3">Beta</div>
-                <div className="text-gray-600 font-medium text-sm sm:text-base lg:text-lg">Early Access</div>
+                
               </div>
               <div className="col-span-2 text-center mt-4">
                 <p className="text-xs text-gray-500 italic">
