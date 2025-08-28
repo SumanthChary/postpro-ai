@@ -35,16 +35,16 @@ const Navigation = ({
   return (
     <div className="relative">
       <div className="fixed top-0 left-0 right-0 z-50">
-        <nav className="bg-white/95 backdrop-blur-lg border-b border-gray-200/50 shadow-sm">
-      <div className="container mx-auto px-4 py-3">
+        <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100">
+      <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2.5 cursor-pointer" onClick={() => navigate("/")}>
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
             <OptimizedImage 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI Logo" 
-              className="w-7 h-7 rounded-lg object-contain"
+              className="w-8 h-8 rounded-lg object-contain"
             />
-            <span className="text-xl font-bold text-black tracking-tight">
+            <span className="text-2xl font-montserrat font-extrabold text-black">
               PostPro AI
             </span>
           </div>
