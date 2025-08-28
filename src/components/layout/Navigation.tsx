@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Menu, X, User, LogOut, Settings, CreditCard, MessageSquare } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import UserCountBadge from "@/components/trust/UserCountBadge";
+import LiveSupportBadge from "@/components/trust/LiveSupportBadge";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface NavigationProps {
@@ -31,43 +35,56 @@ const Navigation = ({
   mobileMenuOpen,
 }: NavigationProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
-    <div className="relative">
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
-            <OptimizedImage 
-              src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
-              alt="PostPro AI Logo" 
-              className="w-8 h-8 rounded-lg object-contain"
-            />
-            <span className="text-2xl font-montserrat font-extrabold text-black">
-              PostPro AI
-            </span>
+    <nav className="bg-white/90 backdrop-blur-xl border-b border-gray-200/60 sticky top-0 z-50 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center space-x-8">
+            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
+              <OptimizedImage 
+                src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
+                alt="PostPro AI Logo" 
+                className="w-8 h-8 rounded-lg object-contain"
+              />
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                PostPro AI
+              </span>
+            </div>
+            
+            {/* Trust Indicators - Desktop */}
+            <div className="hidden lg:flex items-center space-x-4">
+              <UserCountBadge variant="small" />
+              <LiveSupportBadge />
+            </div>
           </div>
           
-          <div className="hidden md:flex space-x-4">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className={`text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium ${
+                location.pathname === '/blogs' ? 'text-blue-600 font-semibold' : ''
+              }`}
               onClick={() => navigate("/blogs")}
             >
-              <BookOpenIcon className="w-4 h-4 mr-2" />
               Blog
             </Button>
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className={`text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium ${
+                location.pathname === '/affiliate' ? 'text-blue-600 font-semibold' : ''
+              }`}
               onClick={() => navigate("/affiliate")}
             >
               Affiliate
             </Button>
             <Button 
               variant="ghost" 
-              className="text-custom-text hover:text-blue-600 font-opensans"
+              className={`text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium ${
+                location.pathname === '/pricing' ? 'text-blue-600 font-semibold' : ''
+              }`}
               onClick={() => navigate("/pricing")}
             >
               Pricing
@@ -75,32 +92,33 @@ const Navigation = ({
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="font-opensans">
+                  <Button variant="outline" className="font-medium">
                     <Avatar className="w-6 h-6 mr-2">
                       <AvatarImage src={avatarUrl} alt={username} />
                       <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
                     </Avatar>
                     {username}
-                    <ChevronDownIcon className="w-4 h-4 ml-2" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem onClick={() => navigate("/profile")}>
-                    <Avatar className="w-4 h-4 mr-2">
-                      <AvatarImage src={avatarUrl} alt={username} />
-                      <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
-                    </Avatar>
+                    <User className="w-4 h-4 mr-2" />
                     Profile
                   </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/subscription")}>
+                    <CreditCard className="w-4 h-4 mr-2" />
+                    Subscription
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
-                    <LogOutIcon className="w-4 h-4 mr-2" />
+                    <LogOut className="w-4 h-4 mr-2" />
                     Sign Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-opensans"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200"
                 onClick={() => navigate("/auth")}
               >
                 Sign In
@@ -108,98 +126,76 @@ const Navigation = ({
             )}
           </div>
 
-          <button 
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <XIcon className="w-6 h-6 text-blue-600" />
-            ) : (
-              <MenuIcon className="w-6 h-6 text-blue-600" />
-            )}
-          </button>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4">
-            <div className="flex flex-col space-y-4">
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  navigate("/blogs");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                <BookOpenIcon className="w-4 h-4 mr-2" />
-                Blog
+          {/* Mobile Menu Button */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
               </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  navigate("/affiliate");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Affiliate
-              </Button>
-              <Button 
-                variant="ghost" 
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  navigate("/pricing");
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Pricing
-              </Button>
-              {session ? (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      navigate("/profile");
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full font-opensans"
-                  >
-                    <Avatar className="w-4 h-4 mr-2">
-                      <AvatarImage src={avatarUrl} alt={username} />
-                      <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    Profile
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      handleSignOut();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full font-opensans"
-                  >
-                    <LogOutIcon className="w-4 h-4 mr-2" />
-                    Sign Out
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white w-full font-opensans"
-                  onClick={() => {
-                    navigate("/auth");
-                    setMobileMenuOpen(false);
-                  }}
+            </SheetTrigger>
+            <SheetContent side="right" className="w-72">
+              <div className="flex flex-col space-y-4 mt-6">
+                {/* Mobile Trust Indicators */}
+                <div className="flex flex-col space-y-3 mb-6">
+                  <UserCountBadge variant="large" />
+                  <LiveSupportBadge />
+                </div>
+                
+                <Button 
+                  variant="ghost" 
+                  className="justify-start"
+                  onClick={() => navigate("/blogs")}
                 >
-                  Sign In
+                  Blog
                 </Button>
-              )}
-            </div>
-          </div>
-        )}
+                <Button 
+                  variant="ghost" 
+                  className="justify-start"
+                  onClick={() => navigate("/affiliate")}
+                >
+                  Affiliate
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="justify-start"
+                  onClick={() => navigate("/pricing")}
+                >
+                  Pricing
+                </Button>
+                
+                {session ? (
+                  <>
+                    <Button
+                      variant="outline"
+                      className="justify-start"
+                      onClick={() => navigate("/profile")}
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Profile
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="justify-start"
+                      onClick={handleSignOut}
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                    onClick={() => navigate("/auth")}
+                  >
+                    Sign In
+                  </Button>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </nav>
-      </div>
-    </div>
   );
 };
 

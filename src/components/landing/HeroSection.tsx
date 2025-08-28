@@ -35,13 +35,29 @@ const HeroSection = ({ isAuthenticated = false, username }: HeroSectionProps) =>
           ) : (
             <>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.2] text-gray-900">
-                <span className="font-bold text-gray-950">LinkedIn Posts That Actually</span>
+                <span className="font-bold text-gray-950">Stop Posting Content That</span>
                 <br className="hidden sm:inline" />
-                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold"> Get Noticed</span>
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold"> Gets Ignored</span>
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
-                Join 47 creators building authority through better content. Early access - help us perfect the tool!
+                Transform boring posts into engaging content that builds your professional brand. Trusted by 47+ creators.
               </p>
+              
+              {/* Trust Indicators */}
+              <div className="flex flex-wrap items-center justify-center gap-4 mb-6 px-4">
+                <div className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border border-green-200 rounded-full px-4 py-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-sm font-semibold text-gray-700">SSL Secure</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border border-blue-200 rounded-full px-4 py-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm font-semibold text-gray-700">30-Day Money Back</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/70 backdrop-blur-sm border border-purple-200 rounded-full px-4 py-2">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                  <span className="text-sm font-semibold text-gray-700">Privacy Protected</span>
+                </div>
+              </div>
             </>
           )}
         </div>

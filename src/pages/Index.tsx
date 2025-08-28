@@ -20,6 +20,7 @@ const AboutFounderSection = lazy(() => import("@/components/landing/AboutFounder
 const PricingSection = lazy(() => import("@/components/PricingSection"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const FAQ = lazy(() => import("@/components/FAQ"));
+const PainPointsSection = lazy(() => import("@/components/landing/PainPointsSection"));
 
 // Loading component for sections
 const SectionLoader = () => (
@@ -138,6 +139,9 @@ const Index = () => {
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <HowItWorksSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <PainPointsSection />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <ComparisonSection />
