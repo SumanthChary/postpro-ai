@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useReferralTracking } from "@/hooks/useReferralTracking";
 import { supabase } from "@/integrations/supabase/client";
 import { Eye, EyeOff, Mail, Lock, User, Shield, Zap, Award, TrendingUp } from "lucide-react";
 
@@ -21,6 +22,7 @@ const Auth = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { processReferral } = useReferralTracking();
 
   const validateSignUp = () => {
     if (!email || !email.includes('@')) {
@@ -123,6 +125,11 @@ const Auth = () => {
         }
         
         console.log('Signup successful:', data.user?.email);
+        
+        // Process referral for new user
+        if (data.user?.id) {
+          processReferral(data.user.id, 'free');
+        }
         
         toast({
           title: "Account Created!",

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import WhopBanner from "@/components/layout/WhopBanner";
 import WhopTrustPopup from "@/components/whop/WhopTrustPopup";
 import { useToast } from "@/hooks/use-toast";
+import { useReferralTracking } from "@/hooks/useReferralTracking";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/layout/Navigation";
 import HeroSection from "@/components/landing/HeroSection";
@@ -35,6 +36,7 @@ const Index = () => {
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { processReferral } = useReferralTracking();
 
   useEffect(() => {
     // First set up the auth listener
@@ -44,6 +46,8 @@ const Index = () => {
       setSession(session);
       if (session?.user) {
         fetchUserProfile(session.user.id);
+        // Process referral when user signs up/in
+        processReferral(session.user.id, 'free');
       } else {
         setUsername("");
         setAvatarUrl("");
@@ -132,7 +136,7 @@ const Index = () => {
       <main>
         <HeroSection isAuthenticated={!!session} username={username} />
         
-        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30 space-y-8">
           <Suspense fallback={<SectionLoader />}>
             <VideoShowcase />
           </Suspense>
