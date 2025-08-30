@@ -1,12 +1,10 @@
-
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { CheckCircle, CreditCard } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { CheckCircle } from "lucide-react";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PlanGridProps {
   isYearly: boolean;
@@ -14,113 +12,136 @@ interface PlanGridProps {
 
 const PlansGrid = ({ isYearly }: PlanGridProps) => {
   const navigate = useNavigate();
-  const { toast } = useToast();
 
-  // Filter plans based on yearly toggle - remove weekly plan
-  const filteredPlans = isYearly 
-    ? pricingPlans.filter(plan => plan.period === "year" || plan.period === "forever" || plan.name === "Enterprise Plan")
-    : pricingPlans.filter(plan => plan.period === "month" || plan.period === "forever");
+  // Filter plans based on yearly toggle - show Free, Pro (Monthly/Annual based on toggle), and Lifetime
+  const filteredPlans = pricingPlans.filter(plan => {
+    if (plan.name === 'FREE' || plan.name === 'LIFETIME') {
+      return true; // Always show Free and Lifetime
+    }
+    if (isYearly) {
+      return plan.name === 'PRO ANNUAL';
+    } else {
+      return plan.name === 'PRO MONTHLY';
+    }
+  });
 
   const handleSelectPlan = async (plan: Plan) => {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session?.user) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to subscribe",
-        variant: "destructive",
-      });
-      navigate("/auth");
+    // For free plan, just redirect to signup/dashboard
+    if (plan.name === 'FREE') {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        navigate('/auth');
+      } else {
+        navigate('/enhance'); // Redirect to main app
+      }
       return;
     }
 
-    // Check if user already has active credits
-    const { data: userCredits, error: creditsError } = await supabase
-      .from('user_credits')
-      .select('balance, expires_at')
-      .eq('user_id', session.user.id)
-      .gt('balance', 0)
-      .lt('expires_at', new Date(Date.now() + 86400000).toISOString())
-      .order('expires_at', { ascending: false });
-
-    if (creditsError) {
-      console.error('Error checking user credits:', creditsError);
+    // Check if user is authenticated for paid plans
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      // Redirect to auth if not logged in
+      navigate('/auth', { 
+        state: { 
+          returnTo: '/payment',
+          plan: plan 
+        } 
+      });
+      return;
     }
 
-    navigate("/payment", { 
-      state: { 
-        plan: {
-          name: plan.name,
-          price: plan.price,
-          period: plan.period,
-          currency: 'USD',
-          displayPrice: plan.price,
-          credits: plan.credits
-        },
-        existingCredits: userCredits && userCredits.length > 0
+    // Navigate to payment page with plan details
+    navigate('/payment', {
+      state: {
+        plan: plan
       }
     });
   };
 
   return (
-    <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
-      {filteredPlans.map((plan) => (
-        <Card key={plan.name} className={`p-8 hover:shadow-lg transition-all duration-300 ${
-          plan.popular ? "border-blue-600 shadow-lg relative" : ""
-        }`}>
-          {plan.popular && (
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                Most Popular
-              </span>
-            </div>
-          )}
-          
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold mb-2">
-              {plan.icon && <span className="mr-2">{plan.icon}</span>}
-              {plan.name}
-            </h2>
-            <p className="text-3xl font-bold mb-2">
-              ${plan.price}
-              {plan.period !== "forever" && (
-                <span className="text-lg font-normal">
-                  {plan.period === "month" ? "" : `/${plan.period}`}
-                </span>
+    <div className="py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {filteredPlans.map((plan) => (
+            <Card key={plan.name} className={`relative p-6 flex flex-col h-full transition-all duration-300 hover:shadow-xl ${
+              plan.popular ? 'border-2 border-primary shadow-lg transform scale-105' : 'border-2 border-gray-200 hover:border-gray-300'
+            }`}>
+              {(plan.popular || plan.badge) && (
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className={`px-4 py-1 rounded-full text-sm font-semibold ${
+                    plan.popular ? "bg-primary text-white" : "bg-orange-500 text-white"
+                  }`}>
+                    {plan.badge || "Most Popular"}
+                  </span>
+                </div>
               )}
-            </p>
-            {plan.name === "Yearly Plan" && (
-              <p className="text-sm text-green-600 font-medium mb-2">
-                50% OFF - Save $96/year!
-              </p>
-            )}
-            <p className="text-sm text-green-600 flex items-center gap-1">
-              <span>🚀</span>
-              {plan.credits} credits included
-            </p>
-          </div>
-
-          <div className="space-y-6 mb-8">
-            <ul className="space-y-3">
-              {plan.features.map((feature) => (
-                <li key={feature} className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <Button 
-            className={`w-full ${plan.popular ? "bg-blue-600 hover:bg-blue-700" : ""}`}
-            variant={plan.popular ? "default" : "outline"}
-            onClick={() => handleSelectPlan(plan)}
-          >
-            {plan.cta}
-            {plan.cta?.includes("Choose") && <CreditCard className="w-4 h-4 ml-2" />}
-          </Button>
-        </Card>
-      ))}
+              
+              <div className="flex-1">
+                <div className="text-center mb-6">
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    {plan.icon && <span className="text-3xl">{plan.icon}</span>}
+                    <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <div className="flex items-baseline justify-center gap-1">
+                      {plan.originalPrice && (
+                        <span className="text-lg text-gray-400 line-through">
+                          ${plan.originalPrice}
+                        </span>
+                      )}
+                      <span className="text-4xl font-bold text-gray-900">
+                        ${plan.price}
+                      </span>
+                      <span className="text-gray-600">
+                        /{plan.period === "lifetime" ? "lifetime" : plan.period}
+                      </span>
+                    </div>
+                    
+                    {plan.originalPrice && (
+                      <div className="mt-2">
+                        <span className="inline-block bg-green-100 text-green-800 text-sm font-medium px-2 py-1 rounded">
+                          Save ${Number(plan.originalPrice) - Number(plan.price)}
+                        </span>
+                      </div>
+                    )}
+                    
+                    {plan.limitedQuantity && (
+                      <p className="text-sm text-orange-600 font-medium mt-2">
+                        {plan.limitedQuantity}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                
+                <div className="space-y-3 mb-8">
+                  {plan.features.map((feature) => (
+                    <div key={feature} className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <Button
+                className={`w-full py-3 font-semibold transition-all duration-300 ${
+                  plan.name === "FREE" 
+                    ? "bg-gray-100 text-gray-700 hover:bg-gray-200" 
+                    : plan.popular || plan.badge
+                      ? "bg-primary text-white hover:bg-primary/90 shadow-lg" 
+                      : "border-2 border-primary text-primary hover:bg-primary hover:text-white"
+                }`}
+                variant={plan.name === "FREE" ? "outline" : plan.popular || plan.badge ? "default" : "outline"}
+                onClick={() => handleSelectPlan(plan)}
+              >
+                {plan.cta}
+              </Button>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

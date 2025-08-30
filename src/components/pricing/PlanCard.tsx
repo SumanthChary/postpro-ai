@@ -2,7 +2,7 @@
 import { Plan } from "@/types/pricing";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle, Coins } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 interface PlanCardProps {
   plan: Plan;
@@ -14,57 +14,55 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
 
   return (
     <Card
-      className={`p-3 sm:p-4 lg:p-6 flex flex-col relative bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300 ${
-        plan.popular ? "border-2 border-blue-600 shadow-lg" : ""
+      className={`p-4 sm:p-6 flex flex-col relative bg-white border-2 rounded-xl hover:shadow-xl transition-all duration-300 ${
+        plan.popular ? "border-primary shadow-lg scale-105" : "border-gray-200 hover:border-gray-300"
       }`}
     >
-      {plan.popular && (
+      {(plan.popular || plan.badge) && (
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-            Most Popular
+          <span className={`px-4 py-1 rounded-full text-xs font-semibold ${
+            plan.popular ? "bg-primary text-white" : "bg-orange-500 text-white"
+          }`}>
+            {plan.badge || "Most Popular"}
           </span>
         </div>
       )}
       
-      <div className="mb-4 sm:mb-6">
-        <h3 className="text-base sm:text-lg lg:text-xl font-bold mb-2 flex items-center gap-2 text-gray-900">
-          {plan.icon && <span className="text-sm sm:text-base">{plan.icon}</span>}
-          {plan.name}
-        </h3>
-        <div className="flex items-end mb-2 sm:mb-4">
-          {plan.name !== "Free" && plan.name === "Professional" && (
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="text-xl sm:text-2xl line-through text-gray-400">
-                  {plan.price === "Custom" ? "Custom" : `${currencySymbol}${Math.round(Number(plan.price) / 0.6)}`}
-                </span>
-                <span className="text-sm font-semibold bg-red-100 text-red-600 px-2 py-0.5 rounded">-40%</span>
-              </div>
-              <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-                {plan.price === "Custom" ? "Custom" : `${currencySymbol}${plan.price}`}
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-4">
+          {plan.icon && <span className="text-2xl">{plan.icon}</span>}
+          <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
+        </div>
+        
+        <div className="mb-4">
+          <div className="flex items-baseline gap-1">
+            {plan.originalPrice && (
+              <span className="text-lg text-gray-400 line-through">
+                ${plan.originalPrice}
+              </span>
+            )}
+            <span className="text-4xl font-bold text-gray-900">
+              ${plan.price}
+            </span>
+            <span className="text-gray-600">
+              /{plan.period === "lifetime" ? "lifetime" : plan.period}
+            </span>
+          </div>
+          
+          {plan.originalPrice && (
+            <div className="mt-2">
+              <span className="inline-block bg-green-100 text-green-800 text-sm font-medium px-2 py-1 rounded">
+                Save ${Number(plan.originalPrice) - Number(plan.price)}
               </span>
             </div>
           )}
-          {(plan.name !== "Free" && plan.name !== "Professional") && (
-            <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-              {plan.price === "Custom" ? "Custom" : `${currencySymbol}${plan.price}`}
-            </span>
-          )}
-          {plan.name === "Free" && (
-            <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-              {currencySymbol}0
-            </span>
-          )}
-          {plan.price !== "Custom" && (
-            <span className="text-gray-600 ml-1 sm:ml-2 text-sm sm:text-base self-end">/{plan.period}</span>
+          
+          {plan.limitedQuantity && (
+            <p className="text-sm text-orange-600 font-medium mt-2">
+              {plan.limitedQuantity}
+            </p>
           )}
         </div>
-        {plan.credits && (
-          <div className="flex items-center gap-1 sm:gap-2 text-green-600 text-xs sm:text-sm font-medium mb-2">
-            <Coins className="w-3 h-3 sm:w-4 sm:h-4" />
-            {plan.credits} credits included
-          </div>
-        )}
       </div>
       
       <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 lg:mb-8 flex-grow">
@@ -77,12 +75,14 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
       </div>
       
       <Button
-        className={`w-full text-xs sm:text-sm lg:text-base py-2 sm:py-2.5 ${
-          plan.popular 
-            ? "bg-blue-600 hover:bg-blue-700 text-white" 
-            : "border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
+        className={`w-full py-3 font-semibold transition-all duration-300 ${
+          plan.name === "FREE" 
+            ? "bg-gray-100 text-gray-700 hover:bg-gray-200" 
+            : plan.popular || plan.badge
+              ? "bg-primary text-white hover:bg-primary/90 shadow-lg" 
+              : "border-2 border-primary text-primary hover:bg-primary hover:text-white"
         }`}
-        variant={plan.popular ? "default" : "outline"}
+        variant={plan.name === "FREE" ? "outline" : plan.popular || plan.badge ? "default" : "outline"}
         onClick={() => onSubscribe(plan)}
       >
         {plan.cta}

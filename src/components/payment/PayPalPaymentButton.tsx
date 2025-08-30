@@ -33,7 +33,6 @@ export const PayPalPaymentButton = ({
           orderId,
           userId,
           subscriptionTier: planDetails.name,
-          credits: planDetails.credits,
           planName: planDetails.name
         }
       });
@@ -48,35 +47,11 @@ export const PayPalPaymentButton = ({
         throw new Error(verificationData?.error || 'Payment verification failed');
       }
 
-      // Handle credits if they're part of the plan
-      if (planDetails.credits) {
-        console.log(`Adding ${planDetails.credits} credits for user ${userId}`);
-        
-        const expiresAt = new Date();
-        expiresAt.setMonth(expiresAt.getMonth() + (planDetails.name.toLowerCase().includes('yearly') ? 12 : 3));
-        
-        const { error: creditError } = await supabase.functions.invoke('handle-credits', {
-          body: { 
-            action: 'add',
-            userId: userId,
-            amount: planDetails.credits,
-            expiresAt: expiresAt.toISOString()
-          }
-        });
-        
-        if (creditError) {
-          console.error('Error adding credits:', creditError);
-          toast({
-            title: "Payment Successful",
-            description: "Your payment was processed but there was an issue adding credits. Please contact support.",
-            variant: "destructive",
-          });
-        }
-      }
+      // Payment successful - no credits system anymore
 
       toast({
         title: "Payment Successful!",
-        description: `You are now subscribed to the ${planDetails.name}${planDetails.credits ? ` with ${planDetails.credits} credits` : ''}`,
+        description: `You are now subscribed to the ${planDetails.name}`,
         duration: 5000,
       });
 
@@ -121,8 +96,7 @@ export const PayPalPaymentButton = ({
         createOrder={(data, actions) => {
           console.log('Creating PayPal order with details:', {
             price: planDetails.price,
-            name: planDetails.name,
-            credits: planDetails.credits
+            name: planDetails.name
           });
           return actions.order.create({
             intent: "CAPTURE",
@@ -140,7 +114,7 @@ export const PayPalPaymentButton = ({
               description: `${planDetails.name} Subscription`,
               items: [{
                 name: planDetails.name,
-                description: `${planDetails.name} Plan${planDetails.credits ? ` with ${planDetails.credits} credits` : ''}`,
+                description: `${planDetails.name} Plan`,
                 unit_amount: {
                   currency_code: "USD",
                   value: planDetails.price

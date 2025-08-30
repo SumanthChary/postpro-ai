@@ -3,49 +3,66 @@ import { Plan } from "@/types/pricing";
 
 export const pricingPlans: Plan[] = [
   {
-    name: "Pro Monthly",
-    price: "20",
+    name: "FREE",
+    price: "0",
     period: "month",
     features: [
-      "Unlimited post generation",
-      "All social platforms",
-      "Engagement analytics",
-      "Email support"
+      "5 posts per month",
+      "Basic templates only"
     ],
-    cta: "Start Free Trial",
-    credits: 1000,
-    currency: 'USD'
+    cta: "Get Started",
+    icon: "🆓",
+    currency: 'USD',
+    postLimit: 5
   },
   {
-    name: "Annual Plan",
-    price: "120",
-    originalPrice: "240",
+    name: "PRO MONTHLY",
+    price: "39",
+    period: "month",
+    features: [
+      "Unlimited posts",
+      "All premium features",
+      "Priority support",
+      "Advanced analytics"
+    ],
+    cta: "Upgrade to Pro",
+    icon: "💼",
+    currency: 'USD',
+    postLimit: -1 // -1 means unlimited
+  },
+  {
+    name: "PRO ANNUAL",
+    price: "399",
+    originalPrice: "468",
     period: "year",
     features: [
       "Everything in Pro Monthly",
-      "Save $120 annually",
-      "Priority support",
-      "Advanced templates"
+      "Save $69/year (29% discount)",
+      "Bonus annual-only features",
+      "Extended priority support"
     ],
-    cta: "Start Free Trial",
+    cta: "Save with Annual",
     popular: true,
-    credits: 12000,
-    currency: 'USD'
+    icon: "⭐",
+    currency: 'USD',
+    postLimit: -1,
+    badge: "Best Value"
   },
   {
-    name: "Lifetime Deal",
-    price: "49",
+    name: "LIFETIME",
+    price: "99",
     period: "lifetime",
     features: [
-      "Pay once, use forever",
-      "All Pro features included",
-      "VIP community access",
-      "Exclusive masterclasses/guide",
-      "Priority feature requests"
+      "Everything forever",
+      "Exclusive support",
+      "Future features included",
+      "Lifetime updates"
     ],
     cta: "Get Lifetime Access",
-    icon: "🔥",
-    credits: 10000,
-    currency: 'USD'
+    icon: "💎",
+    currency: 'USD',
+    postLimit: -1,
+    badge: "Limited Time",
+    limitedQuantity: "Limited to 1,000 customers"
   }
 ];

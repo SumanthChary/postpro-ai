@@ -77,13 +77,12 @@ export const RazorpayPaymentButton = ({
           amount: parseFloat(priceToUse), // Backend will handle conversion to smallest currency unit
           currency: currencyToUse,
           receipt: `plan_${planDetails.name.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}`,
-          notes: {
-            plan_name: planDetails.name,
-            user_id: userId,
-            original_currency: 'USD',
-            display_currency: currencyToUse,
-            credits: planDetails.credits
-          }
+            notes: {
+              plan_name: planDetails.name,
+              user_id: userId,
+              original_currency: 'USD',
+              display_currency: currencyToUse
+            }
         }
       });
       
@@ -121,7 +120,6 @@ export const RazorpayPaymentButton = ({
                 plan_details: {
                   name: planDetails.name,
                   price: planDetails.price,
-                  credits: planDetails.credits,
                   currency: currencyToUse,
                   period: planDetails.period
                 }
@@ -134,7 +132,7 @@ export const RazorpayPaymentButton = ({
             
             toast({
               title: "Payment Successful!",
-              description: `You are now subscribed to the ${planDetails.name}${planDetails.credits ? ` with ${planDetails.credits} credits` : ''}`,
+              description: `You are now subscribed to the ${planDetails.name}`,
               duration: 5000,
             });
             

@@ -9,7 +9,7 @@ import { EnhancedMetrics } from "@/components/profile/EnhancedMetrics";
 import { useNavigate } from "react-router-dom";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
 import { ProfileForm } from "@/components/profile/ProfileForm";
-import UserCredits from "@/components/profile/UserCredits";
+import PostUsage from "@/components/profile/PostUsage";
 import SubscriptionInfo from "@/components/profile/SubscriptionInfo";
 import UsageHistory from "@/components/profile/UsageHistory";
 import AccountSettings from "@/components/profile/AccountSettings";
@@ -67,10 +67,9 @@ const Profile = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 bg-white/80 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-white/80 backdrop-blur-sm">
             <TabsTrigger value="profile" className="font-cabinet text-xs sm:text-sm">Profile</TabsTrigger>
             <TabsTrigger value="subscription" className="font-cabinet text-xs sm:text-sm">Subscription</TabsTrigger>
-            <TabsTrigger value="credits" className="font-cabinet text-xs sm:text-sm">Credits</TabsTrigger>
             <TabsTrigger value="activity" className="font-cabinet text-xs sm:text-sm">Activity</TabsTrigger>
             <TabsTrigger value="settings" className="font-cabinet text-xs sm:text-sm">Settings</TabsTrigger>
           </TabsList>
@@ -116,35 +115,7 @@ const Profile = () => {
           <TabsContent value="subscription">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {userId && <SubscriptionInfo />}
-              <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
-                <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 font-cabinet">Your Account Status</h3>
-                <p className="text-gray-600 mb-4 font-cabinet text-sm sm:text-base">
-                  You have unlimited access to all features.
-                </p>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="credits">
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {userId && <UserCredits userId={userId} />}
-                <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
-                  <h3 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 font-cabinet">Post Enhancements</h3>
-                  <div className="space-y-3 text-sm text-gray-600 font-cabinet">
-                    <p>• You can enhance unlimited posts</p>
-                    <p>• All features are available to you</p>
-                    <p>• No credit limits or restrictions</p>
-                  </div>
-                </Card>
-              </div>
-              
-              {/* Referral System */}
-              {userId && (
-                <div className="mt-6">
-                  <ReferralSystem userId={userId} />
-                </div>
-              )}
+              {userId && <PostUsage userId={userId} />}
             </div>
           </TabsContent>
 

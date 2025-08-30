@@ -11,11 +11,13 @@ export interface Plan {
   cta: string;
   popular?: boolean;
   icon?: string;
-  credits?: number; // Credits field for the plan
-  currency?: 'USD' | 'INR'; // Added currency field
-  displayPrice?: string; // Added display price field for converted amounts
-  originalPrice?: string; // Original price before discount
-  discountPercentage?: number; // Discount percentage
+  currency?: 'USD' | 'INR';
+  displayPrice?: string;
+  originalPrice?: string;
+  discountPercentage?: number;
+  postLimit?: number; // Monthly post limit (-1 for unlimited)
+  badge?: string; // Badge text like "Best Value", "Limited Time"
+  limitedQuantity?: string; // Text for limited quantity
 }
 
 export interface UserCredit {
