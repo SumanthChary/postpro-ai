@@ -7,12 +7,28 @@ const PlanToggle = ({
   isYearly,
   setIsYearly
 }: PlanToggleProps) => {
-  return <div className="flex justify-center items-center gap-4 mb-8">
-      <span className={`text-lg ${!isYearly ? 'font-bold text-blue-600' : 'text-gray-600'}`}>Monthly</span>
-      <button onClick={() => setIsYearly(!isYearly)} className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${isYearly ? "bg-blue-600" : "bg-gray-200"}`}>
-        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isYearly ? "translate-x-6" : "translate-x-1"}`} />
+  return (
+    <div className="flex justify-center items-center gap-4 mb-8">
+      <span className={`text-lg font-medium transition-colors ${!isYearly ? 'text-gray-900' : 'text-gray-500'}`}>
+        Monthly
+      </span>
+      <button
+        onClick={() => setIsYearly(!isYearly)}
+        className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+          isYearly ? "bg-primary" : "bg-gray-300"
+        }`}
+      >
+        <span
+          className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${
+            isYearly ? "translate-x-6" : "translate-x-1"
+          }`}
+        />
       </button>
-      <span className={`text-lg ${isYearly ? 'font-bold text-blue-600' : 'text-gray-600'}`}>Yearly</span>
-    </div>;
+      <span className={`text-lg font-medium transition-colors ${isYearly ? 'text-gray-900' : 'text-gray-500'}`}>
+        Yearly
+        <span className="ml-2 text-sm text-green-600 font-semibold">Save 29%</span>
+      </span>
+    </div>
+  );
 };
 export default PlanToggle;

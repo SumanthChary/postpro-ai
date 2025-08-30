@@ -33,7 +33,6 @@ export const pricingPlans: Plan[] = [
   {
     name: "PRO ANNUAL",
     price: "399",
-    originalPrice: "468",
     period: "year",
     features: [
       "Everything in Pro Monthly",
@@ -42,7 +41,6 @@ export const pricingPlans: Plan[] = [
       "Extended priority support"
     ],
     cta: "Save with Annual",
-    popular: true,
     icon: "⭐",
     currency: 'USD',
     postLimit: -1,
@@ -59,6 +57,7 @@ export const pricingPlans: Plan[] = [
       "Lifetime updates"
     ],
     cta: "Get Lifetime Access",
+    popular: true,
     icon: "💎",
     currency: 'USD',
     postLimit: -1,

@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PlanCard from "./pricing/PlanCard";
 import SeeFullFeaturesButton from "./pricing/SeeFullFeaturesButton";
 import RedeemCodeDialog from "./pricing/RedeemCodeDialog";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
+
 const PricingSection = () => {
   const navigate = useNavigate();
+  const [isYearly, setIsYearly] = useState(false);
+
   const handleSubscribe = (plan: Plan) => {
     navigate("/payment", {
       state: {
@@ -13,11 +17,20 @@ const PricingSection = () => {
       }
     });
   };
-  return <section className="py-16 bg-white relative">
-      {/* Decorative lines */}
-      
-      
-      
+
+  // Filter plans based on yearly toggle - show Free, Pro (Monthly/Annual based on toggle), and Lifetime
+  const getFilteredPlans = () => {
+    const freePlan = pricingPlans.find(plan => plan.name === 'FREE');
+    const proPlan = pricingPlans.find(plan => 
+      isYearly ? plan.name === 'PRO ANNUAL' : plan.name === 'PRO MONTHLY'
+    );
+    const lifetimePlan = pricingPlans.find(plan => plan.name === 'LIFETIME');
+    
+    return [freePlan, proPlan, lifetimePlan].filter(Boolean) as Plan[];
+  };
+
+  return (
+    <section className="py-16 bg-white relative">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">Choose your Perfect Plan</h2>
@@ -26,8 +39,31 @@ const PricingSection = () => {
           </p>
         </div>
         
+        {/* Professional Toggle */}
+        <div className="flex justify-center items-center gap-4 mb-12">
+          <span className={`text-lg font-medium transition-colors ${!isYearly ? 'text-gray-900' : 'text-gray-500'}`}>
+            Monthly
+          </span>
+          <button
+            onClick={() => setIsYearly(!isYearly)}
+            className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+              isYearly ? "bg-primary" : "bg-gray-300"
+            }`}
+          >
+            <span
+              className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${
+                isYearly ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+          <span className={`text-lg font-medium transition-colors ${isYearly ? 'text-gray-900' : 'text-gray-500'}`}>
+            Yearly
+            <span className="ml-2 text-sm text-green-600 font-semibold">Save 29%</span>
+          </span>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-8">
-          {pricingPlans.slice(0, 3).map((plan) => ( // Show only first 3 plans (Free, Pro Monthly, Lifetime)
+          {getFilteredPlans().map((plan) => (
             <div key={plan.name} className={`relative p-8 rounded-2xl border-2 transition-all duration-300 hover:shadow-xl ${
               plan.popular || plan.badge ? "border-primary bg-primary/5 transform scale-105 shadow-lg" : "border-gray-200 bg-white hover:border-gray-300"
             }`}>
@@ -50,11 +86,6 @@ const PricingSection = () => {
                 
                 <div className="mb-4">
                   <div className="flex items-baseline justify-center gap-1">
-                    {plan.originalPrice && (
-                      <span className="text-lg text-gray-400 line-through">
-                        ${plan.originalPrice}
-                      </span>
-                    )}
                     <span className="text-4xl font-bold text-gray-900">
                       ${plan.price}
                     </span>
@@ -62,12 +93,6 @@ const PricingSection = () => {
                       /{plan.period === "lifetime" ? "lifetime" : plan.period}
                     </span>
                   </div>
-                  
-                  {plan.originalPrice && (
-                    <p className="text-green-600 font-semibold mt-2">
-                      Save ${Number(plan.originalPrice) - Number(plan.price)} annually
-                    </p>
-                  )}
                 </div>
                 
                 {plan.limitedQuantity && (
@@ -110,6 +135,7 @@ const PricingSection = () => {
           </p>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 export default PricingSection;

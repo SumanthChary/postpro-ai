@@ -14,16 +14,15 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
   const navigate = useNavigate();
 
   // Filter plans based on yearly toggle - show Free, Pro (Monthly/Annual based on toggle), and Lifetime
-  const filteredPlans = pricingPlans.filter(plan => {
-    if (plan.name === 'FREE' || plan.name === 'LIFETIME') {
-      return true; // Always show Free and Lifetime
-    }
-    if (isYearly) {
-      return plan.name === 'PRO ANNUAL';
-    } else {
-      return plan.name === 'PRO MONTHLY';
-    }
-  });
+  const getFilteredPlans = () => {
+    const freePlan = pricingPlans.find(plan => plan.name === 'FREE');
+    const proPlan = pricingPlans.find(plan => 
+      isYearly ? plan.name === 'PRO ANNUAL' : plan.name === 'PRO MONTHLY'
+    );
+    const lifetimePlan = pricingPlans.find(plan => plan.name === 'LIFETIME');
+    
+    return [freePlan, proPlan, lifetimePlan].filter(Boolean) as Plan[];
+  };
 
   const handleSelectPlan = async (plan: Plan) => {
     // For free plan, just redirect to signup/dashboard
@@ -63,7 +62,7 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
     <div className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {filteredPlans.map((plan) => (
+          {getFilteredPlans().map((plan) => (
             <Card key={plan.name} className={`relative p-6 flex flex-col h-full transition-all duration-300 hover:shadow-xl ${
               plan.popular ? 'border-2 border-primary shadow-lg transform scale-105' : 'border-2 border-gray-200 hover:border-gray-300'
             }`}>
