@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import Footer from "@/components/Footer";
-import RedeemCodeDialog from "@/components/pricing/RedeemCodeDialog";
 import SubscriptionHeader from "@/components/pricing/SubscriptionHeader";
 import PlanToggle from "@/components/pricing/PlanToggle";
 import PlansGrid from "@/components/pricing/PlansGrid";
@@ -16,10 +15,6 @@ const Subscription = () => {
         <SubscriptionHeader />
         
         <PlanToggle isYearly={isYearly} setIsYearly={setIsYearly} />
-        
-        <div className="flex flex-col items-center mb-8">
-          <RedeemCodeDialog />
-        </div>
 
         <PlansGrid isYearly={isYearly} />
 

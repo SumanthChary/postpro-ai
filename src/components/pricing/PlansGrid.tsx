@@ -71,7 +71,7 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
                   <span className={`px-4 py-1 rounded-full text-sm font-semibold ${
                     plan.popular ? "bg-primary text-white" : "bg-orange-500 text-white"
                   }`}>
-                    {plan.badge || "Most Popular"}
+                    {plan.popular ? "Most Popular" : plan.badge}
                   </span>
                 </div>
               )}
@@ -98,10 +98,10 @@ const PlansGrid = ({ isYearly }: PlanGridProps) => {
                       </span>
                     </div>
                     
-                    {plan.originalPrice && (
+                    {plan.savings && (
                       <div className="mt-2">
                         <span className="inline-block bg-green-100 text-green-800 text-sm font-medium px-2 py-1 rounded">
-                          Save ${Number(plan.originalPrice) - Number(plan.price)}
+                          {plan.savings}
                         </span>
                       </div>
                     )}

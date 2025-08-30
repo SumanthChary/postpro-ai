@@ -18,6 +18,7 @@ export interface Plan {
   postLimit?: number; // Monthly post limit (-1 for unlimited)
   badge?: string; // Badge text like "Best Value", "Limited Time"
   limitedQuantity?: string; // Text for limited quantity
+  savings?: string; // Savings text like "Save $69"
 }
 
 export interface UserCredit {

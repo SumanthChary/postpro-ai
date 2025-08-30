@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/Footer";
 import PlanCard from "@/components/pricing/PlanCard";
-import RedeemCodeDialog from "@/components/pricing/RedeemCodeDialog";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
 import { supabase } from "@/integrations/supabase/client";
@@ -119,10 +118,6 @@ const Pricing: React.FC = () => {
                 onSubscribe={handleSubscribe} 
               />
             ))}
-          </div>
-          
-          <div className="text-center">
-            <RedeemCodeDialog />
           </div>
         </div>
       </main>

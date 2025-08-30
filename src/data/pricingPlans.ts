@@ -28,7 +28,8 @@ export const pricingPlans: Plan[] = [
     cta: "Upgrade to Pro",
     icon: "💼",
     currency: 'USD',
-    postLimit: -1 // -1 means unlimited
+    postLimit: -1, // -1 means unlimited
+    popular: true
   },
   {
     name: "PRO ANNUAL",
@@ -36,7 +37,6 @@ export const pricingPlans: Plan[] = [
     period: "year",
     features: [
       "Everything in Pro Monthly",
-      "Save $69/year (29% discount)",
       "Bonus annual-only features",
       "Extended priority support"
     ],
@@ -44,7 +44,8 @@ export const pricingPlans: Plan[] = [
     icon: "⭐",
     currency: 'USD',
     postLimit: -1,
-    badge: "Best Value"
+    badge: "Best Value",
+    savings: "Save $69"
   },
   {
     name: "LIFETIME",
@@ -57,7 +58,6 @@ export const pricingPlans: Plan[] = [
       "Lifetime updates"
     ],
     cta: "Get Lifetime Access",
-    popular: true,
     icon: "💎",
     currency: 'USD',
     postLimit: -1,
