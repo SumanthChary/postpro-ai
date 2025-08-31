@@ -4,65 +4,66 @@
 
 @layer base {
   :root {
+    /* Brand Colors: Navy (#1A1B23), Blue (#118AB2), White (#FFFFFF) */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 220 13% 13%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 13% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 13% 13%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 197 71% 38%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 13% 96%;
+    --secondary-foreground: 220 13% 13%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 10% 95%;
+    --muted-foreground: 220 13% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 197 71% 38%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 197 71% 38%;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 220 13% 13%;
+    --foreground: 0 0% 100%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 13% 13%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 13% 13%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 197 71% 38%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 13% 20%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 13% 20%;
+    --muted-foreground: 220 13% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 197 71% 38%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 220 13% 20%;
+    --input: 220 13% 20%;
+    --ring: 197 71% 38%;
   }
 }
 
@@ -73,15 +74,16 @@
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased font-europa;
+    @apply bg-background text-foreground antialiased;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+    background: hsl(var(--background));
     min-height: 100vh;
-    font-weight: 500;
+    font-weight: 400;
+    content-visibility: auto;
   }
 
   /* Performance optimizations */
@@ -134,12 +136,12 @@
   }
 
   .aesthetic-button {
-    background-color: rgba(57,107,255,1);
-    @apply text-white font-europa font-medium transition-all duration-200 hover:shadow-lg;
+    background-color: hsl(var(--primary));
+    @apply text-primary-foreground font-europa font-normal transition-all duration-200 hover:shadow-lg;
   }
 
   .aesthetic-input {
-    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all duration-200 font-europa font-medium;
+    @apply bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 font-europa font-normal;
   }
 
   .glass-effect {
