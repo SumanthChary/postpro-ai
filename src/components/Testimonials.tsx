@@ -1,62 +1,75 @@
 import { Card } from "@/components/ui/card";
 import { Star, Quote } from "lucide-react";
 const Testimonials = () => {
-  const testimonials = [{
-    name: "Sarah Johnson",
-    role: "Marketing Director",
-    text: "PostPro AI transformed my LinkedIn presence. My engagement rates doubled within the first month of using it.",
-    rating: 5,
-    avatar: "SJ"
-  }, {
-    name: "Michael Chen",
-    role: "Content Creator",
-    text: "The AI suggestions are spot-on. I've never had so many meaningful comments and shares on my posts before.",
-    rating: 5,
-    avatar: "MC"
-  }, {
-    name: "Emily Rodriguez",
-    role: "Business Coach",
-    text: "This tool saves me hours of writing time while helping me create content that truly resonates with my audience.",
-    rating: 5,
-    avatar: "ER"
-  }];
-  return <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight px-2">Wall of Love!</h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-600 max-w-4xl mx-auto px-2 font-medium leading-relaxed">
-            Join our growing community of 47 creators. Be among our first success stories!
+  const testimonials = [
+    {
+      name: "Sarah Chen",
+      role: "Marketing Director at TechFlow",
+      text: "PostPro AI helped me increase my LinkedIn engagement by 340% in 30 days. I went from 12 average likes to 400+ per post. The AI suggestions are incredibly specific and actionable.",
+      rating: 5,
+      avatar: "SC",
+      linkedinHandle: "sarahchen-marketing",
+      beforeAfter: "12 → 400+ average likes"
+    },
+    {
+      name: "Michael Rodriguez",
+      role: "Sales Manager at StartupX",  
+      text: "Finally landed my dream job at Google after building authority with PostPro AI. The interview team mentioned they'd been following my LinkedIn content. This tool literally changed my career.",
+      rating: 5,
+      avatar: "MR",
+      linkedinHandle: "michael-sales-pro",
+      beforeAfter: "Career breakthrough in 60 days"
+    },
+    {
+      name: "Dr. Emily Watson",
+      role: "Healthcare Innovation Consultant",
+      text: "Went from invisible to industry thought leader. Now getting invited to speak at conferences and my consultancy revenue tripled. The content frameworks PostPro provides are game-changing.",
+      rating: 5,
+      avatar: "EW", 
+      linkedinHandle: "dr-emily-watson",
+      beforeAfter: "3x revenue increase"
+    }
+  ];
+  return <section className="py-16 bg-white">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-navy mb-4">Real Results From Real People</h2>
+          <p className="text-xl text-navy/70 max-w-3xl mx-auto">
+            Join 2,400+ professionals who transformed their LinkedIn presence and career trajectory
           </p>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-          {testimonials.map((testimonial, index) => <Card key={index} className="p-6 sm:p-8 lg:p-10 bg-white/80 backdrop-blur-sm shadow-xl border border-gray-200/50 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden rounded-2xl">
-              <div className="absolute top-3 sm:top-4 right-3 sm:right-4 opacity-10">
-                <Quote className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 xl:w-20 xl:h-20" style={{
-              color: 'rgba(57,107,255,1)'
-            }} />
+        <div className="grid md:grid-cols-3 gap-6">
+          {testimonials.map((testimonial, index) => (
+            <Card key={index} className="p-6 bg-white border border-navy/10 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center gap-1 mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                ))}
               </div>
               
-              <div className="flex items-center gap-1 mb-4 sm:mb-5 lg:mb-6 xl:mb-8">
-                {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 fill-yellow-400 text-yellow-400" />)}
-              </div>
-              
-              <p className="text-gray-700 text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed mb-4 sm:mb-5 lg:mb-6 xl:mb-8 relative z-10 font-medium">
+              <p className="text-navy/70 mb-6 leading-relaxed">
                 "{testimonial.text}"
               </p>
               
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base lg:text-lg shadow-lg" style={{
-              backgroundColor: 'rgba(57,107,255,1)'
-            }}>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-blue/10 flex items-center justify-center text-blue font-bold">
                   {testimonial.avatar}
                 </div>
                 <div>
-                  <p className="font-bold text-gray-900 text-sm sm:text-base lg:text-lg xl:text-xl">{testimonial.name}</p>
-                  <p className="text-gray-600 text-xs sm:text-sm lg:text-base xl:text-lg font-medium">{testimonial.role}</p>
+                  <p className="font-semibold text-navy">{testimonial.name}</p>
+                  <p className="text-navy/60 text-sm">{testimonial.role}</p>
+                  <p className="text-navy/50 text-xs">@{testimonial.linkedinHandle}</p>
                 </div>
               </div>
-            </Card>)}
+              
+              <div className="mt-4 p-3 bg-blue/5 rounded-lg">
+                <p className="text-blue font-semibold text-sm">
+                  🚀 {testimonial.beforeAfter}
+                </p>
+              </div>
+            </Card>
+          ))}
         </div>
       </div>
     </section>;

@@ -3,49 +3,55 @@ import { Plan } from "@/types/pricing";
 
 export const pricingPlans: Plan[] = [
   {
-    name: "FREE",
+    name: "FREE", 
     price: "0",
     period: "month",
     features: [
       "5 posts per month",
-      "Basic templates only"
+      "Basic templates only",
+      "Community support"
     ],
-    cta: "Get Started",
+    cta: "Start Free",
     icon: "🆓",
     currency: 'USD',
     postLimit: 5
   },
   {
     name: "PRO MONTHLY",
-    price: "39",
+    price: "39", 
     period: "month",
     features: [
-      "Unlimited posts",
-      "All premium features",
+      "Unlimited posts & content",
+      "AI virality prediction",
+      "Advanced templates & frameworks",
       "Priority support",
-      "Advanced analytics"
+      "Analytics dashboard",
+      "Content calendar"
     ],
-    cta: "Upgrade to Pro",
+    cta: "Start Creating Authority",
     icon: "💼",
-    currency: 'USD',
-    postLimit: -1, // -1 means unlimited
+    currency: 'USD', 
+    postLimit: -1,
     popular: true
   },
   {
     name: "PRO ANNUAL",
     price: "399",
-    period: "year",
+    period: "year", 
     features: [
       "Everything in Pro Monthly",
-      "Bonus annual-only features",
-      "Extended priority support"
+      "Advanced audience insights", 
+      "Personal brand consultant",
+      "Exclusive content frameworks",
+      "Priority feature access"
     ],
-    cta: "Save with Annual",
+    cta: "Save $69 Annually",
     icon: "⭐",
     currency: 'USD',
     postLimit: -1,
     badge: "Best Value",
-    savings: "Save $69"
+    savings: "Save $69",
+    originalPrice: "468"
   },
   {
     name: "LIFETIME",
@@ -53,9 +59,10 @@ export const pricingPlans: Plan[] = [
     period: "lifetime",
     features: [
       "Everything forever",
-      "Exclusive support",
-      "Future features included",
-      "Lifetime updates"
+      "Lifetime updates", 
+      "VIP support channel",
+      "Future feature access",
+      "Exclusive community"
     ],
     cta: "Get Lifetime Access",
     icon: "💎",

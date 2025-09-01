@@ -18,6 +18,8 @@ const ComingSoonSection = lazy(() => import("@/components/landing/ComingSoonSect
 const TemplatesSection = lazy(() => import("@/components/post-enhancer/TemplatesSection"));
 const HowItWorksSection = lazy(() => import("@/components/landing/HowItWorksSection"));
 const AboutFounderSection = lazy(() => import("@/components/landing/AboutFounderSection"));
+const FounderSection = lazy(() => import("@/components/landing/FounderSection"));
+const BeforeAfterSection = lazy(() => import("@/components/landing/BeforeAfterSection"));
 const PricingSection = lazy(() => import("@/components/PricingSection"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const FAQ = lazy(() => import("@/components/FAQ"));
@@ -121,7 +123,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="min-h-screen bg-white">
       <WhopBanner />
       <Navigation
         session={session}
@@ -136,7 +138,7 @@ const Index = () => {
       <main>
         <HeroSection isAuthenticated={!!session} username={username} />
         
-        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30 space-y-8">
+        <div className="bg-white space-y-8">
           <Suspense fallback={<SectionLoader />}>
             <VideoShowcase />
           </Suspense>
@@ -160,6 +162,12 @@ const Index = () => {
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <AboutSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <FounderSection />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <BeforeAfterSection />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <ComingSoonSection />
