@@ -5,40 +5,34 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 218 18% 11%;
+    --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 218 18% 11%;
+    --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 218 18% 11%;
+    --popover-foreground: 222.2 84% 4.9%;
 
-    /* Brand Colors - Navy (#1A1B23) for primary */
-    --primary: 218 18% 11%;
-    --primary-foreground: 0 0% 100%;
-
-    /* Brand Colors - Blue (#118AB2) for accent */
-    --accent: 193 90% 39%;
-    --accent-foreground: 0 0% 100%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
-    --secondary-foreground: 218 18% 11%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    /* Success Green (#10B981) */
-    --success: 158 58% 40%;
-    --success-foreground: 0 0% 100%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 218 18% 11%;
+    --ring: 222.2 84% 4.9%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
   }
 
   .dark {
@@ -74,19 +68,20 @@
 
 @layer base {
   * {
-    @apply border-border;
-    font-family: 'Inter', system-ui, sans-serif !important;
+    @apply border-border font-europa;
+    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
-    font-family: 'Inter', system-ui, sans-serif !important;
+    @apply bg-gray-50 text-gray-900 antialiased font-europa;
+    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
     background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
     min-height: 100vh;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   /* Performance optimizations */
@@ -115,56 +110,36 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-medium tracking-tight text-primary;
-    font-family: 'Inter', system-ui, sans-serif !important;
+    @apply font-europa font-medium tracking-tight text-gray-900;
+    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   p, li, input, textarea, button, a, span, div {
-    @apply text-gray-700;
-    font-family: 'Inter', system-ui, sans-serif !important;
+    @apply font-europa text-gray-700 font-medium;
+    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   button {
-    @apply font-medium;
-    font-family: 'Inter', system-ui, sans-serif !important;
+    @apply font-europa font-medium;
+    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   textarea, input {
-    @apply transition-all duration-200 ease-in-out;
-    font-family: 'Inter', system-ui, sans-serif !important;
+    @apply transition-all duration-200 ease-in-out font-europa font-medium;
+    font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
   }
 
   .aesthetic-card {
-    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1;
+    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 font-europa;
   }
 
   .aesthetic-button {
-    background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--success)));
-    @apply text-white font-medium transition-all duration-200 hover:shadow-lg;
-  }
-
-  .gradient-text {
-    background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--success)));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-button {
-    background: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--success)));
-  }
-
-  .gradient-button-urgent {
-    background: linear-gradient(90deg, #FF4D4D, #FF8C00);
-  }
-
-  .pro-card {
-    border: 3px solid hsl(var(--accent));
-    box-shadow: 0 10px 30px hsl(var(--accent) / 0.2);
+    background-color: rgba(57,107,255,1);
+    @apply text-white font-europa font-medium transition-all duration-200 hover:shadow-lg;
   }
 
   .aesthetic-input {
-    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all duration-200;
+    @apply bg-white/80 backdrop-blur-sm border border-gray-200/50 focus:border-blue-300 focus:ring-2 focus:ring-blue-100 transition-all duration-200 font-europa font-medium;
   }
 
   .glass-effect {
