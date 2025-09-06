@@ -3,7 +3,7 @@ import { Sparkles, ShareIcon, CalendarIcon, UsersIcon } from "lucide-react";
 
 const ComingSoonSection = () => {
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-primary via-accent to-primary relative overflow-hidden">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700 relative overflow-hidden">
       {/* Professional background elements */}
       <div className="absolute top-0 left-0 w-full h-full">
         <div className="absolute top-5 sm:top-10 lg:top-20 left-3 sm:left-5 lg:left-10 w-24 sm:w-32 lg:w-48 h-24 sm:h-32 lg:h-48 bg-white/10 rounded-full blur-3xl"></div>

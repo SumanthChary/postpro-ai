@@ -3,13 +3,13 @@ import { CheckCircleIcon, StarIcon, ZapIcon } from "lucide-react";
 
 const AboutSection = () => {
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-purple-50/30">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight">
             About Our Platform
           </h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-4xl mx-auto font-medium leading-relaxed px-2">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto font-medium leading-relaxed px-2">
             We're building the future of LinkedIn content creation. Join our early community and help us perfect the tool that improves your posts.
           </p>
         </div>
