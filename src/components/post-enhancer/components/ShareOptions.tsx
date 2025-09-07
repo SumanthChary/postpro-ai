@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { LinkedinIcon, TwitterIcon, InstagramIcon, FacebookIcon, CopyIcon, ShareIcon } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import ScheduleShareButton from "../../ScheduleShareButton";
 
 interface ShareOptionsProps {
   enhancedPosts: {[key: string]: string};
@@ -117,6 +118,10 @@ export const ShareOptions = ({ enhancedPosts, onPlatformSelect }: ShareOptionsPr
           <CopyIcon className="w-4 h-4 mr-2" />
           Copy Text
         </Button>
+        <ScheduleShareButton 
+          content={enhancedPosts[activePlatform] || ''} 
+          platform={activePlatform}
+        />
         <Button 
           className={`flex-1 ${getPlatformColor(activePlatform)}`}
           onClick={handleShare}
