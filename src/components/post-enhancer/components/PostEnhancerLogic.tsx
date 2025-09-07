@@ -7,10 +7,7 @@ import { usePostEnhancer } from "../hooks/usePostEnhancer";
 import { EnhancePostResponse } from "../types";
 import { FeedbackPopup } from "@/components/feedback/FeedbackPopup";
 import { useFeedback } from "@/hooks/useFeedback";
-import HashtagSuggestionPanel from "../hashtags/HashtagSuggestionPanel";
-import TrendingHashtags from "../hashtags/TrendingHashtags";
-import CTABuilder from "../cta/CTABuilder";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type Platform = keyof EnhancePostResponse['platforms'];
 
@@ -42,15 +39,15 @@ export const PostEnhancerLogic = ({
   } = usePostEnhancer();
 
   const { submitFeedback, isSubmitting } = useFeedback();
-  const [selectedHashtags, setSelectedHashtags] = useState<string[]>([]);
-  const [selectedCTAs, setSelectedCTAs] = useState<any[]>([]);
   const [isEnhanced, setIsEnhanced] = useState(false);
+  const [showViralityScore, setShowViralityScore] = useState(false);
 
   const onEnhance = async () => {
     const result = await handleEnhancePost(post, category, styleTone);
     if (result && result.platforms?.linkedin) {
       setPost(result.platforms.linkedin);
       setIsEnhanced(true);
+      setShowViralityScore(true);
     }
   };
 
@@ -58,23 +55,9 @@ export const PostEnhancerLogic = ({
     handleReset();
     setPost("");
     setIsEnhanced(false);
-    setSelectedHashtags([]);
-    setSelectedCTAs([]);
+    setShowViralityScore(false);
   };
 
-  const handleHashtagAdd = (hashtag: string) => {
-    if (!selectedHashtags.includes(hashtag)) {
-      setSelectedHashtags([...selectedHashtags, hashtag]);
-      const hashtagText = ` #${hashtag}`;
-      setPost(post + (post.endsWith(' ') ? '' : ' ') + hashtagText);
-    }
-  };
-
-  const handleCTAAdd = (cta: any) => {
-    setSelectedCTAs([...selectedCTAs, cta]);
-    const ctaText = `\n\n${cta.text}${cta.url ? ` ${cta.url}` : ''}`;
-    setPost(post + ctaText);
-  };
 
   const onPlatformSelect = (platform: Platform) => {
     const platformPost = handlePlatformSelect(platform);
@@ -105,30 +88,13 @@ export const PostEnhancerLogic = ({
         isEnhanced={isEnhanced}
       />
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-6">
-          <TrendingHashtags
-            onHashtagAdd={handleHashtagAdd}
-            selectedHashtags={selectedHashtags}
-          />
-          <HashtagSuggestionPanel
-            post={post}
-            category={category}
-            onHashtagAdd={handleHashtagAdd}
-            selectedHashtags={selectedHashtags}
-          />
-        </div>
-        
-        <div className="space-y-6">
-          <CTABuilder
-            post={post}
-            category={category}
-            onCTAAdd={handleCTAAdd}
-            selectedCTAs={selectedCTAs}
-          />
-          <ViralityScore post={post} category={category} />
-        </div>
-      </div>
+      {showViralityScore && (
+        <ViralityScore 
+          post={post} 
+          category={category} 
+          autoAnalyze={true}
+        />
+      )}
       
       {enhancedPosts && Object.keys(enhancedPosts).length > 0 && (
         <div className="pt-6 border-t border-gray-200">
