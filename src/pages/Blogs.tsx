@@ -16,31 +16,45 @@ interface BlogPost {
 const blogPosts: BlogPost[] = [
   {
     id: "1",
-    title: "Maximizing Your Social Media Impact",
-    description: "Learn the key strategies to enhance your social media presence and engage with your audience effectively.",
+    title: "How AI is Revolutionizing LinkedIn Content Strategy",
+    description: "Discover how artificial intelligence is transforming the way professionals create, optimize, and distribute content on LinkedIn for maximum engagement.",
     imageUrl: "/lovable-uploads/fda8da79-8fb0-49e8-b96d-a822f5f49818.png",
-    date: "March 15, 2024"
+    date: "December 15, 2024"
   },
   {
     id: "2",
-    title: "The Power of AI in Content Creation",
-    description: "Discover how artificial intelligence is revolutionizing the way we create and optimize social media content.",
+    title: "The Science Behind Viral LinkedIn Posts",
+    description: "Uncover the data-driven secrets of posts that achieve massive reach and engagement. Learn the psychology and timing that makes content spread.",
     imageUrl: "/lovable-uploads/fdd496bb-ba93-4b3e-934f-c21a3a306935.png",
-    date: "March 14, 2024"
+    date: "December 12, 2024"
   },
   {
     id: "3",
-    title: "Trending Hashtag Strategies for 2024",
-    description: "Stay ahead of the curve with the latest hashtag strategies that can boost your content's visibility.",
+    title: "Building Authority Through Consistent LinkedIn Presence",
+    description: "Master the art of establishing thought leadership on LinkedIn with strategic content planning and authentic engagement tactics.",
     imageUrl: "/lovable-uploads/0469528d-321e-4129-b477-feb07c3479cf.png",
-    date: "March 13, 2024"
+    date: "December 10, 2024"
   },
   {
     id: "4",
-    title: "Building a Strong Personal Brand Online",
-    description: "Essential tips and techniques for creating and maintaining a powerful personal brand on social media.",
+    title: "LinkedIn Algorithm Decoded: What Really Drives Visibility",
+    description: "Get inside the LinkedIn algorithm and learn exactly what factors determine whether your content gets seen by your target audience.",
     imageUrl: "/lovable-uploads/8f4675ad-4562-4fd6-9ed5-751a0415748f.png",
-    date: "March 12, 2024"
+    date: "December 8, 2024"
+  },
+  {
+    id: "5",
+    title: "Content Personalization: The Future of LinkedIn Marketing",
+    description: "Explore how AI-powered personalization is changing LinkedIn marketing and how to adapt your strategy for better results.",
+    imageUrl: "/lovable-uploads/e61dd1bc-bee6-4f84-9cb2-8425f25f6a25.png",
+    date: "December 5, 2024"
+  },
+  {
+    id: "6",
+    title: "Measuring ROI: LinkedIn Content Performance Metrics That Matter",
+    description: "Learn which metrics actually predict business success and how to track the real impact of your LinkedIn content strategy.",
+    imageUrl: "/lovable-uploads/93cc4b2a-0055-4c6f-bba3-3f8c3cc8ccdf.png",
+    date: "December 3, 2024"
   }
 ];
 
@@ -61,14 +75,19 @@ const Blogs = () => {
             <span>Back to Home</span>
           </Button>
           
-          <div className="flex items-center justify-center mb-6 md:mb-8">
-            <BookOpenIcon className="w-6 h-6 md:w-8 md:h-8 text-blue-600 mr-2" />
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              Latest Blog Posts
-            </h1>
+          <div className="text-center mb-8 md:mb-12">
+            <div className="flex items-center justify-center mb-4">
+              <BookOpenIcon className="w-6 h-6 md:w-8 md:h-8 text-blue-600 mr-2" />
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
+                Expert Insights & Guides
+              </h1>
+            </div>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Stay ahead with the latest strategies, tips, and insights for LinkedIn content success
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
             {blogPosts.map((post) => (
               <Card 
                 key={post.id}

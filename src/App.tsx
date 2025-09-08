@@ -31,6 +31,7 @@ const WhopApp = lazy(() => import("./pages/WhopApp"));
 const WhopCallback = lazy(() => import("./pages/WhopCallback"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const FAQPage = lazy(() => import("./pages/FAQ"));
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
                   <Route path="/whop/callback" element={<WhopCallback />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                  <Route path="/faq" element={<FAQPage />} />
                 </Routes>
               </Suspense>
               <Suspense fallback={null}>

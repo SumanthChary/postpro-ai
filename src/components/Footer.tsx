@@ -10,8 +10,8 @@ const Footer = () => {
               <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-50">PostPro AI</h3>
             </div>
             <p className="text-gray-300 text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed mb-4 sm:mb-5 lg:mb-6 xl:mb-8 max-w-md font-medium">
-              Early-stage LinkedIn content enhancement tool. Join 47 creators building better posts. 
-              Your feedback directly shapes our development.
+              AI-powered LinkedIn content enhancement tool. Transform your posts into engaging, 
+              viral-worthy content that drives real results and builds your professional authority.
             </p>
           </div>
           
@@ -25,6 +25,7 @@ const Footer = () => {
               <li><Link to="/affiliate" className="text-gray-300 hover:text-white transition-colors text-sm sm:text-base lg:text-lg xl:text-xl font-medium">Affiliate</Link></li>
               <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors text-sm sm:text-base lg:text-lg xl:text-xl font-medium">Contact</Link></li>
               <li><Link to="/support" className="text-gray-300 hover:text-white transition-colors text-sm sm:text-base lg:text-lg xl:text-xl font-medium">Support</Link></li>
+              <li><a href="/faq" className="text-gray-300 hover:text-white transition-colors text-sm sm:text-base lg:text-lg xl:text-xl font-medium">FAQ</a></li>
               <li><Link to="/privacy-policy" className="text-gray-300 hover:text-white transition-colors text-sm sm:text-base lg:text-lg xl:text-xl font-medium">Privacy Policy</Link></li>
               <li><Link to="/terms-and-conditions" className="text-gray-300 hover:text-white transition-colors text-sm sm:text-base lg:text-lg xl:text-xl font-medium">Terms & Conditions</Link></li>
             </ul>

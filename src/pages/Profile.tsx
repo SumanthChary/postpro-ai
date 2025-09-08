@@ -67,10 +67,11 @@ const Profile = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-white/80 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-lg">
             <TabsTrigger value="profile" className="font-cabinet text-xs sm:text-sm">Profile</TabsTrigger>
             <TabsTrigger value="subscription" className="font-cabinet text-xs sm:text-sm">Subscription</TabsTrigger>
             <TabsTrigger value="activity" className="font-cabinet text-xs sm:text-sm">Activity</TabsTrigger>
+            <TabsTrigger value="referrals" className="font-cabinet text-xs sm:text-sm">Referrals</TabsTrigger>
             <TabsTrigger value="settings" className="font-cabinet text-xs sm:text-sm">Settings</TabsTrigger>
           </TabsList>
 
@@ -130,6 +131,12 @@ const Profile = () => {
                 </div>
               </div>
               <UsageHistory />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="referrals">
+            <div className="max-w-4xl">
+              {userId && <ReferralSystem userId={userId} />}
             </div>
           </TabsContent>
 
