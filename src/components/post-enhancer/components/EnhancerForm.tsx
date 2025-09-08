@@ -15,8 +15,7 @@ export const EnhancerForm = ({
   onCategoryChange,
   onStyleToneChange,
   onReset,
-  onEnhance,
-  isEnhanced = false
+  onEnhance
 }: EnhancerFormProps) => {
   const [charCount, setCharCount] = useState(0);
   useEffect(() => {
@@ -27,13 +26,13 @@ export const EnhancerForm = ({
     setCharCount(e.target.value.length);
   };
   return <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 mb-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 mb-4">
         <div className="flex items-center space-x-2">
-          <SparklesIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
-          <h2 className="text-lg sm:text-xl lg:text-2xl font-montserrat font-extrabold text-gray-900">Post Enhancer</h2>
+          <SparklesIcon className="w-5 h-5 text-blue-600" />
+          <h2 className="text-base sm:text-lg font-montserrat font-extrabold text-gray-900">Post Enhancer</h2>
         </div>
         <div className="flex items-center gap-3">
-          <LinkedinIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#0077B5]" />
+          <LinkedinIcon className="w-5 h-5 text-[#0077B5]" />
         </div>
       </div>
 
@@ -114,31 +113,25 @@ export const EnhancerForm = ({
       </div>
       
       <div className="relative">
-        <Textarea 
-          value={post} 
-          onChange={handlePostChange} 
-          placeholder="Write your LinkedIn post here…" 
-          className={`${isEnhanced ? 'min-h-[300px] sm:min-h-[400px]' : 'min-h-[150px] sm:min-h-[200px]'} text-sm sm:text-base lg:text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-blue-600 focus:ring-blue-600 transition-all duration-300 scrollbar-hide overflow-y-auto`} 
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none'
-          }} 
-        />
-        <div className="absolute bottom-2 right-2 text-xs sm:text-sm text-gray-500 bg-white/80 px-2 py-1 rounded">
+        <Textarea value={post} onChange={handlePostChange} placeholder="Write your LinkedIn post here…" className="min-h-[150px] sm:min-h-[200px] text-sm sm:text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-blue-600 focus:ring-blue-600 transition-all duration-200 scrollbar-hide overflow-y-auto" style={{
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none'
+      }} />
+        <div className="absolute bottom-2 right-2 text-xs text-gray-500">
           {charCount} characters
         </div>
       </div>
       
-      <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
-        <Button variant="outline" className="w-full sm:w-auto text-gray-800 border-blue-600 hover:bg-blue-50 font-opensans text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6" onClick={onReset} disabled={isEnhancing || !post}>
+      <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-3">
+        <Button variant="outline" className="w-full sm:w-auto text-gray-800 border-blue-600 hover:bg-blue-50 font-opensans" onClick={onReset} disabled={isEnhancing || !post}>
           Reset
         </Button>
-        <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-opensans text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6" onClick={onEnhance} disabled={isEnhancing}>
+        <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-opensans" onClick={onEnhance} disabled={isEnhancing}>
           {isEnhancing ? <>
-              <Loader2Icon className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              <Loader2Icon className="w-4 h-4 mr-2" />
               Generating...
             </> : <>
-              <RocketIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              <RocketIcon className="w-4 h-4 mr-2" />
               Enhance Post
             </>}
         </Button>
