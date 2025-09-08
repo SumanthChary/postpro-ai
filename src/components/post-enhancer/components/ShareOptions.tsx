@@ -87,21 +87,22 @@ export const ShareOptions = ({ enhancedPosts, onPlatformSelect }: ShareOptionsPr
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold text-lg flex items-center gap-2 text-gray-900">
-        <ShareIcon className="h-5 w-5 text-blue-600" />
+      <h3 className="font-semibold text-lg sm:text-xl flex items-center gap-2 text-gray-900">
+        <ShareIcon className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
         Cross-Platform Sharing
       </h3>
       
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 sm:gap-3">
         {Object.keys(enhancedPosts).map((platform) => (
           <Button
             key={platform}
             variant="outline"
+            size="sm"
             className={`${
               activePlatform === platform 
                 ? "border-blue-600 bg-blue-50 text-gray-900" 
                 : "border-gray-200 text-gray-900"
-            } transition-all hover:bg-blue-50`}
+            } transition-all hover:bg-blue-50 text-sm sm:text-base py-1.5 sm:py-2 px-3 sm:px-4`}
             onClick={() => handlePlatformClick(platform)}
           >
             {getPlatformIcon(platform)}
@@ -112,7 +113,7 @@ export const ShareOptions = ({ enhancedPosts, onPlatformSelect }: ShareOptionsPr
       
       <div className="flex flex-col sm:flex-row gap-2">
         <Button 
-          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base py-2 sm:py-3"
           onClick={handleCopyText}
         >
           <CopyIcon className="w-4 h-4 mr-2" />
@@ -123,7 +124,7 @@ export const ShareOptions = ({ enhancedPosts, onPlatformSelect }: ShareOptionsPr
           platform={activePlatform}
         />
         <Button 
-          className={`flex-1 ${getPlatformColor(activePlatform)}`}
+          className={`flex-1 ${getPlatformColor(activePlatform)} text-sm sm:text-base py-2 sm:py-3`}
           onClick={handleShare}
         >
           {getPlatformIcon(activePlatform)}

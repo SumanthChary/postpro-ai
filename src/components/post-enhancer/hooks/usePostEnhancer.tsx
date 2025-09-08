@@ -69,24 +69,30 @@ export const usePostEnhancer = () => {
     setLoading(true);
 
     try {
-      // Track usage without blocking
-      checkUsageLimit();
-      checkCreditsAvailable();
+      // Track usage without blocking (async)
+      checkUsageLimit().catch(console.error);
+      checkCreditsAvailable().catch(console.error);
 
       const data = await enhancePost(post, category, true, styleTone);
       setEnhancedPost(data);
       
-      // Show feedback popup randomly (30% chance)
-      if (Math.random() < 0.3) {
-        setTimeout(() => setShowFeedback(true), 2000); // Show after 2 seconds
+      toast({
+        title: "✨ Post Enhanced!",
+        description: "Your post is now optimized for maximum engagement",
+        variant: "default"
+      });
+      
+      // Show feedback popup randomly (20% chance)
+      if (Math.random() < 0.2) {
+        setTimeout(() => setShowFeedback(true), 3000);
       }
       
       return data;
     } catch (error) {
       console.error('Error enhancing post:', error);
       toast({
-        title: "Error",
-        description: "An error occurred while enhancing your post. Please try again.",
+        title: "Enhancement Failed",
+        description: "Please try again in a moment.",
         variant: "destructive",
       });
       return false;
