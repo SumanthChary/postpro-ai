@@ -24,9 +24,8 @@ const HeroSection = ({ isAuthenticated = false, username }: HeroSectionProps) =>
           {isAuthenticated && username ? (
             <>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.2] text-gray-900">
-                <span className="font-bold text-gray-950">Welcome back,</span>
-                <br className="hidden sm:inline" />
-                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold"> {username}</span>
+                <span className="font-bold text-gray-950">Welcome back, </span>
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold">{username}</span>
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
                 Ready to create another viral LinkedIn post? Let's enhance your content!
@@ -35,9 +34,8 @@ const HeroSection = ({ isAuthenticated = false, username }: HeroSectionProps) =>
           ) : (
             <>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.2] text-gray-900">
-                <span className="font-bold text-gray-950">LinkedIn Posts That Actually</span>
-                <br className="hidden sm:inline" />
-                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold"> Get Noticed</span>
+                <span className="font-bold text-gray-950">LinkedIn Posts That Actually </span>
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-extrabold">Get Noticed</span>
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
                 Join 47 creators building authority through better content. Early access - help us perfect the tool!
