@@ -27,4 +27,5 @@ export interface EnhancerFormProps {
   onStyleToneChange: (value: string) => void;
   onReset: () => void;
   onEnhance: () => void;
+  isEnhanced?: boolean;
 }

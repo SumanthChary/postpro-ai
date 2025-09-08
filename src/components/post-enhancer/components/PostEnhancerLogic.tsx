@@ -7,6 +7,7 @@ import { usePostEnhancer } from "../hooks/usePostEnhancer";
 import { EnhancePostResponse } from "../types";
 import { FeedbackPopup } from "@/components/feedback/FeedbackPopup";
 import { useFeedback } from "@/hooks/useFeedback";
+import { useState, useEffect } from "react";
 
 type Platform = keyof EnhancePostResponse['platforms'];
 
@@ -38,18 +39,25 @@ export const PostEnhancerLogic = ({
   } = usePostEnhancer();
 
   const { submitFeedback, isSubmitting } = useFeedback();
+  const [isEnhanced, setIsEnhanced] = useState(false);
+  const [showViralityScore, setShowViralityScore] = useState(false);
 
   const onEnhance = async () => {
     const result = await handleEnhancePost(post, category, styleTone);
     if (result && result.platforms?.linkedin) {
       setPost(result.platforms.linkedin);
+      setIsEnhanced(true);
+      setShowViralityScore(true);
     }
   };
 
   const onReset = () => {
     handleReset();
     setPost("");
+    setIsEnhanced(false);
+    setShowViralityScore(false);
   };
+
 
   const onPlatformSelect = (platform: Platform) => {
     const platformPost = handlePlatformSelect(platform);
@@ -66,7 +74,7 @@ export const PostEnhancerLogic = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 lg:space-y-8">
       <EnhancerForm
         post={post}
         category={category}
@@ -77,7 +85,16 @@ export const PostEnhancerLogic = ({
         onStyleToneChange={setStyleTone}
         onReset={onReset}
         onEnhance={onEnhance}
+        isEnhanced={isEnhanced}
       />
+      
+      {showViralityScore && (
+        <ViralityScore 
+          post={post} 
+          category={category} 
+          autoAnalyze={true}
+        />
+      )}
       
       {enhancedPosts && Object.keys(enhancedPosts).length > 0 && (
         <div className="pt-6 border-t border-gray-200">
@@ -87,8 +104,6 @@ export const PostEnhancerLogic = ({
           />
         </div>
       )}
-
-      <ViralityScore post={post} category={category} />
 
       <FeedbackPopup
         isOpen={showFeedback}

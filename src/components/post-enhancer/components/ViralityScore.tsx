@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -11,10 +11,12 @@ import EngagementBreakdown from '../virality/EngagementBreakdown';
 interface ViralityScoreProps {
   post: string;
   category: string;
+  autoAnalyze?: boolean;
 }
 export function ViralityScore({
   post,
-  category
+  category,
+  autoAnalyze = false
 }: ViralityScoreProps) {
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState<number | null>(null);
@@ -148,6 +150,14 @@ export function ViralityScore({
       setAnalyzing(false);
     }
   };
+
+  // Auto-analyze when component mounts if autoAnalyze is true
+  useEffect(() => {
+    if (autoAnalyze && post.trim() && post.trim().length >= 10) {
+      analyzePotential();
+    }
+  }, [autoAnalyze, post, category]);
+
   return <div className="mt-8 pt-6 border-t border-gray-100">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
