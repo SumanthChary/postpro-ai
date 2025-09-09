@@ -28,7 +28,7 @@ export const WhopLaunchBanner: React.FC = () => {
           </Badge>
         </div>
         
-        <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+        <CardTitle className="text-2xl font-bold text-blue-600">
           PostPro AI on Whop Marketplace
         </CardTitle>
         

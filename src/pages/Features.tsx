@@ -119,7 +119,7 @@ const Features = () => {
     <div className="container mx-auto px-4 py-16">
       <h1 className="text-4xl font-montserrat font-extrabold text-center mb-16">
         Unlock the Full Power of{" "}
-        <span className="bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">
+        <span className="text-blue-600">
           PostPro AI
         </span>
       </h1>

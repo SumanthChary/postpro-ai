@@ -202,7 +202,7 @@ const Affiliate = () => {
       <main className="container mx-auto pt-32 pb-20 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-montserrat font-extrabold bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent mb-4">
+            <h1 className="text-4xl md:text-5xl font-montserrat font-extrabold text-blue-600 mb-4">
               PostPro AI Affiliate Program
             </h1>
             <p className="text-xl text-custom-text max-w-3xl mx-auto">

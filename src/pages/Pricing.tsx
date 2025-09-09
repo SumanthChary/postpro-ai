@@ -103,7 +103,7 @@ const Pricing: React.FC = () => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
               <span className="text-gray-900">Choose Your</span>
               <br className="hidden sm:inline" />
-              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent"> Perfect Plan</span>
+              <span className="text-blue-600"> Perfect Plan</span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
               Select the perfect plan to supercharge your social media presence and create content that truly engages

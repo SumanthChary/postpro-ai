@@ -65,7 +65,7 @@ const PlanComparison = () => {
   return (
     <div className="container mx-auto px-4 py-16">
       <h1 className="text-4xl font-bold text-center mb-16">
-        Compare Our <span className="bg-gradient-to-r from-electric-purple to-bright-teal bg-clip-text text-transparent">Plans</span>
+        Compare Our <span className="text-blue-600">Plans</span>
       </h1>
 
       <div className="grid lg:grid-cols-3 gap-8 mb-12">
