@@ -34,7 +34,7 @@ const PricingSection = () => {
         <div className="text-center mb-6 lg:mb-8">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 lg:mb-3 tracking-tight">Choose your Perfect Plan</h2>
           <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-4">
-            Early access pricing while we perfect the product. Join 47 other creators!
+            Transform your LinkedIn presence with AI-powered content enhancement.
           </p>
         </div>
         

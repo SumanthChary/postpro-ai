@@ -25,7 +25,7 @@ const Testimonials = () => {
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 lg:mb-8 tracking-tight px-2">Wall of Love!</h2>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-600 max-w-4xl mx-auto px-2 font-medium leading-relaxed">
-            Join our growing community of 47 creators. Be among our first success stories!
+            Join successful professionals who've elevated their LinkedIn engagement with AI.
           </p>
         </div>
         
