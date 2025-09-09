@@ -8,6 +8,7 @@ import { PlanSummary } from "@/components/payment/PlanSummary";
 import { PaymentNotice } from "@/components/payment/PaymentNotice";
 import { PaymentOptions } from "@/components/payment/PaymentOptions";
 import { supabase } from "@/integrations/supabase/client";
+import { Shield, Lock, Award } from "lucide-react";
 
 const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
@@ -142,37 +143,105 @@ const Payment = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto">
-        <PlanSummary planDetails={planDetails} />
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-lg mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center mb-4">
+            <img 
+              src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
+              alt="PostPro AI" 
+              className="w-10 h-10 rounded-lg object-contain mr-3"
+            />
+            <span className="text-xl font-bold text-gray-900">PostPro AI</span>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Complete Your Purchase</h1>
+          <p className="text-gray-600">Secure checkout powered by industry-leading payment processors</p>
+        </div>
 
-        <Card className="p-6 mb-6 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl">
+        {/* Plan Summary Card */}
+        <Card className="p-6 mb-6 bg-white border border-gray-200 shadow-sm">
+          <PlanSummary planDetails={planDetails} />
+        </Card>
+
+        {/* Payment Form Card */}
+        <Card className="p-6 mb-6 bg-white border border-gray-200 shadow-sm">
           <div className="space-y-6">
+            {/* Security Notice */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <Shield className="w-5 h-5 text-blue-600 mt-0.5" />
+                <div>
+                  <h3 className="text-sm font-medium text-blue-900">Secure Payment</h3>
+                  <p className="text-sm text-blue-700 mt-1">
+                    Your payment information is encrypted and secure. We never store your payment details.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <PaymentNotice showCreditsInfo={!!planDetails.credits} />
 
             {user && (
-              <PaymentOptions 
-                planDetails={planDetails}
-                userId={user.id}
-                onSuccess={handlePaymentSuccess}
-                onError={handlePaymentError}
-                paypalClientId={PAYPAL_CLIENT_ID}
-              />
+              <div className="space-y-4">
+                <div className="border-t pt-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Payment Method</h3>
+                  <PaymentOptions 
+                    planDetails={planDetails}
+                    userId={user.id}
+                    onSuccess={handlePaymentSuccess}
+                    onError={handlePaymentError}
+                    paypalClientId={PAYPAL_CLIENT_ID}
+                  />
+                </div>
+              </div>
             )}
 
-            <Button
-              variant="outline"
-              className="w-full bg-white/80 border-gray-200/50 hover:bg-gray-50/80"
-              onClick={() => navigate(-1)}
-              disabled={isProcessing}
-            >
-              Go Back
-            </Button>
+            <div className="border-t pt-4">
+              <Button
+                variant="outline"
+                className="w-full border-gray-300 hover:bg-gray-50"
+                onClick={() => navigate(-1)}
+                disabled={isProcessing}
+              >
+                ← Back to Plans
+              </Button>
+            </div>
           </div>
         </Card>
 
-        <div className="text-center text-sm text-gray-500">
-          <p>Need help? Contact support for assistance</p>
+        {/* Trust Indicators */}
+        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="flex flex-col items-center space-y-2">
+              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                <Shield className="w-4 h-4 text-green-600" />
+              </div>
+              <span className="text-xs text-gray-600">SSL Encrypted</span>
+            </div>
+            <div className="flex flex-col items-center space-y-2">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <Lock className="w-4 h-4 text-blue-600" />
+              </div>
+              <span className="text-xs text-gray-600">PCI Compliant</span>
+            </div>
+            <div className="flex flex-col items-center space-y-2">
+              <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                <Award className="w-4 h-4 text-purple-600" />
+              </div>
+              <span className="text-xs text-gray-600">Money Back</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Support */}
+        <div className="text-center">
+          <p className="text-sm text-gray-500 mb-2">
+            Questions about your purchase?
+          </p>
+          <Button variant="link" className="text-blue-600 hover:text-blue-500 p-0 h-auto text-sm font-medium">
+            Contact our support team
+          </Button>
         </div>
       </div>
     </div>
