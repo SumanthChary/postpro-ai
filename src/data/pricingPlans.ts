@@ -19,12 +19,11 @@ export const pricingPlans: Plan[] = [
     icon: "🆓",
     currency: 'USD',
     postLimit: -1,
-    badge: "7 Days Only",
     limitedQuantity: "No credit card required"
   },
   {
     name: "PROFESSIONAL",
-    price: "39",
+    price: "20",
     period: "month",
     features: [
       "Unlimited LinkedIn post enhancements",
@@ -41,29 +40,45 @@ export const pricingPlans: Plan[] = [
     cta: "Get Professional",
     icon: "💼",
     currency: 'USD',
+    postLimit: -1
+  },
+  {
+    name: "PROFESSIONAL ANNUAL",
+    price: "99",
+    period: "year",
+    features: [
+      "All Professional features + annual perks:",
+      "Save $141 vs monthly billing (2 months free)",
+      "Price locked for 12 months – no surprises",
+      "Quarterly LinkedIn strategy updates",
+      "Early-access to new AI models",
+      "Priority feature requests"
+    ],
+    cta: "Get Annual Plan",
+    icon: "📅",
+    currency: 'USD',
     postLimit: -1,
     popular: true,
-    badge: "Most Popular"
+    badge: "50% OFF",
+    originalPrice: "240",
+    savings: "Save $141",
+    limitedQuantity: "Most popular with executives & consultants"
   },
   {
     name: "LIFETIME CREATOR",
-    price: "149",
+    price: "89",
     period: "lifetime",
     features: [
-      "All current Professional features (valued at $468/year)",
-      "All future feature updates included automatically",
-      "Monthly growth strategy updates with founder",
-      "Personal branding Tool (one-time, $297 value)",
-      "Grandfathered pricing - never pay again",
-      "Priority feature requests",
-      "Early access to new AI features"
+      "All current & future Professional features, forever",
+      "Monthly Strategy guides by founder",
+      "Personal profile growth (one-time)",
+      "Never pay again – grandfathered for life"
     ],
     cta: "Get Lifetime Access",
     icon: "💎",
     currency: 'USD',
     postLimit: -1,
-    badge: "Best Value",
-    originalPrice: "468",
-    savings: "Save $319/year"
+    badge: "Limited Deal",
+    limitedQuantity: "500 spots only"
   }
 ];

@@ -12,99 +12,96 @@ interface PlanCardProps {
 const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
   const isFree = plan.name === "START FREE";
   const isLifetime = plan.period === "lifetime";
+  const isAnnual = plan.period === "year";
   
   return (
     <Card
-      className={`p-6 flex flex-col relative bg-white border-2 rounded-2xl hover:shadow-2xl transition-all duration-300 ${
+      className={`p-8 flex flex-col relative bg-white border rounded-xl hover:shadow-lg transition-all duration-300 ${
         plan.popular 
-          ? "border-primary shadow-xl ring-2 ring-primary/20 transform scale-105" 
-          : "border-gray-200 hover:border-primary/30"
+          ? "border-blue-200 shadow-md ring-1 ring-blue-100" 
+          : "border-gray-150 hover:border-gray-200"
       }`}
     >
-      {(plan.popular || plan.badge) && (
-        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <span className={`px-4 py-2 rounded-full text-sm font-bold shadow-lg ${
+      {plan.badge && (
+        <div className="absolute -top-3 left-6">
+          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
             plan.popular 
-              ? "bg-primary text-white" 
+              ? "bg-blue-600 text-white" 
               : isFree
-                ? "bg-green-500 text-white"
-                : "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                ? "bg-green-600 text-white"
+                : "bg-orange-600 text-white"
           }`}>
-            {plan.badge || "Most Popular"}
+            {plan.badge}
           </span>
         </div>
       )}
       
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-6">
-          {plan.icon && <span className="text-3xl">{plan.icon}</span>}
-          <div>
-            <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
-            {isFree && <p className="text-sm text-green-600 font-semibold">Experience everything risk-free</p>}
-            {plan.name === "PROFESSIONAL" && <p className="text-sm text-blue-600 font-semibold">Perfect for LinkedIn professionals</p>}
-            {isLifetime && <p className="text-sm text-purple-600 font-semibold">Perfect for content creators & executives</p>}
+      <div className="mb-6">
+        <div className="flex items-start gap-3 mb-4">
+          {plan.icon && <span className="text-2xl">{plan.icon}</span>}
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-gray-900 mb-1">{plan.name}</h3>
+            {plan.limitedQuantity && (
+              <p className="text-sm text-gray-600">{plan.limitedQuantity}</p>
+            )}
           </div>
         </div>
         
-        <div className="mb-6">
-          <div className="flex items-baseline gap-2">
+        <div className="mb-4">
+          <div className="flex items-baseline gap-2 mb-2">
             {plan.originalPrice && (
-              <span className="text-xl text-gray-400 line-through font-medium">
+              <span className="text-lg text-gray-400 line-through">
                 ${plan.originalPrice}
               </span>
             )}
-            <span className="text-5xl font-bold text-gray-900">
+            <span className="text-3xl font-bold text-gray-900">
               {isFree ? "Free" : `$${plan.price}`}
             </span>
             {!isFree && (
-              <span className="text-gray-600 font-medium">
+              <span className="text-gray-600">
                 /{plan.period === "lifetime" ? "once" : plan.period}
               </span>
             )}
           </div>
           
           {isFree && (
-            <p className="text-sm text-gray-600 mt-1 font-medium">7 days only • Full feature access</p>
+            <p className="text-sm text-gray-600">7 days only • Full feature access</p>
           )}
           
           {plan.name === "PROFESSIONAL" && (
-            <p className="text-sm text-gray-600 mt-1">Billed monthly • Cancel anytime</p>
+            <p className="text-sm text-gray-600">Billed monthly • Cancel anytime</p>
           )}
           
-          {isLifetime && plan.originalPrice && (
-            <div className="mt-3">
-              <span className="inline-block bg-gradient-to-r from-green-100 to-green-200 text-green-800 text-sm font-bold px-3 py-1 rounded-full">
-                {plan.savings}
-              </span>
-            </div>
+          {isAnnual && (
+            <p className="text-sm text-gray-600">Billed annually • Cancel anytime</p>
           )}
           
-          {plan.limitedQuantity && (
-            <p className={`text-sm font-medium mt-3 ${
-              isFree ? "text-green-600" : "text-orange-600"
-            }`}>
-              {plan.limitedQuantity}
-            </p>
+          {isLifetime && (
+            <p className="text-sm text-gray-600">One-time payment • Lifetime access</p>
+          )}
+          
+          {plan.savings && (
+            <p className="text-sm font-medium text-green-600 mt-1">{plan.savings}</p>
           )}
         </div>
       </div>
       
-      <div className="space-y-4 mb-8 flex-grow">
+      <div className="space-y-3 mb-8 flex-grow">
         {plan.features.map((feature) => (
           <div key={feature} className="flex items-start gap-3">
-            <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-            <span className="text-gray-700 leading-relaxed font-medium">{feature}</span>
+            <CheckCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+            <span className="text-sm text-gray-700 leading-relaxed">{feature}</span>
           </div>
         ))}
       </div>
       
       <Button
-        className={`w-full py-4 text-lg font-bold rounded-xl transition-all duration-300 ${
+        className={`w-full py-3 text-sm font-semibold rounded-lg transition-all duration-200 ${
           isFree
-            ? "bg-green-500 text-white hover:bg-green-600 shadow-lg hover:shadow-xl" 
+            ? "bg-green-600 text-white hover:bg-green-700" 
             : plan.popular
-              ? "bg-primary text-white hover:bg-primary/90 shadow-lg hover:shadow-xl" 
-              : "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl"
+              ? "bg-blue-600 text-white hover:bg-blue-700" 
+              : "bg-gray-900 text-white hover:bg-gray-800"
         }`}
         onClick={() => onSubscribe(plan)}
       >
