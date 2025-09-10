@@ -100,9 +100,8 @@ const Pricing: React.FC = () => {
       <main className="pt-24">
         <div className="container mx-auto px-4 py-16">
           <div className="text-center mb-12">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight whitespace-nowrap">
               <span className="text-gray-900">Choose Your</span>
-              <br className="hidden sm:inline" />
               <span className="text-blue-600"> Perfect Plan</span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
