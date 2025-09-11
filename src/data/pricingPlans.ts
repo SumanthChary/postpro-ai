@@ -22,8 +22,8 @@ export const pricingPlans: Plan[] = [
     limitedQuantity: "No credit card required"
   },
   {
-    name: "PROFESSIONAL",
-    price: "20",
+    name: "BASIC MONTHLY",
+    price: "9.99",
     period: "month",
     features: [
       "Unlimited LinkedIn post enhancements",
@@ -37,31 +37,33 @@ export const pricingPlans: Plan[] = [
       "Email support within 4 hours",
       "Export posts to all major platforms"
     ],
-    cta: "Get Professional",
+    cta: "Get Basic Plan",
     icon: "💼",
     currency: 'USD',
-    postLimit: -1
+    postLimit: -1,
+    badge: "50% OFF",
+    originalPrice: "19.99"
   },
   {
-    name: "PROFESSIONAL ANNUAL",
-    price: "99",
+    name: "PRO ANNUAL",
+    price: "59",
     period: "year",
     features: [
-      "All Professional features + annual perks:",
-      "Save $141 vs monthly billing (2 months free)",
+      "All Basic features + annual perks:",
+      "Save $60 vs monthly billing (5 months free)",
       "Price locked for 12 months – no surprises",
       "Quarterly LinkedIn strategy updates",
       "Early-access to new AI models",
       "Priority feature requests"
     ],
-    cta: "Get Annual Plan",
+    cta: "Get Pro Annual",
     icon: "📅",
     currency: 'USD',
     postLimit: -1,
     popular: true,
     badge: "50% OFF",
-    originalPrice: "240",
-    savings: "Save $141",
+    originalPrice: "119.88",
+    savings: "Save $60",
     limitedQuantity: "Most popular with executives & consultants"
   },
   {
@@ -78,7 +80,7 @@ export const pricingPlans: Plan[] = [
     icon: "💎",
     currency: 'USD',
     postLimit: -1,
-    badge: "Limited Deal",
-    limitedQuantity: "500 spots only"
+    badge: "200 spots left",
+    limitedQuantity: "Limited launch deal"
   }
 ];

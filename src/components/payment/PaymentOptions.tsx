@@ -23,7 +23,16 @@ export const PaymentOptions = ({
   console.log('PayPal Client ID being used:', paypalClientId);
   
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+            <span className="text-white font-bold text-sm">⭐</span>
+          </div>
+          <span className="text-blue-900 font-medium">Recommended</span>
+        </div>
+      </div>
+      
       <PayPalScriptProvider 
         options={{ 
           clientId: paypalClientId,
@@ -45,10 +54,10 @@ export const PaymentOptions = ({
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-gray-300" />
+          <span className="w-full border-t border-gray-200" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">Or pay with other methods</span>
+          <span className="px-4 bg-white text-gray-500">Alternative payment methods</span>
         </div>
       </div>
 
@@ -58,17 +67,6 @@ export const PaymentOptions = ({
         onSuccess={onSuccess}
         onError={onError}
       />
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-gray-300" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">Or pay with card</span>
-        </div>
-      </div>
-
-      <CardPaymentButton />
     </div>
   );
 };

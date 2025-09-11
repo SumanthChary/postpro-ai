@@ -17,20 +17,18 @@ const PricingSection = () => {
     });
   };
 
-  // Filter plans based on yearly toggle
+  // Filter plans based on yearly toggle (hide free plan)
   const getFilteredPlans = () => {
-    const freePlan = pricingPlans.find(plan => plan.name === 'START FREE');
-    
     if (isYearly) {
-      // Show Free, Annual, Lifetime
-      const annualPlan = pricingPlans.find(plan => plan.name === 'PROFESSIONAL ANNUAL');
+      // Show Annual, Lifetime
+      const annualPlan = pricingPlans.find(plan => plan.name === 'PRO ANNUAL');
       const lifetimePlan = pricingPlans.find(plan => plan.name === 'LIFETIME CREATOR');
-      return [freePlan, annualPlan, lifetimePlan].filter(Boolean) as Plan[];
+      return [annualPlan, lifetimePlan].filter(Boolean) as Plan[];
     } else {
-      // Show Free, Monthly, Lifetime  
-      const monthlyPlan = pricingPlans.find(plan => plan.name === 'PROFESSIONAL');
+      // Show Monthly, Lifetime  
+      const monthlyPlan = pricingPlans.find(plan => plan.name === 'BASIC MONTHLY');
       const lifetimePlan = pricingPlans.find(plan => plan.name === 'LIFETIME CREATOR');
-      return [freePlan, monthlyPlan, lifetimePlan].filter(Boolean) as Plan[];
+      return [monthlyPlan, lifetimePlan].filter(Boolean) as Plan[];
     }
   };
 
@@ -46,7 +44,7 @@ const PricingSection = () => {
         
         <PlanToggle isYearly={isYearly} setIsYearly={setIsYearly} />
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
           {getFilteredPlans().map((plan) => (
             <PlanCard 
               key={plan.name} 

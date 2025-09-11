@@ -147,16 +147,16 @@ const Payment = () => {
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
+          <div className="flex items-center justify-center mb-6">
             <img 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI" 
-              className="w-10 h-10 rounded-lg object-contain mr-3"
+              className="w-12 h-12 rounded-lg object-contain mr-3"
             />
-            <span className="text-xl font-bold text-gray-900">PostPro AI</span>
+            <span className="text-2xl font-bold text-gray-900">PostPro AI</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Complete Your Purchase</h1>
-          <p className="text-gray-600">Secure checkout powered by industry-leading payment processors</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">Complete Your Order</h1>
+          <p className="text-gray-600 text-lg">Secure payment • Start immediately</p>
         </div>
 
         {/* Plan Summary Card */}

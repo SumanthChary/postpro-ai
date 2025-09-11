@@ -16,10 +16,10 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
   
   return (
     <Card
-      className={`p-8 flex flex-col relative bg-white border rounded-xl hover:shadow-lg transition-all duration-300 ${
+      className={`p-8 flex flex-col relative bg-white border rounded-xl hover:shadow-md transition-all duration-300 ${
         plan.popular 
-          ? "border-blue-200 shadow-md ring-1 ring-blue-100" 
-          : "border-gray-150 hover:border-gray-200"
+          ? "border-blue-500 shadow-sm ring-2 ring-blue-100 scale-105" 
+          : "border-gray-200 hover:border-gray-300"
       }`}
     >
       {plan.badge && (
@@ -97,11 +97,11 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
       
       <Button
         className={`w-full py-3 text-sm font-semibold rounded-lg transition-all duration-200 ${
-          isFree
-            ? "bg-green-600 text-white hover:bg-green-700" 
-            : plan.popular
-              ? "bg-blue-600 text-white hover:bg-blue-700" 
-              : "bg-gray-900 text-white hover:bg-gray-800"
+          plan.popular
+            ? "bg-blue-600 text-white hover:bg-blue-700 shadow-sm" 
+            : isLifetime
+              ? "bg-purple-600 text-white hover:bg-purple-700 shadow-sm"
+              : "bg-gray-900 text-white hover:bg-gray-800 shadow-sm"
         }`}
         onClick={() => onSubscribe(plan)}
       >
