@@ -1,26 +1,6 @@
-
 import { Plan } from "@/types/pricing";
 
 export const pricingPlans: Plan[] = [
-  {
-    name: "START FREE",
-    price: "0",
-    period: "week",
-    features: [
-      "Unlimited post enhancements for 7 days",
-      "All 15+ tone and style options",
-      "Virality score predictions",
-      "Access to all 50+ professional templates",
-      "Complete analytics dashboard",
-      "AI strategy chat",
-      "Priority email support"
-    ],
-    cta: "Start 7-Day Free Trial",
-    icon: "🆓",
-    currency: 'USD',
-    postLimit: -1,
-    limitedQuantity: "No credit card required"
-  },
   {
     name: "BASIC MONTHLY",
     price: "9.99",
@@ -38,7 +18,6 @@ export const pricingPlans: Plan[] = [
       "Export posts to all major platforms"
     ],
     cta: "Get Basic Plan",
-    icon: "💼",
     currency: 'USD',
     postLimit: -1,
     badge: "50% OFF",
@@ -57,7 +36,6 @@ export const pricingPlans: Plan[] = [
       "Priority feature requests"
     ],
     cta: "Get Pro Annual",
-    icon: "📅",
     currency: 'USD',
     postLimit: -1,
     popular: true,
@@ -77,7 +55,6 @@ export const pricingPlans: Plan[] = [
       "Never pay again – grandfathered for life"
     ],
     cta: "Get Lifetime Access",
-    icon: "💎",
     currency: 'USD',
     postLimit: -1,
     badge: "200 spots left",

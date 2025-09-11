@@ -19,7 +19,7 @@ const FloatingChatButton = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         size="lg"
-        className="relative group rounded-full w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl text-white border-0 p-0"
+        className="relative group rounded-full w-16 h-16 bg-blue-600 hover:bg-blue-700 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl text-white border-0 p-0"
       >
         <MessageCircle size={24} className="text-white" />
         

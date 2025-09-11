@@ -13,12 +13,9 @@ const ComingSoonSection = () => {
       
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-5 md:mb-6 lg:mb-8">
-            <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 xl:w-10 xl:h-10 text-yellow-300" />
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-              Coming Soon
-            </h2>
-          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-4 sm:mb-5 md:mb-6 lg:mb-8">
+            Coming Soon
+          </h2>
           <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-blue-100 max-w-4xl mx-auto px-2 font-medium leading-relaxed">
             Exciting new features are on their way to revolutionize your social media workflow
           </p>

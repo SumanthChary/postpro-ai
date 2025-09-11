@@ -37,14 +37,11 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
       )}
       
       <div className="mb-6">
-        <div className="flex items-start gap-3 mb-4">
-          {plan.icon && <span className="text-2xl">{plan.icon}</span>}
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">{plan.name}</h3>
-            {plan.limitedQuantity && (
-              <p className="text-sm text-gray-600">{plan.limitedQuantity}</p>
-            )}
-          </div>
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 mb-1">{plan.name}</h3>
+          {plan.limitedQuantity && (
+            <p className="text-sm text-gray-600">{plan.limitedQuantity}</p>
+          )}
         </div>
         
         <div className="mb-4">
@@ -100,8 +97,8 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
           plan.popular
             ? "bg-blue-600 text-white hover:bg-blue-700 shadow-sm" 
             : isLifetime
-              ? "bg-purple-600 text-white hover:bg-purple-700 shadow-sm"
-              : "bg-gray-900 text-white hover:bg-gray-800 shadow-sm"
+              ? "bg-orange-600 text-white hover:bg-orange-700 shadow-sm"
+              : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
         }`}
         onClick={() => onSubscribe(plan)}
       >
