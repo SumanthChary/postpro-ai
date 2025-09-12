@@ -217,51 +217,18 @@ const Pricing: React.FC = () => {
           {/* Trust Indicators */}
           <div className="mt-16 max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row justify-center items-center gap-8 text-center text-gray-600">
-              <div className="flex items-center">
-                <Verified className="w-5 h-5 text-blue-500 mr-2" />
-                <span>30-day money-back guarantee</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center text-sm">
-                  <span>Secure payments via</span>
-                </div>
-                <div className="text-blue-600 font-semibold">Stripe</div>
+              <div className="flex items-center space-x-6">
                 <div className="text-blue-600 font-semibold">PayPal</div>
                 <div className="text-blue-600 font-semibold">Razorpay</div>
+                <div className="flex items-center">
+                  <Verified className="w-5 h-5 text-green-500 mr-2" />
+                  <span>Secure payments</span>
+                </div>
               </div>
             </div>
             
             <div className="mt-8 text-center text-sm text-gray-500 italic">
               <p>"200+ professionals chose our plans this month"</p>
-            </div>
-
-            {/* Testimonials */}
-            <div className="mt-12">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
-                </div>
-                <div className="relative flex justify-center">
-                  <span className="bg-gray-50 px-2 text-gray-500">
-                    <Star className="w-5 h-5 fill-current" />
-                  </span>
-                </div>
-              </div>
-              
-              <div className="mt-8 grid gap-8 lg:grid-cols-3">
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <p className="text-gray-600">"PostPro AI has been a game-changer for my content strategy. The engagement boost is real!"</p>
-                  <p className="mt-4 font-semibold text-gray-800">- Sarah J., Marketing Consultant</p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <p className="text-gray-600">"The annual plan is a no-brainer. The value you get for the price is incredible."</p>
-                  <p className="mt-4 font-semibold text-gray-800">- Mike R., Startup Founder</p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <p className="text-gray-600">"I was skeptical, but the AI-enhanced posts actually perform better. Highly recommend!"</p>
-                  <p className="mt-4 font-semibold text-gray-800">- David L., Tech Lead</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
