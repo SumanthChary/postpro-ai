@@ -4,7 +4,8 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PostingStreak } from "@/components/profile/PostingStreak";
+import { RealTimeActivity } from "@/components/profile/RealTimeActivity";
+import { EnhancedMetrics } from "@/components/profile/EnhancedMetrics";
 import { useNavigate } from "react-router-dom";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
 import { ProfileForm } from "@/components/profile/ProfileForm";
@@ -66,9 +67,10 @@ const Profile = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-lg">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-lg">
             <TabsTrigger value="profile" className="font-cabinet text-xs sm:text-sm">Profile</TabsTrigger>
             <TabsTrigger value="subscription" className="font-cabinet text-xs sm:text-sm">Subscription</TabsTrigger>
+            <TabsTrigger value="activity" className="font-cabinet text-xs sm:text-sm">Activity</TabsTrigger>
             <TabsTrigger value="referrals" className="font-cabinet text-xs sm:text-sm">Referrals</TabsTrigger>
             <TabsTrigger value="settings" className="font-cabinet text-xs sm:text-sm">Settings</TabsTrigger>
           </TabsList>
@@ -107,7 +109,6 @@ const Profile = () => {
               
               <div className="lg:col-span-1 space-y-6">
                 {userId && <SubscriptionInfo />}
-                {userId && <PostingStreak userId={userId} />}
               </div>
             </div>
           </TabsContent>
@@ -119,6 +120,19 @@ const Profile = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="activity">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <div className="xl:col-span-2">
+                  <EnhancedMetrics userId={userId} />
+                </div>
+                <div className="xl:col-span-1">
+                  <RealTimeActivity />
+                </div>
+              </div>
+              <UsageHistory />
+            </div>
+          </TabsContent>
 
           <TabsContent value="referrals">
             <div className="max-w-4xl">

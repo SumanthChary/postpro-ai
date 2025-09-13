@@ -215,7 +215,7 @@ const Affiliate = () => {
               <h3 className="text-2xl font-bold mb-4">Join Our Affiliate Program</h3>
               <p className="mb-6">Sign in or create an account to get your unique referral link and start earning.</p>
               <Button 
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white"
                 onClick={() => navigate("/auth")}
                 size="lg"
               >
@@ -524,7 +524,7 @@ const Affiliate = () => {
             {!session ? (
               <Button 
                 size="lg" 
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white"
                 onClick={() => navigate("/auth")}
               >
                 Sign Up Now
@@ -532,7 +532,7 @@ const Affiliate = () => {
             ) : (
               <Button 
                 size="lg" 
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-gradient-to-r from-electric-purple to-bright-teal hover:opacity-90 text-white"
                 onClick={copyToClipboard}
               >
                 Copy Your Affiliate Link
