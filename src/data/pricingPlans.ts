@@ -2,7 +2,7 @@ import { Plan } from "@/types/pricing";
 
 export const pricingPlans: Plan[] = [
   {
-    name: "BASIC MONTHLY",
+    name: "BASIC",
     price: "9.99",
     period: "month",
     features: [
@@ -24,7 +24,7 @@ export const pricingPlans: Plan[] = [
     originalPrice: "19.99"
   },
   {
-    name: "PRO ANNUAL",
+    name: "PRO",
     price: "59",
     period: "year",
     features: [
