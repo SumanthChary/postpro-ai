@@ -29,7 +29,7 @@ export const EnhancerForm = ({
   return <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 mb-6">
         <div className="flex items-center space-x-2">
-          <SparklesIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+          
           <h2 className="text-lg sm:text-xl lg:text-2xl font-montserrat font-extrabold text-gray-900">Post Enhancer</h2>
         </div>
         <div className="flex items-center gap-3">
@@ -114,16 +114,10 @@ export const EnhancerForm = ({
       </div>
       
       <div className="relative">
-        <Textarea 
-          value={post} 
-          onChange={handlePostChange} 
-          placeholder="Write your LinkedIn post here…" 
-          className={`${isEnhanced ? 'min-h-[300px] sm:min-h-[400px]' : 'min-h-[150px] sm:min-h-[200px]'} text-sm sm:text-base lg:text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-blue-600 focus:ring-blue-600 transition-all duration-300 scrollbar-hide overflow-y-auto`} 
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none'
-          }} 
-        />
+        <Textarea value={post} onChange={handlePostChange} placeholder="Write your LinkedIn post here…" className={`${isEnhanced ? 'min-h-[300px] sm:min-h-[400px]' : 'min-h-[150px] sm:min-h-[200px]'} text-sm sm:text-base lg:text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-blue-600 focus:ring-blue-600 transition-all duration-300 scrollbar-hide overflow-y-auto`} style={{
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none'
+      }} />
         <div className="absolute bottom-2 right-2 text-xs sm:text-sm text-gray-500 bg-white/80 px-2 py-1 rounded">
           {charCount} characters
         </div>
