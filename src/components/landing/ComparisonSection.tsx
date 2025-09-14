@@ -25,20 +25,28 @@ const ComparisonSection = () => {
             </div>
             <div className="space-y-4 sm:space-y-6">
               <div className="bg-white/90 p-3 sm:p-4 lg:p-6 rounded-xl border border-red-200/50 shadow-sm">
-                <p className="text-gray-700 italic text-sm sm:text-base lg:text-lg font-medium">"Just launched our new product!"</p>
+                <p className="text-gray-700 italic text-sm sm:text-base lg:text-lg font-medium leading-relaxed">"Just completed a project. Working on something new. Excited about what's next."</p>
+                <div className="mt-4 flex items-center justify-between text-xs text-gray-500">
+                  <span>📊 Engagement: 12 likes, 2 comments</span>
+                  <span>📈 Reach: 150 views</span>
+                </div>
               </div>
               <ul className="space-y-2 sm:space-y-3 text-red-800">
                 <li className="flex items-center text-sm sm:text-base lg:text-lg">
                   <XIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
-                  <span className="font-medium">No engaging hooks</span>
+                  <span className="font-medium">Generic, boring content</span>
                 </li>
                 <li className="flex items-center text-sm sm:text-base lg:text-lg">
                   <XIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
-                  <span className="font-medium">Missing hashtags</span>
+                  <span className="font-medium">No strategic hashtags</span>
                 </li>
                 <li className="flex items-center text-sm sm:text-base lg:text-lg">
                   <XIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
-                  <span className="font-medium">Low engagement potential</span>
+                  <span className="font-medium">Minimal engagement</span>
+                </li>
+                <li className="flex items-center text-sm sm:text-base lg:text-lg">
+                  <XIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
+                  <span className="font-medium">Poor visibility</span>
                 </li>
               </ul>
             </div>
@@ -53,20 +61,36 @@ const ComparisonSection = () => {
             </div>
             <div className="space-y-4 sm:space-y-6">
               <div className="bg-white/90 p-3 sm:p-4 lg:p-6 rounded-xl border border-green-200/50 shadow-sm">
-                <p className="text-gray-700 text-sm sm:text-base lg:text-lg font-medium">"🚀 Thrilled to announce the launch of our revolutionary product! After months of dedicated development and customer feedback, we're bringing innovation to your doorstep. #ProductLaunch #Innovation #Tech"</p>
+                <p className="text-gray-700 text-sm sm:text-base lg:text-lg font-medium leading-relaxed">"🎯 Just wrapped up an incredible project that pushed every boundary of innovation! 
+
+After months of strategic planning, user research, and relentless iteration, I'm thrilled to share that we've created something truly game-changing.
+
+The lessons learned? Persistence pays off, and the best solutions come from understanding real user pain points.
+
+What's your biggest takeaway from recent projects? Let's discuss! 👇
+
+#ProjectManagement #Innovation #BusinessStrategy #Leadership #Growth"</p>
+                <div className="mt-4 flex items-center justify-between text-xs text-green-600 font-medium">
+                  <span>📊 Engagement: 847 likes, 156 comments</span>
+                  <span>📈 Reach: 12,400 views</span>
+                </div>
               </div>
               <ul className="space-y-2 sm:space-y-3 text-green-800">
                 <li className="flex items-center text-sm sm:text-base lg:text-lg">
                   <CheckIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
-                  <span className="font-medium">Engaging emojis & hooks</span>
+                  <span className="font-medium">Compelling storytelling hook</span>
                 </li>
                 <li className="flex items-center text-sm sm:text-base lg:text-lg">
                   <CheckIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
-                  <span className="font-medium">Strategic hashtags</span>
+                  <span className="font-medium">Strategic industry hashtags</span>
                 </li>
                 <li className="flex items-center text-sm sm:text-base lg:text-lg">
                   <CheckIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
-                  <span className="font-medium">High engagement potential</span>
+                  <span className="font-medium">Call-to-action for engagement</span>
+                </li>
+                <li className="flex items-center text-sm sm:text-base lg:text-lg">
+                  <CheckIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
+                  <span className="font-medium">70x better engagement</span>
                 </li>
               </ul>
             </div>
