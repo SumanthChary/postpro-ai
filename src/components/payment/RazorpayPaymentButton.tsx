@@ -183,7 +183,7 @@ export const RazorpayPaymentButton = ({
         strategy="lazyOnload"
       />
       <Button
-        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
         onClick={handlePayment}
         disabled={isProcessing}
       >
