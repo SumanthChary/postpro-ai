@@ -1,13 +1,14 @@
 import { useState } from "react";
 import PostEnhancer from "@/components/post-enhancer/PostEnhancer";
 import { AnimatedTooltipPreview } from "@/components/ui/animated-tooltip-preview";
-
 interface HeroSectionProps {
   isAuthenticated?: boolean;
   username?: string;
 }
-
-const HeroSection = ({ isAuthenticated = false, username }: HeroSectionProps) => {
+const HeroSection = ({
+  isAuthenticated = false,
+  username
+}: HeroSectionProps) => {
   const [post, setPost] = useState("");
   const [category, setCategory] = useState("business");
   const [styleTone, setStyleTone] = useState("professional");
@@ -21,8 +22,7 @@ const HeroSection = ({ isAuthenticated = false, username }: HeroSectionProps) =>
       
       <div className="relative z-10 pt-24 sm:pt-32 md:pt-40 lg:pt-48 xl:pt-56 pb-8 sm:pb-12 md:pb-16 lg:pb-20">
         <div className="max-w-5xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14 px-3 sm:px-4 md:px-6 lg:px-8">
-          {isAuthenticated && username ? (
-            <>
+          {isAuthenticated && username ? <>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.2] text-gray-900">
                 <span className="font-bold text-gray-950">Welcome back, </span>
                 <span className="text-blue-600 font-extrabold">{username}</span>
@@ -30,18 +30,15 @@ const HeroSection = ({ isAuthenticated = false, username }: HeroSectionProps) =>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
                 Ready to create another viral LinkedIn post? Let's enhance your content!
               </p>
-            </>
-          ) : (
-            <>
+            </> : <>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.2] text-gray-900">
                 <span className="font-bold text-gray-950">LinkedIn Posts That Actually </span>
-                <span className="text-blue-600 font-extrabold">Get Noticed</span>
+                <span className="text-blue-600 font-extrabold">Get Noticed!</span>
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
                 Transform your LinkedIn content with AI-powered enhancement tools. Get better engagement and reach!
               </p>
-            </>
-          )}
+            </>}
         </div>
 
         <div className="flex justify-center px-3 sm:px-4 md:px-6">
