@@ -65,17 +65,13 @@ export const useSubscription = () => {
         return;
       }
 
-      // For regular users, check their subscription limits
-      const monthlyLimit = subscription?.subscription_limits?.monthly_post_limit || 15;
-      const hasUnlimitedAccess = monthlyLimit === -1;
-      const remainingUses = hasUnlimitedAccess ? -1 : Math.max(monthlyLimit - currentUsage, 0);
-      const canUse = hasUnlimitedAccess || remainingUses > 0;
-      
+      // For regular users, track usage but allow them to continue
+      const remainingUses = Math.max(15 - currentUsage, 0);
       setUsageStats({
-        canUse,
+        canUse: true, // Always allow usage
         currentCount: currentUsage,
-        monthlyLimit,
-        remainingUses
+        monthlyLimit: 15,
+        remainingUses: remainingUses
       });
     } catch (error) {
       console.error('Error checking usage limit:', error);

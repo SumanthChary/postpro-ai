@@ -183,21 +183,11 @@ export const RazorpayPaymentButton = ({
         strategy="lazyOnload"
       />
       <Button
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
         onClick={handlePayment}
         disabled={isProcessing}
       >
-        {isProcessing ? (
-          <div className="flex items-center justify-center space-x-2">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-            <span>Processing Payment...</span>
-          </div>
-        ) : (
-          <div className="flex items-center justify-center space-x-2">
-            <span>💳</span>
-            <span>Pay Securely with Razorpay</span>
-          </div>
-        )}
+        {isProcessing ? "Processing..." : "Pay with Razorpay"}
       </Button>
     </>
   );

@@ -13,7 +13,6 @@ import Footer from "@/components/Footer";
 const VideoShowcase = lazy(() => import("@/components/landing/VideoShowcase"));
 const ComparisonSection = lazy(() => import("@/components/landing/ComparisonSection"));
 const EnhancedPostsShowcase = lazy(() => import("@/components/landing/EnhancedPostsShowcase"));
-const ExpectationsSection = lazy(() => import("@/components/landing/ExpectationsSection"));
 
 const TemplatesSection = lazy(() => import("@/components/post-enhancer/TemplatesSection"));
 const HowItWorksSection = lazy(() => import("@/components/landing/HowItWorksSection"));
@@ -151,9 +150,6 @@ const Index = () => {
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
-          </Suspense>
-          <Suspense fallback={<SectionLoader />}>
-            <ExpectationsSection />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <PricingSection />
