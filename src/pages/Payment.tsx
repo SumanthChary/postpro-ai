@@ -146,34 +146,34 @@ const Payment = () => {
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-lg mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 sm:mb-10">
           <div className="flex items-center justify-center mb-6">
             <img 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI" 
-              className="w-12 h-12 rounded-lg object-contain mr-3"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain mr-3"
             />
-            <span className="text-2xl font-bold text-gray-900">PostPro AI</span>
+            <span className="text-xl sm:text-2xl font-bold text-gray-900">PostPro AI</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">Complete Your Order</h1>
-          <p className="text-gray-600 text-lg">Secure payment • Start immediately</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">Complete Your Order</h1>
+          <p className="text-gray-600 text-base sm:text-lg">Secure payment • Start immediately</p>
         </div>
 
         {/* Plan Summary Card */}
-        <Card className="p-6 mb-6 bg-white border border-gray-200 shadow-sm">
+        <Card className="p-4 sm:p-6 mb-6 bg-white border border-gray-200 shadow-sm">
           <PlanSummary planDetails={planDetails} />
         </Card>
 
         {/* Payment Form Card */}
-        <Card className="p-6 mb-6 bg-white border border-gray-200 shadow-sm">
-          <div className="space-y-6">
+        <Card className="p-4 sm:p-6 mb-6 bg-white border border-gray-200 shadow-sm">
+            <div className="space-y-4 sm:space-y-6">
             {/* Security Notice */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
               <div className="flex items-start space-x-3">
-                <Shield className="w-5 h-5 text-blue-600 mt-0.5" />
+                <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="text-sm font-medium text-blue-900">Secure Payment</h3>
-                  <p className="text-sm text-blue-700 mt-1">
+                  <h3 className="text-sm sm:text-base font-medium text-blue-900">Secure Payment</h3>
+                  <p className="text-xs sm:text-sm text-blue-700 mt-1 leading-relaxed">
                     Your payment information is encrypted and secure. We never store your payment details.
                   </p>
                 </div>
@@ -185,7 +185,7 @@ const Payment = () => {
             {user && (
               <div className="space-y-4">
                 <div className="border-t pt-4">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Payment Method</h3>
+                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">Payment Method</h3>
                   <PaymentOptions 
                     planDetails={planDetails}
                     userId={user.id}
@@ -211,35 +211,35 @@ const Payment = () => {
         </Card>
 
         {/* Trust Indicators */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-          <div className="grid grid-cols-3 gap-4 text-center">
+        <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 mb-6">
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 text-center">
             <div className="flex flex-col items-center space-y-2">
-              <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                <Shield className="w-4 h-4 text-green-600" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
               </div>
-              <span className="text-xs text-gray-600">SSL Encrypted</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-600">SSL Encrypted</span>
             </div>
             <div className="flex flex-col items-center space-y-2">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <Lock className="w-4 h-4 text-blue-600" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
               </div>
-              <span className="text-xs text-gray-600">PCI Compliant</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-600">PCI Compliant</span>
             </div>
             <div className="flex flex-col items-center space-y-2">
-              <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                <Award className="w-4 h-4 text-purple-600" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                <Award className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
               </div>
-              <span className="text-xs text-gray-600">Money Back</span>
+              <span className="text-xs sm:text-sm font-medium text-gray-600">Money Back</span>
             </div>
           </div>
         </div>
 
         {/* Support */}
         <div className="text-center">
-          <p className="text-sm text-gray-500 mb-2">
+          <p className="text-sm sm:text-base text-gray-500 mb-2">
             Questions about your purchase?
           </p>
-          <Button variant="link" className="text-blue-600 hover:text-blue-500 p-0 h-auto text-sm font-medium">
+          <Button variant="link" className="text-blue-600 hover:text-blue-500 p-0 h-auto text-sm sm:text-base font-medium">
             Contact our support team
           </Button>
         </div>
