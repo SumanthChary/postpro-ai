@@ -35,11 +35,11 @@ const HowItWorksSection = () => {
         
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((item, index) => <div key={index} className="text-center group">
-              <div className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+              <div className="w-40 h-40 md:w-48 md:h-48 mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
                 <img 
                   src={item.icon} 
                   alt={`Step ${item.step}: ${item.title}`}
-                  className="w-20 h-20 md:w-24 md:h-24 object-contain"
+                  className="w-36 h-36 md:w-44 md:h-44 object-contain"
                 />
               </div>
               <div className="space-y-3">
