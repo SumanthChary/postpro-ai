@@ -1,34 +1,29 @@
-
 import { Card } from "@/components/ui/card";
 import { FileTextIcon, RocketIcon, LockIcon, Sparkles, Crown } from "lucide-react";
 import { useAuth } from '@/hooks/useAuth';
 import { useEffect, useState } from 'react';
-
 interface TemplatesSectionProps {
   handleProTemplatesClick: () => void;
 }
-
-const TemplatesSection = ({ handleProTemplatesClick }: TemplatesSectionProps) => {
-  const { user } = useAuth();
+const TemplatesSection = ({
+  handleProTemplatesClick
+}: TemplatesSectionProps) => {
+  const {
+    user
+  } = useAuth();
   const [isProUser, setIsProUser] = useState(false);
-
   useEffect(() => {
     const fetchUserPlan = async () => {
       const userPlan = user?.plan || 'free';
       setIsProUser(userPlan === 'weekly' || userPlan === 'monthly' || userPlan === 'yearly' || userPlan === 'enterprise');
     };
-
     fetchUserPlan();
   }, [user]);
-
-  return (
-    <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+  return <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 xl:mb-16">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4 md:mb-5 lg:mb-6">
-            <div className="p-2 sm:p-3 rounded-xl sm:rounded-2xl" style={{ backgroundColor: 'rgba(57,107,255,0.1)' }}>
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8" style={{ color: 'rgba(57,107,255,1)' }} />
-            </div>
+            
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900">
               Content Templates
             </h2>
@@ -71,13 +66,9 @@ const TemplatesSection = ({ handleProTemplatesClick }: TemplatesSectionProps) =>
                 </div>
               </div>
               
-              <a 
-                href="https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 sm:px-5 lg:px-6 py-2 sm:py-3 text-white font-semibold rounded-lg sm:rounded-xl text-sm sm:text-base transition-all duration-200 hover:shadow-lg group-hover:scale-105 min-h-[44px]"
-                style={{ backgroundColor: 'rgba(57,107,255,1)' }}
-              >
+              <a href="https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 sm:px-5 lg:px-6 py-2 sm:py-3 text-white font-semibold rounded-lg sm:rounded-xl text-sm sm:text-base transition-all duration-200 hover:shadow-lg group-hover:scale-105 min-h-[44px]" style={{
+              backgroundColor: 'rgba(57,107,255,1)'
+            }}>
                 View Templates
                 <RocketIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 ml-1 sm:ml-2" />
               </a>
@@ -85,9 +76,10 @@ const TemplatesSection = ({ handleProTemplatesClick }: TemplatesSectionProps) =>
           </Card>
 
           {/* Pro Templates Card */}
-          {isProUser ? (
-            <Card className="p-4 sm:p-6 lg:p-8 xl:p-10 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
-              <div className="absolute top-3 sm:top-4 right-3 sm:right-4 px-2 sm:px-3 py-1 rounded-full text-xs font-bold text-white" style={{ backgroundColor: 'rgba(57,107,255,1)' }}>
+          {isProUser ? <Card className="p-4 sm:p-6 lg:p-8 xl:p-10 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+              <div className="absolute top-3 sm:top-4 right-3 sm:right-4 px-2 sm:px-3 py-1 rounded-full text-xs font-bold text-white" style={{
+            backgroundColor: 'rgba(57,107,255,1)'
+          }}>
                 PRO
               </div>
               
@@ -121,32 +113,25 @@ const TemplatesSection = ({ handleProTemplatesClick }: TemplatesSectionProps) =>
                   </div>
                 </div>
                 
-                <a 
-                  href="https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 sm:px-5 lg:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-lg sm:rounded-xl text-sm sm:text-base transition-all duration-200 hover:shadow-lg group-hover:scale-105 min-h-[44px]"
-                >
+                <a href="https://docs.google.com/document/d/1M-UTmrH6HtCT2ZfA1N7Prsr_U91Kd9fp5pklwdhJ9Dk/edit?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 sm:px-5 lg:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-lg sm:rounded-xl text-sm sm:text-base transition-all duration-200 hover:shadow-lg group-hover:scale-105 min-h-[44px]">
                   Access Pro Templates
                   <RocketIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 ml-1 sm:ml-2" />
                 </a>
               </div>
-            </Card>
-          ) : (
-            <Card className="p-4 sm:p-6 lg:p-8 xl:p-10 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
+            </Card> : <Card className="p-4 sm:p-6 lg:p-8 xl:p-10 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-50/90 to-white/90 backdrop-blur-sm flex items-center justify-center z-10">
                 <div className="text-center space-y-3 sm:space-y-4 px-3">
                   <div className="p-3 sm:p-4 rounded-full bg-white shadow-lg mx-auto w-fit">
-                    <LockIcon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8" style={{ color: 'rgba(57,107,255,1)' }} />
+                    <LockIcon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8" style={{
+                  color: 'rgba(57,107,255,1)'
+                }} />
                   </div>
                   <div>
                     <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-1 sm:mb-2">Upgrade to Pro</h4>
                     <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">Unlock premium templates</p>
-                    <button 
-                      onClick={handleProTemplatesClick}
-                      className="inline-flex items-center px-4 sm:px-5 lg:px-6 py-2 sm:py-3 text-white font-semibold rounded-lg sm:rounded-xl text-sm sm:text-base transition-all duration-200 hover:shadow-lg min-h-[44px]"
-                      style={{ backgroundColor: 'rgba(57,107,255,1)' }}
-                    >
+                    <button onClick={handleProTemplatesClick} className="inline-flex items-center px-4 sm:px-5 lg:px-6 py-2 sm:py-3 text-white font-semibold rounded-lg sm:rounded-xl text-sm sm:text-base transition-all duration-200 hover:shadow-lg min-h-[44px]" style={{
+                  backgroundColor: 'rgba(57,107,255,1)'
+                }}>
                       View Plans
                     </button>
                   </div>
@@ -183,12 +168,9 @@ const TemplatesSection = ({ handleProTemplatesClick }: TemplatesSectionProps) =>
                   </div>
                 </div>
               </div>
-            </Card>
-          )}
+            </Card>}
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default TemplatesSection;
