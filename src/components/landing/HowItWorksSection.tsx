@@ -3,48 +3,52 @@ import React from 'react';
 const HowItWorksSection = () => {
   const steps = [{
     step: "1",
-    title: "Paste Your Content",
-    description: "Simply paste your social media post or idea into our platform",
-    icon: "/lovable-uploads/32bedd15-f159-47ba-85c4-fe92cec4cd1b.png"
+    title: "Input Your Content",
+    description: "Enter your original LinkedIn post or content idea into our professional platform",
+    icon: "/lovable-uploads/step1-input-content.png"
   }, {
-    step: "2",
-    title: "AI Enhancement",
-    description: "Our advanced AI analyzes and enhances your content for maximum engagement",
-    icon: "/lovable-uploads/93cc4b2a-0055-4c6f-bba3-3f8c3cc8ccdf.png"
+    step: "2", 
+    title: "AI Enhancement Engine",
+    description: "Our advanced AI analyzes and transforms your content using proven engagement strategies",
+    icon: "/lovable-uploads/step2-ai-enhancement.png"
   }, {
     step: "3",
-    title: "Share & Grow",
-    description: "Get optimized posts ready to share across all your social platforms",
-    icon: "/lovable-uploads/e943d2f0-cf46-4b77-a36c-ac93f5b5bd87.png"
+    title: "Optimized Post Preview", 
+    description: "Review your enhanced content with before-and-after comparison to see the improvements",
+    icon: "/lovable-uploads/step3-preview-comparison.png"
+  }, {
+    step: "4",
+    title: "Engagement Results",
+    description: "Share your optimized post and watch your engagement metrics soar with measurable results",
+    icon: "/lovable-uploads/step4-engagement-results.png"
   }];
   return <section className="py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-2">
-            How It Works 
-            <img 
-              src="/lovable-uploads/69ec999d-b4b4-4483-a326-7d87d55920fc.png" 
-              alt="rocket" 
-              className="w-8 h-8 inline-block"
-            />
-            ?
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            How It Works
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Transform your social media presence in three simple steps
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Transform your LinkedIn presence with our professional 4-step enhancement process
           </p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((item, index) => <div key={index} className="text-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-6 flex items-center justify-center">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {steps.map((item, index) => <div key={index} className="text-center group">
+              <div className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-6 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
                 <img 
                   src={item.icon} 
                   alt={`Step ${item.step}: ${item.title}`}
-                  className="w-full h-full object-contain"
+                  className="w-20 h-20 md:w-24 md:h-24 object-contain"
                 />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.title}</h3>
-              <p className="text-gray-600">{item.description}</p>
+              <div className="space-y-3">
+                <div className="inline-flex items-center justify-center w-8 h-8 bg-indigo-600 text-white rounded-full font-semibold text-sm mb-2">
+                  {item.step}
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">{item.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{item.description}</p>
+              </div>
             </div>)}
         </div>
       </div>
