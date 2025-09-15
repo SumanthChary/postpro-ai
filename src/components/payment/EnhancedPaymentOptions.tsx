@@ -75,19 +75,12 @@ export const EnhancedPaymentOptions = ({
             <span className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-card text-muted-foreground">or pay with</span>
+            <span className="px-4 bg-background text-muted-foreground">or pay with</span>
           </div>
         </div>
 
         {/* Alternative Payment Methods */}
         <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
-              <Shield className="h-3 w-3 text-primary" />
-            </div>
-            <h3 className="font-semibold text-foreground">Alternative Payment Options</h3>
-          </div>
-          
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Razorpay */}
             <RazorpayPaymentButton
@@ -100,7 +93,7 @@ export const EnhancedPaymentOptions = ({
             {/* Direct Card Payment */}
             <Button
               variant="outline"
-              className="h-14 border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200"
+              className="h-16 border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200"
               onClick={handleCardPayment}
             >
               <CreditCard className="mr-3 h-5 w-5 text-muted-foreground" />
@@ -114,28 +107,21 @@ export const EnhancedPaymentOptions = ({
       </div>
 
       {/* Security & Trust Indicators */}
-      <div className="bg-muted/30 rounded-xl p-6">
-        <div className="grid grid-cols-3 gap-4 text-center">
+      <div className="bg-muted/20 rounded-xl p-6">
+        <div className="grid grid-cols-2 gap-6 text-center">
           <div className="space-y-2">
-            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-              <Shield className="w-5 h-5 text-green-600" />
+            <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto">
+              <Shield className="w-6 h-6 text-green-600" />
             </div>
-            <div className="text-xs font-medium text-foreground">256-bit SSL</div>
+            <div className="text-sm font-medium text-foreground">256-bit SSL</div>
             <div className="text-xs text-muted-foreground">Bank-level security</div>
           </div>
           <div className="space-y-2">
-            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-              <CreditCard className="w-5 h-5 text-blue-600" />
+            <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto">
+              <CreditCard className="w-6 h-6 text-blue-600" />
             </div>
-            <div className="text-xs font-medium text-foreground">PCI Compliant</div>
+            <div className="text-sm font-medium text-foreground">PCI Compliant</div>
             <div className="text-xs text-muted-foreground">Industry standard</div>
-          </div>
-          <div className="space-y-2">
-            <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-              <Shield className="w-5 h-5 text-purple-600" />
-            </div>
-            <div className="text-xs font-medium text-foreground">No Data Stored</div>
-            <div className="text-xs text-muted-foreground">We never save cards</div>
           </div>
         </div>
       </div>

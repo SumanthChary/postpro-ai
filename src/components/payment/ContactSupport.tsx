@@ -44,34 +44,25 @@ export const ContactSupport = () => {
 
   if (!isOpen) {
     return (
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+      <div className="bg-muted/10 border border-border rounded-xl p-6">
         <div className="text-center space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Need Help?</h3>
-          <p className="text-sm text-gray-600">
+          <h3 className="text-lg font-semibold text-foreground">Need Help?</h3>
+          <p className="text-sm text-muted-foreground">
             Questions about your purchase or need technical support?
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex justify-center">
             <Button
               variant="outline"
               onClick={() => setIsOpen(true)}
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 hover:bg-primary/5"
             >
               <MessageCircle className="w-4 h-4" />
               <span>Contact Support</span>
             </Button>
-            
-            <Button
-              variant="outline"
-              onClick={() => window.open("mailto:support@postpro-ai.com")}
-              className="flex items-center space-x-2"
-            >
-              <Mail className="w-4 h-4" />
-              <span>support@postpro-ai.com</span>
-            </Button>
           </div>
           
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-muted-foreground">
             Available 24/7 • Response within 24 hours
           </div>
         </div>
@@ -80,14 +71,14 @@ export const ContactSupport = () => {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6">
+    <div className="bg-background border border-border rounded-xl p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Contact Support</h3>
+        <h3 className="text-lg font-semibold text-foreground">Contact Support</h3>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setIsOpen(false)}
-          className="text-gray-500 hover:text-gray-700"
+          className="text-muted-foreground hover:text-foreground"
         >
           ×
         </Button>
