@@ -186,7 +186,7 @@ export const RazorpayPaymentButton = ({
         onClick={handlePayment}
         disabled={isProcessing}
         variant="outline"
-        className="h-16 w-full border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200 p-4"
+        className="h-20 w-full border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200 p-6"
       >
         {isProcessing ? (
           <div className="flex items-center space-x-2">
@@ -194,11 +194,11 @@ export const RazorpayPaymentButton = ({
             <span className="text-foreground">Processing...</span>
           </div>
         ) : (
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center w-full h-full">
             <img 
               src="/lovable-uploads/razorpay-logo.jpg" 
               alt="Razorpay" 
-              className="w-24 h-10 object-contain"
+              className="max-w-[140px] max-h-[50px] w-auto h-auto object-contain"
             />
           </div>
         )}
