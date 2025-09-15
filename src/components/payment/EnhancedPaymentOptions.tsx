@@ -93,7 +93,7 @@ export const EnhancedPaymentOptions = ({
             {/* Direct Card Payment */}
             <Button
               variant="outline"
-              className="h-16 border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200"
+              className="h-20 border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200 p-6"
               onClick={handleCardPayment}
             >
               <CreditCard className="mr-3 h-5 w-5 text-muted-foreground" />
@@ -106,25 +106,6 @@ export const EnhancedPaymentOptions = ({
         </div>
       </div>
 
-      {/* Security & Trust Indicators */}
-      <div className="bg-muted/20 rounded-xl p-6">
-        <div className="grid grid-cols-2 gap-6 text-center">
-          <div className="space-y-2">
-            <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto">
-              <Shield className="w-6 h-6 text-green-600" />
-            </div>
-            <div className="text-sm font-medium text-foreground">256-bit SSL</div>
-            <div className="text-xs text-muted-foreground">Bank-level security</div>
-          </div>
-          <div className="space-y-2">
-            <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto">
-              <CreditCard className="w-6 h-6 text-blue-600" />
-            </div>
-            <div className="text-sm font-medium text-foreground">PCI Compliant</div>
-            <div className="text-xs text-muted-foreground">Industry standard</div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
