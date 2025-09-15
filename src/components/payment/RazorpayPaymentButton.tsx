@@ -182,23 +182,27 @@ export const RazorpayPaymentButton = ({
         src="https://checkout.razorpay.com/v1/checkout.js" 
         strategy="lazyOnload"
       />
-      <Button
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+      <button
+        className="w-full bg-white hover:bg-gray-50 border border-gray-300 rounded-lg p-4 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         onClick={handlePayment}
         disabled={isProcessing}
       >
         {isProcessing ? (
-          <div className="flex items-center justify-center space-x-2">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-            <span>Processing Payment...</span>
+          <div className="flex items-center justify-center space-x-3">
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
+            <span className="text-gray-700 font-medium">Processing Payment...</span>
           </div>
         ) : (
-          <div className="flex items-center justify-center space-x-2">
-            <span>💳</span>
-            <span>Pay Securely with Razorpay</span>
+          <div className="flex items-center justify-center space-x-3">
+            <img 
+              src="/lovable-uploads/razorpay-logo.jpg" 
+              alt="Razorpay" 
+              className="h-8 w-auto object-contain"
+            />
+            <span className="text-gray-700 font-medium">Pay with Razorpay</span>
           </div>
         )}
-      </Button>
+      </button>
     </>
   );
 };

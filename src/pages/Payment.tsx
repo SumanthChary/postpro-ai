@@ -2,13 +2,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { PlanSummary } from "@/components/payment/PlanSummary";
-import { PaymentNotice } from "@/components/payment/PaymentNotice";
-import { PaymentOptions } from "@/components/payment/PaymentOptions";
+import { EnhancedPlanSummary } from "@/components/payment/EnhancedPlanSummary";
+import { EnhancedPaymentOptions } from "@/components/payment/EnhancedPaymentOptions";
+import { CouponCode } from "@/components/payment/CouponCode";
+import { ContactSupport } from "@/components/payment/ContactSupport";
 import { supabase } from "@/integrations/supabase/client";
-import { Shield, Lock, Award } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
@@ -20,6 +20,7 @@ const Payment = () => {
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
   
   const planDetails = location.state?.plan || {
     name: "Creator Plan",
@@ -109,6 +110,14 @@ const Payment = () => {
     setIsProcessing(false);
   };
 
+  const handleApplyCoupon = (code: string, discount: number) => {
+    setAppliedCoupon({ code, discount });
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 flex items-center justify-center">
@@ -143,105 +152,75 @@ const Payment = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg mx-auto">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-10">
-          <div className="flex items-center justify-center mb-6">
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center mb-4">
             <img 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI" 
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain mr-3"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-contain mr-2"
             />
             <span className="text-xl sm:text-2xl font-bold text-gray-900">PostPro AI</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">Complete Your Order</h1>
-          <p className="text-gray-600 text-base sm:text-lg">Secure payment • Start immediately</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Complete Your Purchase</h1>
+          <p className="text-gray-600">Secure checkout • Instant access</p>
         </div>
 
-        {/* Plan Summary Card */}
-        <Card className="p-4 sm:p-6 mb-6 bg-white border border-gray-200 shadow-sm">
-          <PlanSummary planDetails={planDetails} />
-        </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          {/* Left Column - Plan Summary */}
+          <div className="space-y-6">
+            <EnhancedPlanSummary 
+              planDetails={planDetails} 
+              appliedCoupon={appliedCoupon}
+            />
+            <ContactSupport />
+          </div>
 
-        {/* Payment Form Card */}
-        <Card className="p-4 sm:p-6 mb-6 bg-white border border-gray-200 shadow-sm">
-            <div className="space-y-4 sm:space-y-6">
-            {/* Security Notice */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
-              <div className="flex items-start space-x-3">
-                <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="text-sm sm:text-base font-medium text-blue-900">Secure Payment</h3>
-                  <p className="text-xs sm:text-sm text-blue-700 mt-1 leading-relaxed">
-                    Your payment information is encrypted and secure. We never store your payment details.
-                  </p>
-                </div>
-              </div>
+          {/* Right Column - Payment & Checkout */}
+          <div className="space-y-6">
+            
+            {/* Coupon Code */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+              <CouponCode 
+                onApplyCoupon={handleApplyCoupon}
+                appliedCoupon={appliedCoupon}
+                onRemoveCoupon={handleRemoveCoupon}
+              />
             </div>
 
-            <PaymentNotice showCreditsInfo={!!planDetails.credits} />
-
+            {/* Payment Methods */}
             {user && (
-              <div className="space-y-4">
-                <div className="border-t pt-4">
-                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">Payment Method</h3>
-                  <PaymentOptions 
-                    planDetails={planDetails}
-                    userId={user.id}
-                    onSuccess={handlePaymentSuccess}
-                    onError={handlePaymentError}
-                    paypalClientId={PAYPAL_CLIENT_ID}
-                  />
-                </div>
+              <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                <EnhancedPaymentOptions 
+                  planDetails={{
+                    ...planDetails,
+                    price: appliedCoupon 
+                      ? (parseFloat(planDetails.price) * (1 - appliedCoupon.discount / 100)).toFixed(2)
+                      : planDetails.price
+                  }}
+                  userId={user.id}
+                  onSuccess={handlePaymentSuccess}
+                  onError={handlePaymentError}
+                  paypalClientId={PAYPAL_CLIENT_ID}
+                />
               </div>
             )}
 
-            <div className="border-t pt-4">
-              <Button
-                variant="outline"
-                className="w-full border-gray-300 hover:bg-gray-50"
-                onClick={() => navigate(-1)}
-                disabled={isProcessing}
-              >
-                ← Back to Plans
-              </Button>
-            </div>
+            {/* Back Button */}
+            <Button
+              variant="outline"
+              className="w-full border-gray-300 hover:bg-gray-50 py-3"
+              onClick={() => navigate(-1)}
+              disabled={isProcessing}
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Plans
+            </Button>
           </div>
-        </Card>
-
-        {/* Trust Indicators */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 mb-6">
-          <div className="grid grid-cols-3 gap-3 sm:gap-4 text-center">
-            <div className="flex flex-col items-center space-y-2">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-              </div>
-              <span className="text-xs sm:text-sm font-medium text-gray-600">SSL Encrypted</span>
-            </div>
-            <div className="flex flex-col items-center space-y-2">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
-              </div>
-              <span className="text-xs sm:text-sm font-medium text-gray-600">PCI Compliant</span>
-            </div>
-            <div className="flex flex-col items-center space-y-2">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <Award className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
-              </div>
-              <span className="text-xs sm:text-sm font-medium text-gray-600">Money Back</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Support */}
-        <div className="text-center">
-          <p className="text-sm sm:text-base text-gray-500 mb-2">
-            Questions about your purchase?
-          </p>
-          <Button variant="link" className="text-blue-600 hover:text-blue-500 p-0 h-auto text-sm sm:text-base font-medium">
-            Contact our support team
-          </Button>
         </div>
       </div>
     </div>
