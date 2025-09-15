@@ -161,7 +161,7 @@ const Payment = () => {
           <Button
             variant="ghost"
             className="text-muted-foreground hover:text-foreground"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/pricing")}
             disabled={isProcessing}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
