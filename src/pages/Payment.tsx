@@ -120,10 +120,10 @@ const Payment = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading payment details...</p>
+          <div className="rounded-full h-10 w-10 border-2 border-primary border-t-transparent animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground text-lg">Loading payment details...</p>
         </div>
       </div>
     );
@@ -131,18 +131,19 @@ const Payment = () => {
 
   if (authError) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-6">
-          <div className="text-red-500 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8">
+          <div className="text-destructive mb-6">
+            <svg className="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
             </svg>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Authentication Required</h2>
-          <p className="text-gray-600 mb-6">{authError}</p>
+          <h2 className="text-2xl font-semibold text-foreground mb-4">Authentication Required</h2>
+          <p className="text-muted-foreground mb-8 text-lg">{authError}</p>
           <Button 
             onClick={() => navigate("/auth")}
-            className="bg-blue-600 hover:bg-blue-700"
+            size="lg"
+            className="px-8"
           >
             Sign In
           </Button>
@@ -152,49 +153,52 @@ const Payment = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-5xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
         
+        {/* Back Button - Top Left */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => navigate(-1)}
+            disabled={isProcessing}
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Plans
+          </Button>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <img 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI" 
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-contain mr-2"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain mr-3"
             />
-            <span className="text-xl sm:text-2xl font-bold text-gray-900">PostPro AI</span>
+            <span className="text-2xl sm:text-3xl font-bold text-foreground">PostPro AI</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Complete Your Purchase</h1>
-          <p className="text-gray-600">Secure checkout • Instant access</p>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Complete Your Purchase</h1>
+          <p className="text-muted-foreground text-lg">Secure checkout • Instant access • 30-day money-back guarantee</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           
           {/* Left Column - Plan Summary */}
-          <div className="space-y-6">
+          <div className="lg:col-span-2">
             <EnhancedPlanSummary 
               planDetails={planDetails} 
               appliedCoupon={appliedCoupon}
             />
-            <ContactSupport />
           </div>
 
           {/* Right Column - Payment & Checkout */}
-          <div className="space-y-6">
+          <div className="lg:col-span-3 space-y-6">
             
-            {/* Coupon Code */}
-            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-              <CouponCode 
-                onApplyCoupon={handleApplyCoupon}
-                appliedCoupon={appliedCoupon}
-                onRemoveCoupon={handleRemoveCoupon}
-              />
-            </div>
-
             {/* Payment Methods */}
             {user && (
-              <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+              <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
                 <EnhancedPaymentOptions 
                   planDetails={{
                     ...planDetails,
@@ -210,17 +214,20 @@ const Payment = () => {
               </div>
             )}
 
-            {/* Back Button */}
-            <Button
-              variant="outline"
-              className="w-full border-gray-300 hover:bg-gray-50 py-3"
-              onClick={() => navigate(-1)}
-              disabled={isProcessing}
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Plans
-            </Button>
+            {/* Coupon Code - Below Payment Methods */}
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+              <CouponCode 
+                onApplyCoupon={handleApplyCoupon}
+                appliedCoupon={appliedCoupon}
+                onRemoveCoupon={handleRemoveCoupon}
+              />
+            </div>
           </div>
+        </div>
+
+        {/* Contact Support - Bottom */}
+        <div className="mt-12 max-w-2xl mx-auto">
+          <ContactSupport />
         </div>
       </div>
     </div>

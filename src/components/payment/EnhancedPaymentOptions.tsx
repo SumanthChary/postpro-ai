@@ -24,34 +24,32 @@ export const EnhancedPaymentOptions = ({
   const { toast } = useToast();
 
   const handleCardPayment = () => {
+    // TODO: Implement Stripe integration
     toast({
-      title: "Coming Soon",
-      description: "Direct card payments will be available soon. Please use PayPal or Razorpay for now.",
+      title: "Card Payment",
+      description: "Card payment integration is being set up. Please use PayPal or Razorpay for now.",
+      variant: "default",
     });
   };
 
   return (
-    <div className="space-y-6">
-      {/* Security Notice */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex items-center space-x-3">
-          <Shield className="w-5 h-5 text-blue-600 flex-shrink-0" />
-          <div>
-            <h3 className="text-sm font-semibold text-blue-900">Secure Payment</h3>
-            <p className="text-xs text-blue-700 mt-1">
-              Your payment is protected by 256-bit SSL encryption. We never store your payment details.
-            </p>
-          </div>
-        </div>
+    <div className="space-y-8">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-foreground mb-2">Choose Payment Method</h2>
+        <p className="text-muted-foreground">Secure • Encrypted • Trusted by thousands</p>
       </div>
 
       {/* Payment Methods */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-900">Choose Payment Method</h3>
+      <div className="space-y-6">
         
-        {/* PayPal Options */}
-        <div className="space-y-3">
-          <div className="text-sm font-medium text-gray-700">PayPal & Cards</div>
+        {/* PayPal & Card Options */}
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+              <CreditCard className="h-3 w-3 text-primary" />
+            </div>
+            <h3 className="font-semibold text-foreground">PayPal & Credit Cards</h3>
+          </div>
           <PayPalScriptProvider 
             options={{ 
               clientId: paypalClientId,
@@ -74,57 +72,70 @@ export const EnhancedPaymentOptions = ({
         {/* Divider */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-gray-200" />
+            <span className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-white text-gray-500">or</span>
+            <span className="px-4 bg-card text-muted-foreground">or pay with</span>
           </div>
         </div>
 
-        {/* Razorpay */}
-        <div className="space-y-3">
-          <div className="text-sm font-medium text-gray-700">Indian Payment Methods</div>
-          <RazorpayPaymentButton
-            planDetails={planDetails}
-            userId={userId}
-            onSuccess={onSuccess}
-            onError={onError}
-          />
-        </div>
-
-        {/* Direct Card Payment - Coming Soon */}
-        <div className="space-y-3">
-          <div className="text-sm font-medium text-gray-700">Direct Card Payment</div>
-          <Button
-            variant="outline"
-            className="w-full border-gray-300 hover:bg-gray-50 py-4"
-            onClick={handleCardPayment}
-          >
-            <CreditCard className="mr-3 h-5 w-5 text-gray-600" />
-            <span className="text-gray-700 font-medium">Pay with Credit/Debit Card</span>
-            <span className="ml-2 text-xs text-gray-500">(Coming Soon)</span>
-          </Button>
+        {/* Alternative Payment Methods */}
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+              <Shield className="h-3 w-3 text-primary" />
+            </div>
+            <h3 className="font-semibold text-foreground">Alternative Payment Options</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Razorpay */}
+            <RazorpayPaymentButton
+              planDetails={planDetails}
+              userId={userId}
+              onSuccess={onSuccess}
+              onError={onError}
+            />
+            
+            {/* Direct Card Payment */}
+            <Button
+              variant="outline"
+              className="h-14 border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200"
+              onClick={handleCardPayment}
+            >
+              <CreditCard className="mr-3 h-5 w-5 text-muted-foreground" />
+              <div className="text-left">
+                <div className="font-medium text-foreground">Credit/Debit Card</div>
+                <div className="text-xs text-muted-foreground">Direct payment</div>
+              </div>
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* Trust Indicators */}
-      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-            <Shield className="w-4 h-4 text-green-600" />
+      {/* Security & Trust Indicators */}
+      <div className="bg-muted/30 rounded-xl p-6">
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+              <Shield className="w-5 h-5 text-green-600" />
+            </div>
+            <div className="text-xs font-medium text-foreground">256-bit SSL</div>
+            <div className="text-xs text-muted-foreground">Bank-level security</div>
           </div>
-          <div>
-            <div className="text-xs font-medium text-gray-900">SSL Secure</div>
-            <div className="text-xs text-gray-600">256-bit encryption</div>
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+              <CreditCard className="w-5 h-5 text-blue-600" />
+            </div>
+            <div className="text-xs font-medium text-foreground">PCI Compliant</div>
+            <div className="text-xs text-muted-foreground">Industry standard</div>
           </div>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-            <CreditCard className="w-4 h-4 text-blue-600" />
-          </div>
-          <div>
-            <div className="text-xs font-medium text-gray-900">PCI Compliant</div>
-            <div className="text-xs text-gray-600">Industry standard</div>
+          <div className="space-y-2">
+            <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
+              <Shield className="w-5 h-5 text-purple-600" />
+            </div>
+            <div className="text-xs font-medium text-foreground">No Data Stored</div>
+            <div className="text-xs text-muted-foreground">We never save cards</div>
           </div>
         </div>
       </div>

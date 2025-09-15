@@ -182,27 +182,31 @@ export const RazorpayPaymentButton = ({
         src="https://checkout.razorpay.com/v1/checkout.js" 
         strategy="lazyOnload"
       />
-      <button
-        className="w-full bg-white hover:bg-gray-50 border border-gray-300 rounded-lg p-4 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      <Button
         onClick={handlePayment}
         disabled={isProcessing}
+        variant="outline"
+        className="h-14 w-full border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200 p-4"
       >
         {isProcessing ? (
-          <div className="flex items-center justify-center space-x-3">
-            <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-600 border-t-transparent"></div>
-            <span className="text-gray-700 font-medium">Processing Payment...</span>
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <span className="text-foreground">Processing...</span>
           </div>
         ) : (
           <div className="flex items-center justify-center space-x-3">
             <img 
               src="/lovable-uploads/razorpay-logo.jpg" 
               alt="Razorpay" 
-              className="h-8 w-auto object-contain"
+              className="w-8 h-6 object-contain"
             />
-            <span className="text-gray-700 font-medium">Pay with Razorpay</span>
+            <div className="text-left">
+              <div className="font-medium text-foreground">Razorpay</div>
+              <div className="text-xs text-muted-foreground">UPI, Cards, Net Banking</div>
+            </div>
           </div>
         )}
-      </button>
+      </Button>
     </>
   );
 };
