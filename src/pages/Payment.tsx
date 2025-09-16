@@ -26,7 +26,18 @@ const Payment = () => {
     name: "Creator Plan",
     price: "25",
     period: "month",
-    credits: 500
+    credits: 500,
+    features: [
+      "Unlimited LinkedIn post enhancements",
+      "15+ tone options",
+      "Virality predictor",
+      "Real-time hashtag research",
+      "Custom CTA generator",
+      "Advanced analytics",
+      "AI strategy chat",
+      "Email support"
+    ],
+    cta: "Get Started"
   };
 
   useEffect(() => {
