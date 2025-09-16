@@ -87,7 +87,7 @@ const Pricing: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
       <Navigation
         session={session}
         username={username}
@@ -98,79 +98,95 @@ const Pricing: React.FC = () => {
         mobileMenuOpen={mobileMenuOpen}
       />
 
-      <main className="pt-24 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+      <main className="pt-24 bg-gradient-to-br from-background via-background to-accent/5">
         <div className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
-              Choose Your Growth Plan
+            <div className="flex items-center justify-center mb-6">
+              <Star className="w-8 h-8 text-primary mr-3" />
+              <span className="text-lg font-semibold text-muted-foreground">Premium AI-Powered Growth</span>
+            </div>
+            <h1 className="text-4xl sm:text-6xl font-extrabold text-foreground tracking-tight mb-6">
+              Choose Your <span className="text-primary">Growth Plan</span>
             </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-lg sm:text-xl text-gray-600">
-              Start with our plans, upgrade when you're ready to accelerate
+            <p className="mt-4 max-w-3xl mx-auto text-xl text-muted-foreground leading-relaxed">
+              Join thousands of professionals who trust PostPro AI to amplify their content and accelerate their growth
             </p>
+            <div className="flex items-center justify-center mt-6 space-x-6 text-sm text-muted-foreground">
+              <div className="flex items-center">
+                <Verified className="w-4 h-4 text-primary mr-2" />
+                <span>30-day money back guarantee</span>
+              </div>
+              <div className="flex items-center">
+                <CheckCircle className="w-4 h-4 text-primary mr-2" />
+                <span>Cancel anytime</span>
+              </div>
+            </div>
           </div>
 
           {/* Main Plans */}
-          <div className="mt-16 max-w-7xl mx-auto grid gap-8 lg:grid-cols-2 lg:gap-8 items-center justify-center">
+          <div className="mt-20 max-w-7xl mx-auto grid gap-8 lg:grid-cols-2 lg:gap-8 items-center justify-center">
             {pricingPlans.filter(plan => plan.name !== "LIFETIME CREATOR").map((plan, index) => (
               <div 
                 key={plan.name}
-                className={`bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 relative ${
+                className={`bg-card rounded-3xl p-10 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border-2 relative backdrop-blur-sm ${
                   plan.popular 
-                    ? "border-blue-500 transform lg:scale-105 shadow-xl" 
-                    : "border-transparent"
+                    ? "border-primary transform lg:scale-105 shadow-2xl bg-gradient-to-br from-card to-accent/10" 
+                    : "border-border hover:border-primary/50"
                 }`}
               >
                 {plan.badge && (
-                  <div className={`absolute -top-3 right-5 px-3 py-1 rounded-full text-xs font-bold ${
+                  <div className={`absolute -top-4 right-6 px-4 py-2 rounded-full text-sm font-bold shadow-lg ${
                     plan.popular 
-                      ? "bg-blue-600 text-white" 
-                      : "bg-green-600 text-white"
+                      ? "bg-primary text-primary-foreground" 
+                      : "bg-accent text-accent-foreground"
                   }`}>
                     {plan.badge}
                   </div>
                 )}
                 
                 <div className="text-center">
-                  <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
-                  <p className="mt-2 text-sm text-gray-500">{plan.limitedQuantity || "Perfect for growing creators"}</p>
-                  <div className="mt-6">
+                  <h3 className="text-3xl font-bold text-foreground mb-3">{plan.name}</h3>
+                  <p className="text-muted-foreground">{plan.limitedQuantity || "Perfect for growing creators"}</p>
+                  <div className="mt-8 mb-8">
                     {plan.originalPrice && (
-                      <span className="text-lg text-gray-400 line-through mr-2">
+                      <span className="text-xl text-muted-foreground line-through mr-3">
                         ${plan.originalPrice}
                       </span>
                     )}
-                    <span className="text-5xl font-extrabold text-gray-900">
+                    <span className="text-6xl font-extrabold text-foreground">
                       ${plan.price}
                     </span>
-                    <span className="text-base font-medium text-gray-500">
+                    <span className="text-lg font-medium text-muted-foreground">
                       /{plan.period === "lifetime" ? "once" : plan.period}
                     </span>
                   </div>
                   {plan.savings && (
-                    <p className="text-sm font-medium text-green-600 mt-2">{plan.savings}</p>
+                    <div className="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                      {plan.savings}
+                    </div>
                   )}
                 </div>
                 
-                <ul className="mt-8 space-y-4 text-gray-600">
+                <ul className="space-y-5 text-foreground">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                      <span className="text-sm">{feature}</span>
+                      <CheckCircle className="w-6 h-6 text-primary mr-4 flex-shrink-0" />
+                      <span className="text-base font-medium">{feature}</span>
                     </li>
                   ))}
                 </ul>
                 
                 <button
                   onClick={() => handleSubscribe(plan)}
-                  className={`mt-8 w-full text-center rounded-lg py-3 text-base font-semibold transition-all duration-200 ${
+                  className={`mt-10 w-full text-center rounded-2xl py-4 text-lg font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-xl ${
                     plan.popular
-                      ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:-translate-y-1 hover:shadow-lg" 
-                      : "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:-translate-y-1 hover:shadow-lg"
+                      ? "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg" 
+                      : "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg hover:shadow-primary/25"
                   }`}
                 >
                   {plan.cta}
                 </button>
-                <p className="text-center text-xs text-gray-500 mt-2">Cancel anytime</p>
+                <p className="text-center text-sm text-muted-foreground mt-4 font-medium">30-day money-back guarantee • Cancel anytime</p>
               </div>
             ))}
           </div>
@@ -215,20 +231,29 @@ const Pricing: React.FC = () => {
           ))}
 
           {/* Trust Indicators */}
-          <div className="mt-16 max-w-5xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-center items-center gap-8 text-center text-gray-600">
-              <div className="flex items-center space-x-6">
-                <div className="text-blue-600 font-semibold">PayPal</div>
-                <div className="text-blue-600 font-semibold">Razorpay</div>
-                <div className="flex items-center">
-                  <Verified className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Secure payments</span>
+          <div className="mt-20 max-w-6xl mx-auto">
+            <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-8 border border-border">
+              <div className="flex flex-col md:flex-row justify-center items-center gap-8 text-center">
+                <div className="flex items-center space-x-8">
+                  <div className="flex items-center">
+                    <Verified className="w-6 h-6 text-primary mr-3" />
+                    <span className="text-foreground font-semibold">Bank-grade security</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="w-6 h-6 text-primary mr-3" />
+                    <span className="text-foreground font-semibold">Instant activation</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Star className="w-6 h-6 text-primary mr-3" />
+                    <span className="text-foreground font-semibold">24/7 support</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            <div className="mt-8 text-center text-sm text-gray-500 italic">
-              <p>"200+ professionals chose our plans this month"</p>
+              
+              <div className="mt-8 text-center">
+                <p className="text-lg font-semibold text-foreground mb-2">Trusted by 1000+ professionals worldwide</p>
+                <p className="text-muted-foreground">PayPal • Razorpay • Credit Cards • Secure Checkout</p>
+              </div>
             </div>
           </div>
         </div>

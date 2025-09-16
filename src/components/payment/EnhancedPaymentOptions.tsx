@@ -1,10 +1,12 @@
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { PayPalPaymentButton } from "./PayPalPaymentButton";
 import { RazorpayPaymentButton } from "./RazorpayPaymentButton";
+import { CardPaymentForm } from "./CardPaymentForm";
 import { Plan } from "@/types/pricing";
 import { CreditCard, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 interface EnhancedPaymentOptionsProps {
   planDetails: Plan;
@@ -22,15 +24,7 @@ export const EnhancedPaymentOptions = ({
   paypalClientId,
 }: EnhancedPaymentOptionsProps) => {
   const { toast } = useToast();
-
-  const handleCardPayment = () => {
-    // TODO: Implement Stripe integration
-    toast({
-      title: "Card Payment",
-      description: "Card payment integration is being set up. Please use PayPal or Razorpay for now.",
-      variant: "default",
-    });
-  };
+  const [showCardForm, setShowCardForm] = useState(false);
 
   return (
     <div className="space-y-8">
@@ -94,15 +88,29 @@ export const EnhancedPaymentOptions = ({
             <Button
               variant="outline"
               className="h-20 border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200 p-6"
-              onClick={handleCardPayment}
+              onClick={() => setShowCardForm(!showCardForm)}
             >
-              <CreditCard className="mr-3 h-5 w-5 text-muted-foreground" />
-              <div className="text-left">
-                <div className="font-medium text-foreground">Credit/Debit Card</div>
-                <div className="text-xs text-muted-foreground">Direct payment</div>
+              <div className="flex items-center justify-center w-full">
+                <CreditCard className="mr-3 h-6 w-6 text-muted-foreground" />
+                <div className="text-center">
+                  <div className="font-semibold text-foreground">Credit/Debit Card</div>
+                  <div className="text-sm text-muted-foreground">Visa, Mastercard, Amex</div>
+                </div>
               </div>
             </Button>
           </div>
+          
+          {/* Card Form */}
+          {showCardForm && (
+            <div className="mt-6 p-6 border border-border rounded-2xl bg-card/50">
+              <CardPaymentForm
+                planDetails={planDetails}
+                userId={userId}
+                onSuccess={onSuccess}
+                onError={onError}
+              />
+            </div>
+          )}
         </div>
       </div>
 
