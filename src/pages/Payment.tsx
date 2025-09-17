@@ -1,18 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { Plan } from '@/types/pricing';
-import { SimpleOrderSummary } from '@/components/payment/SimpleOrderSummary';
-import { SimplePaymentMethod } from '@/components/payment/SimplePaymentMethod';
+
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { EnhancedPlanSummary } from "@/components/payment/EnhancedPlanSummary";
+import { EnhancedPaymentOptions } from "@/components/payment/EnhancedPaymentOptions";
+import { CouponCode } from "@/components/payment/CouponCode";
+import { ContactSupport } from "@/components/payment/ContactSupport";
+import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft } from "lucide-react";
+
+const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const [user, setUser] = useState<any>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [user, setUser] = useState<{ id: string } | null>(null);
   const [loading, setLoading] = useState(true);
-  const [authError, setAuthError] = useState('');
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
+  
+  const planDetails = location.state?.plan || {
+    name: "Creator Plan",
+    price: "25",
+    period: "month",
+    credits: 500
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -77,15 +92,30 @@ const Payment = () => {
   }, [navigate, toast]);
 
   const handlePaymentSuccess = () => {
-    navigate('/enhance');
+    setIsProcessing(false);
+    toast({
+      title: "Payment Successful!",
+      description: "Welcome to your new plan!",
+    });
+    navigate("/enhance");
   };
 
   const handlePaymentError = (message: string) => {
+    console.error("Payment error:", message);
     toast({
-      title: "Payment Failed",
-      description: message,
+      title: "Payment Error",
+      description: message || "Something went wrong with your payment",
       variant: "destructive",
     });
+    setIsProcessing(false);
+  };
+
+  const handleApplyCoupon = (code: string, discount: number) => {
+    setAppliedCoupon({ code, discount });
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
   };
 
   if (loading) {
@@ -110,54 +140,94 @@ const Payment = () => {
           </div>
           <h2 className="text-2xl font-semibold text-foreground mb-4">Authentication Required</h2>
           <p className="text-muted-foreground mb-8 text-lg">{authError}</p>
-          <button 
+          <Button 
             onClick={() => navigate("/auth")}
-            className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
+            size="lg"
+            className="px-8"
           >
             Sign In
-          </button>
+          </Button>
         </div>
       </div>
     );
   }
 
-  const planDetails: Plan = location.state?.planDetails || location.state?.plan || {
-    id: 'professional',
-    name: 'Starter Plan',
-    price: 29,
-    badge: '',
-    features: ['Enhanced post creation with AI', 'Unlimited post enhancement', 'Advanced virality scoring', 'Priority customer support'],
-    popular: false,
-    originalPrice: 29
-  };
-
-  const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID || "";
-
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-foreground mb-3">
-            Complete Your Subscription
-          </h1>
-          <p className="text-muted-foreground">
-            Secure payment processing with enterprise-grade encryption
-          </p>
+      <div className="max-w-5xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+        
+        {/* Back Button - Top Left */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => navigate("/pricing")}
+            disabled={isProcessing}
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Plans
+          </Button>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* Order Summary */}
-          <SimpleOrderSummary planDetails={planDetails} />
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center mb-4">
+            <img 
+              src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
+              alt="PostPro AI" 
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain mr-3"
+            />
+            <span className="text-2xl sm:text-3xl font-bold text-foreground">PostPro AI</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Complete Your Purchase</h1>
+          <p className="text-muted-foreground text-lg">Secure checkout • Instant access • 30-day money-back guarantee</p>
+        </div>
 
-          {/* Payment Method */}
-          <SimplePaymentMethod
-            planDetails={planDetails}
-            userId={user?.id}
-            onSuccess={handlePaymentSuccess}
-            onError={handlePaymentError}
-            paypalClientId={PAYPAL_CLIENT_ID}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          
+          {/* Left Column - Plan Summary */}
+          <div className="lg:col-span-2">
+            <EnhancedPlanSummary 
+              planDetails={planDetails} 
+              appliedCoupon={appliedCoupon}
+            />
+          </div>
+
+          {/* Right Column - Payment & Checkout */}
+          <div className="lg:col-span-3 space-y-6">
+            
+            {/* Payment Methods */}
+            {user && (
+              <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+                <EnhancedPaymentOptions 
+                  planDetails={{
+                    ...planDetails,
+                    price: appliedCoupon 
+                      ? (parseFloat(planDetails.price) * (1 - appliedCoupon.discount / 100)).toFixed(2)
+                      : planDetails.price
+                  }}
+                  userId={user.id}
+                  onSuccess={handlePaymentSuccess}
+                  onError={handlePaymentError}
+                  paypalClientId={PAYPAL_CLIENT_ID}
+                />
+              </div>
+            )}
+
+            {/* Coupon Code - Below Payment Methods */}
+            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+              <CouponCode 
+                onApplyCoupon={handleApplyCoupon}
+                appliedCoupon={appliedCoupon}
+                onRemoveCoupon={handleRemoveCoupon}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Support - Bottom */}
+        <div className="mt-12 max-w-2xl mx-auto">
+          <ContactSupport />
         </div>
       </div>
     </div>

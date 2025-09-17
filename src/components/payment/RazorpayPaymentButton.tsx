@@ -182,36 +182,27 @@ export const RazorpayPaymentButton = ({
         src="https://checkout.razorpay.com/v1/checkout.js" 
         strategy="lazyOnload"
       />
-      <div className="group relative w-full overflow-hidden rounded-xl border-2 border-border bg-gradient-to-br from-card to-card/50 transition-all duration-300 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/10">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-        <Button
-          onClick={handlePayment}
-          disabled={isProcessing}
-          variant="ghost"
-          className="relative w-full h-auto p-6 hover:bg-transparent"
-        >
-          {isProcessing ? (
-            <div className="flex items-center justify-center space-x-3">
-              <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-              <span className="font-semibold">Processing...</span>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center space-y-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
-                <img 
-                  src="/lovable-uploads/razorpay-logo.jpg" 
-                  alt="Razorpay" 
-                  className="max-w-[32px] max-h-[32px] w-auto h-auto object-contain"
-                />
-              </div>
-              <div className="text-center">
-                <h3 className="font-bold text-foreground">Razorpay</h3>
-                <p className="text-xs text-muted-foreground">UPI, Cards, Wallets</p>
-              </div>
-            </div>
-          )}
-        </Button>
-      </div>
+      <Button
+        onClick={handlePayment}
+        disabled={isProcessing}
+        variant="outline"
+        className="h-20 w-full border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200 p-6"
+      >
+        {isProcessing ? (
+          <div className="flex items-center space-x-2">
+            <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <span className="text-foreground">Processing...</span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-full h-full">
+            <img 
+              src="/lovable-uploads/razorpay-logo.jpg" 
+              alt="Razorpay" 
+              className="max-w-[140px] max-h-[50px] w-auto h-auto object-contain"
+            />
+          </div>
+        )}
+      </Button>
     </>
   );
 };
