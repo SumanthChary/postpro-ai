@@ -152,59 +152,80 @@ const Payment = () => {
     );
   }
 
+  const finalPrice = appliedCoupon 
+    ? (parseFloat(planDetails.price) * (1 - appliedCoupon.discount / 100)).toFixed(2)
+    : planDetails.price;
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-5xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        
-        {/* Back Button - Top Left */}
-        <div className="mb-6">
-          <Button
-            variant="ghost"
-            className="text-muted-foreground hover:text-foreground"
-            onClick={() => navigate("/pricing")}
-            disabled={isProcessing}
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Plans
-          </Button>
-        </div>
-
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <img 
-              src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
-              alt="PostPro AI" 
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain mr-3"
-            />
-            <span className="text-2xl sm:text-3xl font-bold text-foreground">PostPro AI</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Complete Your Purchase</h1>
-          <p className="text-muted-foreground text-lg">Secure checkout • Instant access • 30-day money-back guarantee</p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <div className="mx-auto max-w-2xl">
           
-          {/* Left Column - Plan Summary */}
-          <div className="lg:col-span-2">
-            <EnhancedPlanSummary 
-              planDetails={planDetails} 
-              appliedCoupon={appliedCoupon}
-            />
+          {/* Back Button - Top Left */}
+          <div className="mb-6">
+            <Button
+              variant="ghost"
+              className="text-muted-foreground hover:text-foreground"
+              onClick={() => navigate("/pricing")}
+              disabled={isProcessing}
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Plans
+            </Button>
           </div>
 
-          {/* Right Column - Payment & Checkout */}
-          <div className="lg:col-span-3 space-y-6">
+          {/* Header */}
+          <header className="text-center">
+            <h1 className="text-3xl font-extrabold sm:text-4xl">Secure Checkout</h1>
+          </header>
+
+          <div className="mt-8 space-y-8">
             
+            {/* Order Summary */}
+            <div className="rounded-lg border border-border bg-card p-6">
+              <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+              <div className="space-y-4">
+                <div className="flex justify-between">
+                  <p className="text-muted-foreground">{planDetails.name} ({planDetails.period})</p>
+                  <p className="font-medium">${planDetails.price}</p>
+                </div>
+                {appliedCoupon && (
+                  <div className="flex justify-between text-green-600">
+                    <p>Discount ({appliedCoupon.code})</p>
+                    <p>-${(parseFloat(planDetails.price) * appliedCoupon.discount / 100).toFixed(2)}</p>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <p className="text-muted-foreground">Subtotal</p>
+                  <p className="font-medium">${finalPrice}</p>
+                </div>
+                <div className="border-t border-border my-4"></div>
+                <div className="flex justify-between font-bold text-lg">
+                  <p>Total</p>
+                  <p>${finalPrice}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Money-back Guarantee */}
+            <div className="rounded-lg border border-primary/30 bg-primary/10 p-6 flex items-center gap-4">
+              <svg className="w-8 h-8 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <div>
+                <h3 className="font-bold text-primary">30-Day Money-Back Guarantee</h3>
+                <p className="text-sm text-muted-foreground">Not satisfied? Get a full refund within 30 days. No questions asked.</p>
+              </div>
+            </div>
+
             {/* Payment Methods */}
             {user && (
-              <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+              <div>
+                <h2 className="text-xl font-bold mb-4 text-center">Choose your payment method</h2>
                 <EnhancedPaymentOptions 
                   planDetails={{
                     ...planDetails,
-                    price: appliedCoupon 
-                      ? (parseFloat(planDetails.price) * (1 - appliedCoupon.discount / 100)).toFixed(2)
-                      : planDetails.price
+                    price: finalPrice
                   }}
                   userId={user.id}
                   onSuccess={handlePaymentSuccess}
@@ -214,20 +235,52 @@ const Payment = () => {
               </div>
             )}
 
-            {/* Coupon Code - Below Payment Methods */}
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+            {/* Coupon Code */}
+            <div className="bg-card border border-border rounded-lg p-6">
               <CouponCode 
                 onApplyCoupon={handleApplyCoupon}
                 appliedCoupon={appliedCoupon}
                 onRemoveCoupon={handleRemoveCoupon}
               />
             </div>
-          </div>
-        </div>
 
-        {/* Contact Support - Bottom */}
-        <div className="mt-12 max-w-2xl mx-auto">
-          <ContactSupport />
+            {/* Pay Button */}
+            {user && (
+              <div className="mt-8">
+                <button 
+                  className="w-full rounded-lg bg-primary px-6 py-4 text-lg font-bold text-primary-foreground shadow-lg transition-transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-primary/50"
+                  disabled={isProcessing}
+                  onClick={() => {
+                    // This will be handled by the payment method components
+                    toast({
+                      title: "Select Payment Method",
+                      description: "Please choose a payment method above to proceed.",
+                      variant: "default",
+                    });
+                  }}
+                >
+                  {isProcessing ? "Processing..." : `Pay $${finalPrice}`}
+                </button>
+                <p className="mt-4 text-center text-sm text-muted-foreground">Cancel anytime, no hidden fees.</p>
+              </div>
+            )}
+
+            {/* Security Badges */}
+            <div className="mt-8 flex items-center justify-center gap-6 text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <span className="text-xs font-medium">Secure SSL Encryption</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                <span className="text-xs font-medium">PCI Compliant</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

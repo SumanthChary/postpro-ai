@@ -186,21 +186,20 @@ export const RazorpayPaymentButton = ({
         onClick={handlePayment}
         disabled={isProcessing}
         variant="outline"
-        className="h-20 w-full border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200 p-6"
+        className="flex w-full items-center justify-center gap-3 rounded-lg border border-border bg-card px-4 py-3 font-semibold text-foreground transition-colors hover:bg-muted h-auto"
       >
         {isProcessing ? (
           <div className="flex items-center space-x-2">
             <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            <span className="text-foreground">Processing...</span>
+            <span>Processing...</span>
           </div>
         ) : (
-          <div className="flex items-center justify-center w-full h-full">
-            <img 
-              src="/lovable-uploads/razorpay-logo.jpg" 
-              alt="Razorpay" 
-              className="max-w-[140px] max-h-[50px] w-auto h-auto object-contain"
-            />
-          </div>
+          <>
+            <svg className="h-6 w-6" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+              <path d="M259.9 22.2c-15.5-12.3-35-19-54.8-19-45.7 0-86.8 28-104.2 68.4-14.8 34.3-13.6 72.8 3.4 105.8-19.1 11.2-35.4 28-47.5 48.7-27.1 46.4-30.8 102.5-10.4 152.9 20.6 51.1 66.8 85.8 120.8 85.8h225.2c16.5 0 30-13.5 30-30s-13.5-30-30-30H187.5c-44.4 0-81-30.3-89.8-70.3-9-40.6 8.3-82.5 40.2-106.3 3.6-2.7 8.3-2.5 11.6.4 12.3 11 27.7 18.5 44.5 20.7 4.1.5 7.8-2.6 8.3-6.7.7-5.5-3.3-10.2-8.8-10.2-11.2 0-21.9-4.2-30.2-11.4 15.5-60.6 68.6-105.6 132-105.6 22.3 0 43.1 5.9 61.1 16.5 4.3 2.5 5.5 8.3 2.7 12.3-2.8 4.1-8.5 4.9-12.6 2.4z" fill="#528FF0"/>
+            </svg>
+            <span>Razorpay</span>
+          </>
         )}
       </Button>
     </>
