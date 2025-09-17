@@ -182,26 +182,36 @@ export const RazorpayPaymentButton = ({
         src="https://checkout.razorpay.com/v1/checkout.js" 
         strategy="lazyOnload"
       />
-      <Button
-        onClick={handlePayment}
-        disabled={isProcessing}
-        variant="outline"
-        className="flex w-full items-center justify-center gap-3 rounded-lg border border-border bg-card px-4 py-3 font-semibold text-foreground transition-colors hover:bg-muted h-auto"
-      >
-        {isProcessing ? (
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            <span>Processing...</span>
-          </div>
-        ) : (
-          <>
-            <svg className="h-6 w-6" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-              <path d="M259.9 22.2c-15.5-12.3-35-19-54.8-19-45.7 0-86.8 28-104.2 68.4-14.8 34.3-13.6 72.8 3.4 105.8-19.1 11.2-35.4 28-47.5 48.7-27.1 46.4-30.8 102.5-10.4 152.9 20.6 51.1 66.8 85.8 120.8 85.8h225.2c16.5 0 30-13.5 30-30s-13.5-30-30-30H187.5c-44.4 0-81-30.3-89.8-70.3-9-40.6 8.3-82.5 40.2-106.3 3.6-2.7 8.3-2.5 11.6.4 12.3 11 27.7 18.5 44.5 20.7 4.1.5 7.8-2.6 8.3-6.7.7-5.5-3.3-10.2-8.8-10.2-11.2 0-21.9-4.2-30.2-11.4 15.5-60.6 68.6-105.6 132-105.6 22.3 0 43.1 5.9 61.1 16.5 4.3 2.5 5.5 8.3 2.7 12.3-2.8 4.1-8.5 4.9-12.6 2.4z" fill="#528FF0"/>
-            </svg>
-            <span>Razorpay</span>
-          </>
-        )}
-      </Button>
+      <div className="group relative w-full overflow-hidden rounded-xl border-2 border-border bg-gradient-to-br from-card to-card/50 transition-all duration-300 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/10">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <Button
+          onClick={handlePayment}
+          disabled={isProcessing}
+          variant="ghost"
+          className="relative w-full h-auto p-6 hover:bg-transparent"
+        >
+          {isProcessing ? (
+            <div className="flex items-center justify-center space-x-3">
+              <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              <span className="font-semibold">Processing...</span>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center space-y-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
+                <img 
+                  src="/lovable-uploads/razorpay-logo.jpg" 
+                  alt="Razorpay" 
+                  className="max-w-[32px] max-h-[32px] w-auto h-auto object-contain"
+                />
+              </div>
+              <div className="text-center">
+                <h3 className="font-bold text-foreground">Razorpay</h3>
+                <p className="text-xs text-muted-foreground">UPI, Cards, Wallets</p>
+              </div>
+            </div>
+          )}
+        </Button>
+      </div>
     </>
   );
 };
