@@ -22,7 +22,7 @@ export const PremiumOrderSummary = ({
         <div className="flex items-center justify-between py-4">
           <div>
             <h3 className="text-lg font-semibold text-gray-900">
-              PostPro AI {planDetails.name}
+              {planDetails.name}
             </h3>
             <p className="text-gray-600 text-sm">Monthly subscription</p>
           </div>
