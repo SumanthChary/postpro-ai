@@ -5,7 +5,6 @@ import { Plan } from "@/types/pricing";
 import { CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-
 interface PremiumPaymentOptionsProps {
   planDetails: Plan;
   userId: string;
@@ -13,26 +12,24 @@ interface PremiumPaymentOptionsProps {
   onError: (message: string) => void;
   paypalClientId: string;
 }
-
 export const PremiumPaymentOptions = ({
   planDetails,
   userId,
   onSuccess,
   onError,
-  paypalClientId,
+  paypalClientId
 }: PremiumPaymentOptionsProps) => {
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const handleCardPayment = () => {
     toast({
       title: "Card Payment",
       description: "Card payment integration is being set up. Please use PayPal or Razorpay for now.",
-      variant: "default",
+      variant: "default"
     });
   };
-
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       {/* Payment Method Header */}
       <div className="text-center">
         <h2 className="text-xl font-semibold text-gray-900 mb-2">Select Payment Method</h2>
@@ -43,34 +40,22 @@ export const PremiumPaymentOptions = ({
         
         {/* PayPal Button */}
         <div className="w-full">
-          <PayPalScriptProvider 
-            options={{ 
-              clientId: paypalClientId,
-              currency: "USD",
-              intent: "capture",
-              components: "buttons,hosted-fields",
-              'enable-funding': "paylater,venmo,card",
-              'disable-funding': "",
-              'data-sdk-integration-source': "button-factory"
-            }}
-          >
-            <PayPalPaymentButton 
-              planDetails={planDetails}
-              userId={userId}
-              onSuccess={onSuccess}
-              onError={onError}
-            />
+          <PayPalScriptProvider options={{
+          clientId: paypalClientId,
+          currency: "USD",
+          intent: "capture",
+          components: "buttons,hosted-fields",
+          'enable-funding': "paylater,venmo,card",
+          'disable-funding': "",
+          'data-sdk-integration-source': "button-factory"
+        }}>
+            <PayPalPaymentButton planDetails={planDetails} userId={userId} onSuccess={onSuccess} onError={onError} />
           </PayPalScriptProvider>
         </div>
 
         {/* Razorpay Button */}
         <div className="w-full">
-          <RazorpayPaymentButton
-            planDetails={planDetails}
-            userId={userId}
-            onSuccess={onSuccess}
-            onError={onError}
-          />
+          <RazorpayPaymentButton planDetails={planDetails} userId={userId} onSuccess={onSuccess} onError={onError} />
         </div>
       </div>
 
@@ -106,14 +91,11 @@ export const PremiumPaymentOptions = ({
         </div>
         <div className="flex items-center space-x-2">
           <svg className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
           <span className="text-gray-500 font-medium">PCI</span>
         </div>
-        <div className="text-gray-500 font-medium">
-          Bank-level security
-        </div>
+        
       </div>
-    </div>
-  );
+    </div>;
 };
