@@ -185,7 +185,7 @@ export const RazorpayPaymentButton = ({
       <Button
         onClick={handlePayment}
         disabled={isProcessing}
-        className="h-16 w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-0 rounded-lg transition-all duration-200 p-0 overflow-hidden flex items-center justify-center"
+        className="h-14 w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-0 rounded-lg transition-all duration-200 p-0 overflow-hidden flex items-center justify-center"
       >
         {isProcessing ? (
           <div className="flex items-center justify-center space-x-2">
