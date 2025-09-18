@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { EnhancedPlanSummary } from "@/components/payment/EnhancedPlanSummary";
-import { EnhancedPaymentOptions } from "@/components/payment/EnhancedPaymentOptions";
+import { PremiumOrderSummary } from "@/components/payment/PremiumOrderSummary";
+import { PremiumPaymentOptions } from "@/components/payment/PremiumPaymentOptions";
 import { CouponCode } from "@/components/payment/CouponCode";
 import { ContactSupport } from "@/components/payment/ContactSupport";
 import { supabase } from "@/integrations/supabase/client";
@@ -160,14 +160,14 @@ const Payment = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-5xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen payment-premium-bg">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         
-        {/* Back Button - Top Left */}
-        <div className="mb-6">
+        {/* Back Button */}
+        <div className="mb-8">
           <Button
             variant="ghost"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-gray-600 hover:text-gray-900"
             onClick={() => navigate("/pricing")}
             disabled={isProcessing}
           >
@@ -177,63 +177,51 @@ const Payment = () => {
         </div>
 
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <img 
-              src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
-              alt="PostPro AI" 
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain mr-3"
-            />
-            <span className="text-2xl sm:text-3xl font-bold text-foreground">PostPro AI</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Complete Your Purchase</h1>
-          <p className="text-muted-foreground text-lg">Secure checkout • Instant access • 30-day money-back guarantee</p>
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Secure Checkout</h1>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        {/* Main Content */}
+        <div className="max-w-2xl mx-auto">
           
-          {/* Left Column - Plan Summary */}
-          <div className="lg:col-span-2">
-            <EnhancedPlanSummary 
+          {/* Order Summary */}
+          <div className="mb-8">
+            <PremiumOrderSummary 
               planDetails={planDetails} 
               appliedCoupon={appliedCoupon}
             />
           </div>
 
-          {/* Right Column - Payment & Checkout */}
-          <div className="lg:col-span-3 space-y-6">
-            
-            {/* Payment Methods */}
-            {user && (
-              <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
-                <EnhancedPaymentOptions 
-                  planDetails={{
-                    ...planDetails,
-                    price: appliedCoupon 
-                      ? (parseFloat(planDetails.price) * (1 - appliedCoupon.discount / 100)).toFixed(2)
-                      : planDetails.price
-                  }}
-                  userId={user.id}
-                  onSuccess={handlePaymentSuccess}
-                  onError={handlePaymentError}
-                  paypalClientId={PAYPAL_CLIENT_ID}
-                />
-              </div>
-            )}
-
-            {/* Coupon Code - Below Payment Methods */}
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
-              <CouponCode 
-                onApplyCoupon={handleApplyCoupon}
-                appliedCoupon={appliedCoupon}
-                onRemoveCoupon={handleRemoveCoupon}
+          {/* Payment Methods */}
+          {user && (
+            <div className="mb-8">
+              <PremiumPaymentOptions 
+                planDetails={{
+                  ...planDetails,
+                  price: appliedCoupon 
+                    ? (parseFloat(planDetails.price) * (1 - appliedCoupon.discount / 100)).toFixed(2)
+                    : planDetails.price
+                }}
+                userId={user.id}
+                onSuccess={handlePaymentSuccess}
+                onError={handlePaymentError}
+                paypalClientId={PAYPAL_CLIENT_ID}
               />
             </div>
+          )}
+
+          {/* Coupon Code */}
+          <div className="payment-card-premium p-6">
+            <CouponCode 
+              onApplyCoupon={handleApplyCoupon}
+              appliedCoupon={appliedCoupon}
+              onRemoveCoupon={handleRemoveCoupon}
+            />
           </div>
         </div>
 
-        {/* Contact Support - Bottom */}
-        <div className="mt-12 max-w-2xl mx-auto">
+        {/* Contact Support */}
+        <div className="mt-16 max-w-2xl mx-auto">
           <ContactSupport />
         </div>
       </div>

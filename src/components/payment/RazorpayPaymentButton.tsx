@@ -150,7 +150,7 @@ export const RazorpayPaymentButton = ({
           contact: ''
         },
         theme: {
-          color: '#8b5cf6'
+          color: '#3b82f6'
         },
         modal: {
           ondismiss: function() {
@@ -185,20 +185,19 @@ export const RazorpayPaymentButton = ({
       <Button
         onClick={handlePayment}
         disabled={isProcessing}
-        variant="outline"
-        className="h-20 w-full border-2 border-border hover:border-primary hover:bg-primary/5 transition-all duration-200 p-6"
+        className="h-16 w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-xl transition-all duration-200 border-0 p-0 overflow-hidden"
       >
         {isProcessing ? (
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            <span className="text-foreground">Processing...</span>
+          <div className="flex items-center justify-center space-x-2">
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <span className="text-white font-medium">Processing...</span>
           </div>
         ) : (
-          <div className="flex items-center justify-center w-full h-full">
+          <div className="flex items-center justify-center w-full h-full px-4">
             <img 
-              src="/lovable-uploads/razorpay-logo.jpg" 
+              src="/lovable-uploads/razorpay-new-logo.png" 
               alt="Razorpay" 
-              className="max-w-[140px] max-h-[50px] w-auto h-auto object-contain"
+              className="h-8 w-auto object-contain"
             />
           </div>
         )}

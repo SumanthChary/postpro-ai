@@ -161,17 +161,35 @@
     min-height: 100vh;
   }
 
-  /* Brand color utilities */
+  /* Brand color utilities - Blue Theme */
   .brand-color {
-    color: rgba(57,107,255,1);
+    color: #3b82f6;
   }
 
   .brand-bg {
-    background-color: rgba(57,107,255,1);
+    background-color: #3b82f6;
   }
 
   .brand-border {
-    border-color: rgba(57,107,255,1);
+    border-color: #3b82f6;
+  }
+
+  /* Premium payment page styles */
+  .payment-premium-bg {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  }
+
+  .payment-card-premium {
+    @apply bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+
+  .payment-button-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    @apply text-white font-medium rounded-xl py-4 px-6 hover:shadow-lg transition-all duration-200;
+  }
+
+  .payment-button-secondary {
+    @apply bg-white border-2 border-blue-500 text-blue-600 font-medium rounded-xl py-4 px-6 hover:bg-blue-50 transition-all duration-200;
   }
 
   /* Ensure all text is black instead of gradient */
