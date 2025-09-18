@@ -178,7 +178,7 @@ const Payment = () => {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Secure Checkout</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Complete your purchase</h1>
         </div>
 
         {/* Main Content */}

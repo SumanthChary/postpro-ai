@@ -34,7 +34,7 @@ export const PremiumPaymentOptions = ({
   return (
     <div className="space-y-6">
       {/* Payment Methods Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         
         {/* PayPal Button */}
         <div className="w-full">
@@ -43,8 +43,9 @@ export const PremiumPaymentOptions = ({
               clientId: paypalClientId,
               currency: "USD",
               intent: "capture",
-              components: "buttons",
+              components: "buttons,hosted-fields",
               'enable-funding': "paylater,venmo,card",
+              'disable-funding': "",
               'data-sdk-integration-source': "button-factory"
             }}
           >
@@ -66,17 +67,6 @@ export const PremiumPaymentOptions = ({
             onError={onError}
           />
         </div>
-
-        {/* Credit Card Button */}
-        <div className="w-full">
-          <Button
-            onClick={handleCardPayment}
-            className="h-16 w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-xl transition-all duration-200"
-          >
-            <CreditCard className="mr-2 h-5 w-5" />
-            Credit Card
-          </Button>
-        </div>
       </div>
 
       {/* Trust Indicators */}
@@ -87,7 +77,7 @@ export const PremiumPaymentOptions = ({
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
           </div>
-          <span className="text-green-800 font-medium">Lifetime Access • 30-Day Money Back</span>
+          <span className="text-green-800 font-medium">30-Day Money Back Guarantee</span>
         </div>
       </div>
 
@@ -116,7 +106,7 @@ export const PremiumPaymentOptions = ({
           <span className="text-gray-500 font-medium">PCI</span>
         </div>
         <div className="text-gray-500 font-medium">
-          Secured by <strong>stripe</strong>
+          Bank-level security
         </div>
       </div>
     </div>
