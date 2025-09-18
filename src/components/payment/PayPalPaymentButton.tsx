@@ -67,12 +67,12 @@ export const PayPalPaymentButton = ({
 
   if (hasError) {
     return (
-      <div className="w-full min-h-[200px] flex items-center justify-center">
+      <div className="w-full h-16 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4">PayPal is temporarily unavailable</p>
+          <p className="text-red-600 mb-2 text-sm">PayPal is temporarily unavailable</p>
           <button 
             onClick={() => setHasError(false)}
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-blue-600 hover:text-blue-800 underline text-sm"
           >
             Try again
           </button>
@@ -82,7 +82,7 @@ export const PayPalPaymentButton = ({
   }
 
   return (
-    <div className="w-full min-h-[200px] flex items-center justify-center">
+    <div className="w-full h-16 flex items-center justify-center">
       <PayPalButtons
         forceReRender={[planDetails.price]} // Re-render when price changes
         fundingSource="paypal"
@@ -91,7 +91,7 @@ export const PayPalPaymentButton = ({
           shape: "rect",
           color: "gold",
           label: "pay",
-          height: 55
+          height: 64
         }}
         createOrder={(data, actions) => {
           console.log('Creating PayPal order with details:', {
