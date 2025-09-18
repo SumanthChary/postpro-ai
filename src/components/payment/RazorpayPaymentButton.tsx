@@ -185,18 +185,18 @@ export const RazorpayPaymentButton = ({
       <Button
         onClick={handlePayment}
         disabled={isProcessing}
-        className="h-14 w-full bg-white hover:bg-gray-50 border border-gray-200 rounded-xl transition-all duration-200 p-0 overflow-hidden flex items-center justify-center"
+        className="h-16 w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-0 rounded-xl transition-all duration-200 p-0 overflow-hidden flex items-center justify-center"
       >
         {isProcessing ? (
           <div className="flex items-center justify-center space-x-2">
-            <div className="w-4 h-4 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
-            <span className="text-gray-600 font-medium">Processing...</span>
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <span className="text-white font-medium">Processing...</span>
           </div>
         ) : (
           <img 
-            src="/lovable-uploads/razorpay-new-logo.png" 
+            src="/lovable-uploads/razorpay-addon-scaled.jpg" 
             alt="Pay with Razorpay" 
-            className="h-full w-full object-contain px-4"
+            className="h-full w-full object-cover"
           />
         )}
       </Button>

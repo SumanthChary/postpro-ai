@@ -33,6 +33,11 @@ export const PremiumPaymentOptions = ({
 
   return (
     <div className="space-y-6">
+      {/* Payment Method Header */}
+      <div className="text-center">
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Select Payment Method</h2>
+      </div>
+      
       {/* Payment Methods Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         
