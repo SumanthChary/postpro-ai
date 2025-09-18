@@ -26,7 +26,14 @@ const Payment = () => {
     name: "Creator Plan",
     price: "25",
     period: "month",
-    credits: 500
+    credits: 500,
+    features: [
+      "500 AI-enhanced posts per month",
+      "Advanced virality scoring",
+      "Hashtag optimization",
+      "Content scheduling",
+      "Analytics dashboard"
+    ]
   };
 
   useEffect(() => {

@@ -62,7 +62,7 @@ export const EnhancedPlanSummary = ({ planDetails, appliedCoupon }: EnhancedPlan
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-900">What's included:</h3>
           <div className="space-y-3">
-            {planDetails.features.map((feature, index) => (
+            {(planDetails.features || []).map((feature, index) => (
               <div key={index} className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
                   <Check className="w-3 h-3 text-green-600" />
