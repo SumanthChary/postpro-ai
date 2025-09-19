@@ -17,10 +17,10 @@ const ComparisonSection = () => {
         <div className="max-w-5xl mx-auto">
           <div className="rounded-lg border overflow-hidden shadow-lg bg-white" style={{ aspectRatio: "16/10" }}>
             <ImageComparisonSlider
-              leftImage="/lovable-uploads/before-post.png"
-              rightImage="/lovable-uploads/after-post.png"
-              altLeft="Before: Basic post with minimal engagement"
-              altRight="After: Enhanced post with high engagement"
+              leftImage="/lovable-uploads/new-before-post.png"
+              rightImage="/lovable-uploads/new-after-post.png"
+              altLeft="Before: Basic post with only 4 likes"
+              altRight="After: Enhanced post with 1,847 likes, 423 comments, 156 shares"
               initialPosition={80}
               className="w-full h-full"
             />
