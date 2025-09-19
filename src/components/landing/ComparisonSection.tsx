@@ -14,33 +14,16 @@ const ComparisonSection = () => {
           </p>
         </div>
         
-        <div className="max-w-4xl mx-auto">
-          <div className="rounded-lg border overflow-hidden shadow-2xl" style={{ aspectRatio: "600/800" }}>
+        <div className="max-w-2xl mx-auto">
+          <div className="rounded-lg border overflow-hidden shadow-lg bg-white" style={{ aspectRatio: "350/600" }}>
             <ImageComparisonSlider
               leftImage="/lovable-uploads/before-post.png"
               rightImage="/lovable-uploads/after-post.png"
               altLeft="Before: Basic post with minimal engagement"
               altRight="After: Enhanced post with high engagement"
-              initialPosition={50}
+              initialPosition={80}
               className="w-full h-full"
             />
-          </div>
-          
-          <div className="mt-8 text-center">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="text-2xl font-bold text-gray-900">70x</div>
-                <div className="text-sm text-gray-600">More Engagement</div>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="text-2xl font-bold text-gray-900">82x</div>
-                <div className="text-sm text-gray-600">More Reach</div>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="text-2xl font-bold text-gray-900">156x</div>
-                <div className="text-sm text-gray-600">More Comments</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
