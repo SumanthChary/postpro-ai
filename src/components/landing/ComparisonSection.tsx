@@ -14,8 +14,8 @@ const ComparisonSection = () => {
           </p>
         </div>
         
-        <div className="max-w-2xl mx-auto">
-          <div className="rounded-lg border overflow-hidden shadow-lg bg-white" style={{ aspectRatio: "9/12" }}>
+        <div className="max-w-5xl mx-auto">
+          <div className="rounded-lg border overflow-hidden shadow-lg bg-white" style={{ aspectRatio: "16/10" }}>
             <ImageComparisonSlider
               leftImage="/lovable-uploads/before-post.png"
               rightImage="/lovable-uploads/after-post.png"

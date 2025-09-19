@@ -104,7 +104,7 @@ export const ImageComparisonSlider = React.forwardRef<
         <img
           src={rightImage}
           alt={altRight}
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none bg-white"
           draggable={false}
         />
         
@@ -116,7 +116,7 @@ export const ImageComparisonSlider = React.forwardRef<
           <img
             src={leftImage}
             alt={altLeft}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain bg-white"
             draggable={false}
           />
         </div>
