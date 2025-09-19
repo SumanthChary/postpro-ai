@@ -135,7 +135,7 @@ export const ImageComparisonSlider = React.forwardRef<
               "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-12 w-12 flex items-center justify-center rounded-full bg-background/50 text-foreground shadow-xl backdrop-blur-md",
               "transition-all duration-300 ease-in-out",
               "group-hover:scale-105",
-              isDragging && "scale-105 shadow-2xl shadow-primary/50"
+              isDragging && "scale-105 shadow-2xl shadow-blue-500/50"
             )}
             role="slider"
             aria-valuenow={sliderPosition}
@@ -144,7 +144,7 @@ export const ImageComparisonSlider = React.forwardRef<
             aria-orientation="horizontal"
             aria-label="Image comparison slider"
           >
-            <div className="flex items-center text-primary">
+            <div className="flex items-center text-blue-600">
               <ChevronLeft className="h-5 w-5 drop-shadow-md" />
               <ChevronRight className="h-5 w-5 drop-shadow-md" />
             </div>
