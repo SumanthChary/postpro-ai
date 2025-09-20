@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { ThumbsUp, MessageCircle, Share, Send, MoreHorizontal } from "lucide-react";
 
 const LinkedInPost = ({ author, role, timeAgo, content, hashtags, likes, comments, shares, avatar }: any) => (
-  <div className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
+  <div className="w-full bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200">
     <div className="p-3 sm:p-4 flex items-start space-x-3">
       <img 
         alt={`${author}'s profile picture`} 
@@ -10,30 +10,30 @@ const LinkedInPost = ({ author, role, timeAgo, content, hashtags, likes, comment
         src={avatar}
       />
       <div className="flex-grow min-w-0">
-        <p className="font-semibold text-sm sm:text-base text-slate-900 dark:text-white truncate">{author}</p>
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 truncate">{role}</p>
-        <p className="text-xs text-slate-500 dark:text-slate-500">{timeAgo} • 🌍</p>
+        <p className="font-semibold text-sm sm:text-base text-slate-900 truncate">{author}</p>
+        <p className="text-xs sm:text-sm text-slate-600 truncate">{role}</p>
+        <p className="text-xs text-slate-500">{timeAgo} • 🌍</p>
       </div>
-      <button className="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full p-1.5 flex-shrink-0">
+      <button className="text-slate-500 hover:bg-slate-100 rounded-full p-1.5 flex-shrink-0">
         <MoreHorizontal className="w-5 h-5" />
       </button>
     </div>
     
     <div className="px-3 sm:px-4 pb-3">
-      <div className="text-sm sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">
+      <div className="text-sm sm:text-base text-slate-800 leading-relaxed whitespace-pre-wrap">
         {content}
       </div>
       
       <div className="flex flex-wrap gap-1 sm:gap-2 mt-3">
         {hashtags.map((tag: string, i: number) => (
-          <span key={i} className="text-blue-600 dark:text-blue-400 font-medium text-sm">
+          <span key={i} className="text-blue-600 font-medium text-sm">
             #{tag}
           </span>
         ))}
       </div>
     </div>
     
-    <div className="px-3 sm:px-4 py-2 flex justify-between items-center text-xs sm:text-sm text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700">
+    <div className="px-3 sm:px-4 py-2 flex justify-between items-center text-xs sm:text-sm text-slate-600 border-t border-slate-100">
       <div className="flex items-center space-x-1">
         <div className="flex -space-x-0.5">
           <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
@@ -51,21 +51,21 @@ const LinkedInPost = ({ author, role, timeAgo, content, hashtags, likes, comment
       </div>
     </div>
     
-    <div className="border-t border-slate-100 dark:border-slate-700">
-      <div className="grid grid-cols-4 text-slate-600 dark:text-slate-300">
-        <button className="flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+    <div className="border-t border-slate-100">
+      <div className="grid grid-cols-4 text-slate-600">
+        <button className="flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 hover:bg-slate-50 transition-colors">
           <ThumbsUp className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="text-xs sm:text-sm font-medium">Like</span>
         </button>
-        <button className="flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+        <button className="flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 hover:bg-slate-50 transition-colors">
           <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="text-xs sm:text-sm font-medium">Comment</span>
         </button>
-        <button className="flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+        <button className="flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 hover:bg-slate-50 transition-colors">
           <Share className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="text-xs sm:text-sm font-medium">Share</span>
         </button>
-        <button className="flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+        <button className="flex items-center justify-center space-x-1 sm:space-x-2 py-2 sm:py-3 hover:bg-slate-50 transition-colors">
           <Send className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="text-xs sm:text-sm font-medium">Send</span>
         </button>
