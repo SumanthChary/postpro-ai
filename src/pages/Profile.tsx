@@ -70,11 +70,11 @@ const Profile = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-1.5 backdrop-blur-sm">
-            <TabsTrigger value="profile" className="font-cabinet text-sm sm:text-base font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 px-4 py-2.5">Profile</TabsTrigger>
-            <TabsTrigger value="subscription" className="font-cabinet text-sm sm:text-base font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 px-4 py-2.5">Subscription</TabsTrigger>
-            <TabsTrigger value="streaks" className="font-cabinet text-sm sm:text-base font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 px-4 py-2.5">Streaks</TabsTrigger>
-            <TabsTrigger value="metrics" className="font-cabinet text-sm sm:text-base font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 px-4 py-2.5 hidden lg:block">Metrics</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-2 backdrop-blur-sm">
+            <TabsTrigger value="profile" className="font-cabinet text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-3 px-4">Profile</TabsTrigger>
+            <TabsTrigger value="subscription" className="font-cabinet text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-3 px-4">Subscription</TabsTrigger>
+            <TabsTrigger value="streaks" className="font-cabinet text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-3 px-4">Streaks</TabsTrigger>
+            <TabsTrigger value="metrics" className="font-cabinet text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-3 px-4 hidden lg:block">Metrics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile">
