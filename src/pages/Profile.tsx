@@ -70,8 +70,8 @@ const Profile = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <div className="flex justify-center">
-            <TabsList className="grid grid-cols-3 lg:grid-cols-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-1 backdrop-blur-sm max-w-2xl w-full">
+          <div className="flex justify-center px-4 sm:px-8">
+            <TabsList className="grid grid-cols-3 lg:grid-cols-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-1 backdrop-blur-sm w-full max-w-3xl mx-auto">
             <TabsTrigger value="profile" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate">Profile</TabsTrigger>
             <TabsTrigger value="subscription" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate">Subscription</TabsTrigger>
             <TabsTrigger value="streaks" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate">Streaks</TabsTrigger>
