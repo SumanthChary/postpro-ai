@@ -20,17 +20,16 @@ export const EnhancerForm = ({
   isEnhanced = false
 }: EnhancerFormProps) => {
   const [charCount, setCharCount] = useState(0);
-  const { toast } = useToast();
-  
+  const {
+    toast
+  } = useToast();
   useEffect(() => {
     setCharCount(post.length);
   }, [post]);
-  
   const handlePostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onPostChange(e.target.value);
     setCharCount(e.target.value.length);
   };
-
   const handlePasteText = async () => {
     try {
       const text = await navigator.clipboard.readText();
@@ -39,7 +38,7 @@ export const EnhancerForm = ({
         setCharCount(text.length);
         toast({
           title: "Text Pasted!",
-          description: "Your content has been pasted successfully",
+          description: "Your content has been pasted successfully"
         });
       }
     } catch (error) {
@@ -50,12 +49,11 @@ export const EnhancerForm = ({
       });
     }
   };
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+  return <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="px-8 py-6 border-b border-gray-100">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">Your Text</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Post Enhancer</h2>
           <LinkedinIcon className="w-6 h-6 text-[#0077B5]" />
         </div>
       </div>
@@ -102,8 +100,7 @@ export const EnhancerForm = ({
             </SelectContent>
           </Select>
           
-          {onStyleToneChange && (
-            <Select value={styleTone} onValueChange={onStyleToneChange}>
+          {onStyleToneChange && <Select value={styleTone} onValueChange={onStyleToneChange}>
               <SelectTrigger className="w-full h-12 border-gray-200 focus:border-blue-500">
                 <SelectValue placeholder="Select writing tone" />
               </SelectTrigger>
@@ -133,35 +130,24 @@ export const EnhancerForm = ({
                   </div>
                 </SelectItem>
               </SelectContent>
-            </Select>
-          )}
+            </Select>}
         </div>
         
         {/* Text Input Area */}
         <div className="relative">
-          <Textarea 
-            value={post} 
-            onChange={handlePostChange} 
-            placeholder="Paste your text here..." 
-            className={`${isEnhanced ? 'min-h-[400px]' : 'min-h-[300px]'} 
+          <Textarea value={post} onChange={handlePostChange} placeholder="Paste your text here..." className={`${isEnhanced ? 'min-h-[400px]' : 'min-h-[300px]'} 
               w-full p-6 text-base border-gray-200 rounded-xl 
               focus:border-blue-500 focus:ring-2 focus:ring-blue-100 
               resize-none transition-all duration-200 
-              placeholder:text-gray-400 bg-gray-50/50`} 
-          />
+              placeholder:text-gray-400 bg-gray-50/50`} />
           
           {/* Paste Button */}
-          {!post && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <Button 
-                onClick={handlePasteText}
-                className="pointer-events-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-sm flex items-center gap-2"
-              >
+          {!post && <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <Button onClick={handlePasteText} className="pointer-events-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-sm flex items-center gap-2">
                 <ClipboardIcon className="w-4 h-4" />
                 Paste Text
               </Button>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
 
@@ -173,34 +159,20 @@ export const EnhancerForm = ({
           </div>
           
           <div className="flex items-center gap-3">
-            <Button 
-              variant="outline" 
-              onClick={onReset} 
-              disabled={isEnhancing || !post}
-              className="px-6 py-2 border-gray-200 hover:bg-gray-50"
-            >
+            <Button variant="outline" onClick={onReset} disabled={isEnhancing || !post} className="px-6 py-2 border-gray-200 hover:bg-gray-50">
               Reset
             </Button>
-            <Button 
-              onClick={onEnhance} 
-              disabled={isEnhancing || !post}
-              className="px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
-            >
-              {isEnhancing ? (
-                <>
+            <Button onClick={onEnhance} disabled={isEnhancing || !post} className="px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2">
+              {isEnhancing ? <>
                   <Loader2Icon className="w-4 h-4 animate-spin" />
                   Enhancing...
-                </>
-              ) : (
-                <>
+                </> : <>
                   <Sparkles className="w-4 h-4" />
                   Enhance
-                </>
-              )}
+                </>}
             </Button>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
