@@ -34,12 +34,10 @@ const people = [{
   image: "/lovable-uploads/88f25795-9d15-4c46-97a2-63eebfef26dc.png"
 }];
 export function AnimatedTooltipPreview() {
-  return <div className="flex flex-col items-center justify-center w-full py-6">
-      <div className="text-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-1">
-          Join 10K+ LinkedIn Professionals
-        </h3>
-        <p className="text-gray-600 text-sm">Enhancing their content daily</p>
+  return <div className="flex flex-col items-center justify-center w-full py-8">
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">Join LinkedIn Professionals who Trusted us</h3>
+        <p className="text-gray-600 text-sm">Join Professionals who've enhanced their LinkedIn presence</p>
       </div>
       <AnimatedTooltip items={people} />
     </div>;
