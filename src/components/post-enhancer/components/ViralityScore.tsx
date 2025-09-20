@@ -127,62 +127,54 @@ export function ViralityScore({
     }
   }, [autoAnalyze, post, category]);
 
-  return <div className="mt-8 p-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-white/30">
+  return <div className="mt-8 pt-6 border-t border-gray-100">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl">
-            <TrendingUp className="text-primary" size={24} />
+          <div className="p-2 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg">
+            <TrendingUp className="text-purple-600" size={20} />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-gray-900">
-              Virality Predictor
+            <h3 className="text-lg font-semibold text-gray-900">
+              Virality Potential
             </h3>
-            <p className="text-sm text-gray-600">AI-powered engagement analysis</p>
+            <p className="text-sm text-gray-600">Predict your post growth using AI</p>
           </div>
         </div>
         
-        <Button 
-          onClick={analyzePotential} 
-          disabled={loading || !post.trim()} 
-          className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3 rounded-xl font-medium"
-        >
-          {analyzing ? (
-            <>
-              <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2" />
+        <Button onClick={analyzePotential} disabled={loading || !post.trim()} size="sm" className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200">
+          {analyzing ? <>
+              <div className="rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
               Analyzing...
-            </>
-          ) : (
-            <>
-              <Sparkles size={18} className="mr-2" />
-              Analyze Post
-            </>
-          )}
+            </> : <>
+              <Sparkles size={16} />
+              Analyze
+            </>}
         </Button>
       </div>
 
-      {score !== null && <div className="space-y-6">
-          {/* Premium Score Display */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-white/40 text-center shadow-lg">
-            <div className="mb-6">
-              <div className={`text-6xl font-black ${getScoreColor(score)} mb-3 tracking-tight`}>
+      {score !== null && <div className="space-y-4">
+          {/* Simple Score Display */}
+          <div className="bg-white rounded-lg p-6 border border-gray-200 text-center">
+            <div className="mb-4">
+              <div className={`text-5xl font-bold ${getScoreColor(score)} mb-2`}>
                 {score}%
               </div>
-              <Badge variant={getBadgeVariant(score)} className="text-base px-4 py-2 rounded-full font-medium">
+              <Badge variant={getBadgeVariant(score)} className="text-sm">
                 {getScoreBadge(score)}
               </Badge>
             </div>
             
-            <div className="w-full bg-gray-100 rounded-full h-4 mb-6 overflow-hidden">
+            <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
               <div 
-                className={`h-4 rounded-full transition-all duration-700 ease-out ${getProgressBarColor(score)}`}
+                className={`h-3 rounded-full transition-all duration-500 ${getProgressBarColor(score)}`}
                 style={{ width: `${score}%` }}
               />
             </div>
             
-            <p className="text-gray-700 font-medium">
-              {score >= 90 ? "🚀 Exceptional viral potential!" : 
-               score >= 70 ? "⚡ Strong engagement expected!" : 
-               "📈 Good foundation - see tips below"}
+            <p className="text-gray-600 text-sm">
+              {score >= 90 ? "🔥 Ready to go viral!" : 
+               score >= 70 ? "✨ Great engagement potential!" : 
+               "💡 Check insights below to improve"}
             </p>
           </div>
 

@@ -86,42 +86,51 @@ export const ShareOptions = ({ enhancedPosts, onPlatformSelect }: ShareOptionsPr
   };
 
   return (
-    <div className="space-y-6">
-      <h3 className="font-bold text-xl flex items-center gap-2 text-gray-900">
-        <LinkedinIcon className="h-6 w-6 text-primary" />
-        Share to LinkedIn
+    <div className="space-y-4">
+      <h3 className="font-semibold text-lg sm:text-xl flex items-center gap-2 text-gray-900">
+        <ShareIcon className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+        Cross-Platform Sharing
       </h3>
       
-      {/* Only show LinkedIn content since we're focused on LinkedIn optimization */}
-      {enhancedPosts.linkedin && (
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-white/30">
-          <div className="flex items-center gap-3 mb-4">
-            <LinkedinIcon className="h-8 w-8 text-primary" />
-            <div>
-              <p className="font-semibold text-gray-900">Ready for LinkedIn</p>
-              <p className="text-sm text-gray-600">Optimized for maximum engagement</p>
-            </div>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button 
-              className="flex-1 bg-white border-2 border-primary text-primary hover:bg-primary/5 font-medium py-3 rounded-xl"
-              onClick={handleCopyText}
-            >
-              <CopyIcon className="w-5 h-5 mr-2" />
-              Copy Text
-            </Button>
-            
-            <Button 
-              className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-medium py-3 rounded-xl shadow-lg"
-              onClick={() => window.open('https://www.linkedin.com/feed/', '_blank')}
-            >
-              <LinkedinIcon className="w-5 h-5 mr-2" />
-              Open LinkedIn
-            </Button>
-          </div>
-        </div>
-      )}
+      <div className="flex flex-wrap gap-2 sm:gap-3">
+        {Object.keys(enhancedPosts).map((platform) => (
+          <Button
+            key={platform}
+            variant="outline"
+            size="sm"
+            className={`${
+              activePlatform === platform 
+                ? "border-blue-600 bg-blue-50 text-gray-900" 
+                : "border-gray-200 text-gray-900"
+            } transition-all hover:bg-blue-50 text-sm sm:text-base py-1.5 sm:py-2 px-3 sm:px-4`}
+            onClick={() => handlePlatformClick(platform)}
+          >
+            {getPlatformIcon(platform)}
+            <span>{getPlatformName(platform)}</span>
+          </Button>
+        ))}
+      </div>
+      
+      <div className="flex flex-col sm:flex-row gap-2">
+        <Button 
+          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base py-2 sm:py-3"
+          onClick={handleCopyText}
+        >
+          <CopyIcon className="w-4 h-4 mr-2" />
+          Copy Text
+        </Button>
+        <ScheduleShareButton 
+          content={enhancedPosts[activePlatform] || ''} 
+          platform={activePlatform}
+        />
+        <Button 
+          className={`flex-1 ${getPlatformColor(activePlatform)} text-sm sm:text-base py-2 sm:py-3`}
+          onClick={handleShare}
+        >
+          {getPlatformIcon(activePlatform)}
+          <span className="ml-2">Share to {getPlatformName(activePlatform)}</span>
+        </Button>
+      </div>
     </div>
   );
 };
