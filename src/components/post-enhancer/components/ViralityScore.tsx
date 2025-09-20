@@ -62,7 +62,7 @@ export function ViralityScore({
     }
     if (post.trim().length < 10) {
       toast({
-        title: "Post Too Short", 
+        title: "Post Too Short",
         description: "Please enter at least 10 characters for accurate analysis",
         variant: "destructive"
       });
@@ -70,7 +70,6 @@ export function ViralityScore({
     }
     setLoading(true);
     setAnalyzing(true);
-    
     try {
       const {
         data,
@@ -81,11 +80,9 @@ export function ViralityScore({
           category: category || 'general'
         }
       });
-      
       if (error) {
         throw new Error(error.message || 'Failed to analyze post');
       }
-      
       if (!data || typeof data.score !== 'number') {
         throw new Error('Invalid analysis result received');
       }
@@ -95,16 +92,13 @@ export function ViralityScore({
       if (post.length > 200 && (post.includes('✨') || post.includes('🚀') || post.includes('💡'))) {
         finalScore = Math.max(90, data.score + 15);
       }
-      
       setScore(Math.min(100, finalScore));
       setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
-      
       toast({
         title: "🎯 Analysis Complete!",
         description: finalScore >= 90 ? "Excellent viral potential!" : finalScore >= 70 ? "Great engagement score!" : "Good foundation - check tips below",
         variant: "default"
       });
-      
     } catch (error: any) {
       console.error('❌ Error analyzing virality:', error);
       toast({
@@ -126,9 +120,7 @@ export function ViralityScore({
       analyzePotential();
     }
   }, [autoAnalyze, post, category]);
-
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
+  return <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
       {/* Header */}
       <div className="px-8 py-6 border-b border-gray-100">
         <div className="flex items-center justify-between">
@@ -144,70 +136,49 @@ export function ViralityScore({
             </div>
           </div>
           
-          <Button 
-            onClick={analyzePotential} 
-            disabled={loading || !post.trim()} 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 flex items-center gap-2 shadow-sm"
-          >
-            {analyzing ? (
-              <>
+          <Button onClick={analyzePotential} disabled={loading || !post.trim()} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 flex items-center gap-2 shadow-sm">
+            {analyzing ? <>
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 Analyzing...
-              </>
-            ) : (
-              <>
+              </> : <>
                 <Sparkles size={16} />
                 Analyze
-              </>
-            )}
+              </>}
           </Button>
         </div>
       </div>
 
       {/* Results */}
-      {score !== null && (
-        <div className="p-8">
+      {score !== null && <div className="p-8">
           <div className="text-center mb-6">
             <div className={`text-6xl font-bold ${getScoreColor(score)} mb-3`}>
               {score}%
             </div>
-            <Badge variant={getBadgeVariant(score)} className="text-base px-4 py-1">
-              {getScoreBadge(score)}
-            </Badge>
+            
           </div>
           
           <div className="w-full bg-gray-100 rounded-full h-4 mb-6 overflow-hidden">
-            <div 
-              className={`h-4 rounded-full transition-all duration-1000 ${getProgressBarColor(score)}`}
-              style={{ width: `${score}%` }}
-            />
+            <div className={`h-4 rounded-full transition-all duration-1000 ${getProgressBarColor(score)}`} style={{
+          width: `${score}%`
+        }} />
           </div>
           
           <p className="text-center text-gray-600 mb-6">
-            {score >= 90 ? "🔥 Exceptional viral potential!" : 
-             score >= 70 ? "✨ Strong engagement expected!" : 
-             score >= 50 ? "📈 Good foundation for growth!" :
-             "💡 Optimization recommended"}
+            {score >= 90 ? "🔥 Exceptional viral potential!" : score >= 70 ? "✨ Strong engagement expected!" : score >= 50 ? "📈 Good foundation for growth!" : "💡 Optimization recommended"}
           </p>
 
-          {insights.length > 0 && (
-            <div className="bg-blue-50 rounded-lg p-6">
+          {insights.length > 0 && <div className="bg-blue-50 rounded-lg p-6">
               <h4 className="flex items-center gap-2 text-lg font-semibold text-blue-900 mb-4">
                 <Lightbulb className="h-5 w-5" />
                 Optimization Tips
               </h4>
               <div className="space-y-3">
-                {insights.map((insight, index) => (
-                  <div key={index} className="flex items-start gap-3 text-blue-800">
+                {insights.map((insight, index) => <div key={index} className="flex items-start gap-3 text-blue-800">
                     <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
                     <span className="text-sm leading-relaxed">{insight}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
+            </div>}
+        </div>}
+    </div>;
 }
