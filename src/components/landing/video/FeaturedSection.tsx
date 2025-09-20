@@ -65,17 +65,17 @@ const FeaturedSection = () => {
           </a>
           
           <a 
-            href="https://www.listingcat.com/" 
+            href="https://www.linkedin.com/company/106810929" 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-2 sm:gap-3 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 shadow-sm border border-gray-200/50 hover:shadow-md transition-all duration-200"
           >
             <OptimizedImage 
-              src="/lovable-uploads/bccc4ccd-bed4-403a-a48f-fb618350c0e6.png" 
-              alt="Listing Cat" 
+              src="/lovable-uploads/linkedin-logo.png" 
+              alt="LinkedIn" 
               className="w-6 h-6 sm:w-8 sm:h-8"
             />
-            <span className="text-xs sm:text-sm font-medium text-gray-700">Listing Cat</span>
+            <span className="text-xs sm:text-sm font-medium text-gray-700">LinkedIn</span>
           </a>
           
           <a 

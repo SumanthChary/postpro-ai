@@ -104,16 +104,14 @@ const Enhance = () => {
         )}
 
         {/* Main Content */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 md:p-8">
-          <PostEnhancer 
-            post={post} 
-            setPost={setPost} 
-            category={category} 
-            setCategory={setCategory} 
-            styleTone={styleTone}
-            setStyleTone={setStyleTone}
-          />
-        </div>
+        <PostEnhancer 
+          post={post} 
+          setPost={setPost} 
+          category={category} 
+          setCategory={setCategory} 
+          styleTone={styleTone}
+          setStyleTone={setStyleTone}
+        />
 
         {/* Enhancement Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
