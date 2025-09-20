@@ -75,13 +75,13 @@ const Navigation = ({
             {session ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="font-opensans">
-                    <Avatar className="w-6 h-6 mr-2">
+                  <Button variant="ghost" className="font-opensans hover:bg-blue-50 rounded-full px-3 py-2">
+                    <Avatar className="w-8 h-8 mr-3 ring-2 ring-blue-100">
                       <AvatarImage src={avatarUrl} alt={username} />
-                      <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
+                      <AvatarFallback className="bg-blue-600 text-white font-semibold">{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
                     </Avatar>
-                    {username}
-                    <ChevronDownIcon className="w-4 h-4 ml-2" />
+                    <span className="text-gray-700 font-medium">{username}</span>
+                    <ChevronDownIcon className="w-4 h-4 ml-2 text-gray-500" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">

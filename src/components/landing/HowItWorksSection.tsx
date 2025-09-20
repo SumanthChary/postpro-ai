@@ -36,12 +36,10 @@ const HowItWorksSection = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((item, index) => (
             <div key={index} className="text-center group">
-              <div className="w-full aspect-video mx-auto mb-6 bg-white rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 overflow-hidden border">
-                <img 
-                  src={item.icon} 
-                  alt={`Step ${item.step}: ${item.title}`}
-                  className="w-full h-full object-cover rounded-xl"
-                />
+              <div className="w-full aspect-video mx-auto mb-6 bg-white rounded-xl border-2 border-dashed border-gray-300 flex items-center justify-center">
+                <div className="text-gray-400 text-4xl font-light">
+                  {item.step}
+                </div>
               </div>
               <div className="space-y-3">
                 <div className="inline-flex items-center justify-center w-8 h-8 bg-indigo-600 text-white rounded-full font-semibold text-sm mb-2">
