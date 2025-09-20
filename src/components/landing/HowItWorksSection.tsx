@@ -36,7 +36,7 @@ const HowItWorksSection = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((item, index) => (
             <div key={index} className="text-center group">
-              <div className="w-full aspect-video mx-auto mb-6 bg-white rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 overflow-hidden border">
+              <div className="w-full aspect-video mx-auto mb-6 bg-white rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 group-hover:border-indigo-500 group-hover:border-2">
                 <img 
                   src={item.icon} 
                   alt={`Step ${item.step}: ${item.title}`}
