@@ -13,24 +13,34 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    /* LinkedIn Blue - Primary brand color */
+    --linkedin-blue: 206 100% 35%;
+    --primary: 206 100% 35%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Modern Purple - Premium accent */
+    --modern-purple: 253 53% 62%;
+    --secondary: 253 53% 62%;
+    --secondary-foreground: 210 40% 98%;
 
+    /* Success Green */
+    --success-green: 160 84% 39%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 253 53% 62%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 253 53% 62%;
+
+    /* Premium gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--linkedin-blue)), hsl(var(--modern-purple)));
+    --gradient-bg: linear-gradient(135deg, hsl(206 100% 35% / 0.03), hsl(253 53% 62% / 0.03));
 
     --radius: 0.5rem;
   }
@@ -73,13 +83,13 @@
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased font-europa;
+    @apply text-gray-900 antialiased font-europa;
     font-family: 'Europa Grotesk', 'Inter', system-ui, sans-serif !important;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+    background: var(--gradient-bg);
     min-height: 100vh;
     font-weight: 500;
   }

@@ -114,10 +114,17 @@ export const EnhancerForm = ({
       </div>
       
       <div className="relative">
-        <Textarea value={post} onChange={handlePostChange} placeholder="Write your LinkedIn post here…" className={`${isEnhanced ? 'min-h-[300px] sm:min-h-[400px]' : 'min-h-[150px] sm:min-h-[200px]'} text-sm sm:text-base lg:text-base font-opensans resize-none rounded-[10px] border-gray-200 focus:border-blue-600 focus:ring-blue-600 transition-all duration-300 scrollbar-hide overflow-y-auto`} style={{
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none'
-      }} />
+        <Textarea 
+          value={post} 
+          onChange={handlePostChange} 
+          placeholder="✨ Paste your LinkedIn draft here or start typing..." 
+          className={`${isEnhanced ? 'min-h-[300px] sm:min-h-[400px]' : 'min-h-[200px] sm:min-h-[250px]'} text-sm sm:text-base lg:text-base font-opensans resize-none rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 scrollbar-hide overflow-y-auto bg-white/80 backdrop-blur-sm`} 
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none'
+          }} 
+          autoFocus
+        />
         <div className="absolute bottom-2 right-2 text-xs sm:text-sm text-gray-500 bg-white/80 px-2 py-1 rounded">
           {charCount} characters
         </div>

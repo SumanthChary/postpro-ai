@@ -12,7 +12,9 @@ const HeroSection = ({
   const [post, setPost] = useState("");
   const [category, setCategory] = useState("business");
   const [styleTone, setStyleTone] = useState("professional");
-  return <div className="min-h-screen bg-gradient-to-br from-white via-blue-50/20 to-purple-50/30 relative overflow-hidden">
+  return <div className="min-h-screen relative overflow-hidden" style={{background: 'var(--gradient-bg)'}}>
+      {/* Premium LinkedIn Blue to Purple gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(206_100%_35%/0.06)] via-transparent to-[hsl(253_53%_62%/0.06)]"></div>
       {/* Enhanced aesthetic background elements */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-100/30 via-transparent to-purple-100/30"></div>
       <div className="absolute top-10 sm:top-20 left-5 sm:left-10 w-32 sm:w-48 md:w-64 lg:w-80 h-32 sm:h-48 md:h-64 lg:h-80 bg-gradient-to-r from-blue-200/40 to-indigo-200/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
@@ -42,7 +44,7 @@ const HeroSection = ({
         </div>
 
         <div className="flex justify-center px-3 sm:px-4 md:px-6">
-          <div className="backdrop-blur-lg bg-white/60 rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-4 sm:p-6 md:p-8 lg:p-10 border border-white/40 max-w-5xl w-full relative">
+          <div className="backdrop-blur-xl bg-white/90 rounded-3xl md:rounded-[2rem] p-6 sm:p-8 md:p-10 lg:p-12 border-0 shadow-2xl max-w-6xl w-full relative">
             <div className="hidden absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl sm:rounded-3xl md:rounded-[2rem]"></div>
             <div className="relative z-10">
               <PostEnhancer post={post} setPost={setPost} category={category} setCategory={setCategory} styleTone={styleTone} setStyleTone={setStyleTone} />
