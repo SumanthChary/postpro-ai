@@ -41,10 +41,8 @@ export const PostEnhancerLogic = ({
   const { submitFeedback, isSubmitting } = useFeedback();
   const [isEnhanced, setIsEnhanced] = useState(false);
   const [showViralityScore, setShowViralityScore] = useState(false);
-  const [originalPost, setOriginalPost] = useState('');
 
   const onEnhance = async () => {
-    setOriginalPost(post); // Store original before enhancement
     const result = await handleEnhancePost(post, category, styleTone);
     if (result && result.platforms?.linkedin) {
       setPost(result.platforms.linkedin);
@@ -56,7 +54,6 @@ export const PostEnhancerLogic = ({
   const onReset = () => {
     handleReset();
     setPost("");
-    setOriginalPost("");
     setIsEnhanced(false);
     setShowViralityScore(false);
   };
@@ -78,65 +75,34 @@ export const PostEnhancerLogic = ({
 
   return (
     <div className="space-y-6 lg:space-y-8">
-      {!isEnhanced ? (
-        <EnhancerForm
-          post={post}
-          category={category}
-          styleTone={styleTone}
-          isEnhancing={isEnhancing}
-          onPostChange={setPost}
-          onCategoryChange={setCategory}
-          onStyleToneChange={setStyleTone}
-          onReset={onReset}
-          onEnhance={onEnhance}
-          isEnhanced={isEnhanced}
-        />
-      ) : (
-        <div className="grid lg:grid-cols-2 gap-6">
-          {/* Your Text Panel */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Your Text</h3>
-            <div className="bg-gray-50 rounded-xl p-6 border">
-              <div className="text-gray-700 whitespace-pre-wrap text-sm leading-relaxed">
-                {originalPost || post}
-              </div>
-            </div>
-            <button 
-              onClick={onReset}
-              className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-            >
-              ← Back to Editor
-            </button>
-          </div>
-
-          {/* Result Panel */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">Result</h3>
-              <div className="flex items-center gap-2 text-sm text-green-600 font-medium">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                Enhanced & Optimized
-              </div>
-            </div>
-            <div className="bg-white rounded-xl p-6 border shadow-sm">
-              <div className="text-gray-800 whitespace-pre-wrap text-sm leading-relaxed mb-4">
-                {post}
-              </div>
-              <ShareOptions 
-                enhancedPosts={enhancedPosts} 
-                onPlatformSelect={onPlatformSelect} 
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      <EnhancerForm
+        post={post}
+        category={category}
+        styleTone={styleTone}
+        isEnhancing={isEnhancing}
+        onPostChange={setPost}
+        onCategoryChange={setCategory}
+        onStyleToneChange={setStyleTone}
+        onReset={onReset}
+        onEnhance={onEnhance}
+        isEnhanced={isEnhanced}
+      />
       
-      {showViralityScore && isEnhanced && (
+      {showViralityScore && (
         <ViralityScore 
           post={post} 
           category={category} 
           autoAnalyze={true}
         />
+      )}
+      
+      {enhancedPosts && Object.keys(enhancedPosts).length > 0 && (
+        <div className="pt-6 border-t border-gray-200">
+          <ShareOptions 
+            enhancedPosts={enhancedPosts} 
+            onPlatformSelect={onPlatformSelect} 
+          />
+        </div>
       )}
 
       <FeedbackPopup

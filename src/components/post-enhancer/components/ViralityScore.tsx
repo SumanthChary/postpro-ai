@@ -31,7 +31,7 @@ export function ViralityScore({
     if (score >= 85) return "text-emerald-600";
     if (score >= 70) return "text-blue-600";
     if (score >= 50) return "text-amber-600";
-    return "text-gray-500";
+    return "text-red-500";
   };
   const getScoreBadge = (score: number) => {
     if (score >= 85) return "🚀 Viral Ready";
@@ -90,20 +90,10 @@ export function ViralityScore({
         throw new Error('Invalid analysis result received');
       }
 
-      // Show realistic scores but boost for enhanced posts
+      // Boost score for enhanced posts to ensure 90%+ rating
       let finalScore = data.score;
-      
-      // Check if this is an enhanced post (longer, with emojis, good structure)
-      const isEnhanced = post.length > 150 && 
-        (post.includes('✨') || post.includes('🚀') || post.includes('💡') || 
-         post.includes('🎯') || post.includes('🔥') || post.includes('#'));
-      
-      if (isEnhanced) {
-        // Enhanced posts get 85-95% range
-        finalScore = Math.min(95, Math.max(85, data.score + 20));
-      } else {
-        // Regular posts get more realistic scores (30-75% range)
-        finalScore = Math.min(75, Math.max(30, data.score - 10));
+      if (post.length > 200 && (post.includes('✨') || post.includes('🚀') || post.includes('💡'))) {
+        finalScore = Math.max(90, data.score + 15);
       }
       
       setScore(Math.min(100, finalScore));
@@ -143,8 +133,8 @@ export function ViralityScore({
       <div className="px-8 py-6 border-b border-gray-100">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-              <TrendingUp className="text-gray-600" size={20} />
+            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+              <TrendingUp className="text-blue-600" size={20} />
             </div>
             <div>
               <h3 className="text-xl font-bold text-gray-900">
@@ -157,7 +147,7 @@ export function ViralityScore({
           <Button 
             onClick={analyzePotential} 
             disabled={loading || !post.trim()} 
-            className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 flex items-center gap-2 shadow-sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 flex items-center gap-2 shadow-sm"
           >
             {analyzing ? (
               <>
@@ -201,15 +191,15 @@ export function ViralityScore({
           </p>
 
           {insights.length > 0 && (
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h4 className="flex items-center gap-2 text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-blue-50 rounded-lg p-6">
+              <h4 className="flex items-center gap-2 text-lg font-semibold text-blue-900 mb-4">
                 <Lightbulb className="h-5 w-5" />
                 Optimization Tips
               </h4>
               <div className="space-y-3">
                 {insights.map((insight, index) => (
-                  <div key={index} className="flex items-start gap-3 text-gray-800">
-                    <div className="w-2 h-2 bg-gray-500 rounded-full mt-2 flex-shrink-0" />
+                  <div key={index} className="flex items-start gap-3 text-blue-800">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
                     <span className="text-sm leading-relaxed">{insight}</span>
                   </div>
                 ))}

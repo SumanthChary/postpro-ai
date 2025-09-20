@@ -139,8 +139,7 @@ export const EnhancerForm = ({
               w-full p-6 text-base border-gray-200 rounded-xl 
               focus:border-blue-500 focus:ring-2 focus:ring-blue-100 
               resize-none transition-all duration-200 
-              placeholder:text-gray-400 bg-gray-50/50 scrollbar-hide overflow-y-auto`} 
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} />
+              placeholder:text-gray-400 bg-gray-50/50`} />
           
           {/* Paste Button */}
           {!post && <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
