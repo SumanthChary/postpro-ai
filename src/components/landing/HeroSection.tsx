@@ -42,7 +42,7 @@ const HeroSection = ({
         </div>
 
         <div className="flex justify-center px-3 sm:px-4 md:px-6">
-          <div className="backdrop-blur-lg bg-gradient-to-br from-white/90 via-blue-50/60 to-white/90 rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-4 sm:p-6 md:p-8 lg:p-10 border border-blue-200/40 shadow-2xl max-w-5xl w-full relative z-10">
+          <div className="bg-gradient-to-br from-white/90 via-blue-50/60 to-white/90 rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-4 sm:p-6 md:p-8 lg:p-10 border border-blue-200/40 max-w-5xl w-full relative z-10">
             <PostEnhancer post={post} setPost={setPost} category={category} setCategory={setCategory} styleTone={styleTone} setStyleTone={setStyleTone} />
           </div>
         </div>

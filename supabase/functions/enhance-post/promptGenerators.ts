@@ -30,35 +30,27 @@ For tips: "Here's what nobody tells you about..."
 For achievements: "Today marks a milestone..."
 For business insights: "Building something taught me..."
 
-**STORY SECTION** (Each point on separate lines):
-Main story point 1
-Key detail or challenge faced
-Important insight discovered
+**CORE MESSAGE** (2-3 lines maximum):
+Main insight or story point
+Supporting detail or impact
+Key result or transformation
 
-➡️ The main challenge was...
-➡️ What made it difficult was...
+**ACTIONABLE TAKEAWAY** (1-2 lines):
+👉 Practical tip or lesson
+💡 Key insight to remember
 
-✅ Here's what changed everything...
-✅ The breakthrough moment came when...
-✅ Results exceeded expectations because...
+**ENGAGEMENT CTA** (Single line):
+"What's your experience with this?" OR
+"Which approach works best for you?" OR
+"Share your perspective in the comments!"
 
-**KEY TAKEAWAYS** (Each on separate line):
-👉 First major lesson learned
-👉 Second crucial insight  
-👉 Third actionable tip
-
-**STRONG CTA** (Separate line):
-"What's your experience with this?"
-"Which point resonates most with you?"
-"Share your story in the comments!"
-
-**HASHTAGS** (After 2 line breaks):
+**HASHTAGS** (3-5 hashtags maximum):
 #RelevantHashtag #SecondHashtag #ThirdHashtag #FourthHashtag #FifthHashtag`;
 
   static generate(post: string, category: Category, styleTone: StyleTone): string {
     this.validateInputs(post, styleTone);
 
-    return `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post with PERFECT line-by-line formatting.
+    return `Transform this ${category} post into a highly engaging, ${styleTone} LinkedIn post that's CONCISE yet VIRAL-READY.
 
 ${this.COMMON_INSTRUCTIONS}
 
@@ -68,14 +60,22 @@ Create a LinkedIn post with this EXACT line-by-line structure:
 ${this.LINKEDIN_STRUCTURE}
 
 FORMATTING RULES:
+- KEEP IT CONCISE: Maximum 6-8 lines total (excluding hashtags)
 - Each section separated by double line breaks
 - Each point within sections on single line breaks
-- Strategic emojis (3-5 total maximum)
+- Strategic emojis (2-3 total maximum for professionalism)
 - ${styleTone} yet conversational tone
 - Professional structure with clear spacing
 - Make it scannable and engaging
+- Focus on QUALITY over QUANTITY - every word must add value
 
-Write the perfectly formatted LinkedIn post:`;
+VIRAL POTENTIAL REQUIREMENTS:
+- Hook must create immediate curiosity or relatability
+- Core message should be actionable and shareable
+- Include specific, tangible insights
+- End with engaging question that invites discussion
+
+Write the perfectly formatted, concise LinkedIn post:`;
   }
 }
 
