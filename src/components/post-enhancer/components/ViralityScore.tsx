@@ -127,73 +127,87 @@ export function ViralityScore({
     }
   }, [autoAnalyze, post, category]);
 
-  return <div className="mt-8 pt-6 border-t border-gray-100">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg">
-            <TrendingUp className="text-purple-600" size={20} />
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
+      {/* Header */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+              <TrendingUp className="text-blue-600" size={20} />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">
+                Viral Potential
+              </h3>
+              <p className="text-sm text-gray-500">AI-powered engagement prediction</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900">
-              Virality Potential
-            </h3>
-            <p className="text-sm text-gray-600">Predict your post growth using AI</p>
-          </div>
+          
+          <Button 
+            onClick={analyzePotential} 
+            disabled={loading || !post.trim()} 
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 flex items-center gap-2 shadow-sm"
+          >
+            {analyzing ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Analyzing...
+              </>
+            ) : (
+              <>
+                <Sparkles size={16} />
+                Analyze
+              </>
+            )}
+          </Button>
         </div>
-        
-        <Button onClick={analyzePotential} disabled={loading || !post.trim()} size="sm" className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200">
-          {analyzing ? <>
-              <div className="rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
-              Analyzing...
-            </> : <>
-              <Sparkles size={16} />
-              Analyze
-            </>}
-        </Button>
       </div>
 
-      {score !== null && <div className="space-y-4">
-          {/* Simple Score Display */}
-          <div className="bg-white rounded-lg p-6 border border-gray-200 text-center">
-            <div className="mb-4">
-              <div className={`text-5xl font-bold ${getScoreColor(score)} mb-2`}>
-                {score}%
-              </div>
-              <Badge variant={getBadgeVariant(score)} className="text-sm">
-                {getScoreBadge(score)}
-              </Badge>
+      {/* Results */}
+      {score !== null && (
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <div className={`text-6xl font-bold ${getScoreColor(score)} mb-3`}>
+              {score}%
             </div>
-            
-            <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
-              <div 
-                className={`h-3 rounded-full transition-all duration-500 ${getProgressBarColor(score)}`}
-                style={{ width: `${score}%` }}
-              />
-            </div>
-            
-            <p className="text-gray-600 text-sm">
-              {score >= 90 ? "🔥 Ready to go viral!" : 
-               score >= 70 ? "✨ Great engagement potential!" : 
-               "💡 Check insights below to improve"}
-            </p>
+            <Badge variant={getBadgeVariant(score)} className="text-base px-4 py-1">
+              {getScoreBadge(score)}
+            </Badge>
           </div>
+          
+          <div className="w-full bg-gray-100 rounded-full h-4 mb-6 overflow-hidden">
+            <div 
+              className={`h-4 rounded-full transition-all duration-1000 ${getProgressBarColor(score)}`}
+              style={{ width: `${score}%` }}
+            />
+          </div>
+          
+          <p className="text-center text-gray-600 mb-6">
+            {score >= 90 ? "🔥 Exceptional viral potential!" : 
+             score >= 70 ? "✨ Strong engagement expected!" : 
+             score >= 50 ? "📈 Good foundation for growth!" :
+             "💡 Optimization recommended"}
+          </p>
 
-          {insights.length > 0 && <Card className="border-blue-100">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-base text-blue-700">
-                  <Lightbulb className="h-4 w-4" />
-                  Quick Tips
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-2">
-                  {insights.map((insight, index) => <div key={index} className="flex items-start gap-2 text-sm text-gray-700">
-                      <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                      <span>{insight}</span>
-                    </div>)}
-                </div>
-              </CardContent>
-            </Card>}
-        </div>}
-    </div>;
+          {insights.length > 0 && (
+            <div className="bg-blue-50 rounded-lg p-6">
+              <h4 className="flex items-center gap-2 text-lg font-semibold text-blue-900 mb-4">
+                <Lightbulb className="h-5 w-5" />
+                Optimization Tips
+              </h4>
+              <div className="space-y-3">
+                {insights.map((insight, index) => (
+                  <div key={index} className="flex items-start gap-3 text-blue-800">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                    <span className="text-sm leading-relaxed">{insight}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }

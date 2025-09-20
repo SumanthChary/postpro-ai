@@ -85,51 +85,75 @@ export const ShareOptions = ({ enhancedPosts, onPlatformSelect }: ShareOptionsPr
     return colors[platform] || "bg-gray-600 hover:bg-gray-700";
   };
 
+  // Only show LinkedIn sharing
+  const linkedinPost = enhancedPosts.linkedin || enhancedPosts[Object.keys(enhancedPosts)[0]] || '';
+  
   return (
-    <div className="space-y-4">
-      <h3 className="font-semibold text-lg sm:text-xl flex items-center gap-2 text-gray-900">
-        <ShareIcon className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
-        Cross-Platform Sharing
-      </h3>
-      
-      <div className="flex flex-wrap gap-2 sm:gap-3">
-        {Object.keys(enhancedPosts).map((platform) => (
-          <Button
-            key={platform}
-            variant="outline"
-            size="sm"
-            className={`${
-              activePlatform === platform 
-                ? "border-blue-600 bg-blue-50 text-gray-900" 
-                : "border-gray-200 text-gray-900"
-            } transition-all hover:bg-blue-50 text-sm sm:text-base py-1.5 sm:py-2 px-3 sm:px-4`}
-            onClick={() => handlePlatformClick(platform)}
-          >
-            {getPlatformIcon(platform)}
-            <span>{getPlatformName(platform)}</span>
-          </Button>
-        ))}
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      {/* Header */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <h3 className="text-xl font-bold text-gray-900 flex items-center gap-3">
+          <LinkedinIcon className="h-6 w-6 text-[#0077B5]" />
+          Share to LinkedIn
+        </h3>
       </div>
       
-      <div className="flex flex-col sm:flex-row gap-2">
-        <Button 
-          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base py-2 sm:py-3"
-          onClick={handleCopyText}
-        >
-          <CopyIcon className="w-4 h-4 mr-2" />
-          Copy Text
-        </Button>
-        <ScheduleShareButton 
-          content={enhancedPosts[activePlatform] || ''} 
-          platform={activePlatform}
-        />
-        <Button 
-          className={`flex-1 ${getPlatformColor(activePlatform)} text-sm sm:text-base py-2 sm:py-3`}
-          onClick={handleShare}
-        >
-          {getPlatformIcon(activePlatform)}
-          <span className="ml-2">Share to {getPlatformName(activePlatform)}</span>
-        </Button>
+      {/* Actions */}
+      <div className="p-8">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Button 
+            className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-200 h-12 flex items-center justify-center gap-2"
+            onClick={() => {
+              if (linkedinPost) {
+                navigator.clipboard.writeText(linkedinPost);
+                toast({
+                  title: "Copied!",
+                  description: "Post copied to clipboard",
+                });
+              }
+            }}
+          >
+            <CopyIcon className="w-4 h-4" />
+            Copy Text
+          </Button>
+          
+          <ScheduleShareButton 
+            content={linkedinPost} 
+            platform="linkedin"
+          />
+          
+          <Button 
+            className="flex-1 bg-[#0077B5] hover:bg-[#0077B5]/90 text-white h-12 flex items-center justify-center gap-2"
+            onClick={async () => {
+              if (!linkedinPost) return;
+              
+              try {
+                if (navigator.share) {
+                  await navigator.share({
+                    title: 'Enhanced LinkedIn Post',
+                    text: linkedinPost,
+                  });
+                } else {
+                  navigator.clipboard.writeText(linkedinPost);
+                  toast({
+                    title: "Copied!",
+                    description: "Post copied to clipboard",
+                  });
+                }
+              } catch (error) {
+                console.error('Error sharing:', error);
+                navigator.clipboard.writeText(linkedinPost);
+                toast({
+                  title: "Copied!",
+                  description: "Post copied to clipboard",
+                });
+              }
+            }}
+          >
+            <LinkedinIcon className="w-4 h-4" />
+            Share to LinkedIn
+          </Button>
+        </div>
       </div>
     </div>
   );
