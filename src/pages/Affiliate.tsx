@@ -225,7 +225,7 @@ const Affiliate = () => {
           ) : (
             <>
               <Card className="p-6 shadow-lg mb-8">
-                <h3 className="text-xl font-bold mb-4 text-electric-purple flex items-center gap-2">
+                <h3 className="text-xl font-bold mb-4 text-blue-600 flex items-center gap-2">
                   <Link2Icon className="w-5 h-5" /> Your Affiliate Link
                 </h3>
                 <p className="mb-4 text-sm text-custom-text">
@@ -258,7 +258,7 @@ const Affiliate = () => {
                 <TabsContent value="overview">
                   <div className="grid md:grid-cols-2 gap-8">
                     <Card className="p-6 shadow-lg">
-                      <h3 className="text-xl font-bold mb-4 text-electric-purple">Earnings Dashboard</h3>
+                      <h3 className="text-xl font-bold mb-4 text-blue-600">Earnings Dashboard</h3>
                       <div className="h-[300px]">
                         <ChartContainer config={{
                           earnings: { label: "Monthly Earnings ($)" }
@@ -296,7 +296,7 @@ const Affiliate = () => {
                     </Card>
                     
                     <Card className="p-6 shadow-lg">
-                      <h3 className="text-xl font-bold mb-4 text-electric-purple">Referral Statistics</h3>
+                      <h3 className="text-xl font-bold mb-4 text-blue-600">Referral Statistics</h3>
                       <div className="grid grid-cols-2 gap-4">
                         {stats.map((stat, index) => (
                           <div key={index} className="bg-gray-50 p-3 rounded-lg">
@@ -329,7 +329,7 @@ const Affiliate = () => {
                 <TabsContent value="stats">
                   <div className="grid md:grid-cols-2 gap-8">
                     <Card className="p-6 shadow-lg">
-                      <h3 className="text-xl font-bold mb-4 text-electric-purple">Traffic Sources</h3>
+                      <h3 className="text-xl font-bold mb-4 text-blue-600">Traffic Sources</h3>
                       <div className="h-[300px] flex justify-center">
                         <ChartContainer config={{
                           twitter: { label: "Twitter" },
@@ -373,7 +373,7 @@ const Affiliate = () => {
                     </Card>
                     
                     <Card className="p-6 shadow-lg">
-                      <h3 className="text-xl font-bold mb-4 text-electric-purple">Top Performing Posts</h3>
+                      <h3 className="text-xl font-bold mb-4 text-blue-600">Top Performing Posts</h3>
                       <div className="space-y-4">
                         <div className="border border-gray-100 rounded-lg p-3">
                           <div className="flex justify-between items-start">
@@ -418,14 +418,14 @@ const Affiliate = () => {
                 
                 <TabsContent value="materials">
                   <Card className="p-6 shadow-lg">
-                    <h3 className="text-xl font-bold mb-4 text-electric-purple">Promotional Materials</h3>
+                    <h3 className="text-xl font-bold mb-4 text-blue-600">Promotional Materials</h3>
                     <p className="text-sm text-gray-600 mb-6">
                       Use these ready-made marketing materials to promote PostPro AI effectively. All materials automatically include your unique affiliate link.
                     </p>
                     
                     <div className="grid md:grid-cols-2 gap-6">
                       {promotionalMaterials.map((material, index) => (
-                        <div key={index} className="border border-gray-200 rounded-lg p-4 hover:border-electric-purple transition-colors">
+                        <div key={index} className="border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition-colors">
                           <h4 className="font-semibold text-lg mb-2">{material.title}</h4>
                           <p className="text-sm text-gray-600 mb-4">{material.description}</p>
                           <Button variant="outline" size="sm">
@@ -445,8 +445,8 @@ const Affiliate = () => {
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-center mb-8">How It Works</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="p-6 shadow-lg border-t-4 border-electric-purple">
-                <div className="font-bold text-3xl text-electric-purple mb-4">1</div>
+              <Card className="p-6 shadow-lg border-t-4 border-blue-600">
+                <div className="font-bold text-3xl text-blue-600 mb-4">1</div>
                 <h3 className="text-xl font-semibold mb-2">Share Your Link</h3>
                 <p className="text-custom-text">
                   Copy your unique referral link and share it on social media, email, or your website.
@@ -461,8 +461,8 @@ const Affiliate = () => {
                 </p>
               </Card>
               
-              <Card className="p-6 shadow-lg border-t-4 border-electric-purple">
-                <div className="font-bold text-3xl text-electric-purple mb-4">3</div>
+              <Card className="p-6 shadow-lg border-t-4 border-blue-600">
+                <div className="font-bold text-3xl text-blue-600 mb-4">3</div>
                 <h3 className="text-xl font-semibold mb-2">Earn Commission</h3>
                 <p className="text-custom-text">
                   You earn 25% commission every time your referral makes a payment - for life!
@@ -475,8 +475,8 @@ const Affiliate = () => {
             <h2 className="text-3xl font-bold text-center mb-8">Affiliate Program Benefits</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="flex items-start gap-3">
-                <div className="bg-electric-purple/10 p-2 rounded-full">
-                  <TrendingUpIcon className="w-5 h-5 text-electric-purple" />
+                <div className="bg-blue-600/10 p-2 rounded-full">
+                  <TrendingUpIcon className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold mb-1">25% Lifetime Commission</h3>
@@ -495,8 +495,8 @@ const Affiliate = () => {
               </div>
               
               <div className="flex items-start gap-3">
-                <div className="bg-electric-purple/10 p-2 rounded-full">
-                  <UsersIcon className="w-5 h-5 text-electric-purple" />
+                <div className="bg-blue-600/10 p-2 rounded-full">
+                  <UsersIcon className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold mb-1">Extended Cookie Period</h3>

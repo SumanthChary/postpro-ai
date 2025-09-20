@@ -11,6 +11,7 @@ import PostUsage from "@/components/profile/PostUsage";
 import SubscriptionInfo from "@/components/profile/SubscriptionInfo";
 import ReferralSystem from "@/components/profile/ReferralSystem";
 import { EnhancedMetrics } from "@/components/profile/EnhancedMetrics";
+import { StreaksSection } from "@/components/profile/StreaksSection";
 import { useProfileData } from "@/hooks/useProfileData";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -69,11 +70,12 @@ const Profile = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-2 backdrop-blur-sm">
-            <TabsTrigger value="profile" className="font-cabinet text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300">Profile</TabsTrigger>
-            <TabsTrigger value="subscription" className="font-cabinet text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300">Subscription</TabsTrigger>
-            <TabsTrigger value="referrals" className="font-cabinet text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300">Referrals</TabsTrigger>
-            <TabsTrigger value="metrics" className="font-cabinet text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 hidden lg:block">Metrics</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-2 backdrop-blur-sm">
+            <TabsTrigger value="profile" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300">Profile</TabsTrigger>
+            <TabsTrigger value="subscription" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300">Subscription</TabsTrigger>
+            <TabsTrigger value="streaks" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300">Streaks</TabsTrigger>
+            <TabsTrigger value="referrals" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300">Referrals</TabsTrigger>
+            <TabsTrigger value="metrics" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 hidden lg:block">Metrics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile">
@@ -127,6 +129,16 @@ const Profile = () => {
           <TabsContent value="referrals">
             <div className="max-w-5xl">
               {userId && <ReferralSystem userId={userId} />}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="streaks" className="lg:block">
+            <div className="max-w-7xl">
+              {userId && (
+                <div className="space-y-6">
+                  <StreaksSection userId={userId} />
+                </div>
+              )}
             </div>
           </TabsContent>
 
