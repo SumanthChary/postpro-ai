@@ -122,5 +122,197 @@ export const EnhancedMetrics = ({
         </div>
       </Card>;
   }
-  return;
+
+  return (
+    <div className="space-y-6">
+      {/* Key Metrics Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+        <Card className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 hover:shadow-lg transition-all duration-300">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-500 rounded-lg">
+              <Target className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-blue-600 font-medium">Total Posts</p>
+              <p className="text-lg font-bold text-blue-900">{summary.totalEnhancements}</p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-4 bg-gradient-to-br from-green-50 to-green-100 border-green-200 hover:shadow-lg transition-all duration-300">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-green-500 rounded-lg">
+              <TrendingUp className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-green-600 font-medium">Avg Engagement</p>
+              <p className="text-lg font-bold text-green-900">{summary.avgEngagement.toFixed(1)}%</p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 hover:shadow-lg transition-all duration-300">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-purple-500 rounded-lg">
+              <Award className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-purple-600 font-medium">Virality Score</p>
+              <p className="text-lg font-bold text-purple-900">{summary.viralityScore.toFixed(1)}/10</p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-4 bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 hover:shadow-lg transition-all duration-300">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-orange-500 rounded-lg">
+              <ArrowUpRight className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-orange-600 font-medium">Weekly Growth</p>
+              <p className="text-lg font-bold text-orange-900">+{summary.weeklyGrowth.toFixed(1)}%</p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-4 bg-gradient-to-br from-red-50 to-red-100 border-red-200 hover:shadow-lg transition-all duration-300">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-red-500 rounded-lg">
+              <Zap className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-red-600 font-medium">Credits Used</p>
+              <p className="text-lg font-bold text-red-900">{summary.creditsUsed}</p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 border-indigo-200 hover:shadow-lg transition-all duration-300">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-indigo-500 rounded-lg">
+              <Clock className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-indigo-600 font-medium">Time Saved</p>
+              <p className="text-lg font-bold text-indigo-900">{formatTime(summary.timesSaved)}</p>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Charts Section */}
+      <Tabs defaultValue="weekly" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-2 bg-white border shadow-sm">
+          <TabsTrigger value="weekly" className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600">Weekly Activity</TabsTrigger>
+          <TabsTrigger value="monthly" className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600">Monthly Trends</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="weekly">
+          <Card className="p-6 bg-white border shadow-lg">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart2 className="w-5 h-5 text-blue-600" />
+              <h3 className="text-lg font-semibold text-gray-900">Daily Activity (Last 7 Days)</h3>
+            </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={weeklyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'white', 
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }} 
+                />
+                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="monthly">
+          <Card className="p-6 bg-white border shadow-lg">
+            <div className="flex items-center gap-2 mb-4">
+              <TrendingUp className="w-5 h-5 text-green-600" />
+              <h3 className="text-lg font-semibold text-gray-900">Monthly Growth Trends</h3>
+            </div>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'white', 
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }} 
+                />
+                <Line type="monotone" dataKey="value" stroke="#10b981" strokeWidth={3} dot={{ fill: '#10b981', strokeWidth: 2 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      {/* Performance Distribution */}
+      <Card className="p-6 bg-white border shadow-lg">
+        <div className="flex items-center gap-2 mb-4">
+          <Award className="w-5 h-5 text-purple-600" />
+          <h3 className="text-lg font-semibold text-gray-900">Performance Distribution</h3>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie
+                data={[
+                  { name: 'High Engagement', value: summary.totalEnhancements * 0.4, color: COLORS[0] },
+                  { name: 'Medium Engagement', value: summary.totalEnhancements * 0.35, color: COLORS[1] },
+                  { name: 'Low Engagement', value: summary.totalEnhancements * 0.25, color: COLORS[2] }
+                ]}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {[
+                  { name: 'High Engagement', value: summary.totalEnhancements * 0.4 },
+                  { name: 'Medium Engagement', value: summary.totalEnhancements * 0.35 },
+                  { name: 'Low Engagement', value: summary.totalEnhancements * 0.25 }
+                ].map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+          
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+              <span className="text-sm font-medium text-blue-700">Best Performing Day</span>
+              <span className="text-sm font-bold text-blue-900">
+                {weeklyData.reduce((max, day) => day.value > max.value ? day : max, weeklyData[0])?.name || 'N/A'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+              <span className="text-sm font-medium text-green-700">Average Daily Posts</span>
+              <span className="text-sm font-bold text-green-900">
+                {(weeklyData.reduce((sum, day) => sum + day.value, 0) / weeklyData.length).toFixed(1)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+              <span className="text-sm font-medium text-purple-700">Peak Engagement Rate</span>
+              <span className="text-sm font-bold text-purple-900">{summary.avgEngagement.toFixed(1)}%</span>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
 };
