@@ -58,7 +58,7 @@ const referralSourceData = [
   { name: 'Email', value: 10 },
 ];
 
-const COLORS = ['#8b5cf6', '#3b82f6', '#06b6d4', '#10b981'];
+const COLORS = ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b'];
 
 const Affiliate = () => {
   const [session, setSession] = useState<any>(null);
@@ -275,7 +275,7 @@ const Affiliate = () => {
                               <Line 
                                 type="monotone" 
                                 dataKey="earnings" 
-                                stroke="#8b5cf6" 
+                                stroke="#3b82f6" 
                                 strokeWidth={3}
                                 dot={{ r: 4 }}
                                 activeDot={{ r: 6 }}

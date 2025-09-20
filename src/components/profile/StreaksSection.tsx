@@ -138,9 +138,9 @@ export const StreaksSection = ({ userId }: StreaksSectionProps) => {
 
   const getStreakColor = (streak: number) => {
     if (streak >= 30) return "from-orange-500 to-red-500";
-    if (streak >= 14) return "from-green-500 to-blue-500";
-    if (streak >= 7) return "from-blue-500 to-green-500";
-    if (streak >= 3) return "from-blue-400 to-blue-600";
+    if (streak >= 14) return "from-blue-500 to-indigo-500";
+    if (streak >= 7) return "from-blue-400 to-blue-600";
+    if (streak >= 3) return "from-blue-300 to-blue-500";
     return "from-gray-400 to-gray-600";
   };
 
@@ -175,7 +175,7 @@ export const StreaksSection = ({ userId }: StreaksSectionProps) => {
   return (
     <Card className="p-6 sm:p-8 bg-white/80 backdrop-blur-lg border border-blue-200/50 shadow-2xl rounded-3xl hover:shadow-3xl transition-all duration-300">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-green-500 rounded-full"></div>
+        <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full"></div>
         <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-cabinet">Your Posting Streaks</h2>
         <Zap className="w-6 h-6 text-orange-500" />
       </div>
@@ -212,7 +212,7 @@ export const StreaksSection = ({ userId }: StreaksSectionProps) => {
           </div>
         </Card>
 
-        <Card className="p-4 sm:p-6 bg-gradient-to-br from-green-500 to-teal-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl">
+        <Card className="p-4 sm:p-6 bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl">
           <div className="flex items-center justify-between mb-3">
             <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8" />
             <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
@@ -248,19 +248,19 @@ export const StreaksSection = ({ userId }: StreaksSectionProps) => {
           </div>
         </Card>
 
-        <Card className="p-4 sm:p-6 bg-gradient-to-br from-green-50 to-teal-50 border border-green-200 rounded-2xl">
+        <Card className="p-4 sm:p-6 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-2xl">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-green-600" />
-              <h3 className="font-semibold text-green-900">Monthly Goal</h3>
+              <Target className="w-5 h-5 text-orange-600" />
+              <h3 className="font-semibold text-orange-900">Monthly Goal</h3>
             </div>
-            <span className="text-sm font-medium text-green-700">
+            <span className="text-sm font-medium text-orange-700">
               {Math.min(streakData.currentStreak, 30)}/{streakData.monthlyGoal}
             </span>
           </div>
-          <div className="w-full bg-green-200 rounded-full h-3">
+          <div className="w-full bg-orange-200 rounded-full h-3">
             <div 
-              className="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-orange-500 to-orange-600 h-3 rounded-full transition-all duration-500"
               style={{ width: `${Math.min((streakData.currentStreak / streakData.monthlyGoal) * 100, 100)}%` }}
             ></div>
           </div>
