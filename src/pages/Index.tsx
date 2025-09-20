@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/layout/Navigation";
 import HeroSection from "@/components/landing/HeroSection";
 import Footer from "@/components/Footer";
+import { EnhancedMetrics } from "@/components/profile/EnhancedMetrics";
 
 // Lazy load non-critical sections
 const VideoShowcase = lazy(() => import("@/components/landing/VideoShowcase"));
@@ -135,6 +136,15 @@ const Index = () => {
 
       <main>
         <HeroSection isAuthenticated={!!session} username={username} />
+        
+        {/* Enhanced Metrics Section for Authenticated Users */}
+        {session && (
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <Suspense fallback={<SectionLoader />}>
+              <EnhancedMetrics userId={session.user.id} />
+            </Suspense>
+          </div>
+        )}
         
         <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <Suspense fallback={<SectionLoader />}>

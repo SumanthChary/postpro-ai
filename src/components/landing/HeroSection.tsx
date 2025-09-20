@@ -20,7 +20,7 @@ const HeroSection = ({
       <div className="absolute bottom-10 sm:bottom-20 left-1/2 w-28 sm:w-36 md:w-48 lg:w-60 h-28 sm:h-36 md:h-48 lg:h-60 bg-gradient-to-r from-cyan-200/40 to-blue-200/40 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
       <div className="absolute top-1/2 left-1/4 w-20 sm:w-32 h-20 sm:h-32 bg-gradient-to-r from-indigo-200/50 to-blue-200/50 rounded-full mix-blend-multiply filter blur-2xl opacity-25"></div>
       
-      <div className="relative z-10 pt-24 sm:pt-32 md:pt-40 lg:pt-48 xl:pt-56 pb-8 sm:pb-12 md:pb-16 lg:pb-20">
+      <div className="relative z-10 pt-16 sm:pt-20 md:pt-24 lg:pt-28 xl:pt-32 pb-8 sm:pb-12 md:pb-16 lg:pb-20">
         <div className="max-w-5xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14 px-3 sm:px-4 md:px-6 lg:px-8">
           {isAuthenticated && username ? <>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.2] text-gray-900">
@@ -42,13 +42,13 @@ const HeroSection = ({
         </div>
 
         <div className="flex justify-center px-3 sm:px-4 md:px-6">
-          <div className="backdrop-blur-lg bg-white/60 rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-4 sm:p-6 md:p-8 lg:p-10 border border-white/40 max-w-5xl w-full relative z-10">
+          <div className="backdrop-blur-lg bg-gradient-to-br from-white/90 via-blue-50/60 to-white/90 rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-4 sm:p-6 md:p-8 lg:p-10 border border-blue-200/40 shadow-2xl max-w-5xl w-full relative z-10">
             <PostEnhancer post={post} setPost={setPost} category={category} setCategory={setCategory} styleTone={styleTone} setStyleTone={setStyleTone} />
           </div>
         </div>
 
-        <div className="mt-8 max-w-5xl mx-auto px-3 sm:px-4 md:px-6">
-          <div className="backdrop-blur-lg bg-white/40 rounded-2xl p-6 border border-white/30">
+        <div className="mt-6 max-w-5xl mx-auto px-3 sm:px-4 md:px-6">
+          <div className="backdrop-blur-lg bg-white/30 rounded-2xl p-4 border border-white/20">
             <AnimatedTooltipPreview />
           </div>
         </div>
