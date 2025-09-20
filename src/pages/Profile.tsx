@@ -70,12 +70,14 @@ const Profile = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-1 backdrop-blur-sm">
+          <div className="flex justify-center">
+            <TabsList className="grid grid-cols-3 lg:grid-cols-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-1 backdrop-blur-sm max-w-2xl w-full">
             <TabsTrigger value="profile" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate">Profile</TabsTrigger>
             <TabsTrigger value="subscription" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate">Subscription</TabsTrigger>
             <TabsTrigger value="streaks" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate">Streaks</TabsTrigger>
             <TabsTrigger value="metrics" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate hidden lg:block">Metrics</TabsTrigger>
           </TabsList>
+          </div>
 
           <TabsContent value="profile">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
