@@ -14,8 +14,8 @@ const TemplatesSection = ({
   const [isProUser, setIsProUser] = useState(false);
   useEffect(() => {
     const fetchUserPlan = async () => {
-      const userPlan = user?.plan || 'free';
-      setIsProUser(userPlan === 'weekly' || userPlan === 'monthly' || userPlan === 'yearly' || userPlan === 'enterprise');
+      // Set default to false since user.plan doesn't exist on User type
+      setIsProUser(false);
     };
     fetchUserPlan();
   }, [user]);

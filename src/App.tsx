@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import PreloadResources from "@/components/ui/preload-resources";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 // Lazy load components for better performance
 const FloatingChatButton = lazy(() => import("./components/chatbot/FloatingChatButton"));
@@ -50,8 +51,9 @@ function App() {
         <Sonner />
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
-            <BrowserRouter basename="/">
-              <Suspense fallback={<PageSkeleton />}>
+            <AuthProvider>
+              <BrowserRouter basename="/">
+                <Suspense fallback={<PageSkeleton />}>
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
@@ -74,11 +76,12 @@ function App() {
                   <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                   <Route path="/faq" element={<FAQPage />} />
                 </Routes>
-              </Suspense>
-              <Suspense fallback={null}>
-                <FloatingChatButton />
-              </Suspense>
-            </BrowserRouter>
+                </Suspense>
+                <Suspense fallback={null}>
+                  <FloatingChatButton />
+                </Suspense>
+              </BrowserRouter>
+            </AuthProvider>
           </TooltipProvider>
         </QueryClientProvider>
       </ThemeProvider>

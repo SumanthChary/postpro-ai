@@ -1,107 +1,35 @@
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { useReferralTracking } from "./useReferralTracking";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 export const useAuth = (redirectPath = "/auth", requireAuth = false) => {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading } = useAuthContext();
   const [hasRedirected, setHasRedirected] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { processReferral } = useReferralTracking();
 
   useEffect(() => {
-    let mounted = true;
+    if (loading) return; // Don't redirect while still loading
 
-    // Set up auth state listener FIRST
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.email);
-        
-        if (!mounted) return;
+    if (!user && requireAuth && !hasRedirected) {
+      setHasRedirected(true);
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to access this feature",
+        variant: "destructive",
+      });
+      navigate(redirectPath);
+    }
+  }, [user, loading, requireAuth, hasRedirected, navigate, redirectPath, toast]);
 
-        if (event === "SIGNED_OUT") {
-          setUser(null);
-          setHasRedirected(false);
-          if (requireAuth && !hasRedirected) {
-            setHasRedirected(true);
-            navigate(redirectPath);
-          }
-        } else if (event === "SIGNED_IN" && session) {
-          setUser(session.user);
-          setHasRedirected(false);
-          
-          // Process referral for new users
-          const isNewUser = session.user.created_at && 
-            new Date(session.user.created_at).getTime() > (Date.now() - 60000); // Within last minute
-          
-          if (isNewUser) {
-            processReferral(session.user.id, 'free');
-          }
-        } else if (event === "TOKEN_REFRESHED" && session) {
-          setUser(session.user);
-        }
-        
-        setLoading(false);
-      }
-    );
+  // Reset redirect flag when user logs in
+  useEffect(() => {
+    if (user && hasRedirected) {
+      setHasRedirected(false);
+    }
+  }, [user, hasRedirected]);
 
-    // THEN check for existing session
-    const getUser = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (!mounted) return;
-        
-        if (error) {
-          console.error("Session error:", error);
-          setUser(null);
-          setLoading(false);
-          return;
-        }
-        
-        if (!session?.user && requireAuth && !hasRedirected) {
-          setHasRedirected(true);
-          toast({
-            title: "Authentication Required",
-            description: "Please sign in to access this feature",
-            variant: "destructive",
-          });
-          navigate(redirectPath);
-        } else if (session?.user) {
-          setUser(session.user);
-        }
-        
-        setLoading(false);
-      } catch (error: any) {
-        console.error("Authentication error:", error);
-        if (!mounted) return;
-        
-        setUser(null);
-        setLoading(false);
-        
-        if (requireAuth && !hasRedirected) {
-          setHasRedirected(true);
-          toast({
-            title: "Authentication Error",
-            description: "Please try signing in again",
-            variant: "destructive",
-          });
-          navigate(redirectPath);
-        }
-      }
-    };
-
-    getUser();
-    
-    return () => {
-      mounted = false;
-      authListener?.subscription.unsubscribe();
-    };
-  }, [navigate, toast, redirectPath, requireAuth, processReferral]);
-
-  return { user, loading, processReferral };
+  return { user, loading };
 };
