@@ -69,26 +69,26 @@ const Profile = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
-          <div className="flex justify-center px-8 sm:px-12">
-            <TabsList className="grid grid-cols-3 lg:grid-cols-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-1 backdrop-blur-sm w-full max-w-3xl mx-auto">
-            <TabsTrigger value="profile" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate">Profile</TabsTrigger>
-            <TabsTrigger value="subscription" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate">Subscription</TabsTrigger>
-            <TabsTrigger value="streaks" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate">Streaks</TabsTrigger>
-            <TabsTrigger value="metrics" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-1 sm:px-3 truncate hidden lg:block">Metrics</TabsTrigger>
+        <Tabs defaultValue="profile" className="space-y-4 sm:space-y-6">
+          <div className="flex justify-center px-4 sm:px-8 lg:px-12">
+            <TabsList className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-lg rounded-2xl p-1 backdrop-blur-sm w-full max-w-4xl mx-auto">
+            <TabsTrigger value="profile" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-2 sm:px-3 truncate">Profile</TabsTrigger>
+            <TabsTrigger value="subscription" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-2 sm:px-3 truncate">Plan</TabsTrigger>
+            <TabsTrigger value="streaks" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-2 sm:px-3 truncate">Streaks</TabsTrigger>
+            <TabsTrigger value="metrics" className="font-cabinet text-xs sm:text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-blue-600 rounded-xl transition-all duration-300 py-2 px-2 sm:px-3 truncate">Metrics</TabsTrigger>
           </TabsList>
           </div>
 
-          <TabsContent value="profile">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-              <div className="lg:col-span-2">
-                <Card className="p-6 sm:p-8 bg-white/80 backdrop-blur-lg border border-blue-200/50 shadow-2xl rounded-3xl hover:shadow-3xl transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full"></div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-cabinet">Profile Information</h2>
+          <TabsContent value="profile" className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+              <div className="xl:col-span-2">
+                <Card className="p-4 sm:p-6 lg:p-8 bg-white/80 backdrop-blur-lg border border-blue-200/50 shadow-2xl rounded-3xl hover:shadow-3xl transition-all duration-300">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                    <div className="w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full"></div>
+                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-900 font-cabinet">Profile Information</h2>
                   </div>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     <AvatarUpload
                       avatarUrl={avatarUrl}
                       username={username}
@@ -114,42 +114,35 @@ const Profile = () => {
                 </Card>
               </div>
               
-              <div className="lg:col-span-1 space-y-6">
+              <div className="xl:col-span-1 space-y-4 sm:space-y-6">
                 {userId && <SubscriptionInfo />}
               </div>
             </div>
           </TabsContent>
 
-          <TabsContent value="subscription">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TabsContent value="subscription" className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
               {userId && <SubscriptionInfo />}
               {userId && <PostUsage userId={userId} />}
             </div>
           </TabsContent>
 
-
-          <TabsContent value="streaks" className="lg:block">
-            <div className="max-w-7xl">
-              {userId && (
-                <div className="space-y-6">
-                  <StreaksSection userId={userId} />
-                </div>
-              )}
+          <TabsContent value="streaks" className="space-y-4 sm:space-y-6">
+            <div className="max-w-full">
+              {userId && <StreaksSection userId={userId} />}
             </div>
           </TabsContent>
 
-          <TabsContent value="metrics" className="lg:block hidden">
-            <div className="max-w-7xl">
+          <TabsContent value="metrics" className="space-y-4 sm:space-y-6">
+            <div className="max-w-full">
               {userId && (
-                <div className="space-y-6">
-                  <Card className="p-6 sm:p-8 bg-white/80 backdrop-blur-lg border border-blue-200/50 shadow-2xl rounded-3xl">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full"></div>
-                      <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-cabinet">Performance Metrics</h2>
-                    </div>
-                    <EnhancedMetrics userId={userId} />
-                  </Card>
-                </div>
+                <Card className="p-4 sm:p-6 lg:p-8 bg-white/80 backdrop-blur-lg border border-blue-200/50 shadow-2xl rounded-3xl">
+                  <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                    <div className="w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full"></div>
+                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-900 font-cabinet">Performance Metrics</h2>
+                  </div>
+                  <EnhancedMetrics userId={userId} />
+                </Card>
               )}
             </div>
           </TabsContent>

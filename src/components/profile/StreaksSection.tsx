@@ -39,7 +39,7 @@ export const StreaksSection = ({ userId }: StreaksSectionProps) => {
       try {
         setLoading(true);
 
-        // Fetch user usage data to calculate streaks
+        // Fetch user usage data to calculate real streaks
         const { data: usageData, error: usageError } = await supabase
           .from('user_usage')
           .select('*')
@@ -48,20 +48,76 @@ export const StreaksSection = ({ userId }: StreaksSectionProps) => {
 
         if (usageError) throw usageError;
 
-          // Generate realistic streak data instead of zeros
-          const calculateStreaks = (data: any[]) => {
-            // Return realistic sample data for demonstration
-            return {
-              currentStreak: 12,
-              longestStreak: 28,
-              totalPosts: 145,
-              streakStartDate: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
-              lastPostDate: new Date().toISOString(),
-              achievements: ["3-Day Streak Master", "Weekly Warrior", "Fortnight Champion", "Content Creator"]
-            };
-          };
+        const totalPosts = usageData?.length || 0;
+        
+        // Calculate streak from usage data
+        let currentStreak = 0;
+        let longestStreak = 0;
+        
+        if (usageData && usageData.length > 0) {
+          // Get unique dates from usage data
+          const dates = usageData.map(u => new Date(u.created_at).toDateString());
+          const uniqueDates = [...new Set(dates)].sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+          
+          // Calculate current streak
+          const today = new Date();
+          let streakCount = 0;
+          
+          for (let i = 0; i < uniqueDates.length; i++) {
+            const checkDate = new Date(today);
+            checkDate.setDate(today.getDate() - i);
+            
+            if (uniqueDates.includes(checkDate.toDateString())) {
+              streakCount++;
+            } else {
+              break;
+            }
+          }
+          
+          currentStreak = streakCount;
+          
+          // Calculate longest streak by checking consecutive days
+          let maxStreak = 0;
+          let tempStreak = 0;
+          
+          const sortedDates = uniqueDates.map(d => new Date(d)).sort((a, b) => a.getTime() - b.getTime());
+          
+          for (let i = 0; i < sortedDates.length; i++) {
+            if (i === 0) {
+              tempStreak = 1;
+            } else {
+              const prevDate = sortedDates[i - 1];
+              const currDate = sortedDates[i];
+              const daysDiff = (currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24);
+              
+              if (daysDiff === 1) {
+                tempStreak++;
+              } else {
+                maxStreak = Math.max(maxStreak, tempStreak);
+                tempStreak = 1;
+              }
+            }
+          }
+          longestStreak = Math.max(maxStreak, tempStreak);
+        }
 
-        const calculatedData = calculateStreaks(usageData);
+        // Generate achievements based on actual usage
+        const achievements: string[] = [];
+        if (currentStreak >= 3) achievements.push("3-Day Streak Master");
+        if (currentStreak >= 7) achievements.push("Weekly Warrior");
+        if (currentStreak >= 14) achievements.push("Fortnight Champion");
+        if (totalPosts >= 10) achievements.push("Content Creator");
+        if (totalPosts >= 50) achievements.push("Power User");
+        if (longestStreak >= 30) achievements.push("Consistency King");
+
+        const calculatedData = {
+          currentStreak,
+          longestStreak,
+          totalPosts,
+          streakStartDate: usageData?.[usageData.length - 1]?.created_at || new Date().toISOString(),
+          lastPostDate: usageData?.[0]?.created_at || new Date().toISOString(),
+          achievements
+        };
         setStreakData({
           ...calculatedData,
           weeklyGoal: 7,
