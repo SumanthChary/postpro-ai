@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -34,6 +35,17 @@ export const ProfileForm = ({
   getProfileScore,
 }: ProfileFormProps) => {
   const { toast } = useToast();
+  const [initialValues, setInitialValues] = useState({ username: "", bio: "" });
+  const [hasChanges, setHasChanges] = useState(false);
+
+  useEffect(() => {
+    setInitialValues({ username, bio });
+  }, []);
+
+  useEffect(() => {
+    const hasChanged = username !== initialValues.username || bio !== initialValues.bio;
+    setHasChanges(hasChanged);
+  }, [username, bio, initialValues]);
 
   const updateProfile = async () => {
     try {
@@ -63,6 +75,10 @@ export const ProfileForm = ({
       if (error) throw error;
 
       await getProfileScore();
+      
+      // Update initial values after successful save
+      setInitialValues({ username, bio });
+      setHasChanges(false);
 
       toast({
         title: "Profile updated",
@@ -104,11 +120,21 @@ export const ProfileForm = ({
 
       <Button
         onClick={updateProfile}
-        disabled={loading}
-        className="w-full"
+        disabled={loading || !hasChanges}
+        className={`w-full transition-all duration-300 ${
+          hasChanges 
+            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg' 
+            : ''
+        }`}
       >
-        {loading ? "Updating..." : "Update Profile"}
+        {loading ? "Saving Changes..." : hasChanges ? "Save Changes" : "No Changes to Save"}
       </Button>
+      
+      {hasChanges && (
+        <p className="text-sm text-amber-600 text-center font-medium animate-pulse">
+          You have unsaved changes
+        </p>
+      )}
     </div>
   );
 };

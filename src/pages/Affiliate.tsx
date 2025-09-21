@@ -105,7 +105,7 @@ const Affiliate = () => {
         .single();
 
       if (error) throw error;
-      setUsername(data.username || "User");
+      setUsername(data.username || "");
       setAvatarUrl(data.avatar_url || "");
     } catch (error: any) {
       console.error("Error fetching user profile:", error.message);

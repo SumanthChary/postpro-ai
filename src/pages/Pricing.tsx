@@ -54,7 +54,7 @@ const Pricing: React.FC = () => {
       }
       
       if (data) {
-        setUsername(data.username || "User");
+        setUsername(data.username || "");
         setAvatarUrl(data.avatar_url || "");
       }
     } catch (error: any) {
