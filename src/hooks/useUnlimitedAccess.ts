@@ -8,7 +8,12 @@ export const useUnlimitedAccess = () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
-        // Override subscription limits in the database
+        // Only give unlimited access to the admin account
+        if (user.email !== 'enjoywithpandu@gmail.com') {
+          return; // Exit early for non-admin users
+        }
+
+        // Override subscription limits in the database ONLY for admin
         await supabase.from('subscribers')
           .upsert({
             id: user.id,
@@ -29,7 +34,7 @@ export const useUnlimitedAccess = () => {
             action_type: 'usage_reset',
             credits_used: 0,
             metadata: {
-              reset_type: 'unlimited_access_granted',
+              reset_type: 'unlimited_access_granted_admin',
               previous_count: 0
             }
           });
@@ -49,7 +54,7 @@ export const useUnlimitedAccess = () => {
             onConflict: 'plan_name'
           });
 
-        console.log('Successfully enabled unlimited access');
+        console.log('Successfully enabled unlimited access for admin account');
       } catch (error) {
         console.error('Error enabling unlimited access:', error);
       }

@@ -92,10 +92,7 @@ export const HeaderStreakCounter = ({ userId }: HeaderStreakCounterProps) => {
   };
 
   const getFlameAnimation = () => {
-    if (currentStreak === 0) return "";
-    if (currentStreak < 3) return "animate-pulse";
-    if (currentStreak < 7) return "animate-bounce";
-    return "animate-pulse";
+    return ""; // Remove all animations
   };
 
   return (
