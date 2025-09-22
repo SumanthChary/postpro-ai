@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, startTransition } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -39,7 +39,7 @@ const Navigation = ({
         <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate("/")}>
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => startTransition(() => navigate("/"))}>
             <OptimizedImage 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI Logo" 
@@ -54,7 +54,7 @@ const Navigation = ({
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => navigate("/blogs")}
+              onClick={() => startTransition(() => navigate("/blogs"))}
             >
               <BookOpenIcon className="w-4 h-4 mr-2" />
               Blog
@@ -62,14 +62,14 @@ const Navigation = ({
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => navigate("/affiliate")}
+              onClick={() => startTransition(() => navigate("/affiliate"))}
             >
               Affiliate
             </Button>
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => navigate("/pricing")}
+              onClick={() => startTransition(() => navigate("/pricing"))}
             >
               Pricing
             </Button>
@@ -88,14 +88,16 @@ const Navigation = ({
                     </Button>
                   </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => navigate("/profile")}>
+                  <DropdownMenuItem onClick={() => startTransition(() => navigate("/profile"))}>
                     <Avatar className="w-4 h-4 mr-2">
                       <AvatarImage src={avatarUrl} alt={username} />
                       <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
                     </Avatar>
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleSignOut}>
+                  <DropdownMenuItem onClick={() => {
+                    handleSignOut();
+                  }}>
                     <LogOutIcon className="w-4 h-4 mr-2" />
                     Sign Out
                   </DropdownMenuItem>
@@ -105,7 +107,7 @@ const Navigation = ({
             ) : (
               <Button
                 className="bg-blue-600 hover:bg-blue-700 text-white font-opensans"
-                onClick={() => navigate("/auth")}
+                onClick={() => startTransition(() => navigate("/auth"))}
               >
                 Sign In
               </Button>
@@ -131,8 +133,10 @@ const Navigation = ({
                 variant="ghost" 
                 className="text-custom-text hover:text-blue-600 w-full font-opensans"
                 onClick={() => {
-                  navigate("/blogs");
-                  setMobileMenuOpen(false);
+                  startTransition(() => {
+                    navigate("/blogs");
+                    setMobileMenuOpen(false);  
+                  });
                 }}
               >
                 <BookOpenIcon className="w-4 h-4 mr-2" />
@@ -142,8 +146,10 @@ const Navigation = ({
                 variant="ghost" 
                 className="text-custom-text hover:text-blue-600 w-full font-opensans"
                 onClick={() => {
-                  navigate("/affiliate");
-                  setMobileMenuOpen(false);
+                  startTransition(() => {
+                    navigate("/affiliate");
+                    setMobileMenuOpen(false);
+                  });
                 }}
               >
                 Affiliate
@@ -152,8 +158,10 @@ const Navigation = ({
                 variant="ghost" 
                 className="text-custom-text hover:text-blue-600 w-full font-opensans"
                 onClick={() => {
-                  navigate("/pricing");
-                  setMobileMenuOpen(false);
+                  startTransition(() => {
+                    navigate("/pricing");
+                    setMobileMenuOpen(false);
+                  });
                 }}
               >
                 Pricing
@@ -166,8 +174,10 @@ const Navigation = ({
                   <Button
                     variant="outline"
                     onClick={() => {
-                      navigate("/profile");
-                      setMobileMenuOpen(false);
+                      startTransition(() => {
+                        navigate("/profile");
+                        setMobileMenuOpen(false);
+                      });
                     }}
                     className="w-full font-opensans"
                   >
@@ -193,8 +203,10 @@ const Navigation = ({
                 <Button
                   className="bg-blue-600 hover:bg-blue-700 text-white w-full font-opensans"
                   onClick={() => {
-                    navigate("/auth");
-                    setMobileMenuOpen(false);
+                    startTransition(() => {
+                      navigate("/auth");
+                      setMobileMenuOpen(false);
+                    });
                   }}
                 >
                   Sign In
