@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon } from "lucide-react";
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import { HeaderStreakCounter } from "./HeaderStreakCounter";
 
 interface NavigationProps {
   session: any;
@@ -73,17 +74,19 @@ const Navigation = ({
               Pricing
             </Button>
             {session ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="font-opensans hover:bg-blue-50 rounded-full px-3 py-2">
-                    <Avatar className="w-8 h-8 mr-3 ring-2 ring-blue-100">
-                      <AvatarImage src={avatarUrl} alt={username} />
-                      <AvatarFallback className="bg-blue-600 text-white font-semibold">{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <span className="text-gray-700 font-medium">{username}</span>
-                    <ChevronDownIcon className="w-4 h-4 ml-2 text-gray-500" />
-                  </Button>
-                </DropdownMenuTrigger>
+              <div className="flex items-center space-x-3">
+                <HeaderStreakCounter userId={session?.user?.id} />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="font-opensans hover:bg-blue-50 rounded-full px-3 py-2">
+                      <Avatar className="w-8 h-8 mr-3 ring-2 ring-blue-100">
+                        <AvatarImage src={avatarUrl} alt={username} />
+                        <AvatarFallback className="bg-blue-600 text-white font-semibold">{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      <span className="text-gray-700 font-medium">{username}</span>
+                      <ChevronDownIcon className="w-4 h-4 ml-2 text-gray-500" />
+                    </Button>
+                  </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => navigate("/profile")}>
                     <Avatar className="w-4 h-4 mr-2">
@@ -97,7 +100,8 @@ const Navigation = ({
                     Sign Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
+                </DropdownMenu>
+              </div>
             ) : (
               <Button
                 className="bg-blue-600 hover:bg-blue-700 text-white font-opensans"
@@ -156,6 +160,9 @@ const Navigation = ({
               </Button>
               {session ? (
                 <>
+                  <div className="flex items-center justify-center mb-2">
+                    <HeaderStreakCounter userId={session?.user?.id} />
+                  </div>
                   <Button
                     variant="outline"
                     onClick={() => {
