@@ -62,9 +62,9 @@ const Navigation = ({
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => startTransition(() => navigate("/affiliate"))}
+              onClick={() => startTransition(() => navigate("/features"))}
             >
-              Affiliate
+              Features
             </Button>
             <Button 
               variant="ghost" 
@@ -147,12 +147,12 @@ const Navigation = ({
                 className="text-custom-text hover:text-blue-600 w-full font-opensans"
                 onClick={() => {
                   startTransition(() => {
-                    navigate("/affiliate");
+                    navigate("/features");
                     setMobileMenuOpen(false);
                   });
                 }}
               >
-                Affiliate
+                Features
               </Button>
               <Button 
                 variant="ghost" 
