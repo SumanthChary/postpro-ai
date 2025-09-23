@@ -13,7 +13,6 @@ import {
   Eye,
   ArrowRightLeft,
   CheckCircle,
-  Zap
 } from "lucide-react";
 
 const Features = () => {
@@ -80,31 +79,6 @@ const Features = () => {
     },
   ];
 
-  const comingSoonFeatures = {
-    general: [
-      "CTA Generator",
-      "Personal branding tools",
-      "Achievement highlighter",
-      "Professional bio generator",
-    ],
-    linkedin: [
-      "Professional tone adjustment",
-      "Industry-specific keywords",
-      "Connection engagement metrics",
-      "Company tag suggestions",
-      "Article formatting",
-    ],
-    twitter: [
-      "Thread creator",
-      "Viral tweet structure",
-      "Trending topics integration",
-    ],
-    instagram: [
-      "Caption enhancement",
-      "Hashtag grouping",
-      "Visual content suggestions",
-    ],
-  };
 
   const userExperience = [
     { icon: Smartphone, text: "Mobile responsive design" },
@@ -143,58 +117,6 @@ const Features = () => {
         ))}
       </div>
 
-      <Card className="p-8 mb-16">
-        <div className="flex items-center gap-3 mb-8">
-          <Zap className="w-8 h-8 text-coral-red" />
-          <h2 className="text-2xl font-bold">Coming Soon Features</h2>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-lg font-semibold mb-4">General</h3>
-            <ul className="space-y-3">
-              {comingSoonFeatures.general.map((feature) => (
-                <li key={feature} className="flex items-start">
-                  <Sparkles className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">LinkedIn</h3>
-            <ul className="space-y-3">
-              {comingSoonFeatures.linkedin.map((feature) => (
-                <li key={feature} className="flex items-start">
-                  <Sparkles className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Twitter</h3>
-            <ul className="space-y-3">
-              {comingSoonFeatures.twitter.map((feature) => (
-                <li key={feature} className="flex items-start">
-                  <Sparkles className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Instagram</h3>
-            <ul className="space-y-3">
-              {comingSoonFeatures.instagram.map((feature) => (
-                <li key={feature} className="flex items-start">
-                  <Sparkles className="w-5 h-5 text-coral-red mr-2 mt-0.5 flex-shrink-0" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </Card>
 
       <Card className="p-8 mb-16">
         <h2 className="text-2xl font-bold text-center mb-8">User Experience</h2>

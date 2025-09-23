@@ -3,6 +3,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { CardPaymentButton } from "./CardPaymentButton";
 import { PayPalPaymentButton } from "./PayPalPaymentButton";
 import { RazorpayPaymentButton } from "./RazorpayPaymentButton";
+import { DodoPaymentButton } from "./DodoPaymentButton";
 import { Plan } from "@/types/pricing";
 
 interface PaymentOptionsProps {
@@ -54,6 +55,13 @@ export const PaymentOptions = ({
       </div>
 
       <RazorpayPaymentButton
+        planDetails={planDetails}
+        userId={userId}
+        onSuccess={onSuccess}
+        onError={onError}
+      />
+
+      <DodoPaymentButton
         planDetails={planDetails}
         userId={userId}
         onSuccess={onSuccess}
