@@ -1,8 +1,12 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+
+// Cache for profile data to avoid unnecessary API calls
+const profileCache = new Map();
+const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
 
 export const useProfileData = () => {
   const [loading, setLoading] = useState(false);
@@ -16,11 +20,21 @@ export const useProfileData = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const getProfile = async () => {
+  const getProfile = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        // Don't force navigation here - just return silently
+        return;
+      }
+
+      // Check cache first
+      const cacheKey = `profile_${user.id}`;
+      const cached = profileCache.get(cacheKey);
+      if (cached && (Date.now() - cached.timestamp) < CACHE_EXPIRY) {
+        const { data } = cached;
+        setUsername(data.username || "");
+        setAvatarUrl(data.avatar_url || "");
+        setBio(data.bio || "");
         return;
       }
 
@@ -37,6 +51,12 @@ export const useProfileData = () => {
       }
 
       if (data) {
+        // Cache the result
+        profileCache.set(cacheKey, {
+          data,
+          timestamp: Date.now()
+        });
+
         setUsername(data.username || "");
         setAvatarUrl(data.avatar_url || "");
         setBio(data.bio || "");
@@ -49,9 +69,9 @@ export const useProfileData = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const getProfileScore = async (currentUsername: string = username, currentBio: string = bio) => {
+  const getProfileScore = useCallback(async (currentUsername: string = username, currentBio: string = bio) => {
     try {
       if (!currentUsername || !currentBio) return;
       
@@ -70,13 +90,14 @@ export const useProfileData = () => {
     } catch (error: any) {
       console.error("Error getting profile score:", error);
     }
-  };
+  }, [username, bio]);
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [getProfile]);
 
-  return {
+  // Memoize the return object to prevent unnecessary re-renders
+  return useMemo(() => ({
     loading,
     setLoading,
     username,
@@ -95,5 +116,16 @@ export const useProfileData = () => {
     setImprovements,
     getProfile,
     getProfileScore
-  };
+  }), [
+    loading,
+    username,
+    bio,
+    avatarUrl,
+    uploading,
+    suggestions,
+    profileScore,
+    improvements,
+    getProfile,
+    getProfileScore
+  ]);
 };

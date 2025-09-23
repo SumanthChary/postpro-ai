@@ -56,3 +56,73 @@ export const cleanup = (cleanup: () => void) => {
     }
   };
 };
+
+// Request Idle Callback polyfill for better performance
+export const requestIdleCallback = 
+  window.requestIdleCallback || 
+  ((cb: IdleRequestCallback, options?: IdleRequestOptions) => {
+    const start = Date.now();
+    return setTimeout(() => {
+      cb({
+        didTimeout: false,
+        timeRemaining() {
+          return Math.max(0, 50 - (Date.now() - start));
+        },
+      });
+    }, 1);
+  });
+
+export const cancelIdleCallback = 
+  window.cancelIdleCallback || 
+  ((id: number) => {
+    clearTimeout(id);
+  });
+
+// Batch DOM updates for better performance
+export const batchDOMUpdates = (callback: () => void) => {
+  requestIdleCallback(callback);
+};
+
+// Optimize scroll performance
+export const optimizeScroll = (element: HTMLElement, callback: () => void) => {
+  let ticking = false;
+  
+  const update = () => {
+    callback();
+    ticking = false;
+  };
+  
+  const requestTick = () => {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  };
+  
+  element.addEventListener('scroll', requestTick, { passive: true });
+  
+  return () => {
+    element.removeEventListener('scroll', requestTick);
+  };
+};
+
+// Image intersection observer for lazy loading
+export const createImageIntersectionObserver = (
+  callback: (entries: IntersectionObserverEntry[]) => void,
+  options?: IntersectionObserverInit
+) => {
+  if (!('IntersectionObserver' in window)) {
+    // Fallback for browsers without IntersectionObserver
+    return {
+      observe: () => {},
+      unobserve: () => {},
+      disconnect: () => {},
+    };
+  }
+  
+  return new IntersectionObserver(callback, {
+    rootMargin: '50px 0px',
+    threshold: 0.01,
+    ...options,
+  });
+};

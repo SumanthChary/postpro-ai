@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import './utils/performance-monitor'
 
 // Performance optimization: ensure the root element is available
 const rootElement = document.getElementById("root");

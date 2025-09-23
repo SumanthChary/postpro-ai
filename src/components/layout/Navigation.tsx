@@ -1,4 +1,4 @@
-import { useState, startTransition } from "react";
+import React, { useState, startTransition, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -22,7 +22,7 @@ interface NavigationProps {
   mobileMenuOpen: boolean;
 }
 
-const Navigation = ({
+const Navigation = memo(({
   session,
   username,
   avatarUrl,
@@ -33,13 +33,82 @@ const Navigation = ({
 }: NavigationProps) => {
   const navigate = useNavigate();
 
+  // Memoize navigation handlers to prevent unnecessary re-renders
+  const handleBlogClick = useCallback(() => {
+    startTransition(() => navigate("/blogs"));
+  }, [navigate]);
+
+  const handleFeaturesClick = useCallback(() => {
+    startTransition(() => navigate("/features"));
+  }, [navigate]);
+
+  const handlePricingClick = useCallback(() => {
+    startTransition(() => navigate("/pricing"));
+  }, [navigate]);
+
+  const handleLogoClick = useCallback(() => {
+    startTransition(() => navigate("/"));
+  }, [navigate]);
+
+  const handleAuthClick = useCallback(() => {
+    startTransition(() => navigate("/auth"));
+  }, [navigate]);
+
+  const handleProfileClick = useCallback(() => {
+    startTransition(() => navigate("/profile"));
+  }, [navigate]);
+
+  const handleMobileMenuToggle = useCallback(() => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  }, [mobileMenuOpen, setMobileMenuOpen]);
+
+  const handleMobileBlogClick = useCallback(() => {
+    startTransition(() => {
+      navigate("/blogs");
+      setMobileMenuOpen(false);  
+    });
+  }, [navigate, setMobileMenuOpen]);
+
+  const handleMobileFeaturesClick = useCallback(() => {
+    startTransition(() => {
+      navigate("/features");
+      setMobileMenuOpen(false);
+    });
+  }, [navigate, setMobileMenuOpen]);
+
+  const handleMobilePricingClick = useCallback(() => {
+    startTransition(() => {
+      navigate("/pricing");
+      setMobileMenuOpen(false);
+    });
+  }, [navigate, setMobileMenuOpen]);
+
+  const handleMobileProfileClick = useCallback(() => {
+    startTransition(() => {
+      navigate("/profile");
+      setMobileMenuOpen(false);
+    });
+  }, [navigate, setMobileMenuOpen]);
+
+  const handleMobileAuthClick = useCallback(() => {
+    startTransition(() => {
+      navigate("/auth");
+      setMobileMenuOpen(false);
+    });
+  }, [navigate, setMobileMenuOpen]);
+
+  const handleMobileSignOut = useCallback(() => {
+    handleSignOut();
+    setMobileMenuOpen(false);
+  }, [handleSignOut, setMobileMenuOpen]);
+
   return (
     <div className="relative">
       <div className="fixed top-0 left-0 right-0 z-50 w-full">
         <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100 w-full">
       <div className="w-full max-w-7xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center w-full">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => startTransition(() => navigate("/"))}>
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={handleLogoClick}>
             <OptimizedImage 
               src="/lovable-uploads/01519854-3b9c-4c6b-99bc-bbb2f1e7aa5a.png" 
               alt="PostPro AI Logo" 
@@ -54,7 +123,7 @@ const Navigation = ({
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => startTransition(() => navigate("/blogs"))}
+              onClick={handleBlogClick}
             >
               <BookOpenIcon className="w-4 h-4 mr-2" />
               Blog
@@ -62,14 +131,14 @@ const Navigation = ({
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => startTransition(() => navigate("/features"))}
+              onClick={handleFeaturesClick}
             >
               Features
             </Button>
             <Button 
               variant="ghost" 
               className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={() => startTransition(() => navigate("/pricing"))}
+              onClick={handlePricingClick}
             >
               Pricing
             </Button>
@@ -88,7 +157,7 @@ const Navigation = ({
                     </Button>
                   </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => startTransition(() => navigate("/profile"))}>
+                  <DropdownMenuItem onClick={handleProfileClick}>
                     <Avatar className="w-4 h-4 mr-2">
                       <AvatarImage src={avatarUrl} alt={username} />
                       <AvatarFallback>{username?.charAt(0)?.toUpperCase()}</AvatarFallback>
@@ -107,7 +176,7 @@ const Navigation = ({
             ) : (
               <Button
                 className="bg-blue-600 hover:bg-blue-700 text-white font-opensans"
-                onClick={() => startTransition(() => navigate("/auth"))}
+                onClick={handleAuthClick}
               >
                 Sign In
               </Button>
@@ -116,7 +185,7 @@ const Navigation = ({
 
           <button 
             className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={handleMobileMenuToggle}
           >
             {mobileMenuOpen ? (
               <XIcon className="w-6 h-6 text-blue-600" />
@@ -132,12 +201,7 @@ const Navigation = ({
               <Button 
                 variant="ghost" 
                 className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  startTransition(() => {
-                    navigate("/blogs");
-                    setMobileMenuOpen(false);  
-                  });
-                }}
+                onClick={handleMobileBlogClick}
               >
                 <BookOpenIcon className="w-4 h-4 mr-2" />
                 Blog
@@ -145,24 +209,14 @@ const Navigation = ({
               <Button 
                 variant="ghost" 
                 className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  startTransition(() => {
-                    navigate("/features");
-                    setMobileMenuOpen(false);
-                  });
-                }}
+                onClick={handleMobileFeaturesClick}
               >
                 Features
               </Button>
               <Button 
                 variant="ghost" 
                 className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={() => {
-                  startTransition(() => {
-                    navigate("/pricing");
-                    setMobileMenuOpen(false);
-                  });
-                }}
+                onClick={handleMobilePricingClick}
               >
                 Pricing
               </Button>
@@ -173,12 +227,7 @@ const Navigation = ({
                   </div>
                   <Button
                     variant="outline"
-                    onClick={() => {
-                      startTransition(() => {
-                        navigate("/profile");
-                        setMobileMenuOpen(false);
-                      });
-                    }}
+                    onClick={handleMobileProfileClick}
                     className="w-full font-opensans"
                   >
                     <Avatar className="w-4 h-4 mr-2">
@@ -189,10 +238,7 @@ const Navigation = ({
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => {
-                      handleSignOut();
-                      setMobileMenuOpen(false);
-                    }}
+                    onClick={handleMobileSignOut}
                     className="w-full font-opensans"
                   >
                     <LogOutIcon className="w-4 h-4 mr-2" />
@@ -202,12 +248,7 @@ const Navigation = ({
               ) : (
                 <Button
                   className="bg-blue-600 hover:bg-blue-700 text-white w-full font-opensans"
-                  onClick={() => {
-                    startTransition(() => {
-                      navigate("/auth");
-                      setMobileMenuOpen(false);
-                    });
-                  }}
+                  onClick={handleMobileAuthClick}
                 >
                   Sign In
                 </Button>
@@ -220,6 +261,6 @@ const Navigation = ({
       </div>
     </div>
   );
-};
+});
 
 export default Navigation;
