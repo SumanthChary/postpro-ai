@@ -160,23 +160,30 @@ serve(async (req) => {
       }
 
       case 'incrementUsage': {
-        const { data, error } = await supabase
-          .from('subscribers')
-          .update({
-            monthly_post_count: supabase.sql`monthly_post_count + 1`
-          })
-          .eq('user_id', userId)
-          .select();
+        // Check if this is the admin user who should have unlimited access
+        const { data: userAuth } = await supabase.auth.admin.getUserById(userId);
+        const isAdmin = userAuth?.user?.email === 'enjoywithpandu@gmail.com';
+        
+        if (!isAdmin) {
+          // Only increment usage for non-admin users
+          const { data, error } = await supabase
+            .from('subscribers')
+            .update({
+              monthly_post_count: supabase.sql`monthly_post_count + 1`
+            })
+            .eq('user_id', userId)
+            .select();
 
-        if (error) throw error;
+          if (error) throw error;
+        }
 
-        // Log usage
+        // Log usage for all users
         await supabase
           .from('user_usage')
           .insert([{
             user_id: userId,
             action_type: 'post_enhancement',
-            credits_used: 1
+            credits_used: isAdmin ? 0 : 1 // Admin uses 0 credits
           }]);
 
         return new Response(

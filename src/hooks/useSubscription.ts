@@ -51,22 +51,23 @@ export const useSubscription = () => {
       // Get current usage from subscription
       const currentUsage = subscription?.monthly_post_count || 0;
       
-      // For new users (within 24 hours), give them 50 free enhancements
+      // For new users (within 24 hours), give them limited free enhancements
       const userCreatedAt = new Date(user?.created_at || '');
       const isNewUser = (Date.now() - userCreatedAt.getTime()) < 24 * 60 * 60 * 1000;
 
       if (isNewUser) {
+        const newUserLimit = 5; // Limited to 5 for new users
         setUsageStats({
-          canUse: true, // Always allow usage
+          canUse: currentUsage < newUserLimit,
           currentCount: currentUsage,
-          monthlyLimit: 50,
-          remainingUses: Math.max(50 - currentUsage, 0)
+          monthlyLimit: newUserLimit,
+          remainingUses: Math.max(newUserLimit - currentUsage, 0)
         });
         return;
       }
 
       // For regular users, check their subscription limits
-      const monthlyLimit = subscription?.subscription_limits?.monthly_post_limit || 15;
+      const monthlyLimit = subscription?.subscription_limits?.monthly_post_limit || 5; // Default to 5 instead of 15
       const hasUnlimitedAccess = monthlyLimit === -1;
       const remainingUses = hasUnlimitedAccess ? -1 : Math.max(monthlyLimit - currentUsage, 0);
       const canUse = hasUnlimitedAccess || remainingUses > 0;
@@ -83,8 +84,8 @@ export const useSubscription = () => {
       setUsageStats({
         canUse: true,
         currentCount: 0,
-        monthlyLimit: 15,
-        remainingUses: 15
+        monthlyLimit: 5, // Default to 5 instead of 15
+        remainingUses: 5
       });
     }
   }, [subscription?.monthly_post_count]);
