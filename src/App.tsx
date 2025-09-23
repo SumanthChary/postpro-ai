@@ -10,6 +10,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import PreloadResources from "@/components/ui/preload-resources";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { initializePerformanceOptimizations } from "@/utils/performance-optimizations";
 
 // Lazy load components for better performance
 const FloatingChatButton = lazy(() => import("./components/chatbot/FloatingChatButton"));
@@ -37,11 +38,24 @@ const FAQPage = lazy(() => import("./pages/FAQ"));
 
 
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * 60 * 1000, // 5 minutes
+        gcTime: 10 * 60 * 1000, // 10 minutes
+      },
+    },
+  });
+  
   // Enable unlimited access
   useUnlimitedAccess();
   // Initialize referral tracking
   useReferralTracking();
+  
+  // Initialize performance optimizations
+  useEffect(() => {
+    initializePerformanceOptimizations();
+  }, []);
   
   return (
     <StrictMode>

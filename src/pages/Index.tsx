@@ -121,7 +121,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <WhopBanner />
       <Navigation
         session={session}
@@ -133,10 +133,10 @@ const Index = () => {
         mobileMenuOpen={mobileMenuOpen}
       />
 
-      <main>
+      <main className="w-full">
         <HeroSection isAuthenticated={!!session} username={username} />
         
-        <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        <div className="w-full bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <Suspense fallback={<SectionLoader />}>
             <VideoShowcase />
           </Suspense>
