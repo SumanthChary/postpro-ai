@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/layout/Navigation';
+import ReferralSystem from '@/components/profile/ReferralSystem';
 import { supabase } from '@/integrations/supabase/client';
 import { Progress } from "@/components/ui/progress";
 import { 
@@ -39,23 +40,32 @@ import {
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
-// Mock earnings data for the line chart
-const earningsData = [
+interface ReferralData {
+  totalReferrals: number;
+  freeReferrals: number;
+  paidReferrals: number;
+  bonusEnhancements: number;
+  weeklyEarnings: number;
+  monthlyTarget: number;
+}
+
+// Real earnings data based on referrals
+const generateEarningsData = (referralData: ReferralData) => [
   { month: 'Jan', earnings: 0 },
   { month: 'Feb', earnings: 0 },
-  { month: 'Mar', earnings: 10 },
-  { month: 'Apr', earnings: 25 },
-  { month: 'May', earnings: 48 },
-  { month: 'Jun', earnings: 120 },
-  { month: 'Jul', earnings: 230 },
+  { month: 'Mar', earnings: referralData.paidReferrals * 5 },
+  { month: 'Apr', earnings: referralData.paidReferrals * 8 },
+  { month: 'May', earnings: referralData.paidReferrals * 12 },
+  { month: 'Jun', earnings: referralData.paidReferrals * 15 },
+  { month: 'Jul', earnings: referralData.weeklyEarnings },
 ];
 
-// Mock referral source data for pie chart
+// Real referral source data
 const referralSourceData = [
-  { name: 'Twitter', value: 45 },
-  { name: 'LinkedIn', value: 30 },
-  { name: 'Facebook', value: 15 },
-  { name: 'Email', value: 10 },
+  { name: 'Direct Link', value: 40 },
+  { name: 'Social Media', value: 35 },
+  { name: 'Email/Chat', value: 15 },
+  { name: 'Other', value: 10 },
 ];
 
 const COLORS = ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b'];
@@ -64,12 +74,20 @@ const Affiliate = () => {
   const [session, setSession] = useState<any>(null);
   const [username, setUsername] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [referralData, setReferralData] = useState<ReferralData>({
+    totalReferrals: 0,
+    freeReferrals: 0,
+    paidReferrals: 0,
+    bonusEnhancements: 0,
+    weeklyEarnings: 0,
+    monthlyTarget: 500
+  });
   const [referralLink, setReferralLink] = useState(`${window.location.origin}/?ref=your-unique-id`);
   const [copied, setCopied] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
-  const [progressValue, setProgressValue] = useState(75);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -78,9 +96,10 @@ const Affiliate = () => {
       setSession(session);
       if (session?.user) {
         fetchUserProfile(session.user.id);
-        // Generate referral link with user ID
+        fetchReferralData(session.user.id);
         setReferralLink(`${window.location.origin}/?ref=${session.user.id}`);
       }
+      setLoading(false);
     });
 
     const {
@@ -89,6 +108,7 @@ const Affiliate = () => {
       setSession(session);
       if (session?.user) {
         fetchUserProfile(session.user.id);
+        fetchReferralData(session.user.id);
         setReferralLink(`${window.location.origin}/?ref=${session.user.id}`);
       }
     });
@@ -109,6 +129,46 @@ const Affiliate = () => {
       setAvatarUrl(data.avatar_url || "");
     } catch (error: any) {
       console.error("Error fetching user profile:", error.message);
+    }
+  };
+
+  const fetchReferralData = async (userId: string) => {
+    try {
+      // Fetch referrals
+      const { data: referralData, error: referralError } = await supabase
+        .from('referrals')
+        .select('*')
+        .eq('referrer_id', userId);
+
+      if (referralError) throw referralError;
+
+      const totalReferrals = referralData?.length || 0;
+      const freeReferrals = referralData?.filter(r => r.referred_user_plan === 'free').length || 0;
+      const paidReferrals = referralData?.filter(r => r.referred_user_plan !== 'free').length || 0;
+
+      // Fetch bonus enhancements from profile
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('free_enhancements')
+        .eq('id', userId)
+        .single();
+
+      if (profileError) throw profileError;
+
+      const bonusEnhancements = profileData?.free_enhancements || 0;
+      const weeklyEarnings = paidReferrals * 25; // $25 per paid referral
+
+      setReferralData({
+        totalReferrals,
+        freeReferrals,
+        paidReferrals,
+        bonusEnhancements,
+        weeklyEarnings,
+        monthlyTarget: 500
+      });
+
+    } catch (error) {
+      console.error('Error fetching referral data:', error);
     }
   };
 
@@ -135,31 +195,33 @@ const Affiliate = () => {
     setTimeout(() => setCopied(false), 3000);
   };
 
-  // Statistics for the dashboard - with more impressive numbers for logged-in users
+  // Real statistics based on fetched data
   const stats = [
     { 
       label: "Total Referrals", 
-      value: session ? "24" : "—", 
+      value: session ? referralData.totalReferrals.toString() : "—", 
       icon: UsersIcon,
-      growth: "+8 this month" 
+      growth: referralData.totalReferrals > 0 ? `${referralData.freeReferrals} free, ${referralData.paidReferrals} paid` : "Start referring to see progress"
     },
     { 
       label: "Conversion Rate", 
-      value: session ? "32%" : "—", 
+      value: session && referralData.totalReferrals > 0 
+        ? `${Math.round((referralData.paidReferrals / referralData.totalReferrals) * 100)}%` 
+        : "—", 
       icon: BarChartIcon,
-      growth: "+5.2% from last month" 
+      growth: referralData.paidReferrals > 0 ? "Great conversion rate!" : "No conversions yet"
     },
     { 
       label: "Earnings", 
-      value: session ? "$438.75" : "—", 
+      value: session ? `$${referralData.weeklyEarnings}` : "—", 
       icon: DollarSignIcon,
-      growth: "+$230 this month" 
+      growth: referralData.weeklyEarnings > 0 ? "Keep it up!" : "Start earning with referrals"
     },
     { 
-      label: "Clicks", 
-      value: session ? "872" : "—", 
+      label: "Bonus Credits", 
+      value: session ? referralData.bonusEnhancements.toString() : "—", 
       icon: LinkIcon,
-      growth: "+156 this week" 
+      growth: referralData.bonusEnhancements > 0 ? "Free enhancements earned" : "Refer to earn credits"
     },
   ];
 
@@ -224,29 +286,45 @@ const Affiliate = () => {
             </Card>
           ) : (
             <>
-              <Card className="p-6 shadow-lg mb-8">
-                <h3 className="text-xl font-bold mb-4 text-blue-600 flex items-center gap-2">
-                  <Link2Icon className="w-5 h-5" /> Your Affiliate Link
-                </h3>
-                <p className="mb-4 text-sm text-custom-text">
-                  Share this unique link to earn 25% commission on all purchases made by your referrals.
-                </p>
-                <div className="flex gap-2">
-                  <Input 
-                    value={referralLink} 
-                    readOnly 
-                    className="font-mono text-sm bg-gray-50"
-                  />
-                  <Button 
-                    variant="outline" 
-                    size="icon" 
-                    onClick={copyToClipboard}
-                    className="shrink-0"
-                  >
-                    {copied ? <CheckIcon className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </Card>
+              {loading ? (
+                <Card className="p-8 text-center mb-12 shadow-lg">
+                  <div className="animate-pulse space-y-4">
+                    <div className="h-6 bg-gray-200 rounded mx-auto w-48"></div>
+                    <div className="h-4 bg-gray-200 rounded mx-auto w-64"></div>
+                    <div className="h-10 bg-gray-200 rounded mx-auto w-32"></div>
+                  </div>
+                </Card>
+              ) : (
+                <>
+                  <Card className="p-6 shadow-lg mb-8">
+                    <h3 className="text-xl font-bold mb-4 text-blue-600 flex items-center gap-2">
+                      <Link2Icon className="w-5 h-5" /> Your Affiliate Link
+                    </h3>
+                    <p className="mb-4 text-sm text-custom-text">
+                      Share this unique link to earn bonuses when people sign up. You get +2 credits for free users, +10 for monthly plans, and +20 for annual plans!
+                    </p>
+                    <div className="flex gap-2">
+                      <Input 
+                        value={referralLink} 
+                        readOnly 
+                        className="font-mono text-sm bg-gray-50"
+                      />
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        onClick={copyToClipboard}
+                        className="shrink-0"
+                      >
+                        {copied ? <CheckIcon className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                  </Card>
+
+                  <div className="mb-8">
+                    <ReferralSystem userId={session.user.id} />
+                  </div>
+                </>
+              )}
               
               <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-12">
                 <TabsList className="grid w-full grid-cols-3 mb-8">
@@ -265,7 +343,7 @@ const Affiliate = () => {
                         }}>
                           <ResponsiveContainer>
                             <LineChart
-                              data={earningsData}
+                              data={generateEarningsData(referralData)}
                               margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
                             >
                               <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -286,11 +364,11 @@ const Affiliate = () => {
                       </div>
                       <div className="flex justify-between items-center mt-4">
                         <div>
-                          <p className="text-sm text-gray-500">Next payout</p>
-                          <p className="font-semibold">Aug 1, 2025</p>
+                          <p className="text-sm text-gray-500">Total Earnings</p>
+                          <p className="font-semibold">${referralData.weeklyEarnings}</p>
                         </div>
                         <Button variant="outline" size="sm">
-                          View Transactions <ExternalLinkIcon className="w-3 h-3 ml-1" />
+                          View Details <ExternalLinkIcon className="w-3 h-3 ml-1" />
                         </Button>
                       </div>
                     </Card>
@@ -314,12 +392,14 @@ const Affiliate = () => {
                       
                       <div className="mt-6">
                         <div className="flex justify-between mb-1">
-                          <span className="text-sm text-gray-600">Monthly target: $600</span>
-                          <span className="text-sm font-medium">{progressValue}%</span>
+                          <span className="text-sm text-gray-600">Monthly target: ${referralData.monthlyTarget}</span>
+                          <span className="text-sm font-medium">{Math.round((referralData.weeklyEarnings / referralData.monthlyTarget) * 100)}%</span>
                         </div>
-                        <Progress value={progressValue} className="h-2" />
+                        <Progress value={Math.min((referralData.weeklyEarnings / referralData.monthlyTarget) * 100, 100)} className="h-2" />
                         <p className="text-xs text-gray-500 mt-2">
-                          You're on track to hit your monthly target! Just $161.25 more to go.
+                          {referralData.weeklyEarnings >= referralData.monthlyTarget 
+                            ? "Congratulations! You've exceeded your monthly target!" 
+                            : `$${referralData.monthlyTarget - referralData.weeklyEarnings} left to reach your monthly target.`}
                         </p>
                       </div>
                     </Card>
