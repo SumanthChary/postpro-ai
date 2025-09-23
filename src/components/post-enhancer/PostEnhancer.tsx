@@ -1,6 +1,6 @@
 
 import { PostEnhancerProps } from "./types";
-import { PostEnhancerLogic } from "./components/PostEnhancerLogic";
+import { PostEnhancerLogicWithLimits } from "./components/PostEnhancerLogicWithLimits";
 
 
 const PostEnhancer = ({
@@ -14,7 +14,7 @@ const PostEnhancer = ({
   return (
     <div className="space-y-8 w-full px-4 sm:px-0">
       <div className="max-w-4xl mx-auto">
-        <PostEnhancerLogic
+        <PostEnhancerLogicWithLimits
           post={post}
           setPost={setPost}
           category={category}

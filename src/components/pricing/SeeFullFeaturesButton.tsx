@@ -10,7 +10,7 @@ const SeeFullFeaturesButton = ({ onClick }: SeeFullFeaturesButtonProps) => {
   return (
     <Button
       onClick={onClick}
-      className="group text-electric-purple hover:text-electric-purple/90"
+      className="group text-electric-blue hover:text-electric-blue/90"
       variant="link"
     >
       See Full Features

@@ -19,9 +19,9 @@ export default {
     },
     extend: {
       colors: {
-        "electric-purple": "#8E44AD",
+        "electric-blue": "#3B82F6",
         "coral-red": "#FF5733",
-        "light-lavender": "#EAE2F8",
+        "light-blue": "#EBF4FF",
         "bright-teal": "#1ABC9C",
         "custom-bg": "#F4F6F8",
         "custom-text": "#1D2226",
@@ -31,11 +31,11 @@ export default {
         background: "#F4F6F8",
         foreground: "#1D2226",
         primary: {
-          DEFAULT: "#8E44AD",
+          DEFAULT: "#3B82F6",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#EAE2F8",
+          DEFAULT: "#EBF4FF",
           foreground: "#1D2226",
         },
         accent: {

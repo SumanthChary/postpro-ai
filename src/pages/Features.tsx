@@ -128,13 +128,13 @@ const Features = () => {
         {featureSections.map((section) => (
           <Card key={section.title} className="p-6">
             <div className="flex items-center gap-3 mb-4">
-              <section.icon className="w-6 h-6 text-electric-purple" />
+              <section.icon className="w-6 h-6 text-electric-blue" />
               <h2 className="text-xl font-bold">{section.title}</h2>
             </div>
             <ul className="space-y-3">
               {section.features.map((feature) => (
                 <li key={feature} className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-electric-blue mr-2 mt-0.5 flex-shrink-0" />
                   <span>{feature}</span>
                 </li>
               ))}
@@ -201,7 +201,7 @@ const Features = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {userExperience.map((item) => (
             <div key={item.text} className="flex flex-col items-center text-center">
-              <item.icon className="w-8 h-8 text-electric-purple mb-2" />
+              <item.icon className="w-8 h-8 text-electric-blue mb-2" />
               <span>{item.text}</span>
             </div>
           ))}

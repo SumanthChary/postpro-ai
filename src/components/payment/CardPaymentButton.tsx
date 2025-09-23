@@ -8,7 +8,7 @@ export const CardPaymentButton = () => {
   
   return (
     <Button
-      className="w-full bg-electric-purple hover:bg-electric-purple/90"
+      className="w-full bg-electric-blue hover:bg-electric-blue/90"
       onClick={() => {
         toast({
           title: "Coming Soon",

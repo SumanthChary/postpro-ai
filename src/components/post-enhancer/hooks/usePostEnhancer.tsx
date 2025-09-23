@@ -16,18 +16,37 @@ export const usePostEnhancer = () => {
 
   const checkUsageLimit = async () => {
     try {
-      // Call subscription manager to track usage
-      const { data } = await supabase.functions.invoke('subscription-manager', {
+      // Admin always has unlimited access
+      if (user?.email === 'enjoywithpandu@gmail.com') {
+        return { canUse: true, isAdmin: true };
+      }
+
+      const { data, error } = await supabase.functions.invoke('subscription-manager', {
         body: { 
-          action: 'getUserSubscription',
+          action: 'checkUsageLimit',
           userId: user?.id,
           email: user?.email
         }
       });
-      return { canUse: true }; // Allow usage but track it
+
+      if (error) throw error;
+      
+      return {
+        canUse: data.canUse,
+        currentUsage: data.currentCount,
+        monthlyLimit: data.monthlyLimit,
+        planName: data.planName || 'Free Plan'
+      };
     } catch (error) {
       console.error('Error checking usage limit:', error);
-      return { canUse: true }; // Allow usage even on error
+      // Be restrictive on error for non-admin users
+      return { 
+        canUse: false, 
+        currentUsage: 0, 
+        monthlyLimit: 5,
+        planName: 'Free Plan',
+        error: 'Unable to verify usage limits'
+      };
     }
   };
 
@@ -69,12 +88,39 @@ export const usePostEnhancer = () => {
     setLoading(true);
 
     try {
-      // Track usage without blocking (async)
-      checkUsageLimit().catch(console.error);
-      checkCreditsAvailable().catch(console.error);
+      // Check usage limits BEFORE processing
+      const usageCheck = await checkUsageLimit();
+      
+      if (!usageCheck.canUse) {
+        setLoading(false);
+        toast({
+          title: "Usage Limit Reached",
+          description: `You've reached your monthly limit of ${usageCheck.monthlyLimit} enhancements. Upgrade to continue!`,
+          variant: "destructive",
+          action: (
+            <button 
+              onClick={() => navigate("/pricing")}
+              className="bg-primary text-primary-foreground px-3 py-1 rounded text-sm hover:bg-primary/90"
+            >
+              Upgrade Now
+            </button>
+          ),
+        });
+        return false;
+      }
 
       const data = await enhancePost(post, category, true, styleTone);
       setEnhancedPost(data);
+      
+      // Increment usage count after successful enhancement (only for non-admin)
+      if (!usageCheck.isAdmin) {
+        await supabase.functions.invoke('subscription-manager', {
+          body: { 
+            action: 'incrementUsage',
+            userId: user.id
+          }
+        });
+      }
       
       toast({
         title: "✨ Post Enhanced!",
@@ -118,5 +164,6 @@ export const usePostEnhancer = () => {
     handlePlatformSelect,
     showFeedback,
     setShowFeedback,
+    checkUsageLimit, // Export this for other components to use
   };
 };

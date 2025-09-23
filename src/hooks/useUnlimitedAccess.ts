@@ -24,7 +24,7 @@ export const useUnlimitedAccess = () => {
             monthly_post_count: 0,
             monthly_reset_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
           }, {
-            onConflict: 'id'
+            onConflict: 'user_id'
           });
 
         // Track usage reset in user_usage table

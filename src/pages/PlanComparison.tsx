@@ -80,7 +80,7 @@ const PlanComparison = () => {
             <h3 className="font-semibold text-lg">Included Features:</h3>
             {features.starter.included.map((feature, index) => (
               <div key={index} className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-electric-blue mr-2 mt-0.5 flex-shrink-0" />
                 <span>{feature}</span>
               </div>
             ))}
@@ -102,9 +102,9 @@ const PlanComparison = () => {
         </div>
 
         {/* Monthly Plan */}
-        <div className="bg-white rounded-lg p-8 shadow-lg border border-electric-purple relative">
+        <div className="bg-white rounded-lg p-8 shadow-lg border border-electric-blue relative">
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-            <span className="bg-electric-purple text-white px-4 py-1 rounded-full text-sm font-medium">
+            <span className="bg-electric-blue text-white px-4 py-1 rounded-full text-sm font-medium">
               Most Popular
             </span>
           </div>
@@ -117,7 +117,7 @@ const PlanComparison = () => {
             <h3 className="font-semibold text-lg">Included Features:</h3>
             {features.monthly.included.map((feature, index) => (
               <div key={index} className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-electric-blue mr-2 mt-0.5 flex-shrink-0" />
                 <span>{feature}</span>
               </div>
             ))}
@@ -130,7 +130,7 @@ const PlanComparison = () => {
             ))}
           </div>
           <Button 
-            className="w-full mt-8 bg-electric-purple hover:bg-electric-purple/90"
+            className="w-full mt-8 bg-electric-blue hover:bg-electric-blue/90"
             onClick={() => navigate("/subscription")}
           >
             Start Monthly Plan
@@ -148,13 +148,13 @@ const PlanComparison = () => {
             <h3 className="font-semibold text-lg">Included Features:</h3>
             {features.yearly.included.map((feature, index) => (
               <div key={index} className="flex items-start">
-                <CheckCircle className="w-5 h-5 text-electric-purple mr-2 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="w-5 h-5 text-electric-blue mr-2 mt-0.5 flex-shrink-0" />
                 <span>{feature}</span>
               </div>
             ))}
           </div>
           <Button 
-            className="w-full mt-8 bg-electric-purple hover:bg-electric-purple/90"
+            className="w-full mt-8 bg-electric-blue hover:bg-electric-blue/90"
             onClick={() => navigate("/subscription")}
           >
             Start Yearly Plan

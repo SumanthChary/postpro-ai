@@ -18,7 +18,7 @@ const PrivacyPolicy = () => {
         </div>
 
         <div className="prose prose-slate max-w-none">
-          <h1 className="text-3xl font-bold mb-6 text-electric-purple">Privacy Policy</h1>
+          <h1 className="text-3xl font-bold mb-6 text-electric-blue">Privacy Policy</h1>
           <p className="text-gray-600">Last Updated: {new Date().toLocaleDateString()}</p>
           
           <section className="mt-8">
@@ -143,7 +143,7 @@ const PrivacyPolicy = () => {
             <h2 className="text-2xl font-semibold mb-4">10. Contact Information</h2>
             <p>
               If you have any questions about this Privacy Policy, please contact us at: 
-              <a href="mailto:sumanthchary.business@gmail.com" className="text-electric-purple"> 
+              <a href="mailto:sumanthchary.business@gmail.com" className="text-electric-blue"> 
                 sumanthchary.business@gmail.com
               </a>
             </p>

@@ -119,6 +119,7 @@ serve(async (req) => {
           .select(`
             monthly_post_count,
             monthly_reset_date,
+            plan_name,
             subscription_limits (monthly_post_limit)
           `)
           .eq('user_id', userId)
@@ -128,6 +129,7 @@ serve(async (req) => {
 
         const now = new Date();
         const resetDate = new Date(subscription.monthly_reset_date);
+        let currentCount = subscription.monthly_post_count || 0;
 
         // Reset count if past reset date
         if (now > resetDate) {
@@ -138,10 +140,10 @@ serve(async (req) => {
               monthly_reset_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
             })
             .eq('user_id', userId);
+          currentCount = 0;
         }
 
-        const monthlyLimit = subscription.subscription_limits?.monthly_post_limit || 5; // Changed from 3 to 5
-        const currentCount = subscription.monthly_post_count || 0;
+        const monthlyLimit = subscription.subscription_limits?.monthly_post_limit || 5;
         const canUse = monthlyLimit === -1 || currentCount < monthlyLimit;
 
         return new Response(
@@ -150,6 +152,7 @@ serve(async (req) => {
             canUse,
             currentCount,
             monthlyLimit,
+            planName: subscription.plan_name || 'Starter Plan',
             remainingUses: monthlyLimit === -1 ? -1 : monthlyLimit - currentCount
           }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
