@@ -34,13 +34,25 @@ const Footer = () => {
                 sumanthchary.business@gmail.com
               </a>
               <div className="flex space-x-3">
-                <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+                <a 
+                  href="#" 
+                  className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+                  aria-label="Follow us on LinkedIn"
+                >
                   <Linkedin className="w-4 h-4" />
                 </a>
-                <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+                <a 
+                  href="#" 
+                  className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+                  aria-label="Follow us on Twitter"
+                >
                   <Twitter className="w-4 h-4" />
                 </a>
-                <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+                <a 
+                  href="#" 
+                  className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+                  aria-label="Contact us via email"
+                >
                   <Mail className="w-4 h-4" />
                 </a>
               </div>
