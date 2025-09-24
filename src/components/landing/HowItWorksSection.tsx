@@ -31,11 +31,11 @@ const HowItWorksSection = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
           {steps.map((item, index) => (
             <div key={index} className="text-center group max-w-sm mx-auto">
-              <div className="w-full h-64 sm:h-72 lg:h-64 mx-auto mb-6 bg-white rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 group-hover:border-indigo-500 group-hover:border-2 p-4">
+              <div className="w-full h-64 sm:h-72 lg:h-64 mx-auto mb-6 bg-white rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 group-hover:border-indigo-500 group-hover:border-2">
                 <img 
                   src={item.icon} 
                   alt={`Step ${item.step}: ${item.title}`}
-                  className="w-full h-full object-contain rounded-xl"
+                  className="w-full h-full object-cover rounded-xl"
                 />
               </div>
               <div className="space-y-3 px-2">
