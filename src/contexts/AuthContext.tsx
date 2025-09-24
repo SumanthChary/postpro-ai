@@ -1,7 +1,6 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, useMemo } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useReferralTracking } from '@/hooks/useReferralTracking';
 
 interface AuthContextType {
   user: User | null;
@@ -27,45 +26,46 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const { processReferral } = useReferralTracking();
 
   useEffect(() => {
     let mounted = true;
+    let hasProcessedSession = false;
 
-    // Set up auth state listener FIRST
+    const updateAuthState = useCallback((currentSession: Session | null, shouldSetLoading = true) => {
+      if (!mounted) return;
+      
+      if (currentSession?.user) {
+        setUser(currentSession.user);
+        setSession(currentSession);
+      } else {
+        setUser(null);
+        setSession(null);
+      }
+      
+      if (shouldSetLoading) {
+        setLoading(false);
+      }
+    }, []);
+
+    // Set up auth state listener
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, currentSession) => {
-        console.log('Auth state changed:', event, currentSession?.user?.email);
-        
         if (!mounted) return;
-
-        if (event === "SIGNED_OUT") {
-          setUser(null);
-          setSession(null);
-        } else if (event === "SIGNED_IN" && currentSession) {
-          setUser(currentSession.user);
-          setSession(currentSession);
-          
-          // Process referral for new users
-          const isNewUser = currentSession.user.created_at && 
-            new Date(currentSession.user.created_at).getTime() > (Date.now() - 60000); // Within last minute
-          
-          if (isNewUser) {
-            processReferral(currentSession.user.id, 'free');
-          }
-        } else if (event === "TOKEN_REFRESHED" && currentSession) {
-          setUser(currentSession.user);
-          setSession(currentSession);
-        } else if (event === "INITIAL_SESSION" && currentSession) {
-          setUser(currentSession.user);
-          setSession(currentSession);
+        
+        // Prevent multiple processing of the same session
+        if (event === "INITIAL_SESSION" && hasProcessedSession) {
+          return;
         }
         
-        setLoading(false);
+        if (event === "INITIAL_SESSION") {
+          hasProcessedSession = true;
+        }
+
+        updateAuthState(currentSession);
       }
     );
 
-    // THEN check for existing session
+    // Get initial session
     const getInitialSession = async () => {
       try {
         const { data: { session: initialSession }, error } = await supabase.auth.getSession();
@@ -74,25 +74,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         if (error) {
           console.error("Session error:", error);
-          setUser(null);
-          setSession(null);
-          setLoading(false);
+          updateAuthState(null);
           return;
         }
         
-        if (initialSession?.user) {
-          setUser(initialSession.user);
-          setSession(initialSession);
-        }
-        
-        setLoading(false);
+        hasProcessedSession = true;
+        updateAuthState(initialSession);
       } catch (error: any) {
         console.error("Authentication error:", error);
-        if (!mounted) return;
-        
-        setUser(null);
-        setSession(null);
-        setLoading(false);
+        if (mounted) {
+          updateAuthState(null);
+        }
       }
     };
 
@@ -102,13 +94,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       mounted = false;
       authListener?.subscription.unsubscribe();
     };
-  }, [processReferral]);
+  }, []);
 
-  const value: AuthContextType = {
+  const value: AuthContextType = useMemo(() => ({
     user,
     session,
     loading,
-  };
+  }), [user, session, loading]);
 
   return (
     <AuthContext.Provider value={value}>

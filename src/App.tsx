@@ -3,8 +3,8 @@ import { StrictMode, useEffect, lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useUnlimitedAccess } from "@/hooks/useUnlimitedAccess";
-import { useReferralTracking } from "@/hooks/useReferralTracking";
+import { useOptimizedUnlimitedAccess } from "@/hooks/useOptimizedUnlimitedAccess";
+import { useOptimizedReferralTracking } from "@/hooks/useOptimizedReferralTracking";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
@@ -15,7 +15,7 @@ import { initializePerformanceOptimizations } from "@/utils/performance-optimiza
 // Lazy load components for better performance
 const FloatingChatButton = lazy(() => import("./components/chatbot/FloatingChatButton"));
 const PageSkeleton = lazy(() => import("@/components/ui/page-skeleton"));
-const Index = lazy(() => import("./pages/Index"));
+const OptimizedIndex = lazy(() => import("./components/OptimizedIndex"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Enhance = lazy(() => import("./pages/Enhance"));
 const Features = lazy(() => import("./pages/Features"));
@@ -43,18 +43,29 @@ function App() {
       queries: {
         staleTime: 5 * 60 * 1000, // 5 minutes
         gcTime: 10 * 60 * 1000, // 10 minutes
+        refetchOnWindowFocus: false, // Prevent unnecessary refetches
+        refetchOnMount: false, // Prevent unnecessary refetches
+        retry: 1, // Reduce retry attempts
       },
     },
   });
   
-  // Enable unlimited access
-  useUnlimitedAccess();
-  // Initialize referral tracking
-  useReferralTracking();
+  // Enable unlimited access (now optimized)
+  useOptimizedUnlimitedAccess();
+  // Initialize referral tracking (now optimized)
+  useOptimizedReferralTracking();
   
-  // Initialize performance optimizations
+  // Initialize performance optimizations (now with monitoring)
   useEffect(() => {
-    initializePerformanceOptimizations();
+    const cleanup = initializePerformanceOptimizations();
+    
+    // Start performance monitoring
+    import('@/utils/performance-monitor').then(({ performanceMonitor }) => {
+      // Monitor is automatically initialized as singleton
+      console.log('Performance monitoring started');
+    });
+
+    return cleanup;
   }, []);
   
   return (
@@ -69,7 +80,7 @@ function App() {
               <BrowserRouter basename="/">
                 <Suspense fallback={<PageSkeleton />}>
                 <Routes>
-                  <Route path="/" element={<Index />} />
+                  <Route path="/" element={<OptimizedIndex />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/enhance" element={<Enhance />} />
                   <Route path="/features" element={<Features />} />
