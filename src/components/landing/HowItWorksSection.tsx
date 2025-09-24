@@ -3,24 +3,19 @@ import React from 'react';
 const HowItWorksSection = () => {
   const steps = [{
     step: "1",
-    title: "Input Your Content",
-    description: "Enter your original LinkedIn post or content idea into our professional platform",
-    icon: "/lovable-uploads/step1-input-content.png"
+    title: "📝 Paste Your Post",
+    description: "Simply paste your LinkedIn post or content idea. No complex setup - just paste and go!",
+    icon: "/lovable-uploads/6b601f7d-a896-4f03-af5c-a86655b878d7.png"
   }, {
     step: "2", 
-    title: "AI Enhancement Engine",
-    description: "Our advanced AI analyzes and transforms your content using proven engagement strategies",
-    icon: "/lovable-uploads/step2-ai-enhancement.png"
+    title: "🚀 AI Optimizes Everything",
+    description: "Our AI instantly enhances your content with perfect hashtags, tone optimization, CTAs, and engagement scoring",
+    icon: "/lovable-uploads/52581685-79a3-491e-a790-5cd5c5d29c78.png"
   }, {
     step: "3",
-    title: "Optimized Post Preview", 
-    description: "Review your enhanced content with before-and-after comparison to see the improvements",
-    icon: "/lovable-uploads/step3-preview-comparison.png"
-  }, {
-    step: "4",
-    title: "Engagement Results",
-    description: "Share your optimized post and watch your engagement metrics soar with measurable results",
-    icon: "/lovable-uploads/step4-engagement-results.png"
+    title: "📈 Copy & Post for Results",
+    description: "Copy your optimized post and watch your engagement soar with measurable results and growth",
+    icon: "/lovable-uploads/10cb38eb-fa56-4c45-96e8-dcc0b98d9cd3.png"
   }];
   return <section className="py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4">
@@ -29,11 +24,11 @@ const HowItWorksSection = () => {
             How It Works?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Transform your LinkedIn presence with our professional 4-step enhancement process
+            Transform your LinkedIn presence with our simple 3-step AI enhancement process
           </p>
         </div>
         
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {steps.map((item, index) => (
             <div key={index} className="text-center group">
               <div className="w-full aspect-video mx-auto mb-6 bg-white rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 group-hover:border-indigo-500 group-hover:border-2">
