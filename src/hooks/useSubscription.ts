@@ -24,6 +24,13 @@ export interface Subscription {
   subscription_limits?: SubscriptionLimits;
 }
 
+interface UsageStats {
+  canUse: boolean;
+  currentCount: number;
+  monthlyLimit: number;
+  remainingUses: number;
+}
+
 // Simple cache for performance
 const cache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_TTL = 30000; // 30 seconds
@@ -32,6 +39,12 @@ export const useSubscription = () => {
   const { user } = useAuthContext();
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
+  const [usageStats, setUsageStats] = useState<UsageStats>({
+    canUse: true,
+    currentCount: 0,
+    monthlyLimit: -1,
+    remainingUses: -1
+  });
   const { toast } = useToast();
 
   const fetchSubscription = async () => {
@@ -45,6 +58,7 @@ export const useSubscription = () => {
       const cached = cache.get(cacheKey);
       if (cached && (Date.now() - cached.timestamp) < CACHE_TTL) {
         setSubscription(cached.data);
+        calculateUsageStats(cached.data);
         setLoading(false);
         return;
       }
@@ -72,6 +86,7 @@ export const useSubscription = () => {
         
         cache.set(cacheKey, { data: adminSub, timestamp: Date.now() });
         setSubscription(adminSub);
+        calculateUsageStats(adminSub);
         setLoading(false);
         return;
       }
@@ -98,11 +113,26 @@ export const useSubscription = () => {
 
       cache.set(cacheKey, { data: starterSub, timestamp: Date.now() });
       setSubscription(starterSub);
+      calculateUsageStats(starterSub);
     } catch (error) {
       console.error('Error fetching subscription:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculateUsageStats = (sub: Subscription) => {
+    const monthlyLimit = sub.subscription_limits?.monthly_post_limit || 5;
+    const currentCount = sub.monthly_post_count || 0;
+    const isUnlimited = monthlyLimit === -1;
+    const remainingUses = isUnlimited ? -1 : Math.max(monthlyLimit - currentCount, 0);
+    
+    setUsageStats({
+      canUse: isUnlimited || remainingUses > 0,
+      currentCount,
+      monthlyLimit,
+      remainingUses
+    });
   };
 
   useEffect(() => {
@@ -112,6 +142,7 @@ export const useSubscription = () => {
   return useMemo(() => ({
     subscription,
     loading,
+    usageStats,
     fetchSubscription,
-  }), [subscription, loading]);
+  }), [subscription, loading, usageStats]);
 };
