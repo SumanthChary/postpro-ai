@@ -145,7 +145,7 @@ const Features = () => {
       <div className="container mx-auto px-4 pt-8">
         <Button 
           variant="ghost" 
-          onClick={() => navigate('/')}
+          onClick={() => navigate(-1)}
           className="mb-8 hover:bg-muted/80 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
