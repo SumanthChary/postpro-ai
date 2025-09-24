@@ -1,7 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
-import { useAuthContext } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { memo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { debounce } from "@/utils/performance";
 
 interface SubscriptionLimits {
   monthly_post_limit: number;
@@ -13,33 +14,24 @@ interface SubscriptionLimits {
   credits_included: number;
 }
 
-export interface Subscription {
+interface Subscription {
   id: string;
   user_id: string;
   email: string;
   plan_name: string;
   subscribed: boolean;
   monthly_post_count: number;
-  monthly_reset_date: string;
-  subscription_limits?: SubscriptionLimits;
+  subscription_limits: SubscriptionLimits;
 }
 
-interface UsageStats {
-  canUse: boolean;
-  currentCount: number;
-  monthlyLimit: number;
-  remainingUses: number;
-}
-
-// Simple cache for performance
-const cache = new Map<string, { data: any; timestamp: number }>();
-const CACHE_TTL = 30000; // 30 seconds
+// Cache for subscription data
+const subscriptionCache = new Map();
+const SUBSCRIPTION_CACHE_EXPIRY = 2 * 60 * 1000; // 2 minutes
 
 export const useSubscription = () => {
-  const { user } = useAuthContext();
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
-  const [usageStats, setUsageStats] = useState<UsageStats>({
+  const [usageStats, setUsageStats] = useState({
     canUse: true,
     currentCount: 0,
     monthlyLimit: -1,
@@ -47,102 +39,162 @@ export const useSubscription = () => {
   });
   const { toast } = useToast();
 
-  const fetchSubscription = async () => {
-    if (!user) return;
-
-    try {
-      setLoading(true);
-      
-      // Check cache first for performance
-      const cacheKey = `sub_${user.id}`;
-      const cached = cache.get(cacheKey);
-      if (cached && (Date.now() - cached.timestamp) < CACHE_TTL) {
-        setSubscription(cached.data);
-        calculateUsageStats(cached.data);
-        setLoading(false);
-        return;
-      }
-
-      // Admin gets unlimited access instantly
-      if (user.email === 'enjoywithpandu@gmail.com') {
-        const adminSub: Subscription = {
-          id: user.id,
-          user_id: user.id,
-          email: user.email!,
-          plan_name: 'Unlimited Plan',
-          subscribed: true,
-          monthly_post_count: 0,
-          monthly_reset_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-          subscription_limits: {
-            monthly_post_limit: -1,
-            has_premium_templates: true,
-            has_virality_score: true,
-            has_ab_testing: true,
-            has_advanced_ai: true,
-            has_priority_support: true,
-            credits_included: -1
-          }
-        };
+  // Debounced usage limit check to prevent excessive API calls
+  const debouncedCheckUsageLimit = useMemo(
+    () => debounce(async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
         
-        cache.set(cacheKey, { data: adminSub, timestamp: Date.now() });
-        setSubscription(adminSub);
-        calculateUsageStats(adminSub);
+        // Set unlimited usage for admin account
+        if (user?.email === 'enjoywithpandu@gmail.com') {
+          setUsageStats({
+            canUse: true,
+            currentCount: 0,
+            monthlyLimit: -1, // Unlimited
+            remainingUses: -1
+          });
+          return;
+        }
+
+        // Get current usage from subscription
+        const currentUsage = subscription?.monthly_post_count || 0;
+        
+        // For new users (within 24 hours), give them limited free enhancements
+        const userCreatedAt = new Date(user?.created_at || '');
+        const isNewUser = (Date.now() - userCreatedAt.getTime()) < 24 * 60 * 60 * 1000;
+
+        if (isNewUser) {
+          const newUserLimit = 5; // Limited to 5 for new users
+          setUsageStats({
+            canUse: currentUsage < newUserLimit,
+            currentCount: currentUsage,
+            monthlyLimit: newUserLimit,
+            remainingUses: Math.max(newUserLimit - currentUsage, 0)
+          });
+          return;
+        }
+
+        // For regular users, check their subscription limits
+        const monthlyLimit = subscription?.subscription_limits?.monthly_post_limit || 5; // Default to 5 instead of 15
+        const hasUnlimitedAccess = monthlyLimit === -1;
+        const remainingUses = hasUnlimitedAccess ? -1 : Math.max(monthlyLimit - currentUsage, 0);
+        const canUse = hasUnlimitedAccess || remainingUses > 0;
+        
+        setUsageStats({
+          canUse,
+          currentCount: currentUsage,
+          monthlyLimit,
+          remainingUses
+        });
+      } catch (error) {
+        console.error('Error checking usage limit:', error);
+        // Default to allowing usage if there's an error
+        setUsageStats({
+          canUse: true,
+          currentCount: 0,
+          monthlyLimit: 5, // Default to 5 instead of 15
+          remainingUses: 5
+        });
+      }
+    }, 300),
+    [subscription?.monthly_post_count]
+  );
+
+  const checkUsageLimit = useCallback(() => {
+    debouncedCheckUsageLimit();
+  }, [debouncedCheckUsageLimit]);
+
+  const fetchSubscription = useCallback(async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // Check cache first
+      const cacheKey = `subscription_${user.id}`;
+      const cached = subscriptionCache.get(cacheKey);
+      if (cached && (Date.now() - cached.timestamp) < SUBSCRIPTION_CACHE_EXPIRY) {
+        setSubscription(cached.data);
+        checkUsageLimit();
         setLoading(false);
         return;
       }
 
-      // Regular users get Starter Plan
-      const starterSub: Subscription = {
-        id: user.id,
-        user_id: user.id,
-        email: user.email!,
-        plan_name: 'Starter Plan',
-        subscribed: false,
-        monthly_post_count: 0,
-        monthly_reset_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-        subscription_limits: {
-          monthly_post_limit: 5,
-          has_premium_templates: false,
-          has_virality_score: true,
-          has_ab_testing: false,
-          has_advanced_ai: false,
-          has_priority_support: false,
-          credits_included: 5
+      const { data, error } = await supabase.functions.invoke('subscription-manager', {
+        body: { 
+          action: 'getUserSubscription',
+          userId: user.id,
+          email: user.email
         }
-      };
+      });
 
-      cache.set(cacheKey, { data: starterSub, timestamp: Date.now() });
-      setSubscription(starterSub);
-      calculateUsageStats(starterSub);
+      if (error) throw error;
+      
+      if (data.success) {
+        // Cache the result
+        subscriptionCache.set(cacheKey, {
+          data: data.subscription,
+          timestamp: Date.now()
+        });
+
+        setSubscription(data.subscription);
+        checkUsageLimit(); // Update usage stats after subscription is fetched
+      }
     } catch (error) {
       console.error('Error fetching subscription:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load subscription information",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast, checkUsageLimit]);
 
-  const calculateUsageStats = (sub: Subscription) => {
-    const monthlyLimit = sub.subscription_limits?.monthly_post_limit || 5;
-    const currentCount = sub.monthly_post_count || 0;
-    const isUnlimited = monthlyLimit === -1;
-    const remainingUses = isUnlimited ? -1 : Math.max(monthlyLimit - currentCount, 0);
-    
-    setUsageStats({
-      canUse: isUnlimited || remainingUses > 0,
-      currentCount,
-      monthlyLimit,
-      remainingUses
-    });
-  };
+  const incrementUsage = useCallback(async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return false;
+
+      const { data, error } = await supabase.functions.invoke('subscription-manager', {
+        body: { 
+          action: 'incrementUsage',
+          userId: user.id
+        }
+      });
+
+      if (error) throw error;
+      
+      if (data.success) {
+        // Refresh usage stats
+        checkUsageLimit();
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error incrementing usage:', error);
+      return false;
+    }
+  }, [checkUsageLimit]);
 
   useEffect(() => {
     fetchSubscription();
-  }, [user]);
+  }, [fetchSubscription]);
 
+  // Memoize the return value to prevent unnecessary re-renders
   return useMemo(() => ({
     subscription,
     loading,
     usageStats,
     fetchSubscription,
-  }), [subscription, loading, usageStats]);
+    checkUsageLimit,
+    incrementUsage,
+  }), [
+    subscription,
+    loading,
+    usageStats,
+    fetchSubscription,
+    checkUsageLimit,
+    incrementUsage,
+  ]);
 };

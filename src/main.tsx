@@ -1,18 +1,14 @@
-// Critical CSS that loads immediately for performance
-import CriticalCSS from '@/components/ui/critical-css';
-import { initPerformanceOptimizations } from "@/utils/aggressive-performance";
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
+import './utils/performance-monitor'
 
-// Initialize performance optimizations immediately
-initPerformanceOptimizations();
+// Performance optimization: ensure the root element is available
+const rootElement = document.getElementById("root");
 
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
-import "./index.css";
+if (!rootElement) {
+  throw new Error("Root element not found");
+}
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <CriticalCSS />
-    <App />
-  </StrictMode>,
-);
+// Use concurrent features for better performance
+createRoot(rootElement).render(<App />);
