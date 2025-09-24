@@ -1,0 +1,51 @@
+# Cache static assets for 1 year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache images for 1 year
+/lovable-uploads/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache fonts for 1 year
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache JavaScript and CSS for 1 year
+*.js
+  Cache-Control: public, max-age=31536000, immutable
+*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache images for 1 year
+*.png
+  Cache-Control: public, max-age=31536000, immutable
+*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+*.gif
+  Cache-Control: public, max-age=31536000, immutable
+*.svg
+  Cache-Control: public, max-age=31536000, immutable
+*.webp
+  Cache-Control: public, max-age=31536000, immutable
+*.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache fonts for 1 year
+*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+*.woff
+  Cache-Control: public, max-age=31536000, immutable
+*.ttf
+  Cache-Control: public, max-age=31536000, immutable
+*.otf
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML files should be cached for a shorter time to allow updates
+/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# Main entry point should allow updates
+/
+  Cache-Control: public, max-age=3600, must-revalidate
