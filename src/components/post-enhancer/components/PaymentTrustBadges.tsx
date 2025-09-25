@@ -12,7 +12,7 @@ export const PaymentTrustBadges = () => {
     <div className="py-6">
       <div className="text-center space-y-4">
         <h3 className="text-sm text-gray-600 font-medium">Trustable payments through</h3>
-        <div className="flex items-center justify-center gap-8">
+        <div className="flex items-center justify-center gap-6">
           <button 
             onClick={handlePaymentRedirect}
             className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
@@ -34,6 +34,17 @@ export const PaymentTrustBadges = () => {
               className="h-8 w-8"
             />
             <span className="text-sm font-medium text-gray-700">Razorpay</span>
+          </button>
+          <button 
+            onClick={handlePaymentRedirect}
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
+          >
+            <img 
+              src="/lovable-uploads/dodo-payments-logo.png" 
+              alt="DoDo Payments" 
+              className="h-8 w-8 rounded"
+            />
+            <span className="text-sm font-medium text-gray-700">DoDo Payments</span>
           </button>
         </div>
       </div>
