@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { PremiumOrderSummary } from "@/components/payment/PremiumOrderSummary";
 import { PremiumPaymentOptions } from "@/components/payment/PremiumPaymentOptions";
-import { CouponCode } from "@/components/payment/CouponCode";
 import { ContactSupport } from "@/components/payment/ContactSupport";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
@@ -20,7 +19,6 @@ const Payment = () => {
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
   
   const planDetails = location.state?.plan || {
     name: "Creator Plan",
@@ -117,14 +115,6 @@ const Payment = () => {
     setIsProcessing(false);
   };
 
-  const handleApplyCoupon = (code: string, discount: number) => {
-    setAppliedCoupon({ code, discount });
-  };
-
-  const handleRemoveCoupon = () => {
-    setAppliedCoupon(null);
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -188,7 +178,6 @@ const Payment = () => {
           <div className="mb-8">
             <PremiumOrderSummary 
               planDetails={planDetails} 
-              appliedCoupon={appliedCoupon}
             />
           </div>
 
@@ -196,12 +185,7 @@ const Payment = () => {
           {user && (
             <div className="mb-8">
               <PremiumPaymentOptions 
-                planDetails={{
-                  ...planDetails,
-                  price: appliedCoupon 
-                    ? (parseFloat(planDetails.price) * (1 - appliedCoupon.discount / 100)).toFixed(2)
-                    : planDetails.price
-                }}
+                planDetails={planDetails}
                 userId={user.id}
                 onSuccess={handlePaymentSuccess}
                 onError={handlePaymentError}
@@ -209,15 +193,6 @@ const Payment = () => {
               />
             </div>
           )}
-
-          {/* Coupon Code */}
-          <div className="payment-card-premium p-6">
-            <CouponCode 
-              onApplyCoupon={handleApplyCoupon}
-              appliedCoupon={appliedCoupon}
-              onRemoveCoupon={handleRemoveCoupon}
-            />
-          </div>
         </div>
 
         {/* Contact Support */}

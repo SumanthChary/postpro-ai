@@ -37,10 +37,10 @@ export const PremiumPaymentOptions = ({
       </div>
       
       {/* Payment Methods Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-stretch">
         
         {/* PayPal Button */}
-        <div className="w-full">
+        <div className="w-full flex">
           <PayPalScriptProvider options={{
           clientId: paypalClientId,
           currency: "USD",
@@ -50,17 +50,19 @@ export const PremiumPaymentOptions = ({
           'disable-funding': "",
           'data-sdk-integration-source': "button-factory"
         }}>
-            <PayPalPaymentButton planDetails={planDetails} userId={userId} onSuccess={onSuccess} onError={onError} />
+            <div className="w-full">
+              <PayPalPaymentButton planDetails={planDetails} userId={userId} onSuccess={onSuccess} onError={onError} />
+            </div>
           </PayPalScriptProvider>
         </div>
 
         {/* Razorpay Button */}
-        <div className="w-full">
+        <div className="w-full flex">
           <RazorpayPaymentButton planDetails={planDetails} userId={userId} onSuccess={onSuccess} onError={onError} />
         </div>
 
         {/* DoDo Payments Button */}
-        <div className="w-full">
+        <div className="w-full flex">
           <DodoPaymentButton planDetails={planDetails} userId={userId} onSuccess={onSuccess} onError={onError} />
         </div>
       </div>
