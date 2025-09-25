@@ -1,6 +1,7 @@
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { PayPalPaymentButton } from "./PayPalPaymentButton";
 import { RazorpayPaymentButton } from "./RazorpayPaymentButton";
+import { DodoPaymentButton } from "./DodoPaymentButton";
 import { Plan } from "@/types/pricing";
 import { CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,7 @@ export const PremiumPaymentOptions = ({
       </div>
       
       {/* Payment Methods Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         
         {/* PayPal Button */}
         <div className="w-full">
@@ -56,6 +57,11 @@ export const PremiumPaymentOptions = ({
         {/* Razorpay Button */}
         <div className="w-full">
           <RazorpayPaymentButton planDetails={planDetails} userId={userId} onSuccess={onSuccess} onError={onError} />
+        </div>
+
+        {/* DoDo Payments Button */}
+        <div className="w-full">
+          <DodoPaymentButton planDetails={planDetails} userId={userId} onSuccess={onSuccess} onError={onError} />
         </div>
       </div>
 
