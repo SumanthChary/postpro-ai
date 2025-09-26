@@ -83,26 +83,64 @@ export const HeaderStreakCounter = ({ userId }: HeaderStreakCounterProps) => {
 
   if (loading || !userId) return null;
 
-  const getStreakColor = () => {
-    if (currentStreak === 0) return "text-gray-400";
-    if (currentStreak < 3) return "text-orange-500";
-    if (currentStreak < 7) return "text-orange-600";
-    if (currentStreak < 14) return "text-red-500";
-    return "text-red-600";
+  const getStreakDisplay = () => {
+    if (currentStreak === 0) {
+      return {
+        bgClass: "bg-gradient-to-r from-gray-50 to-gray-100",
+        borderClass: "border-gray-200",
+        textClass: "text-gray-500",
+        flameClass: "text-gray-400"
+      };
+    }
+    if (currentStreak < 3) {
+      return {
+        bgClass: "bg-gradient-to-r from-blue-50 to-indigo-50",
+        borderClass: "border-blue-200",
+        textClass: "text-blue-600",
+        flameClass: "text-blue-500"
+      };
+    }
+    if (currentStreak < 7) {
+      return {
+        bgClass: "bg-gradient-to-r from-blue-100 to-indigo-100",
+        borderClass: "border-blue-300",
+        textClass: "text-blue-700",
+        flameClass: "text-blue-600"
+      };
+    }
+    if (currentStreak < 14) {
+      return {
+        bgClass: "bg-gradient-to-r from-indigo-100 to-purple-100",
+        borderClass: "border-indigo-300",
+        textClass: "text-indigo-700",
+        flameClass: "text-indigo-600"
+      };
+    }
+    return {
+      bgClass: "bg-gradient-to-r from-purple-100 to-pink-100",
+      borderClass: "border-purple-300",
+      textClass: "text-purple-700",
+      flameClass: "text-purple-600"
+    };
   };
 
-  const getFlameAnimation = () => {
-    return ""; // Remove all animations
-  };
+  const streakDisplay = getStreakDisplay();
 
   return (
-    <div className="flex items-center space-x-1 px-2 py-1 rounded-full bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200">
-      <FlameIcon 
-        className={`w-4 h-4 ${getStreakColor()} ${getFlameAnimation()}`}
-      />
-      <span className={`text-sm font-bold ${getStreakColor()}`}>
-        {currentStreak}
-      </span>
+    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${streakDisplay.bgClass} ${streakDisplay.borderClass} border shadow-sm hover:shadow-md transition-all duration-200`}>
+      <div className="flex items-center gap-1">
+        <FlameIcon 
+          className={`w-4 h-4 ${streakDisplay.flameClass} transition-colors duration-200`}
+        />
+        <span className={`text-sm font-semibold ${streakDisplay.textClass} transition-colors duration-200`}>
+          {currentStreak}
+        </span>
+      </div>
+      <div className={`text-xs font-medium ${streakDisplay.textClass} opacity-75 hidden sm:block`}>
+        {currentStreak === 0 ? 'Start your streak!' : 
+         currentStreak === 1 ? 'day streak' : 
+         'days streak'}
+      </div>
     </div>
   );
 };
