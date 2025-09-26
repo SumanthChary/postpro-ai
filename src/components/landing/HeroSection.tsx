@@ -31,8 +31,14 @@ const HeroSection = ({
                 Ready to create another viral LinkedIn post? Let's enhance your content!
               </p>
             </> : <>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.2] text-gray-900">
-                <span className="font-bold text-gray-950">LinkedIn Posts That Actually </span>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 tracking-tight leading-[1.2] text-gray-900 flex flex-wrap items-center justify-center gap-2 sm:gap-3 md:gap-4">
+                <span className="font-bold text-gray-950">LinkedIn</span>
+                <img 
+                  src="/lovable-uploads/linkedin-logo.png" 
+                  alt="LinkedIn" 
+                  className="inline-block w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 object-contain"
+                />
+                <span className="font-bold text-gray-950">Posts That Actually </span>
                 <span className="text-blue-600 font-extrabold">Get Noticed!</span>
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-6 md:mb-7 lg:mb-8 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
