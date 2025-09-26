@@ -100,7 +100,7 @@ const Chatbot = () => {
             </div>
             <div className="flex gap-2">
               <Link to="/chat-history">
-                <Button variant="outline" size="sm" className="text-gray-600 hover:text-gray-900">
+                <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-700">
                   History
                 </Button>
               </Link>

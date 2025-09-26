@@ -89,12 +89,12 @@ const ChatHistory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50/50 py-12 px-4">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen bg-background py-8 px-4">
+      <div className="max-w-3xl mx-auto space-y-6">
         {/* Back Button */}
-        <div className="mb-4">
+        <div className="mb-6">
           <Link to="/chatbot">
-            <Button variant="outline" size="sm" className="gap-2 bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white/90 transition-all duration-200">
+            <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
               <ArrowLeft size={16} />
               Back to Chat
             </Button>
@@ -102,69 +102,69 @@ const ChatHistory = () => {
         </div>
 
         {/* Header */}
-        <div className="text-center space-y-4">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+        <div className="text-center space-y-3 mb-8">
+          <h1 className="text-3xl font-bold text-foreground">
             Chat History
           </h1>
-          <p className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-medium px-4">
-            Review your previous conversations with our AI assistant
+          <p className="text-muted-foreground text-base max-w-lg mx-auto">
+            Review your previous conversations
           </p>
         </div>
 
         {/* Chat History List */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           {chatHistory.length === 0 ? (
-            <Card className="bg-white/80 backdrop-blur-sm border-gray-200/50">
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <MessageSquare className="h-12 w-12 text-gray-400 mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">No chat history yet</h3>
-                <p className="text-gray-600 text-center mb-4">
-                  Start a conversation with our AI assistant to see your chat history here.
+            <Card className="border-border/50">
+              <CardContent className="flex flex-col items-center justify-center py-10">
+                <MessageSquare className="h-10 w-10 text-muted-foreground mb-3" />
+                <h3 className="text-lg font-medium text-foreground mb-2">No conversations yet</h3>
+                <p className="text-muted-foreground text-center text-sm mb-4">
+                  Start chatting to see your history here
                 </p>
                 <Link to="/chatbot">
-                  <Button>Start New Chat</Button>
+                  <Button size="sm">Start New Chat</Button>
                 </Link>
               </CardContent>
             </Card>
           ) : (
             chatHistory.map((chat) => (
-              <Card key={chat.id} className="bg-white/80 backdrop-blur-sm border-gray-200/50 hover:bg-white/90 transition-all duration-200">
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-lg font-semibold text-gray-900 mb-1">
+              <Card key={chat.id} className="border-border/50 hover:bg-muted/30 transition-colors duration-200">
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-foreground mb-2 text-sm truncate">
                         {chat.title}
-                      </CardTitle>
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
+                      </h3>
+                      <p className="text-muted-foreground text-xs mb-2 line-clamp-1">
+                        {chat.last_message}
+                      </p>
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
                         <div className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
+                          <Clock className="h-3 w-3" />
                           {formatDate(chat.created_at)}
                         </div>
                         <div className="flex items-center gap-1">
-                          <MessageSquare className="h-4 w-4" />
-                          {chat.message_count} messages
+                          <MessageSquare className="h-3 w-3" />
+                          {chat.message_count}
                         </div>
                       </div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => deleteChat(chat.id)}
-                      className="text-gray-400 hover:text-red-500"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-start gap-2 flex-shrink-0">
+                      <Link to={`/chatbot?history=${chat.id}`}>
+                        <Button variant="ghost" size="sm" className="text-xs h-7 px-2">
+                          Continue
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deleteChat(chat.id)}
+                        className="text-muted-foreground hover:text-destructive h-7 px-2"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
                   </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <p className="text-gray-600 text-sm line-clamp-2 mb-3">
-                    {chat.last_message}
-                  </p>
-                  <Link to={`/chatbot?history=${chat.id}`}>
-                    <Button variant="outline" size="sm">
-                      Continue Chat
-                    </Button>
-                  </Link>
                 </CardContent>
               </Card>
             ))
