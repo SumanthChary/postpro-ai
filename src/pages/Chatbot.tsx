@@ -98,14 +98,21 @@ const Chatbot = () => {
               <h2 className="text-lg font-semibold text-gray-900">AI Assistant</h2>
               <p className="text-sm text-gray-500">Ask me anything about social media strategy</p>
             </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={resetConversation} 
-              className="text-gray-600 hover:text-gray-900"
-            >
-              New Chat
-            </Button>
+            <div className="flex gap-2">
+              <Link to="/chat-history">
+                <Button variant="outline" size="sm" className="text-gray-600 hover:text-gray-900">
+                  History
+                </Button>
+              </Link>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={resetConversation} 
+                className="text-gray-600 hover:text-gray-900"
+              >
+                New Chat
+              </Button>
+            </div>
           </div>
           
           {/* Messages */}

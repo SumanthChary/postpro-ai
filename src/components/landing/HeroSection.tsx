@@ -36,7 +36,7 @@ const HeroSection = ({
                 <img 
                   src="/lovable-uploads/linkedin-logo.png" 
                   alt="LinkedIn" 
-                  className="inline-block w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 object-contain"
+                  className="inline-block w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 object-contain transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(0,119,181,0.6)] cursor-pointer"
                 />
                 <span className="font-bold text-gray-950">Posts That Actually </span>
                 <span className="text-blue-600 font-extrabold">Get Noticed!</span>
