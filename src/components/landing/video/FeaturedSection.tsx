@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { OptimizedImage } from "@/components/ui/optimized-image";
-import productBurstBadge from '@/assets/productburst-badge.png';
 
 const FeaturedSection = () => {
   return (
@@ -77,20 +76,6 @@ const FeaturedSection = () => {
               className="w-6 h-6 sm:w-8 sm:h-8"
             />
             <span className="text-xs sm:text-sm font-medium text-gray-700">LinkedIn</span>
-          </a>
-          
-          <a 
-            href="https://productburst.com/product/postpro-ai?ref=productburst" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 sm:gap-3 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 shadow-sm border border-gray-200/50 hover:shadow-md transition-all duration-200"
-          >
-            <img 
-              src={productBurstBadge} 
-              alt="ProductBurst" 
-              className="w-6 h-6 sm:w-8 sm:h-8"
-            />
-            <span className="text-xs sm:text-sm font-medium text-gray-700">ProductBurst</span>
           </a>
           
           <a 

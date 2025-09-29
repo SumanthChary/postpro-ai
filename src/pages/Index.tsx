@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 
 // Lazy load non-critical sections
 const VideoShowcase = lazy(() => import("@/components/landing/VideoShowcase"));
+const AchievementsSection = lazy(() => import("@/components/landing/AchievementsSection"));
 const ComparisonSection = lazy(() => import("@/components/landing/ComparisonSection"));
 const EnhancedPostsShowcase = lazy(() => import("@/components/landing/EnhancedPostsShowcase"));
 
@@ -139,6 +140,9 @@ const Index = () => {
         <div className="w-full bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <Suspense fallback={<SectionLoader />}>
             <VideoShowcase />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <AchievementsSection />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <HowItWorksSection />
