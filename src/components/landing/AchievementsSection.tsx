@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, Star, TrendingUp } from 'lucide-react';
 import productBurstPOTDBadge from '@/assets/productburst-potd-badge.png';
+import peerPushBadge from '@/assets/peerpush-badge.png';
 
 const AchievementsSection = () => {
   return (
@@ -64,7 +65,7 @@ const AchievementsSection = () => {
                   className="group-hover:scale-105 transition-transform duration-300 block"
                 >
                   <img
-                    src="https://peerpush.net/p/postpro-ai/badge"
+                    src={peerPushBadge}
                     alt="PostPro AI PeerPush badge"
                     className="h-12 w-auto"
                   />
