@@ -21,7 +21,7 @@ const AchievementsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {/* ProductBurst Product of the Day */}
           <Card className="relative overflow-hidden border-amber-200/50 bg-gradient-to-br from-amber-50/50 to-orange-50/50 hover:shadow-lg transition-all duration-300 group">
             <CardContent className="p-6 text-center">
@@ -86,6 +86,39 @@ const AchievementsSection = () => {
               <div className="text-xs font-medium text-purple-700">
                 Advanced AI Technology
               </div>
+            </CardContent>
+          </Card>
+
+          {/* PeerPush Badge */}
+          <Card className="relative overflow-hidden border-green-200/50 bg-gradient-to-br from-green-50/50 to-emerald-50/50 hover:shadow-lg transition-all duration-300 group">
+            <CardContent className="p-6 text-center">
+              <div className="mb-4 flex justify-center">
+                <a 
+                  href="https://peerpush.net/p/postpro-ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group-hover:scale-105 transition-transform duration-300 block"
+                >
+                  <img
+                    src="https://peerpush.net/p/postpro-ai/badge"
+                    alt="PostPro AI PeerPush badge"
+                    className="h-12 w-auto"
+                  />
+                </a>
+              </div>
+              <h3 className="text-lg font-semibold text-green-800 mb-2">Community Verified</h3>
+              <p className="text-sm text-green-700/80 mb-3">
+                Verified and trusted by the PeerPush community
+              </p>
+              <a 
+                href="https://peerpush.net/p/postpro-ai" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-xs font-medium text-green-700 hover:text-green-800 transition-colors"
+              >
+                View on PeerPush
+                <TrendingUp className="h-3 w-3 ml-1" />
+              </a>
             </CardContent>
           </Card>
         </div>
