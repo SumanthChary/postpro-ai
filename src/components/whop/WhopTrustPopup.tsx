@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { X, ExternalLink } from 'lucide-react';
+import whopLogoNew from '@/assets/whop-logo-new.png';
 
 const WhopTrustPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -47,9 +48,9 @@ const WhopTrustPopup = () => {
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center mb-4">
               <img 
-                src="/lovable-uploads/12ef785a-af3d-4cbb-b6d7-0d20e7562e96.png" 
+                src={whopLogoNew} 
                 alt="Whop" 
-                className="h-8 w-8 mr-3"
+                className="h-8 w-8 mr-3 rounded-lg"
               />
               <h3 className="text-lg font-semibold text-foreground">We're on Whop now!</h3>
             </div>
