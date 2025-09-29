@@ -49,22 +49,22 @@ export const EnhancerForm = ({
       });
     }
   };
-  return <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+  return <div className="bg-white rounded-lg sm:rounded-xl lg:rounded-2xl shadow-lg border border-gray-200/50 overflow-hidden w-full">
       {/* Header */}
-      <div className="px-8 py-6 border-b border-gray-100">
+      <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 border-b border-gray-200/50">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">Post Enhancer</h2>
-          <LinkedinIcon className="w-6 h-6 text-[#0077B5]" />
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">Post Enhancer</h2>
+          <LinkedinIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#0077B5]" />
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="p-8 space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
         {/* Settings Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <Select value={category} onValueChange={onCategoryChange}>
-            <SelectTrigger className="w-full h-12 border-gray-200 focus:border-blue-500">
-              <SelectValue placeholder="Select post category" />
+            <SelectTrigger className="w-full h-10 sm:h-12 border-gray-200 focus:border-blue-500 text-sm sm:text-base">
+              <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent className="bg-white text-gray-900">
               <SelectItem value="business" className="flex items-center text-gray-900">
@@ -101,8 +101,8 @@ export const EnhancerForm = ({
           </Select>
           
           {onStyleToneChange && <Select value={styleTone} onValueChange={onStyleToneChange}>
-              <SelectTrigger className="w-full h-12 border-gray-200 focus:border-blue-500">
-                <SelectValue placeholder="Select writing tone" />
+              <SelectTrigger className="w-full h-10 sm:h-12 border-gray-200 focus:border-blue-500 text-sm sm:text-base">
+                <SelectValue placeholder="Select tone" />
               </SelectTrigger>
               <SelectContent className="bg-white text-gray-900">
                 <SelectItem value="professional" className="text-gray-900">
@@ -135,15 +135,20 @@ export const EnhancerForm = ({
         
         {/* Text Input Area */}
         <div className="relative">
-          <Textarea value={post} onChange={handlePostChange} placeholder="Paste your text here..." className={`${isEnhanced ? 'min-h-[400px]' : 'min-h-[300px]'} 
-              w-full p-6 text-base border-gray-200 rounded-xl 
+          <Textarea 
+            value={post} 
+            onChange={handlePostChange} 
+            placeholder="Paste your text here..." 
+            className={`${isEnhanced ? 'min-h-[300px] sm:min-h-[400px]' : 'min-h-[200px] sm:min-h-[300px]'} 
+              w-full p-4 sm:p-6 text-sm sm:text-base border-gray-200 rounded-lg sm:rounded-xl 
               focus:border-blue-500 focus:ring-2 focus:ring-blue-100 
               resize-none transition-all duration-200 
-              placeholder:text-gray-400 bg-gray-50/50`} />
+              placeholder:text-gray-400 bg-gray-50/30`} 
+          />
           
           {/* Paste Button */}
           {!post && <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <Button onClick={handlePasteText} className="pointer-events-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-sm flex items-center gap-2">
+              <Button onClick={handlePasteText} className="pointer-events-auto bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-sm flex items-center gap-2 text-sm sm:text-base">
                 <ClipboardIcon className="w-4 h-4" />
                 Paste Text
               </Button>
@@ -152,20 +157,30 @@ export const EnhancerForm = ({
       </div>
 
       {/* Footer */}
-      <div className="px-8 py-6 bg-gray-50/50 border-t border-gray-100">
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-500">
+      <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 bg-gray-50/30 border-t border-gray-200/50">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+          <div className="text-xs sm:text-sm text-gray-500 order-2 sm:order-1">
             {charCount} / 3000 characters
           </div>
           
-          <div className="flex items-center gap-3">
-            <Button variant="outline" onClick={onReset} disabled={isEnhancing || !post} className="px-6 py-2 border-gray-200 hover:bg-gray-50">
+          <div className="flex items-center gap-2 sm:gap-3 order-1 sm:order-2 w-full sm:w-auto">
+            <Button 
+              variant="outline" 
+              onClick={onReset} 
+              disabled={isEnhancing || !post} 
+              className="flex-1 sm:flex-none px-4 sm:px-6 py-2 border-gray-200 hover:bg-gray-50 text-sm sm:text-base"
+            >
               Reset
             </Button>
-            <Button onClick={onEnhance} disabled={isEnhancing || !post} className="px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2">
+            <Button 
+              onClick={onEnhance} 
+              disabled={isEnhancing || !post} 
+              className="flex-1 sm:flex-none px-6 sm:px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 text-sm sm:text-base"
+            >
               {isEnhancing ? <>
                   <Loader2Icon className="w-4 h-4 animate-spin" />
-                  Enhancing...
+                  <span className="hidden sm:inline">Enhancing...</span>
+                  <span className="sm:hidden">...</span>
                 </> : <>
                   <Sparkles className="w-4 h-4" />
                   Enhance
