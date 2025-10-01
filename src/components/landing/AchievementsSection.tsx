@@ -4,6 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Trophy, Star, TrendingUp } from 'lucide-react';
 import productBurstPOTDBadge from '@/assets/productburst-potd-badge.png';
 import peerPushBadge from '@/assets/peerpush-badge.png';
+import openLaunchBadge from '@/assets/openlaunch-badge.svg';
+import huzzlerBadge from '@/assets/huzzler-badge.png';
 
 const AchievementsSection = () => {
   return (
@@ -22,7 +24,7 @@ const AchievementsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {/* ProductBurst Product of the Day */}
           <Card className="relative overflow-hidden border-amber-200/50 bg-gradient-to-br from-amber-50/50 to-orange-50/50 hover:shadow-lg transition-all duration-300 group">
             <CardContent className="p-6 text-center">
@@ -82,6 +84,138 @@ const AchievementsSection = () => {
                 className="inline-flex items-center text-xs font-medium text-green-700 hover:text-green-800 transition-colors"
               >
                 View on PeerPush
+                <TrendingUp className="h-3 w-3 ml-1" />
+              </a>
+            </CardContent>
+          </Card>
+
+          {/* OpenLaunch Product of the Day */}
+          <Card className="relative overflow-hidden border-blue-200/50 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 hover:shadow-lg transition-all duration-300 group">
+            <CardContent className="p-6 text-center">
+              <div className="mb-4 flex justify-center">
+                <a 
+                  href="https://open-launch.com/projects/postpro-ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group-hover:scale-105 transition-transform duration-300 block"
+                >
+                  <img
+                    src={openLaunchBadge}
+                    alt="OpenLaunch Product of the Day"
+                    className="h-11 w-auto"
+                  />
+                </a>
+              </div>
+              <h3 className="text-lg font-semibold text-blue-800 mb-2">Product of the Day</h3>
+              <p className="text-sm text-blue-700/80 mb-3">
+                Recognized as top launch on OpenLaunch
+              </p>
+              <a 
+                href="https://open-launch.com/projects/postpro-ai" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-xs font-medium text-blue-700 hover:text-blue-800 transition-colors"
+              >
+                View on OpenLaunch
+                <TrendingUp className="h-3 w-3 ml-1" />
+              </a>
+            </CardContent>
+          </Card>
+
+          {/* SoloPush Badge */}
+          <Card className="relative overflow-hidden border-purple-200/50 bg-gradient-to-br from-purple-50/50 to-pink-50/50 hover:shadow-lg transition-all duration-300 group">
+            <CardContent className="p-6 text-center">
+              <div className="mb-4 flex justify-center">
+                <a 
+                  href="https://solopush.com/product/postpro-ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group-hover:scale-105 transition-transform duration-300 block"
+                >
+                  <img
+                    src="https://solopush.com/dark-badge.png"
+                    alt="View on SoloPush"
+                    className="h-12 w-auto"
+                  />
+                </a>
+              </div>
+              <h3 className="text-lg font-semibold text-purple-800 mb-2">Featured Product</h3>
+              <p className="text-sm text-purple-700/80 mb-3">
+                Featured on the SoloPush platform
+              </p>
+              <a 
+                href="https://solopush.com/product/postpro-ai" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-xs font-medium text-purple-700 hover:text-purple-800 transition-colors"
+              >
+                View on SoloPush
+                <TrendingUp className="h-3 w-3 ml-1" />
+              </a>
+            </CardContent>
+          </Card>
+
+          {/* Huzzler Badge */}
+          <Card className="relative overflow-hidden border-red-200/50 bg-gradient-to-br from-red-50/50 to-rose-50/50 hover:shadow-lg transition-all duration-300 group">
+            <CardContent className="p-6 text-center">
+              <div className="mb-4 flex justify-center">
+                <a 
+                  href="https://huzzler.so/products/Wb8eIQe9HV/postpro-ai?utm_source=huzzler_product_website&utm_medium=badge&utm_campaign=badge"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group-hover:scale-105 transition-transform duration-300 block"
+                >
+                  <img
+                    src={huzzlerBadge}
+                    alt="Featured on Huzzler"
+                    className="h-12 w-auto"
+                  />
+                </a>
+              </div>
+              <h3 className="text-lg font-semibold text-red-800 mb-2">Featured on Huzzler</h3>
+              <p className="text-sm text-red-700/80 mb-3">
+                Showcased on the Huzzler platform
+              </p>
+              <a 
+                href="https://huzzler.so/products/Wb8eIQe9HV/postpro-ai?utm_source=huzzler_product_website&utm_medium=badge&utm_campaign=badge" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-xs font-medium text-red-700 hover:text-red-800 transition-colors"
+              >
+                View on Huzzler
+                <TrendingUp className="h-3 w-3 ml-1" />
+              </a>
+            </CardContent>
+          </Card>
+
+          {/* LaunchIgniter Badge */}
+          <Card className="relative overflow-hidden border-orange-200/50 bg-gradient-to-br from-orange-50/50 to-amber-50/50 hover:shadow-lg transition-all duration-300 group">
+            <CardContent className="p-6 text-center">
+              <div className="mb-4 flex justify-center">
+                <a 
+                  href="https://launchigniter.com/product/postpro-ai?ref=badge-postpro-ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group-hover:scale-105 transition-transform duration-300 block"
+                >
+                  <img
+                    src="https://launchigniter.com/api/badge/postpro-ai?theme=light"
+                    alt="Featured on LaunchIgniter"
+                    className="h-14 w-auto"
+                  />
+                </a>
+              </div>
+              <h3 className="text-lg font-semibold text-orange-800 mb-2">Featured Launch</h3>
+              <p className="text-sm text-orange-700/80 mb-3">
+                Featured product on LaunchIgniter
+              </p>
+              <a 
+                href="https://launchigniter.com/product/postpro-ai?ref=badge-postpro-ai" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-xs font-medium text-orange-700 hover:text-orange-800 transition-colors"
+              >
+                View on LaunchIgniter
                 <TrendingUp className="h-3 w-3 ml-1" />
               </a>
             </CardContent>

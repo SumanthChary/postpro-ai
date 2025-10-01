@@ -1,6 +1,7 @@
-
 import React from 'react';
 import { OptimizedImage } from "@/components/ui/optimized-image";
+import indieHackersLogo from '@/assets/indiehackers-logo.png';
+import tinyStartupsLogo from '@/assets/tinystartups-logo.webp';
 
 const FeaturedSection = () => {
   return (
@@ -91,6 +92,28 @@ const FeaturedSection = () => {
             />
             <span className="text-xs sm:text-sm font-medium text-gray-700">Whop</span>
           </a>
+
+          <a 
+            href="https://www.indiehackers.com/product/postpro-ai" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 sm:gap-3 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 shadow-sm border border-gray-200/50 hover:shadow-md transition-all duration-200"
+          >
+            <img 
+              src={indieHackersLogo} 
+              alt="IndieHackers" 
+              className="w-6 h-6 sm:w-8 sm:h-8"
+            />
+            <span className="text-xs sm:text-sm font-medium text-gray-700">IndieHackers</span>
+          </a>
+
+          <div className="flex items-center gap-2 sm:gap-3 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 shadow-sm border border-gray-200/50">
+            <img 
+              src={tinyStartupsLogo} 
+              alt="TinyStartups" 
+              className="h-4 sm:h-5 w-auto"
+            />
+          </div>
         </div>
       </div>
     </div>
