@@ -21,74 +21,83 @@ class PerformanceMonitor {
   }
 
   private initializeObservers() {
+    if (!('PerformanceObserver' in window)) return;
+
+    // Initialize CLS tracking
+    this.metrics.cumulativeLayoutShift = 0;
+
     // Largest Contentful Paint
-    if ('PerformanceObserver' in window) {
-      try {
-        const lcpObserver = new PerformanceObserver((list) => {
-          const entries = list.getEntries();
-          const lastEntry = entries[entries.length - 1];
-          this.metrics.largestContentfulPaint = lastEntry.startTime;
-        });
-        lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-        this.observers.push(lcpObserver);
-      } catch (e) {
-        console.warn('LCP observer not supported');
-      }
+    try {
+      const lcpObserver = new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        if (entries.length > 0) {
+          const lastEntry = entries[entries.length - 1] as any;
+          this.metrics.largestContentfulPaint = Math.round(lastEntry.renderTime || lastEntry.loadTime || lastEntry.startTime);
+        }
+      });
+      lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+      this.observers.push(lcpObserver);
+    } catch (e) {
+      // LCP not supported
+    }
 
-      // First Input Delay
-      try {
-        const fidObserver = new PerformanceObserver((list) => {
-          const firstInput = list.getEntries()[0] as any;
-          this.metrics.firstInputDelay = firstInput.processingStart - firstInput.startTime;
-        });
-        fidObserver.observe({ entryTypes: ['first-input'] });
-        this.observers.push(fidObserver);
-      } catch (e) {
-        console.warn('FID observer not supported');
-      }
+    // First Input Delay
+    try {
+      const fidObserver = new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        if (entries.length > 0) {
+          const firstInput = entries[0] as any;
+          this.metrics.firstInputDelay = Math.round(firstInput.processingStart - firstInput.startTime);
+        }
+      });
+      fidObserver.observe({ type: 'first-input', buffered: true });
+      this.observers.push(fidObserver);
+    } catch (e) {
+      // FID not supported
+    }
 
-      // Cumulative Layout Shift
-      try {
-        const clsObserver = new PerformanceObserver((list) => {
-          let clsValue = 0;
-          for (const entry of list.getEntries()) {
-            if (!(entry as any).hadRecentInput) {
-              clsValue += (entry as any).value;
-            }
+    // Cumulative Layout Shift
+    try {
+      const clsObserver = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if (!(entry as any).hadRecentInput) {
+            this.metrics.cumulativeLayoutShift = (this.metrics.cumulativeLayoutShift || 0) + (entry as any).value;
           }
-          this.metrics.cumulativeLayoutShift = clsValue;
-        });
-        clsObserver.observe({ entryTypes: ['layout-shift'] });
-        this.observers.push(clsObserver);
-      } catch (e) {
-        console.warn('CLS observer not supported');
-      }
+        }
+      });
+      clsObserver.observe({ type: 'layout-shift', buffered: true });
+      this.observers.push(clsObserver);
+    } catch (e) {
+      // CLS not supported
+    }
 
-      // Paint timing
-      try {
-        const paintObserver = new PerformanceObserver((list) => {
-          for (const entry of list.getEntries()) {
-            if (entry.name === 'first-paint') {
-              this.metrics.firstPaint = entry.startTime;
-            } else if (entry.name === 'first-contentful-paint') {
-              this.metrics.firstContentfulPaint = entry.startTime;
-            }
+    // Paint timing
+    try {
+      const paintObserver = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if (entry.name === 'first-paint') {
+            this.metrics.firstPaint = Math.round(entry.startTime);
+          } else if (entry.name === 'first-contentful-paint') {
+            this.metrics.firstContentfulPaint = Math.round(entry.startTime);
           }
-        });
-        paintObserver.observe({ entryTypes: ['paint'] });
-        this.observers.push(paintObserver);
-      } catch (e) {
-        console.warn('Paint observer not supported');
-      }
+        }
+      });
+      paintObserver.observe({ type: 'paint', buffered: true });
+      this.observers.push(paintObserver);
+    } catch (e) {
+      // Paint timing not supported
     }
   }
 
   private measureNavigationTiming() {
-    if ('performance' in window && 'timing' in performance) {
-      const timing = performance.timing;
-      this.metrics.navigationStart = timing.navigationStart;
-      this.metrics.loadEventEnd = timing.loadEventEnd;
-      this.metrics.domContentLoaded = timing.domContentLoadedEventEnd - timing.navigationStart;
+    if ('performance' in window && performance.getEntriesByType) {
+      const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+      if (navEntries.length > 0) {
+        const nav = navEntries[0];
+        this.metrics.navigationStart = Math.round(nav.fetchStart);
+        this.metrics.loadEventEnd = Math.round(nav.loadEventEnd);
+        this.metrics.domContentLoaded = Math.round(nav.domContentLoadedEventEnd - nav.fetchStart);
+      }
     }
   }
 
@@ -98,12 +107,12 @@ class PerformanceMonitor {
 
   public logPerformanceMetrics() {
     console.group('🚀 Performance Metrics');
-    console.log('First Paint:', this.metrics.firstPaint?.toFixed(2) + 'ms');
-    console.log('First Contentful Paint:', this.metrics.firstContentfulPaint?.toFixed(2) + 'ms');
-    console.log('Largest Contentful Paint:', this.metrics.largestContentfulPaint?.toFixed(2) + 'ms');
-    console.log('First Input Delay:', this.metrics.firstInputDelay?.toFixed(2) + 'ms');
-    console.log('Cumulative Layout Shift:', this.metrics.cumulativeLayoutShift?.toFixed(4));
-    console.log('DOM Content Loaded:', this.metrics.domContentLoaded?.toFixed(2) + 'ms');
+    console.log('First Paint:', (this.metrics.firstPaint || 0) + 'ms');
+    console.log('First Contentful Paint:', (this.metrics.firstContentfulPaint || 0) + 'ms');
+    console.log('Largest Contentful Paint:', (this.metrics.largestContentfulPaint || 0) + 'ms');
+    console.log('First Input Delay:', (this.metrics.firstInputDelay || 0) + 'ms');
+    console.log('Cumulative Layout Shift:', (this.metrics.cumulativeLayoutShift || 0).toFixed(3));
+    console.log('DOM Content Loaded:', (this.metrics.domContentLoaded || 0) + 'ms');
     console.groupEnd();
   }
 

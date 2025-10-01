@@ -53,6 +53,7 @@ export const ComponentComparisonSlider = React.forwardRef<
     // Touch move handler
     const handleTouchMove = (e: TouchEvent) => {
       if (!isDragging) return;
+      e.preventDefault();
       handleMove(e.touches[0].clientX);
     };
     
@@ -67,13 +68,15 @@ export const ComponentComparisonSlider = React.forwardRef<
     // Effect to add and remove global event listeners for dragging
     React.useEffect(() => {
       if (isDragging) {
-        document.addEventListener("mousemove", handleMouseMove);
-        document.addEventListener("touchmove", handleTouchMove);
+        document.addEventListener("mousemove", handleMouseMove, { passive: false });
+        document.addEventListener("touchmove", handleTouchMove, { passive: false });
         document.addEventListener("mouseup", handleInteractionEnd);
         document.addEventListener("touchend", handleInteractionEnd);
-        document.body.style.cursor = 'ew-resize'; // Change cursor globally
+        document.body.style.cursor = 'ew-resize';
+        document.body.style.touchAction = 'none';
       } else {
         document.body.style.cursor = '';
+        document.body.style.touchAction = '';
       }
 
       return () => {
@@ -82,6 +85,7 @@ export const ComponentComparisonSlider = React.forwardRef<
         document.removeEventListener("mouseup", handleInteractionEnd);
         document.removeEventListener("touchend", handleInteractionEnd);
         document.body.style.cursor = '';
+        document.body.style.touchAction = '';
       };
     }, [isDragging]);
 
@@ -122,9 +126,9 @@ export const ComponentComparisonSlider = React.forwardRef<
           {/* Handle */}
           <div
             className={cn(
-              "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-12 w-12 flex items-center justify-center rounded-full bg-white/90 text-foreground shadow-xl backdrop-blur-md",
-              "transition-all duration-300 ease-in-out",
-              "group-hover:scale-105",
+              "absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-white/90 text-foreground shadow-xl backdrop-blur-md",
+              "transition-all duration-200 ease-out",
+              "group-hover:scale-105 active:scale-95",
               isDragging && "scale-105 shadow-2xl shadow-blue-500/50"
             )}
             role="slider"
@@ -135,8 +139,8 @@ export const ComponentComparisonSlider = React.forwardRef<
             aria-label="Component comparison slider"
           >
             <div className="flex items-center text-blue-600">
-              <ChevronLeft className="h-5 w-5 drop-shadow-md" />
-              <ChevronRight className="h-5 w-5 drop-shadow-md" />
+              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 drop-shadow-md" />
+              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 drop-shadow-md" />
             </div>
           </div>
         </div>
