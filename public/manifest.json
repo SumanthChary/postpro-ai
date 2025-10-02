@@ -1,0 +1,33 @@
+{
+  "name": "PostPro AI - AI Social Media Post Enhancer",
+  "short_name": "PostPro AI",
+  "description": "Transform your social media posts with AI-powered enhancement. Increase engagement and grow your following.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://storage.googleapis.com/gpt-engineer-file-uploads/HjiF3v6sNNS8IwmkBGhhE2h8hFE3/uploads/1758299805078-New-modified.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://storage.googleapis.com/gpt-engineer-file-uploads/HjiF3v6sNNS8IwmkBGhhE2h8hFE3/uploads/1758299805078-New-modified.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "social", "business"],
+  "screenshots": [
+    {
+      "src": "https://storage.googleapis.com/gpt-engineer-file-uploads/HjiF3v6sNNS8IwmkBGhhE2h8hFE3/social-images/social-1757436189107-Screenshot (584).png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "label": "PostPro AI Dashboard"
+    }
+  ]
+}

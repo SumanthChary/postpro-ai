@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/layout/Navigation";
 import HeroSection from "@/components/landing/HeroSection";
 import Footer from "@/components/Footer";
+import SkipToContent from "@/components/ui/skip-to-content";
 
 // Lazy load non-critical sections
 const VideoShowcase = lazy(() => import("@/components/landing/VideoShowcase"));
@@ -123,6 +124,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+      <SkipToContent />
       <WhopBanner />
       <Navigation
         session={session}
@@ -134,7 +136,7 @@ const Index = () => {
         mobileMenuOpen={mobileMenuOpen}
       />
 
-      <main className="w-full">
+      <main id="main-content" className="w-full">
         <HeroSection isAuthenticated={!!session} username={username} />
         
         <div className="w-full bg-gradient-to-br from-slate-50 via-white to-blue-50/30">

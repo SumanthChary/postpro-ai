@@ -24,7 +24,7 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl }: VideoPlayerProps) => {
           <div className="relative w-full h-full">
             <PerformanceImage 
               src={thumbnailUrl} 
-              alt="Video thumbnail"
+              alt="PostPro AI demo video thumbnail showing LinkedIn post enhancement interface with before and after comparison"
               className="w-full h-full"
               priority={true}
             />
@@ -33,8 +33,9 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl }: VideoPlayerProps) => {
                 onClick={handlePlay}
                 size="lg"
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 border-2 border-white/50"
+                aria-label="Play demo video showing PostPro AI features"
               >
-                <Play size={24} className="sm:w-8 sm:h-8 text-white ml-1" />
+                <Play size={24} className="sm:w-8 sm:h-8 text-white ml-1" aria-hidden="true" />
               </Button>
             </div>
           </div>
@@ -52,8 +53,10 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl }: VideoPlayerProps) => {
           autoPlay
           poster={thumbnailUrl}
           preload="metadata"
+          aria-label="PostPro AI demo video showcasing LinkedIn post enhancement features"
         >
           <source src={videoUrl} type="video/mp4" />
+          <track kind="captions" label="English captions" />
           Your browser does not support the video tag.
         </video>
       </AspectRatio>

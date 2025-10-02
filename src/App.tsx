@@ -10,6 +10,7 @@ import { ThemeProvider } from "next-themes";
 import PreloadResources from "@/components/ui/preload-resources";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { initializePerformanceOptimizations } from "@/utils/performance-optimizations";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Lazy load components for better performance
 const FloatingChatButton = lazy(() => import("./components/chatbot/FloatingChatButton"));
@@ -57,47 +58,55 @@ function App() {
   
   return (
     <StrictMode>
-      <PreloadResources />
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Toaster />
-        <Sonner />
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <AuthProvider>
-              <BrowserRouter basename="/">
-                <Suspense fallback={<PageSkeleton />}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/enhance" element={<Enhance />} />
-                  <Route path="/features" element={<Features />} />
-                  <Route path="/pricing" element={<Pricing />} />
-                  <Route path="/subscription" element={<Subscription />} />
-                  <Route path="/payment" element={<Payment />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/blogs" element={<Blogs />} />
-                  <Route path="/blog/:id" element={<BlogArticle />} />
-                   <Route path="/chatbot" element={<Chatbot />} />
-                   <Route path="/chat-history" element={<ChatHistory />} />
-                   <Route path="/affiliate" element={<Affiliate />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/support" element={<Support />} />
-                  <Route path="/whop-app" element={<WhopApp />} />
-                  <Route path="/whop/callback" element={<WhopCallback />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                  <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-                  <Route path="/faq" element={<FAQPage />} />
-                </Routes>
-                </Suspense>
-                <Suspense fallback={null}>
-                  <FloatingChatButton />
-                </Suspense>
-              </BrowserRouter>
-            </AuthProvider>
-          </TooltipProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
+      <ErrorBoundary>
+        <PreloadResources />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Toaster />
+          <Sonner />
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+              <AuthProvider>
+                <BrowserRouter 
+                  basename="/"
+                  future={{
+                    v7_startTransition: true,
+                    v7_relativeSplatPath: true
+                  }}
+                >
+                  <Suspense fallback={<PageSkeleton />}>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/enhance" element={<Enhance />} />
+                    <Route path="/features" element={<Features />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/subscription" element={<Subscription />} />
+                    <Route path="/payment" element={<Payment />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/blogs" element={<Blogs />} />
+                    <Route path="/blog/:id" element={<BlogArticle />} />
+                     <Route path="/chatbot" element={<Chatbot />} />
+                     <Route path="/chat-history" element={<ChatHistory />} />
+                     <Route path="/affiliate" element={<Affiliate />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/support" element={<Support />} />
+                    <Route path="/whop-app" element={<WhopApp />} />
+                    <Route path="/whop/callback" element={<WhopCallback />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                    <Route path="/faq" element={<FAQPage />} />
+                  </Routes>
+                  </Suspense>
+                  <Suspense fallback={null}>
+                    <FloatingChatButton />
+                  </Suspense>
+                </BrowserRouter>
+              </AuthProvider>
+            </TooltipProvider>
+          </QueryClientProvider>
+        </ThemeProvider>
+      </ErrorBoundary>
     </StrictMode>
   );
 }

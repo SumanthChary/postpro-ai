@@ -49,9 +49,10 @@ const AchievementsSection = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-xs font-medium text-amber-700 hover:text-amber-800 transition-colors"
+                aria-label="View PostPro AI Product of the Day on ProductBurst"
               >
                 View on ProductBurst
-                <TrendingUp className="h-3 w-3 ml-1" />
+                <TrendingUp className="h-3 w-3 ml-1" aria-hidden="true" />
               </a>
             </CardContent>
           </Card>
@@ -82,9 +83,10 @@ const AchievementsSection = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-xs font-medium text-green-700 hover:text-green-800 transition-colors"
+                aria-label="View PostPro AI on PeerPush community platform"
               >
                 View on PeerPush
-                <TrendingUp className="h-3 w-3 ml-1" />
+                <TrendingUp className="h-3 w-3 ml-1" aria-hidden="true" />
               </a>
             </CardContent>
           </Card>
@@ -115,9 +117,10 @@ const AchievementsSection = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-xs font-medium text-blue-700 hover:text-blue-800 transition-colors"
+                aria-label="View PostPro AI Product of the Day on OpenLaunch"
               >
                 View on OpenLaunch
-                <TrendingUp className="h-3 w-3 ml-1" />
+                <TrendingUp className="h-3 w-3 ml-1" aria-hidden="true" />
               </a>
             </CardContent>
           </Card>
@@ -148,9 +151,10 @@ const AchievementsSection = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-xs font-medium text-purple-700 hover:text-purple-800 transition-colors"
+                aria-label="View PostPro AI featured product on SoloPush"
               >
                 View on SoloPush
-                <TrendingUp className="h-3 w-3 ml-1" />
+                <TrendingUp className="h-3 w-3 ml-1" aria-hidden="true" />
               </a>
             </CardContent>
           </Card>
@@ -181,9 +185,10 @@ const AchievementsSection = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-xs font-medium text-red-700 hover:text-red-800 transition-colors"
+                aria-label="View PostPro AI featured on Huzzler platform"
               >
                 View on Huzzler
-                <TrendingUp className="h-3 w-3 ml-1" />
+                <TrendingUp className="h-3 w-3 ml-1" aria-hidden="true" />
               </a>
             </CardContent>
           </Card>
@@ -214,9 +219,10 @@ const AchievementsSection = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-xs font-medium text-orange-700 hover:text-orange-800 transition-colors"
+                aria-label="View PostPro AI featured launch on LaunchIgniter"
               >
                 View on LaunchIgniter
-                <TrendingUp className="h-3 w-3 ml-1" />
+                <TrendingUp className="h-3 w-3 ml-1" aria-hidden="true" />
               </a>
             </CardContent>
           </Card>
