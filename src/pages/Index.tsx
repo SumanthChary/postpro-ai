@@ -13,7 +13,6 @@ import SkipToContent from "@/components/ui/skip-to-content";
 // Lazy load non-critical sections
 const DemoVideo = lazy(() => import("@/components/landing/DemoVideo"));
 const VideoShowcase = lazy(() => import("@/components/landing/VideoShowcase"));
-const AchievementsSection = lazy(() => import("@/components/landing/AchievementsSection"));
 const ComparisonSection = lazy(() => import("@/components/landing/ComparisonSection"));
 const EnhancedPostsShowcase = lazy(() => import("@/components/landing/EnhancedPostsShowcase"));
 
@@ -146,9 +145,6 @@ const Index = () => {
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <VideoShowcase />
-          </Suspense>
-          <Suspense fallback={<SectionLoader />}>
-            <AchievementsSection />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <HowItWorksSection />
