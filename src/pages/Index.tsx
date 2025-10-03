@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import SkipToContent from "@/components/ui/skip-to-content";
 
 // Lazy load non-critical sections
+const DemoVideo = lazy(() => import("@/components/landing/DemoVideo"));
 const VideoShowcase = lazy(() => import("@/components/landing/VideoShowcase"));
 const AchievementsSection = lazy(() => import("@/components/landing/AchievementsSection"));
 const ComparisonSection = lazy(() => import("@/components/landing/ComparisonSection"));
@@ -140,6 +141,9 @@ const Index = () => {
         <HeroSection isAuthenticated={!!session} username={username} />
         
         <div className="w-full bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+          <Suspense fallback={<SectionLoader />}>
+            <DemoVideo />
+          </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <VideoShowcase />
           </Suspense>
