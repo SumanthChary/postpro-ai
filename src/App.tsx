@@ -1,5 +1,5 @@
 
-import { StrictMode, useEffect, lazy, Suspense } from "react";
+import { StrictMode, lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +9,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import PreloadResources from "@/components/ui/preload-resources";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { initializePerformanceOptimizations } from "@/utils/performance-optimizations";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Lazy load components for better performance
@@ -50,11 +49,6 @@ function App() {
   
   // Initialize referral tracking
   useReferralTracking();
-  
-  // Initialize performance optimizations
-  useEffect(() => {
-    initializePerformanceOptimizations();
-  }, []);
   
   return (
     <StrictMode>
