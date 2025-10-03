@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import ViralityGauge from '../virality/ViralityGauge';
 import EngagementBreakdown from '../virality/EngagementBreakdown';
+import { edgeFunctionCache } from "@/utils/edge-function-cache";
 interface ViralityScoreProps {
   post: string;
   category: string;
@@ -71,6 +72,34 @@ export function ViralityScore({
     setLoading(true);
     setAnalyzing(true);
     try {
+      // Check cache first
+      const cacheKey = edgeFunctionCache.generateKey('analyze-virality', { 
+        post: post.trim(), 
+        category: category || 'general' 
+      });
+      const cached = edgeFunctionCache.get(cacheKey, 10 * 60 * 1000); // 10 min cache
+      
+      if (cached) {
+        const data = cached as any;
+        let finalScore = data.score || 75;
+        
+        // Apply same boosting logic
+        if (post.length > 300) finalScore += 10;
+        if (post.includes('✨') || post.includes('🚀') || post.includes('💡')) finalScore += 8;
+        if (post.includes('\n\n')) finalScore += 5;
+        if (post.includes('?')) finalScore += 3;
+        if (post.includes('#')) finalScore += 5;
+        if (post.length > 200 && finalScore < 85) {
+          finalScore = 85 + Math.random() * 10;
+        }
+        
+        setScore(Math.min(100, Math.round(finalScore)));
+        setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
+        setLoading(false);
+        setAnalyzing(false);
+        return;
+      }
+
       const {
         data,
         error
@@ -86,6 +115,9 @@ export function ViralityScore({
       if (!data || typeof data.score !== 'number') {
         throw new Error('Invalid analysis result received');
       }
+
+      // Cache the result
+      edgeFunctionCache.set(cacheKey, data);
 
       // Generate realistic score based on post quality
       let finalScore = data.score || 75;

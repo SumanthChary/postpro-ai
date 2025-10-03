@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, Wand2, Plus, TrendingUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { edgeFunctionCache } from '@/utils/edge-function-cache';
 
 interface CTASuggestion {
   text: string;
@@ -37,11 +38,25 @@ const CTASuggestionEngine: React.FC<CTASuggestionEngineProps> = ({
     
     setLoading(true);
     try {
+      // Check cache first
+      const cacheKey = edgeFunctionCache.generateKey('generate-cta-suggestions', { post, category });
+      const cached = edgeFunctionCache.get(cacheKey, 10 * 60 * 1000); // 10 min cache
+      
+      if (cached) {
+        setSuggestions((cached as any).suggestions || []);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase.functions.invoke('generate-cta-suggestions', {
         body: { post, category }
       });
 
       if (error) throw error;
+      
+      // Cache the result
+      edgeFunctionCache.set(cacheKey, data);
+      
       setSuggestions(data.suggestions || []);
     } catch (error) {
       console.error('Error generating CTA suggestions:', error);

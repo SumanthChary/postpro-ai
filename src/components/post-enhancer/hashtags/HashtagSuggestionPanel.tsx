@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Hash, TrendingUp, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { edgeFunctionCache } from '@/utils/edge-function-cache';
 
 interface HashtagSuggestion {
   tag: string;
@@ -49,11 +50,25 @@ const HashtagSuggestionPanel: React.FC<HashtagSuggestionPanelProps> = ({
     
     setLoading(true);
     try {
+      // Check cache first
+      const cacheKey = edgeFunctionCache.generateKey('analyze-hashtags', { post, category });
+      const cached = edgeFunctionCache.get(cacheKey, 10 * 60 * 1000); // 10 min cache
+      
+      if (cached) {
+        setSuggestions((cached as any).suggestions || []);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase.functions.invoke('analyze-hashtags', {
         body: { post, category }
       });
 
       if (error) throw error;
+      
+      // Cache the result
+      edgeFunctionCache.set(cacheKey, data);
+      
       setSuggestions(data.suggestions || []);
     } catch (error) {
       console.error('Error analyzing hashtags:', error);

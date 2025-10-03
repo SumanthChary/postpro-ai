@@ -2,6 +2,15 @@
 import { supabase } from "@/integrations/supabase/client";
 import { EnhancePostResponse } from "../types";
 
+// Cache for enhanced posts (in-memory cache)
+const enhanceCache = new Map<string, { data: EnhancePostResponse; timestamp: number }>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+
+// Generate cache key from inputs
+const getCacheKey = (post: string, category: string, styleTone: string): string => {
+  return `${post.trim().toLowerCase()}_${category}_${styleTone}`;
+};
+
 export async function enhancePost(
   post: string, 
   category: string, 
@@ -23,6 +32,14 @@ export async function enhancePost(
 
   console.log('Calling enhance-post function with:', { post, category, useCredits, styleTone });
   
+  // Check cache first
+  const cacheKey = getCacheKey(post, category, styleTone);
+  const cached = enhanceCache.get(cacheKey);
+  if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+    console.log('Returning cached result');
+    return cached.data;
+  }
+  
   try {
     // Get current user for authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -30,25 +47,6 @@ export async function enhancePost(
     if (authError) {
       console.error('Authentication error:', authError);
       throw new Error('Authentication failed. Please sign in again.');
-    }
-
-    // Check credits before making the enhancement request if useCredits is true
-    if (useCredits && user?.id) {
-      const { data: creditCheck, error: creditError } = await supabase.functions.invoke('handle-credits', {
-        body: { 
-          action: 'check',
-          userId: user.id,
-          amount: 1
-        }
-      });
-
-      if (creditError) {
-        console.error('Credit check error:', creditError);
-        throw new Error('Unable to verify credits. Please try again.');
-      }
-
-      // Track credits but don't block
-      console.log('Credit status:', creditCheck);
     }
 
     const requestBody = { 
@@ -132,6 +130,18 @@ const { data, error } = result as SupabaseResponse;
     if (!hasValidContent) {
       console.error('No valid enhanced content received:', data.platforms);
       throw new Error('No enhanced content was generated. Please try again.');
+    }
+
+    // Cache the successful result
+    enhanceCache.set(cacheKey, {
+      data,
+      timestamp: Date.now()
+    });
+
+    // Clean up old cache entries (keep cache size reasonable)
+    if (enhanceCache.size > 50) {
+      const oldestKey = enhanceCache.keys().next().value;
+      enhanceCache.delete(oldestKey);
     }
 
     return data;

@@ -26,7 +26,7 @@ interface Subscription {
 
 // Cache for subscription data
 const subscriptionCache = new Map();
-const SUBSCRIPTION_CACHE_EXPIRY = 2 * 60 * 1000; // 2 minutes
+const SUBSCRIPTION_CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes (increased from 2)
 
 export const useSubscription = () => {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
