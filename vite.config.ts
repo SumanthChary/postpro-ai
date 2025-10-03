@@ -25,8 +25,7 @@ export default defineConfig(({ mode }) => ({
     target: 'es2020',
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['@supabase/supabase-js'],
+    include: ['react', 'react-dom', 'react-router-dom', '@supabase/supabase-js'],
   },
   esbuild: {
     legalComments: 'none',
