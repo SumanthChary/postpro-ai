@@ -19,6 +19,7 @@ const EnhancedPostsShowcase = lazy(() => import("@/components/landing/EnhancedPo
 
 const TemplatesSection = lazy(() => import("@/components/post-enhancer/TemplatesSection"));
 const HowItWorksSection = lazy(() => import("@/components/landing/HowItWorksSection"));
+const ExpectationsSection = lazy(() => import("@/components/landing/ExpectationsSection"));
 const AboutFounderSection = lazy(() => import("@/components/landing/AboutFounderSection"));
 const PricingSection = lazy(() => import("@/components/PricingSection"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
@@ -157,6 +158,9 @@ const Index = () => {
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <ExpectationsSection />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <PricingSection />

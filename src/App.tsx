@@ -34,6 +34,9 @@ const WhopCallback = lazy(() => import("./pages/WhopCallback"));
 const About = lazy(() => import("./pages/About"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const Security = lazy(() => import("./pages/Security"));
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
+const CancellationPolicy = lazy(() => import("./pages/CancellationPolicy"));
 const FAQPage = lazy(() => import("./pages/FAQ"));
 
 
@@ -89,6 +92,9 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                    <Route path="/security" element={<Security />} />
+                    <Route path="/refund-policy" element={<RefundPolicy />} />
+                    <Route path="/cancellation-policy" element={<CancellationPolicy />} />
                     <Route path="/faq" element={<FAQPage />} />
                   </Routes>
                   </Suspense>

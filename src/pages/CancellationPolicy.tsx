@@ -1,108 +1,189 @@
-
-import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { XCircle, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/Footer";
 
 const CancellationPolicy = () => {
   return (
-    <div className="min-h-screen flex flex-col">
-      <main className="flex-grow container mx-auto px-4 py-12">
-        <div className="mb-6">
-          <Link to="/">
-            <Button variant="outline" size="sm" className="gap-2">
-              <ArrowLeft size={16} />
-              Back to Home
-            </Button>
-          </Link>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+      <Navigation
+        session={null}
+        username=""
+        avatarUrl=""
+        handleSignOut={async () => {}}
+        setShowPricing={() => {}}
+        setMobileMenuOpen={() => {}}
+        mobileMenuOpen={false}
+      />
+
+      <div className="container mx-auto px-4 py-16 max-w-4xl">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-4">
+            <XCircle className="w-8 h-8 text-orange-600" />
+          </div>
+          <h1 className="text-4xl font-bold mb-4">Cancellation Policy</h1>
+          <p className="text-gray-600 text-lg">
+            Cancel anytime. No hidden fees. No questions asked.
+          </p>
         </div>
 
-        <div className="prose prose-slate max-w-none">
-          <h1 className="text-3xl font-bold mb-6 text-electric-blue">Cancellation and Refund Policy</h1>
-          <p className="text-gray-600">Last Updated: {new Date().toLocaleDateString()}</p>
-          
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">1. Subscription Cancellation</h2>
-            <p>
-              You may cancel your subscription at any time. To cancel, please go to your account settings and follow 
-              the cancellation process. Upon cancellation, your subscription will remain active until the end of the 
-              current billing period, after which it will not renew.
+        <div className="space-y-8 bg-white rounded-2xl p-8 shadow-sm">
+          <section>
+            <div className="flex items-center gap-3 mb-4">
+              <CheckCircle className="w-6 h-6 text-green-600" />
+              <h2 className="text-2xl font-bold">Easy Cancellation</h2>
+            </div>
+            <p className="text-gray-700 leading-relaxed">
+              We believe in making things simple. You can cancel your PostPro AI subscription at any time, 
+              for any reason, directly from your account settings. No need to contact support or explain why 
+              you're leaving—though we'd love your feedback to improve!
             </p>
           </section>
 
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">2. Access After Cancellation</h2>
-            <p>
-              After cancellation and until the end of your billing period, you will continue to have access to all 
-              subscription features. Once the billing period ends, your account will revert to the free tier with 
-              limited features.
-            </p>
+          <section>
+            <h2 className="text-2xl font-bold mb-4">How to Cancel</h2>
+            <ol className="space-y-4 text-gray-700">
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
+                <div>
+                  <strong className="text-gray-900">Log in to Your Account</strong>
+                  <p className="text-sm mt-1">
+                    Go to <a href="/profile" className="text-blue-600 hover:underline">Profile Settings</a>
+                  </p>
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                <div>
+                  <strong className="text-gray-900">Navigate to Subscription</strong>
+                  <p className="text-sm mt-1">
+                    Click on "Subscription Details" or "Manage Plan"
+                  </p>
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
+                <div>
+                  <strong className="text-gray-900">Cancel Subscription</strong>
+                  <p className="text-sm mt-1">
+                    Click "Cancel Subscription" and confirm your choice
+                  </p>
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
+                <div>
+                  <strong className="text-gray-900">Confirmation Email</strong>
+                  <p className="text-sm mt-1">
+                    You'll receive an email confirming your cancellation
+                  </p>
+                </div>
+              </li>
+            </ol>
           </section>
 
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">3. Credits After Cancellation</h2>
-            <p>
-              Any unused credits at the time your subscription expires will remain in your account for the duration 
-              of their validity period (typically 3 months from date of purchase). Once expired, these credits will be lost.
-            </p>
+          <section>
+            <h2 className="text-2xl font-bold mb-4">What Happens After Cancellation?</h2>
+            <div className="space-y-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <Clock className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <strong className="text-blue-900">Access Until Period End</strong>
+                    <p className="text-sm text-blue-800 mt-1">
+                      You'll continue to have full access to PostPro AI features until the end of your current 
+                      billing period. We don't believe in cutting off access immediately—you've already paid for it!
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <strong className="text-orange-900">No Automatic Renewal</strong>
+                    <p className="text-sm text-orange-800 mt-1">
+                      After cancellation, your subscription will not renew, and you won't be charged again. 
+                      Your account will automatically downgrade to the free trial limits (if available) or lose access.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </section>
 
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">4. Refund Policy</h2>
-            <p>
-              We offer a satisfaction guarantee for our services. If you are not satisfied with your subscription, 
-              you may request a refund within 14 days of your initial purchase. Subsequent subscription renewals 
-              are not eligible for refunds.
-            </p>
+          <section>
+            <h2 className="text-2xl font-bold mb-4">Cancellation by Plan Type</h2>
+            <div className="space-y-4">
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-bold text-gray-900 mb-2">Starter Plan ($2.99/month)</h3>
+                <p className="text-sm text-gray-700">
+                  Cancel anytime. Access continues until the end of your billing cycle. 
+                  No refunds for partial months.
+                </p>
+              </div>
+
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-bold text-gray-900 mb-2">Professional Plan ($9.99/month)</h3>
+                <p className="text-sm text-gray-700">
+                  Cancel anytime. Access continues until the end of your billing cycle. 
+                  No refunds for partial months.
+                </p>
+              </div>
+
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-bold text-gray-900 mb-2">Annual Pro Plan ($79/year)</h3>
+                <p className="text-sm text-gray-700">
+                  You can cancel your annual plan, but it will remain active until the end of the 12-month period. 
+                  Partial refunds are not available unless requested within the 7-day money-back guarantee period.
+                </p>
+              </div>
+
+              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                <h3 className="font-bold text-gray-900 mb-2">Lifetime Creator Plan ($149)</h3>
+                <p className="text-sm text-gray-700">
+                  Lifetime plans cannot be cancelled as they are one-time purchases with permanent access. 
+                  However, you can request account deletion, which will remove all your data and access.
+                </p>
+              </div>
+            </div>
           </section>
 
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">5. How to Request a Refund</h2>
-            <p>
-              To request a refund, please contact our support team at 
-              <a href="mailto:sumanthchary.business@gmail.com" className="text-electric-blue">
-                sumanthchary.business@gmail.com
-              </a> with your account information and reason for the refund request. Refund requests are reviewed 
-              on a case-by-case basis.
+          <section>
+            <h2 className="text-2xl font-bold mb-4">Re-activating Your Account</h2>
+            <p className="text-gray-700 leading-relaxed mb-3">
+              Changed your mind? No problem! You can re-subscribe at any time by visiting the{" "}
+              <a href="/subscription" className="text-blue-600 hover:underline">pricing page</a> and selecting 
+              a plan. All your previous data and settings will be restored.
             </p>
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <p className="text-sm text-green-800">
+                <strong>Note:</strong> If you cancel during the 7-day money-back guarantee period and receive 
+                a refund, you will need to purchase a new plan to regain access.
+              </p>
+            </div>
           </section>
 
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">6. Refund Processing</h2>
-            <p>
-              If your refund request is approved, the refund will be processed using the original payment method. 
-              Depending on your payment provider, it may take 5-10 business days for the refund to appear in your account.
-            </p>
-          </section>
-
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">7. Exceptions</h2>
-            <p>
-              We reserve the right to deny refund requests that we determine, in our sole discretion, to be abusive of 
-              our refund policy or our services. This includes, but is not limited to, repeated subscriptions and 
-              cancellations, or usage of premium features immediately followed by refund requests.
-            </p>
-          </section>
-
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">8. Changes to this Policy</h2>
-            <p>
-              We may update this Cancellation and Refund Policy from time to time. Any changes will be posted on this page 
-              with an updated revision date.
-            </p>
-          </section>
-
-          <section className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">9. Contact Information</h2>
-            <p>
-              For any questions regarding this policy, please contact us at: 
-              <a href="mailto:sumanthchary.business@gmail.com" className="text-electric-blue"> 
+          <section>
+            <h2 className="text-2xl font-bold mb-4">Need Help?</h2>
+            <p className="text-gray-700 leading-relaxed">
+              If you're having trouble cancelling or have questions about what happens next, please contact 
+              our support team at{" "}
+              <a href="mailto:sumanthchary.business@gmail.com" className="text-blue-600 hover:underline">
                 sumanthchary.business@gmail.com
               </a>
+              . We're here to help, even if you're leaving us.
+            </p>
+          </section>
+
+          <section className="pt-6 border-t border-gray-200">
+            <p className="text-sm text-gray-500">
+              Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
           </section>
         </div>
-      </main>
+      </div>
+
       <Footer />
     </div>
   );
