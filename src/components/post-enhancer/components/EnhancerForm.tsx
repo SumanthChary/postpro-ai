@@ -7,6 +7,7 @@ import { BrainIcon, UsersIcon, TrendingUpIcon, PenToolIcon, SmileIcon } from "lu
 import { EnhancerFormProps } from "../types";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import UsageCounter from "../UsageCounter";
 export const EnhancerForm = ({
   post,
   category,
@@ -60,6 +61,7 @@ export const EnhancerForm = ({
 
       {/* Main Content Area */}
       <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+        <UsageCounter />
         {/* Settings Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <Select value={category} onValueChange={onCategoryChange}>

@@ -11,12 +11,12 @@ import Footer from "@/components/Footer";
 import SkipToContent from "@/components/ui/skip-to-content";
 
 // Lazy load non-critical sections
-const DemoVideo = lazy(() => import("@/components/landing/DemoVideo"));
 const VideoShowcase = lazy(() => import("@/components/landing/VideoShowcase"));
 const ComparisonSection = lazy(() => import("@/components/landing/ComparisonSection"));
 const EnhancedPostsShowcase = lazy(() => import("@/components/landing/EnhancedPostsShowcase"));
-
-
+const SocialProofBar = lazy(() => import("@/components/landing/SocialProofBar"));
+const ProblemStatement = lazy(() => import("@/components/landing/ProblemStatement"));
+const ComparisonTable = lazy(() => import("@/components/landing/ComparisonTable"));
 const TemplatesSection = lazy(() => import("@/components/post-enhancer/TemplatesSection"));
 const HowItWorksSection = lazy(() => import("@/components/landing/HowItWorksSection"));
 const ExpectationsSection = lazy(() => import("@/components/landing/ExpectationsSection"));
@@ -142,7 +142,10 @@ const Index = () => {
         
         <div className="w-full bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
           <Suspense fallback={<SectionLoader />}>
-            <DemoVideo />
+            <SocialProofBar />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <ProblemStatement />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <VideoShowcase />
@@ -158,6 +161,9 @@ const Index = () => {
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <TemplatesSection handleProTemplatesClick={handleProTemplatesClick} />
+          </Suspense>
+          <Suspense fallback={<SectionLoader />}>
+            <ComparisonTable />
           </Suspense>
           <Suspense fallback={<SectionLoader />}>
             <ExpectationsSection />
