@@ -62,49 +62,65 @@ const Blogs = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <div className="flex-grow pt-20">
-        <div className="max-w-6xl mx-auto px-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex flex-col">
+      <div className="flex-grow pt-24 pb-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <Button 
             onClick={() => navigate("/")}
-            variant="outline" 
+            variant="ghost" 
             size="sm"
-            className="mb-6 flex items-center gap-2"
+            className="mb-8 flex items-center gap-2 hover:gap-3 transition-all duration-300"
           >
             <HomeIcon size={16} />
             <span>Back to Home</span>
           </Button>
           
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-16 space-y-4">
+            <div className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+              <BookOpenIcon className="inline-block w-4 h-4 mr-2" />
+              Insights & Strategies
+            </div>
+            <h1 className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
               Blog & Insights
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Latest strategies and tips for LinkedIn content success
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Expert strategies and proven tips for LinkedIn content success
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {blogPosts.map((post) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {blogPosts.map((post, index) => (
               <Card 
                 key={post.id}
-                className="hover:shadow-lg transition-all duration-300 cursor-pointer h-full"
+                className="group overflow-hidden border-0 bg-card/50 backdrop-blur-sm hover:bg-card hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2 transition-all duration-500 cursor-pointer h-full"
                 onClick={() => navigate(`/blog/${post.id}`)}
+                style={{ animationDelay: `${index * 100}ms` }}
               >
-                <CardHeader className="p-4">
-                  <div className="aspect-video overflow-hidden rounded-lg mb-4">
+                <CardHeader className="p-0">
+                  <div className="aspect-video overflow-hidden relative">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                     <img 
                       src={post.imageUrl} 
                       alt={post.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       loading="lazy"
                     />
                   </div>
-                  <CardTitle className="text-lg line-clamp-2 text-gray-900">{post.title}</CardTitle>
-                  <CardDescription className="text-sm text-gray-500">{post.date}</CardDescription>
                 </CardHeader>
-                <CardContent className="p-4 pt-0">
-                  <p className="text-sm text-gray-700 line-clamp-3">{post.description}</p>
+                <CardContent className="p-6 space-y-3">
+                  <CardDescription className="text-xs font-medium text-primary uppercase tracking-wider">
+                    {post.date}
+                  </CardDescription>
+                  <CardTitle className="text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                    {post.title}
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                    {post.description}
+                  </p>
+                  <div className="pt-4 flex items-center gap-2 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Read Article
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  </div>
                 </CardContent>
               </Card>
             ))}
