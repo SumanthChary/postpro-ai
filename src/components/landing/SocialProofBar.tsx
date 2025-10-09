@@ -13,6 +13,32 @@ const SocialProofBar = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
-  return;
+  return (
+    <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 py-4 border-y border-border/50">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-wrap items-center justify-center gap-8 text-sm">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-foreground/80">
+              <span className="font-semibold text-foreground">{postsEnhanced.toLocaleString()}</span> posts enhanced today
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4 text-primary" />
+            <span className="text-foreground/80">
+              <span className="font-semibold text-foreground">{activeUsers}</span> professionals online now
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-primary" />
+            <span className="text-foreground/80">
+              Average <span className="font-semibold text-foreground">287%</span> engagement boost
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
+
 export default SocialProofBar;
