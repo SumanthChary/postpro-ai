@@ -301,16 +301,7 @@ const Auth = () => {
           </div>
 
           {/* Trust indicators */}
-          <div className="flex items-center justify-center space-x-6 mt-6 pt-6 border-t border-gray-100">
-            <div className="flex items-center space-x-2 text-xs text-gray-500">
-              <Shield className="w-3 h-3" />
-              
-            </div>
-            <div className="flex items-center space-x-2 text-xs text-gray-500">
-              <Lock className="w-3 h-3" />
-              
-            </div>
-          </div>
+          
         </Card>
       </div>
     </div>;
