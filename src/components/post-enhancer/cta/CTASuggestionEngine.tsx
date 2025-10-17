@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -89,14 +89,8 @@ const CTASuggestionEngine: React.FC<CTASuggestionEngineProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (post.trim()) {
-      const debounceTimer = setTimeout(() => {
-        generateSuggestions();
-      }, 1500);
-      return () => clearTimeout(debounceTimer);
-    }
-  }, [post, category]);
+  // REMOVED auto-trigger to save edge function calls
+  // Users must explicitly click "Generate CTAs" button
 
   const handleSuggestionSelect = (suggestion: CTASuggestion) => {
     const isSelected = selectedCTAs.some(cta => cta.text === suggestion.text);
@@ -124,10 +118,21 @@ const CTASuggestionEngine: React.FC<CTASuggestionEngineProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Wand2 className="h-5 w-5 text-primary" />
-        <h4 className="font-medium">AI-Powered CTA Suggestions</h4>
-        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Wand2 className="h-5 w-5 text-primary" />
+          <h4 className="font-medium">AI-Powered CTA Suggestions</h4>
+          {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+        </div>
+        {!loading && suggestions.length === 0 && post.trim().length >= 30 && (
+          <Button 
+            onClick={generateSuggestions}
+            size="sm"
+            variant="outline"
+          >
+            Generate CTAs
+          </Button>
+        )}
       </div>
 
       {!post.trim() && (

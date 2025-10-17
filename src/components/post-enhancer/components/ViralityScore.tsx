@@ -156,12 +156,8 @@ export function ViralityScore({
     }
   };
 
-  // Auto-analyze when component mounts if autoAnalyze is true
-  useEffect(() => {
-    if (autoAnalyze && post.trim() && post.trim().length >= 10) {
-      analyzePotential();
-    }
-  }, [autoAnalyze, post, category]);
+  // REMOVED auto-analyze to save edge function calls
+  // Users must explicitly click "Analyze" button
   return <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
       {/* Header */}
       <div className="px-8 py-6 border-b border-gray-100">
