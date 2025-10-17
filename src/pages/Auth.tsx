@@ -308,7 +308,7 @@ const Auth = () => {
             </div>
             <div className="flex items-center space-x-2 text-xs text-gray-500">
               <Lock className="w-3 h-3" />
-              <span>Data Protected</span>
+              
             </div>
           </div>
         </Card>
