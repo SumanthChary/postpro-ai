@@ -61,7 +61,7 @@ export const EnhancerForm = ({
 
       {/* Main Content Area */}
       <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
-        <UsageCounter />
+        
         {/* Settings Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <Select value={category} onValueChange={onCategoryChange}>
@@ -137,16 +137,11 @@ export const EnhancerForm = ({
         
         {/* Text Input Area */}
         <div className="relative">
-          <Textarea 
-            value={post} 
-            onChange={handlePostChange} 
-            placeholder="Paste your text here..." 
-            className={`${isEnhanced ? 'min-h-[300px] sm:min-h-[400px]' : 'min-h-[200px] sm:min-h-[300px]'} 
+          <Textarea value={post} onChange={handlePostChange} placeholder="Paste your text here..." className={`${isEnhanced ? 'min-h-[300px] sm:min-h-[400px]' : 'min-h-[200px] sm:min-h-[300px]'} 
               w-full p-4 sm:p-6 text-sm sm:text-base border-gray-200 rounded-lg sm:rounded-xl 
               focus:border-blue-500 focus:ring-2 focus:ring-blue-100 
               resize-none transition-all duration-200 
-              placeholder:text-gray-400 bg-gray-50/30`} 
-          />
+              placeholder:text-gray-400 bg-gray-50/30`} />
           
           {/* Paste Button */}
           {!post && <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -166,19 +161,10 @@ export const EnhancerForm = ({
           </div>
           
           <div className="flex items-center gap-2 sm:gap-3 order-1 sm:order-2 w-full sm:w-auto">
-            <Button 
-              variant="outline" 
-              onClick={onReset} 
-              disabled={isEnhancing || !post} 
-              className="flex-1 sm:flex-none px-4 sm:px-6 py-2 border-gray-200 hover:bg-gray-50 text-sm sm:text-base"
-            >
+            <Button variant="outline" onClick={onReset} disabled={isEnhancing || !post} className="flex-1 sm:flex-none px-4 sm:px-6 py-2 border-gray-200 hover:bg-gray-50 text-sm sm:text-base">
               Reset
             </Button>
-            <Button 
-              onClick={onEnhance} 
-              disabled={isEnhancing || !post} 
-              className="flex-1 sm:flex-none px-6 sm:px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 text-sm sm:text-base"
-            >
+            <Button onClick={onEnhance} disabled={isEnhancing || !post} className="flex-1 sm:flex-none px-6 sm:px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2 text-sm sm:text-base">
               {isEnhancing ? <>
                   <Loader2Icon className="w-4 h-4 animate-spin" />
                   <span className="hidden sm:inline">Enhancing...</span>
