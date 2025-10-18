@@ -33,9 +33,8 @@ const RefundPolicy = () => {
               <h2 className="text-2xl font-bold">7-Day Money-Back Guarantee</h2>
             </div>
             <p className="text-gray-700 leading-relaxed mb-4">
-              We offer a <strong>7-day money-back guarantee</strong> for all paid plans (Starter, Professional, 
-              Annual Pro). If you're not satisfied with PostPro AI within the first 7 days of your purchase, 
-              we'll provide a full refund—no questions asked.
+              We offer a <strong>7-day money-back guarantee</strong> for every lifetime license (Post Enhancer and Post Enhancer Plus).
+              If you're not satisfied with PostPro AI within the first 7 days of your purchase, we'll provide a full refund—no questions asked.
             </p>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800">
@@ -51,7 +50,7 @@ const RefundPolicy = () => {
               <li className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                 <div>
-                  <strong className="text-gray-900">Monthly Plans (Starter & Professional)</strong>
+                  <strong className="text-gray-900">Post Enhancer ($2.99 one-time)</strong>
                   <p className="text-gray-700 text-sm mt-1">
                     Full refund if requested within 7 days of purchase
                   </p>
@@ -60,18 +59,9 @@ const RefundPolicy = () => {
               <li className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                 <div>
-                  <strong className="text-gray-900">Annual Pro Plan</strong>
+                  <strong className="text-gray-900">Post Enhancer Plus ($4.99 one-time)</strong>
                   <p className="text-gray-700 text-sm mt-1">
                     Full refund if requested within 7 days of purchase
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                <div>
-                  <strong className="text-gray-900">Technical Issues</strong>
-                  <p className="text-gray-700 text-sm mt-1">
-                    If our service doesn't work as described due to technical problems on our end
                   </p>
                 </div>
               </li>
@@ -81,16 +71,6 @@ const RefundPolicy = () => {
           <section>
             <h2 className="text-2xl font-bold mb-4">NOT Eligible for Refunds</h2>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
-                <div>
-                  <strong className="text-gray-900">Lifetime Creator Plan</strong>
-                  <p className="text-gray-700 text-sm mt-1">
-                    Due to the heavily discounted nature of this offer, lifetime plans are <strong>non-refundable</strong> 
-                    after 7 days. Please make sure this plan is right for you before purchasing.
-                  </p>
-                </div>
-              </li>
               <li className="flex items-start gap-3">
                 <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
                 <div>

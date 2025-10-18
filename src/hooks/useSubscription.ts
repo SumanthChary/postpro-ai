@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -21,7 +20,10 @@ interface Subscription {
   plan_name: string;
   subscribed: boolean;
   monthly_post_count: number;
-  subscription_limits: SubscriptionLimits;
+  monthly_reset_date?: string | null;
+  subscription_end?: string | null;
+  subscription_tier?: string | null;
+  subscription_limits?: SubscriptionLimits | null;
 }
 
 // Cache for subscription data
@@ -32,10 +34,10 @@ export const useSubscription = () => {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [usageStats, setUsageStats] = useState({
-    canUse: true,
+    canUse: false,
     currentCount: 0,
-    monthlyLimit: -1,
-    remainingUses: -1
+    monthlyLimit: 0,
+    remainingUses: 0
   });
   const { toast } = useToast();
 
@@ -44,60 +46,41 @@ export const useSubscription = () => {
     () => debounce(async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
-        
-        // Set unlimited usage for admin account
-        if (user?.email === 'enjoywithpandu@gmail.com') {
-          setUsageStats({
-            canUse: true,
-            currentCount: 0,
-            monthlyLimit: -1, // Unlimited
-            remainingUses: -1
-          });
-          return;
-        }
+        if (!user) return;
 
-        // Get current usage from subscription
-        const currentUsage = subscription?.monthly_post_count || 0;
-        
-        // For new users (within 24 hours), give them limited free enhancements
-        const userCreatedAt = new Date(user?.created_at || '');
-        const isNewUser = (Date.now() - userCreatedAt.getTime()) < 24 * 60 * 60 * 1000;
+        const { data, error } = await supabase.functions.invoke('subscription-manager', {
+          body: {
+            action: 'checkUsageLimit',
+            userId: user.id,
+            email: user.email
+          }
+        });
 
-        if (isNewUser) {
-          const newUserLimit = 5; // Limited to 5 for new users
-          setUsageStats({
-            canUse: currentUsage < newUserLimit,
-            currentCount: currentUsage,
-            monthlyLimit: newUserLimit,
-            remainingUses: Math.max(newUserLimit - currentUsage, 0)
-          });
-          return;
-        }
+        if (error) throw error;
 
-        // For regular users, check their subscription limits
-        const monthlyLimit = subscription?.subscription_limits?.monthly_post_limit || 5; // Default to 5 instead of 15
-        const hasUnlimitedAccess = monthlyLimit === -1;
-        const remainingUses = hasUnlimitedAccess ? -1 : Math.max(monthlyLimit - currentUsage, 0);
-        const canUse = hasUnlimitedAccess || remainingUses > 0;
-        
+        const monthlyLimit = typeof data?.monthlyLimit === 'number' ? data.monthlyLimit : 0;
+        const currentCount = typeof data?.currentCount === 'number' ? data.currentCount : 0;
+        const remainingUses = typeof data?.remainingUses === 'number'
+          ? data.remainingUses
+          : (monthlyLimit === -1 ? -1 : Math.max(monthlyLimit - currentCount, 0));
+
         setUsageStats({
-          canUse,
-          currentCount: currentUsage,
+          canUse: Boolean(data?.canUse ?? true),
+          currentCount,
           monthlyLimit,
           remainingUses
         });
       } catch (error) {
         console.error('Error checking usage limit:', error);
-        // Default to allowing usage if there's an error
         setUsageStats({
-          canUse: true,
+          canUse: false,
           currentCount: 0,
-          monthlyLimit: 5, // Default to 5 instead of 15
-          remainingUses: 5
+          monthlyLimit: 0,
+          remainingUses: 0
         });
       }
     }, 300),
-    [subscription?.monthly_post_count]
+    []
   );
 
   const checkUsageLimit = useCallback(() => {
@@ -113,7 +96,7 @@ export const useSubscription = () => {
       const cacheKey = `subscription_${user.id}`;
       const cached = subscriptionCache.get(cacheKey);
       if (cached && (Date.now() - cached.timestamp) < SUBSCRIPTION_CACHE_EXPIRY) {
-        setSubscription(cached.data);
+        setSubscription(cached.data as Subscription);
         checkUsageLimit();
         setLoading(false);
         return;
@@ -129,15 +112,28 @@ export const useSubscription = () => {
 
       if (error) throw error;
       
-      if (data.success) {
-        // Cache the result
+      if (data.success && data.subscription) {
+        const subscriptionData = data.subscription as Subscription;
+
         subscriptionCache.set(cacheKey, {
-          data: data.subscription,
+          data: subscriptionData,
           timestamp: Date.now()
         });
 
-        setSubscription(data.subscription);
-        checkUsageLimit(); // Update usage stats after subscription is fetched
+        setSubscription(subscriptionData);
+        checkUsageLimit();
+      } else {
+        subscriptionCache.set(cacheKey, {
+          data: null,
+          timestamp: Date.now()
+        });
+        setSubscription(null);
+        setUsageStats({
+          canUse: false,
+          currentCount: 0,
+          monthlyLimit: 0,
+          remainingUses: 0
+        });
       }
     } catch (error) {
       console.error('Error fetching subscription:', error);
@@ -164,12 +160,23 @@ export const useSubscription = () => {
       });
 
       if (error) throw error;
-      
-      if (data.success) {
-        // Refresh usage stats
+
+      if (data?.overLimit) {
+        setUsageStats((prev) => ({
+          ...prev,
+          canUse: false,
+          currentCount: data.currentCount ?? prev.currentCount,
+          monthlyLimit: data.monthlyLimit ?? prev.monthlyLimit,
+          remainingUses: 0
+        }));
+        return false;
+      }
+
+      if (data?.success) {
         checkUsageLimit();
         return true;
       }
+
       return false;
     } catch (error) {
       console.error('Error incrementing usage:', error);

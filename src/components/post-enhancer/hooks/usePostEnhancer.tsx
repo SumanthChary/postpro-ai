@@ -26,7 +26,7 @@ export const usePostEnhancer = () => {
 
   const checkUsageLimit = useCallback(async () => {
     if (!user) {
-      return { canUse: false, currentUsage: 0, monthlyLimit: 0, planName: 'Free Plan', isAdmin: false };
+      return { canUse: false, currentUsage: 0, monthlyLimit: 0, planName: 'No Plan' };
     }
 
     const cache = usageCacheRef.current;
@@ -35,13 +35,6 @@ export const usePostEnhancer = () => {
     }
 
     try {
-      // Admin always has unlimited access
-      if (user?.email === 'enjoywithpandu@gmail.com') {
-  const adminResult = { canUse: true, isAdmin: true, currentUsage: 0, monthlyLimit: -1, planName: 'Admin Access' };
-        usageCacheRef.current = { data: adminResult, timestamp: Date.now() };
-        return adminResult;
-      }
-
       const { data, error } = await supabase.functions.invoke('subscription-manager', {
         body: { 
           action: 'checkUsageLimit',
@@ -56,8 +49,7 @@ export const usePostEnhancer = () => {
         canUse: data.canUse,
         currentUsage: data.currentCount,
         monthlyLimit: data.monthlyLimit,
-        planName: data.planName || 'Free Plan',
-        isAdmin: false
+        planName: data.planName || 'No Plan'
       };
       usageCacheRef.current = { data: result, timestamp: Date.now() };
       return result;
@@ -65,12 +57,11 @@ export const usePostEnhancer = () => {
   console.error('Error checking usage limit:', error);
   // Allow usage with a graceful fallback when the remote service is unavailable
       const fallback = { 
-        canUse: true, 
+        canUse: false, 
         currentUsage: 0, 
-        monthlyLimit: 5,
-        planName: 'Free Plan',
+  monthlyLimit: 0,
+        planName: 'No Plan',
         error: 'Unable to verify usage limits',
-        isAdmin: false
       };
       usageCacheRef.current = { data: fallback, timestamp: Date.now() };
       return fallback;
@@ -124,7 +115,7 @@ export const usePostEnhancer = () => {
         setLoading(false);
         toast({
           title: "Usage Limit Reached",
-          description: `You've reached your monthly limit of ${usageCheck.monthlyLimit} enhancements. Upgrade to continue!`,
+          description: "Unlock a lifetime plan to keep enhancing without limits.",
           variant: "destructive",
           action: (
             <button 
@@ -154,21 +145,19 @@ export const usePostEnhancer = () => {
       });
       
       // Increment usage count after successful enhancement (only for non-admin)
-      if (!usageCheck.isAdmin) {
-        await supabase.functions.invoke('subscription-manager', {
-          body: { 
-            action: 'incrementUsage',
-            userId: user.id
-          }
-        });
-        usageCacheRef.current = {
-          data: {
-            ...usageCheck,
-            currentUsage: (usageCheck.currentUsage || 0) + 1
-          },
-          timestamp: Date.now()
-        };
-      }
+      await supabase.functions.invoke('subscription-manager', {
+        body: { 
+          action: 'incrementUsage',
+          userId: user.id
+        }
+      });
+      usageCacheRef.current = {
+        data: {
+          ...usageCheck,
+          currentUsage: (usageCheck.currentUsage || 0) + 1
+        },
+        timestamp: Date.now()
+      };
       
       toast({
         title: "✨ Post Enhanced!",

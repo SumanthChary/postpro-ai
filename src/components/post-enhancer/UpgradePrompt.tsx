@@ -1,6 +1,8 @@
 import { Lock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { pricingPlans } from "@/data/pricingPlans";
+import { Plan } from "@/types/pricing";
 
 interface UpgradePromptProps {
   featureName: string;
@@ -9,6 +11,7 @@ interface UpgradePromptProps {
 
 const UpgradePrompt = ({ featureName, message }: UpgradePromptProps) => {
   const navigate = useNavigate();
+  const enhancedPlan: Plan | undefined = pricingPlans.find((plan) => plan.name === "Post Enhancer Plus");
 
   return (
     <div className="bg-gradient-to-br from-primary/5 to-primary/10 border-2 border-primary/20 rounded-xl p-6 text-center">
@@ -23,14 +26,14 @@ const UpgradePrompt = ({ featureName, message }: UpgradePromptProps) => {
         {message}
       </p>
       <Button 
-        onClick={() => navigate('/subscription')}
+        onClick={() => enhancedPlan ? navigate('/payment', { state: { plan: enhancedPlan } }) : navigate('/pricing')}
         className="bg-primary hover:bg-primary/90"
         size="lg"
       >
-        Upgrade to Professional - Only $9.99/mo
+        Unlock Virality – One-Time $4.99
       </Button>
       <p className="text-xs text-muted-foreground mt-3">
-        Get unlimited posts, virality scores, templates, and more
+        Gain full virality analytics alongside unlimited post enhancing
       </p>
     </div>
   );

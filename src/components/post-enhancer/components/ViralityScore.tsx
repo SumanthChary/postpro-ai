@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import EngagementBreakdown from '../virality/EngagementBreakdown';
 import { edgeFunctionCache } from "@/utils/edge-function-cache";
 import type { EnhancePostResponse } from "../types";
+import { useSubscription } from "@/hooks/useSubscription";
+import UpgradePrompt from "../UpgradePrompt";
 
 type Diagnostics = NonNullable<EnhancePostResponse["diagnostics"]>;
 type EngagementMetrics = Diagnostics["engagementMetrics"];
@@ -90,6 +92,14 @@ export function ViralityScore({
   const {
     toast
   } = useToast();
+  const { subscription } = useSubscription();
+  const planName = subscription?.plan_name ?? '';
+  const normalizedPlanName = planName.toLowerCase();
+  const hasSubscription = Boolean(subscription);
+  const hasFullViralityAccess = Boolean(subscription?.subscription_limits?.has_virality_score);
+  const baseEnhancerPlan = hasSubscription && normalizedPlanName.includes('post enhancer') && !normalizedPlanName.includes('plus');
+  const showLimitedVirality = baseEnhancerPlan && !hasFullViralityAccess;
+  const viralityLocked = (!hasSubscription || baseEnhancerPlan) && !hasFullViralityAccess;
   const getScoreColor = (score: number) => {
     if (score >= 85) return "text-emerald-600";
     if (score >= 70) return "text-slate-600";
@@ -297,7 +307,16 @@ export function ViralityScore({
       </div>
 
       {/* Results */}
-      {score !== null && (
+      {viralityLocked && (
+        <div className="p-8">
+          <UpgradePrompt
+            featureName="Virality Intelligence"
+            message="Upgrade to unlock full virality scores, engagement breakdowns, and actionable diagnostics."
+          />
+        </div>
+      )}
+
+      {score !== null && !viralityLocked && (
         <div className="p-8 space-y-6">
           <div className="flex flex-col items-center gap-3 text-center">
             <div className={`text-6xl font-bold ${getScoreColor(score)}`}>
@@ -319,7 +338,7 @@ export function ViralityScore({
             {score >= 90 ? "🔥 Exceptional viral potential!" : score >= 70 ? "✨ Strong engagement expected!" : score >= 50 ? "📈 Good foundation for growth!" : "💡 Optimization recommended"}
           </p>
 
-          {gaugeBreakdown && (
+          {gaugeBreakdown && !showLimitedVirality && (
             <div className="grid gap-3 sm:grid-cols-3">
               {[{
                 label: "Engagement readiness",
@@ -343,24 +362,37 @@ export function ViralityScore({
             </div>
           )}
 
-          {insights.length > 0 && (
+          {showLimitedVirality && (
+            <div className="rounded-lg border border-blue-200 bg-blue-50/70 p-5 text-center">
+              <p className="text-sm text-blue-900">
+                Detailed engagement breakdowns unlock once you upgrade. During the trial we reveal the overall score plus one optimization insight so you get a taste of the signal.
+              </p>
+            </div>
+          )}
+
+          {(showLimitedVirality ? insights.slice(0, 1) : insights).length > 0 && (
             <div className="rounded-lg border border-blue-100 bg-blue-50 p-6">
               <h4 className="mb-4 flex items-center gap-2 text-base font-semibold text-blue-900">
                 <Lightbulb className="h-5 w-5" />
                 Optimization tips
               </h4>
               <div className="space-y-3">
-                {insights.map((insight, index) => (
+                {(showLimitedVirality ? insights.slice(0, 1) : insights).map((insight, index) => (
                   <div key={index} className="flex items-start gap-3 text-blue-800">
                     <div className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-500" />
                     <span className="text-sm leading-relaxed">{insight}</span>
                   </div>
                 ))}
               </div>
+              {showLimitedVirality && insights.length > 1 && (
+                <p className="pt-3 text-xs text-blue-800/80">
+                  Upgrade to reveal the remaining {insights.length - 1} AI optimization moves tailored to your post.
+                </p>
+              )}
             </div>
           )}
 
-          {highlights.length > 0 && (
+          {!showLimitedVirality && highlights.length > 0 && (
             <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-6">
               <h4 className="mb-3 flex items-center gap-2 text-base font-semibold text-emerald-700">
                 <Target className="h-5 w-5" />
@@ -377,24 +409,29 @@ export function ViralityScore({
             </div>
           )}
 
-          {quickWins.length > 0 && (
+          {(showLimitedVirality ? quickWins.slice(0, 1) : quickWins).length > 0 && (
             <div className="rounded-lg border border-emerald-200/60 bg-emerald-50/60 p-6">
               <h4 className="mb-3 flex items-center gap-2 text-base font-semibold text-emerald-700">
                 <Zap className="h-5 w-5" />
                 Quick wins to test next
               </h4>
               <ul className="space-y-2">
-                {quickWins.map((win, index) => (
+                {(showLimitedVirality ? quickWins.slice(0, 1) : quickWins).map((win, index) => (
                   <li key={index} className="flex items-start gap-2 text-sm text-emerald-700">
                     <span className="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-500" />
                     <span>{win}</span>
                   </li>
                 ))}
               </ul>
+              {showLimitedVirality && quickWins.length > 1 && (
+                <p className="pt-3 text-xs text-emerald-800/80">
+                  Upgrade to see {quickWins.length - 1} more rapid experiments our AI recommends.
+                </p>
+              )}
             </div>
           )}
 
-          {hasWatchouts && (
+          {hasWatchouts && !showLimitedVirality && (
             <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-6">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-sm font-semibold text-destructive">
@@ -436,10 +473,17 @@ export function ViralityScore({
             </div>
           )}
 
-          {engagementMetrics && (
+          {engagementMetrics && !showLimitedVirality && (
             <div>
               <EngagementBreakdown metrics={engagementMetrics} />
             </div>
+          )}
+
+          {showLimitedVirality && (
+            <UpgradePrompt
+              featureName="Full Virality Breakdown"
+              message="Unlock detailed engagement forecasts, watchouts, and advanced quick wins once you upgrade."
+            />
           )}
         </div>
       )}

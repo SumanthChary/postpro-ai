@@ -9,19 +9,17 @@ interface DodoPaymentButtonProps {
 }
 
 const DODO_PAYMENT_URLS = {
-  // Basic Plan mappings (from pricing data: "BASIC MONTHLY")
+  "Post Enhancer": "https://checkout.dodopayments.com/buy/pdt_KlYc9kipBF9o2R7uWqnfX?quantity=1",
+  "Post Enhancer Plus": "https://checkout.dodopayments.com/buy/pdt_6toZQV9LZ4kI5V4attlVL?quantity=1",
+  // Legacy mappings retained for backwards compatibility
   "BASIC MONTHLY": "https://checkout.dodopayments.com/buy/pdt_KlYc9kipBF9o2R7uWqnfX?quantity=1",
   "Basic": "https://checkout.dodopayments.com/buy/pdt_KlYc9kipBF9o2R7uWqnfX?quantity=1",
   "Basic Plan": "https://checkout.dodopayments.com/buy/pdt_KlYc9kipBF9o2R7uWqnfX?quantity=1",
   "Creator Plan": "https://checkout.dodopayments.com/buy/pdt_KlYc9kipBF9o2R7uWqnfX?quantity=1",
-  
-  // Pro Plan mappings (from pricing data: "PRO ANNUAL")
   "PRO ANNUAL": "https://checkout.dodopayments.com/buy/pdt_m5JEQlYnYdhFKGxFlNhO9?quantity=1",
   "Pro": "https://checkout.dodopayments.com/buy/pdt_m5JEQlYnYdhFKGxFlNhO9?quantity=1",
   "Pro Plan": "https://checkout.dodopayments.com/buy/pdt_m5JEQlYnYdhFKGxFlNhO9?quantity=1",
   "Professional Plan": "https://checkout.dodopayments.com/buy/pdt_m5JEQlYnYdhFKGxFlNhO9?quantity=1",
-  
-  // Lifetime Deal mappings (from pricing data: "LIFETIME CREATOR")
   "LIFETIME CREATOR": "https://checkout.dodopayments.com/buy/pdt_6toZQV9LZ4kI5V4attlVL?quantity=1",
   "Lifetime": "https://checkout.dodopayments.com/buy/pdt_6toZQV9LZ4kI5V4attlVL?quantity=1",
   "Lifetime Deal": "https://checkout.dodopayments.com/buy/pdt_6toZQV9LZ4kI5V4attlVL?quantity=1",

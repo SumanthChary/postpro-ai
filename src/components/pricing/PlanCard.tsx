@@ -10,26 +10,22 @@ interface PlanCardProps {
 }
 
 const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
-  const isFree = plan.name === "START FREE";
   const isLifetime = plan.period === "lifetime";
-  const isAnnual = plan.period === "year";
   
   return (
     <Card
       className={`p-8 flex flex-col relative bg-white border rounded-xl hover:shadow-md transition-all duration-300 ${
-        plan.popular 
-          ? "border-blue-500 shadow-sm ring-2 ring-blue-100 scale-105" 
+        plan.popular
+          ? "border-blue-500 shadow-sm ring-2 ring-blue-100"
           : "border-gray-200 hover:border-gray-300"
       }`}
     >
       {plan.badge && (
         <div className="absolute -top-3 left-6">
           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-            plan.popular 
-              ? "bg-blue-600 text-white" 
-              : isFree
-                ? "bg-green-600 text-white"
-                : "bg-orange-600 text-white"
+            plan.popular
+              ? "bg-blue-600 text-white"
+              : "bg-slate-700 text-white"
           }`}>
             {plan.badge}
           </span>
@@ -46,32 +42,13 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
         
         <div className="mb-4">
           <div className="flex items-baseline gap-2 mb-2">
-            {plan.originalPrice && (
-              <span className="text-lg text-gray-400 line-through">
-                ${plan.originalPrice}
-              </span>
-            )}
             <span className="text-3xl font-bold text-gray-900">
-              {isFree ? "Free" : `$${plan.price}`}
+              ${plan.price}
             </span>
-            {!isFree && (
-              <span className="text-gray-600">
-                /{plan.period === "lifetime" ? "once" : plan.period}
-              </span>
-            )}
+            <span className="text-gray-600">
+              /{isLifetime ? "once" : plan.period}
+            </span>
           </div>
-          
-          {isFree && (
-            <p className="text-sm text-gray-600">7 days only • Full feature access</p>
-          )}
-          
-          {plan.name === "PROFESSIONAL" && (
-            <p className="text-sm text-gray-600">Billed monthly • Cancel anytime</p>
-          )}
-          
-          {isAnnual && (
-            <p className="text-sm text-gray-600">Billed annually • Cancel anytime</p>
-          )}
           
           {isLifetime && (
             <p className="text-sm text-gray-600">One-time payment • Lifetime access</p>
@@ -95,10 +72,8 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
       <Button
         className={`w-full py-3 text-sm font-semibold rounded-lg transition-all duration-200 ${
           plan.popular
-            ? "bg-blue-600 text-white hover:bg-blue-700 shadow-sm" 
-            : isLifetime
-              ? "bg-orange-600 text-white hover:bg-orange-700 shadow-sm"
-              : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
+            ? "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
+            : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
         }`}
         onClick={() => onSubscribe(plan)}
       >

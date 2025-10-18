@@ -8,6 +8,7 @@ import { PremiumPaymentOptions } from "@/components/payment/PremiumPaymentOption
 import { ContactSupport } from "@/components/payment/ContactSupport";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
+import { Plan } from "@/types/pricing";
 
 const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
@@ -21,18 +22,14 @@ const Payment = () => {
   const [authError, setAuthError] = useState<string | null>(null);
   
   const planDetails = location.state?.plan || {
-    name: "Creator Plan",
-    price: "25",
-    period: "month",
-    credits: 500,
+    name: "Post Enhancer",
+    price: "2.99",
+    period: "lifetime",
     features: [
-      "500 AI-enhanced posts per month",
-      "Advanced virality scoring",
-      "Hashtag optimization",
-      "Content scheduling",
-      "Analytics dashboard"
-    ]
-  };
+      "Unlimited AI post enhancing"
+    ],
+    cta: "Unlock for $2.99"
+  } as Plan;
 
   useEffect(() => {
     let mounted = true;

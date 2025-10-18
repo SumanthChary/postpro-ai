@@ -21,8 +21,10 @@ export const UsageLimitModal: React.FC<UsageLimitModalProps> = ({
   planName
 }) => {
   const navigate = useNavigate();
-  const progressPercentage = (currentUsage / monthlyLimit) * 100;
-  const isAtLimit = currentUsage >= monthlyLimit;
+  const isUnlimited = monthlyLimit === -1;
+  const effectiveLimit = isUnlimited ? currentUsage || 1 : monthlyLimit || 1;
+  const progressPercentage = Math.min(100, (currentUsage / effectiveLimit) * 100);
+  const isAtLimit = !isUnlimited && currentUsage >= monthlyLimit;
 
   const handleUpgrade = () => {
     navigate('/pricing');
@@ -48,14 +50,18 @@ export const UsageLimitModal: React.FC<UsageLimitModalProps> = ({
             <div className="text-sm text-muted-foreground">
               Current Plan: <span className="font-semibold">{planName}</span>
             </div>
-            
-            <div className="space-y-2">
-              <Progress value={progressPercentage} className="h-3" />
-              <div className="flex justify-between text-sm">
-                <span>{currentUsage} / {monthlyLimit} used</span>
-                <span>{Math.round(progressPercentage)}%</span>
+
+            {!isUnlimited ? (
+              <div className="space-y-2">
+                <Progress value={progressPercentage} className="h-3" />
+                <div className="flex justify-between text-sm">
+                  <span>{currentUsage} / {monthlyLimit} used</span>
+                  <span>{Math.round(progressPercentage)}%</span>
+                </div>
               </div>
-            </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">Unlimited plan detected · usage tracking only</p>
+            )}
           </div>
 
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
@@ -64,10 +70,10 @@ export const UsageLimitModal: React.FC<UsageLimitModalProps> = ({
               <div>
                 <h4 className="font-semibold text-blue-900 mb-1">Upgrade Benefits</h4>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Unlimited post enhancements</li>
-                  <li>• Advanced AI tone options</li>
-                  <li>• Virality prediction score</li>
-                  <li>• Priority support</li>
+                  <li>• Lifetime unlock — no recurring fees</li>
+                  <li>• Full virality predictor with actionable insights</li>
+                  <li>• Unlimited AI post enhancing included</li>
+                  <li>• Future upgrades to diagnostics bundled in</li>
                 </ul>
               </div>
             </div>
@@ -76,7 +82,7 @@ export const UsageLimitModal: React.FC<UsageLimitModalProps> = ({
           <div className="flex flex-col gap-3">
             <Button onClick={handleUpgrade} className="w-full">
               <Zap className="h-4 w-4 mr-2" />
-              Upgrade Now - Unlimited Access
+              Unlock Virality for $4.99
             </Button>
             <Button variant="outline" onClick={onClose} className="w-full">
               Continue with Current Plan

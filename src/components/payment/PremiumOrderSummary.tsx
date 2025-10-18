@@ -28,11 +28,11 @@ export const PremiumOrderSummary = ({
           </div>
           <div className="text-right">
             <div className="text-lg font-bold text-gray-900">
-              ${finalPrice.toFixed(2)}/month
+              ${finalPrice.toFixed(2)}{planDetails.period === "lifetime" ? " one-time" : "/" + planDetails.period}
             </div>
             {appliedCoupon && (
               <div className="text-sm text-gray-500 line-through">
-                ${originalPrice.toFixed(2)}
+                ${originalPrice.toFixed(2)}{planDetails.period === "lifetime" ? " one-time" : ""}
               </div>
             )}
           </div>
@@ -59,7 +59,7 @@ export const PremiumOrderSummary = ({
             </div>
           </div>
           <div className="text-sm text-gray-500 mt-1">
-            Billed monthly • Cancel anytime
+            {planDetails.period === "lifetime" ? "One-time payment • Lifetime access" : "Billed " + planDetails.period + " • Cancel anytime"}
           </div>
         </div>
       </div>

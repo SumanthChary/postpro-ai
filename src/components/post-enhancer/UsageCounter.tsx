@@ -28,17 +28,18 @@ const UsageCounter = () => {
       try {
         const { data, error } = await supabase
           .from('subscribers')
-          .select('monthly_post_count, plan_name')
+          .select(`
+            monthly_post_count,
+            plan_name,
+            subscription_limits (monthly_post_limit)
+          `)
           .eq('user_id', user.id)
           .single();
 
         if (error) throw error;
 
         if (isMounted && data) {
-          let limit = 30;
-          if (data.plan_name === 'PROFESSIONAL' || data.plan_name === 'PRO ANNUAL' || data.plan_name === 'LIFETIME CREATOR') {
-            limit = -1;
-          }
+          const limit = data.subscription_limits?.monthly_post_limit ?? (data.plan_name ? -1 : 0);
 
           setUsage({
             current: data.monthly_post_count || 0,
@@ -68,6 +69,29 @@ const UsageCounter = () => {
 
   // Only show for limited plans (not unlimited)
   if (usage.limit === -1) return null;
+
+  if (usage.limit === 0) {
+    return (
+      <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-amber-900">
+            No active plan detected
+          </span>
+        </div>
+        <p className="text-sm text-amber-800">
+          Unlock the Post Enhancer for a one-time payment to start enhancing posts.
+        </p>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => navigate('/pricing')}
+          className="mt-3"
+        >
+          View Lifetime Plans
+        </Button>
+      </div>
+    );
+  }
 
   const percentage = (usage.current / usage.limit) * 100;
   const remaining = usage.limit - usage.current;

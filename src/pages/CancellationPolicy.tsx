@@ -101,10 +101,10 @@ const CancellationPolicy = () => {
                 <div className="flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <strong className="text-orange-900">No Automatic Renewal</strong>
+                    <strong className="text-orange-900">No Renewals to Worry About</strong>
                     <p className="text-sm text-orange-800 mt-1">
-                      After cancellation, your subscription will not renew, and you won't be charged again. 
-                      Your account will automatically downgrade to the free trial limits (if available) or lose access.
+                      PostPro AI plans are one-time purchases. If you request a cancellation or refund within the eligibility window, 
+                      your access is removed immediately and no further charges occur.
                     </p>
                   </div>
                 </div>
@@ -116,36 +116,19 @@ const CancellationPolicy = () => {
             <h2 className="text-2xl font-bold mb-4">Cancellation by Plan Type</h2>
             <div className="space-y-4">
               <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="font-bold text-gray-900 mb-2">Starter Plan ($2.99/month)</h3>
+                <h3 className="font-bold text-gray-900 mb-2">Post Enhancer ($2.99 one-time)</h3>
                 <p className="text-sm text-gray-700">
-                  Cancel anytime. Access continues until the end of your billing cycle. 
-                  No refunds for partial months.
+                  Cancel within 7 days of purchase for a full refund. After 7 days, purchases are non-refundable, but you keep lifetime access.
                 </p>
               </div>
 
               <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="font-bold text-gray-900 mb-2">Professional Plan ($9.99/month)</h3>
+                <h3 className="font-bold text-gray-900 mb-2">Post Enhancer Plus ($4.99 one-time)</h3>
                 <p className="text-sm text-gray-700">
-                  Cancel anytime. Access continues until the end of your billing cycle. 
-                  No refunds for partial months.
+                  Includes virality insights. Cancel within 7 days for a full refund. After that, the purchase is final and access remains active for life.
                 </p>
               </div>
 
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="font-bold text-gray-900 mb-2">Annual Pro Plan ($79/year)</h3>
-                <p className="text-sm text-gray-700">
-                  You can cancel your annual plan, but it will remain active until the end of the 12-month period. 
-                  Partial refunds are not available unless requested within the 7-day money-back guarantee period.
-                </p>
-              </div>
-
-              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                <h3 className="font-bold text-gray-900 mb-2">Lifetime Creator Plan ($149)</h3>
-                <p className="text-sm text-gray-700">
-                  Lifetime plans cannot be cancelled as they are one-time purchases with permanent access. 
-                  However, you can request account deletion, which will remove all your data and access.
-                </p>
-              </div>
             </div>
           </section>
 
