@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, Clock, Sparkles } from "lucide-react";
 import type { EnhancePostResponse } from "@/components/post-enhancer/types";
+
+type PostEnhancementRow = Database["public"]["Tables"]["post_enhancements"]["Row"];
 
 interface EnhancementHistoryItem {
   id: string;
@@ -21,6 +24,13 @@ interface EnhancementHistoryItem {
   quick_wins: string[];
   created_at: string;
 }
+
+const toStringArray = (value: Database["public"]["Tables"]["post_enhancements"]["Row"]["insights"]): string[] => {
+  if (Array.isArray(value)) {
+    return value.filter((item): item is string => typeof item === "string");
+  }
+  return [];
+};
 
 const formatDate = (timestamp: string) => {
   const date = new Date(timestamp);
@@ -88,7 +98,19 @@ const PostHistory = () => {
       setError("Failed to load enhancement history. Please try again.");
       setItems([]);
     } else {
-      setItems((data as EnhancementHistoryItem[]) ?? []);
+      const parsed = (data ?? []).map((item: PostEnhancementRow) => ({
+        id: item.id,
+        original_post: item.original_post,
+        enhanced_platforms: (item.enhanced_platforms ?? {}) as EnhancePostResponse["platforms"],
+        category: item.category,
+        style_tone: item.style_tone,
+        virality_score: item.virality_score,
+        insights: toStringArray(item.insights),
+        view_reasons: toStringArray(item.view_reasons),
+        quick_wins: toStringArray(item.quick_wins),
+        created_at: item.created_at,
+      }));
+      setItems(parsed);
     }
 
     setLoading(false);

@@ -1,14 +1,12 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { History, LinkedinIcon, Sparkles, SparklesIcon, Loader2Icon, ClipboardIcon, BrainIcon, UsersIcon, TrendingUpIcon, PenToolIcon, SmileIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { SparklesIcon, RocketIcon, Loader2Icon, ClipboardIcon, Sparkles } from "lucide-react";
-import { LinkedinIcon } from "lucide-react";
-import { BrainIcon, UsersIcon, TrendingUpIcon, PenToolIcon, SmileIcon } from "lucide-react";
-import { EnhancerFormProps } from "../types";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
-import UsageCounter from "../UsageCounter";
+import { EnhancerFormProps } from "../types";
 export const EnhancerForm = ({
   post,
   category,
@@ -51,7 +49,8 @@ export const EnhancerForm = ({
       });
     }
   };
-  return <div className="bg-white rounded-lg sm:rounded-xl lg:rounded-2xl shadow-lg border border-gray-200/50 overflow-hidden w-full">
+  return <TooltipProvider>
+    <div className="bg-white rounded-lg sm:rounded-xl lg:rounded-2xl shadow-lg border border-gray-200/50 overflow-hidden w-full">
       {/* Header */}
       <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 border-b border-gray-200/50">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -59,15 +58,24 @@ export const EnhancerForm = ({
             <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">Post Enhancer</h2>
             <LinkedinIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#0077B5]" />
           </div>
-          <Link to="/post-history" className="w-full sm:w-auto">
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full justify-center text-sm text-gray-600 hover:text-gray-900"
-            >
-              View enhancement history
-            </Button>
-          </Link>
+          <div className="flex items-center justify-between sm:justify-end gap-3">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="text-gray-600 hover:text-gray-900"
+                  asChild
+                >
+                  <Link to="/post-history" aria-label="View enhancement history">
+                    <History className="w-5 h-5" />
+                    <span className="sr-only">View enhancement history</span>
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">View enhancement history</TooltipContent>
+            </Tooltip>
+          </div>
         </div>
       </div>
 
@@ -189,5 +197,6 @@ export const EnhancerForm = ({
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  </TooltipProvider>;
 };

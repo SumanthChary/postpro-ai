@@ -1,12 +1,17 @@
-
+// deno-lint-ignore-file no-explicit-any
+// @ts-ignore: provided by Deno runtime
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
+// @ts-ignore: provided by Deno runtime
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { corsHeaders } from './config.ts';
 import { checkUserPlanLimits, logPostEnhancement } from './userService.ts';
 import { ContentGenerator } from './contentGenerator.ts';
 import { generatePostDiagnostics } from '../_shared/postDiagnostics.ts';
 
-serve(async (req) => {
+// @ts-ignore: Deno global available at runtime
+declare const Deno: any;
+
+serve(async (req: Request) => {
   console.log('Request received:', req.method, req.url);
   
   if (req.method === 'OPTIONS') {
@@ -47,7 +52,7 @@ serve(async (req) => {
       });
     }
 
-    const apiKey = Deno.env.get('GOOGLE_AI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY');
+  const apiKey = Deno.env.get('GOOGLE_AI_API_KEY') || Deno.env.get('GOOGLE_AI_KEY');
     if (!apiKey) {
       console.error('Google AI API key not found in environment variables');
       return new Response(JSON.stringify({ error: 'API configuration error - missing API key' }), {
@@ -78,6 +83,10 @@ serve(async (req) => {
       const contentGenerator = new ContentGenerator(apiKey);
       const platforms = await contentGenerator.generateAllPlatforms(post, category, styleTone);
 
+      const platformRecord = Object.fromEntries(
+        Object.entries(platforms).map(([key, value]) => [key, value ?? undefined])
+      ) as Record<string, string | undefined>;
+
       const diagnostics = generatePostDiagnostics({
         originalPost: post,
         category,
@@ -85,12 +94,23 @@ serve(async (req) => {
         enhancedPlatforms: platforms,
       });
 
+      const diagnosticRecord = {
+        viralityScore: diagnostics.viralityScore,
+        insights: diagnostics.insights,
+        viewReasons: diagnostics.viewReasons,
+        quickWins: diagnostics.quickWins,
+        highlights: diagnostics.highlights,
+        engagementMetrics: Object.fromEntries(
+          Object.entries(diagnostics.engagementMetrics).map(([key, value]) => [key, Number(value)])
+        ),
+      };
+
       await logPostEnhancement(userId, {
         originalPost: post,
-        enhancedPlatforms: platforms,
+        enhancedPlatforms: platformRecord,
         category,
         styleTone,
-        diagnostics,
+        diagnostics: diagnosticRecord,
       });
 
       console.log('Successfully enhanced post for platforms:', Object.keys(platforms));

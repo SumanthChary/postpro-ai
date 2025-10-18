@@ -80,6 +80,54 @@ export type Database = {
         }
         Relationships: []
       }
+      post_enhancements: {
+        Row: {
+          category: string
+          created_at: string
+          engagement_metrics: Json
+          enhanced_platforms: Json
+          highlights: Json
+          id: string
+          insights: Json
+          original_post: string
+          quick_wins: Json
+          style_tone: string
+          user_id: string
+          view_reasons: Json
+          virality_score: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          engagement_metrics?: Json
+          enhanced_platforms?: Json
+          highlights?: Json
+          id?: string
+          insights?: Json
+          original_post: string
+          quick_wins?: Json
+          style_tone: string
+          user_id: string
+          view_reasons?: Json
+          virality_score?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          engagement_metrics?: Json
+          enhanced_platforms?: Json
+          highlights?: Json
+          id?: string
+          insights?: Json
+          original_post?: string
+          quick_wins?: Json
+          style_tone?: string
+          user_id?: string
+          view_reasons?: Json
+          virality_score?: number | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

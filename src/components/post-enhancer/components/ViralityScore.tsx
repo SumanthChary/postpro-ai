@@ -10,11 +10,45 @@ import ViralityGauge from '../virality/ViralityGauge';
 import EngagementBreakdown from '../virality/EngagementBreakdown';
 import { edgeFunctionCache } from "@/utils/edge-function-cache";
 import type { EnhancePostResponse } from "../types";
+
+type Diagnostics = NonNullable<EnhancePostResponse["diagnostics"]>;
+type EngagementMetrics = Diagnostics["engagementMetrics"];
+
+const emptyMetrics = (): EngagementMetrics => ({
+  comments: 0,
+  likes: 0,
+  shares: 0,
+  views: 0,
+  timeSpent: 0,
+  clickThrough: 0,
+  saveRate: 0,
+  viralCoefficient: 0,
+});
+
+const normalizeEngagementMetrics = (
+  value: Record<string, number> | EngagementMetrics | null | undefined
+): EngagementMetrics | null => {
+  if (!value) {
+    return null;
+  }
+
+  const defaults = emptyMetrics();
+  return {
+    comments: value.comments ?? defaults.comments,
+    likes: value.likes ?? defaults.likes,
+    shares: value.shares ?? defaults.shares,
+    views: value.views ?? defaults.views,
+    timeSpent: value.timeSpent ?? defaults.timeSpent,
+    clickThrough: value.clickThrough ?? defaults.clickThrough,
+    saveRate: value.saveRate ?? defaults.saveRate,
+    viralCoefficient: value.viralCoefficient ?? defaults.viralCoefficient,
+  };
+};
 interface ViralityScoreProps {
   post: string;
   category: string;
   autoAnalyze?: boolean;
-  initialDiagnostics?: EnhancePostResponse['diagnostics'] | null;
+  initialDiagnostics?: EnhancePostResponse["diagnostics"] | null;
 }
 export function ViralityScore({
   post,
@@ -28,7 +62,7 @@ export function ViralityScore({
   const [analyzing, setAnalyzing] = useState(false);
   const [viewReasons, setViewReasons] = useState<string[]>([]);
   const [quickWins, setQuickWins] = useState<string[]>([]);
-  const [engagementMetrics, setEngagementMetrics] = useState<EnhancePostResponse['diagnostics'] extends { engagementMetrics: infer T } ? T : null>(null);
+  const [engagementMetrics, setEngagementMetrics] = useState<EngagementMetrics | null>(null);
   const {
     toast
   } = useToast();
@@ -101,7 +135,7 @@ export function ViralityScore({
   setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
   setViewReasons(Array.isArray(data.viewReasons) ? data.viewReasons.slice(0, 3) : []);
   setQuickWins(Array.isArray(data.quickWins) ? data.quickWins.slice(0, 3) : []);
-  setEngagementMetrics(data.engagementMetrics ?? null);
+  setEngagementMetrics(normalizeEngagementMetrics(data.engagementMetrics));
         setLoading(false);
         setAnalyzing(false);
         return;
@@ -145,7 +179,7 @@ export function ViralityScore({
   setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
   setViewReasons(Array.isArray(data.viewReasons) ? data.viewReasons.slice(0, 3) : []);
   setQuickWins(Array.isArray(data.quickWins) ? data.quickWins.slice(0, 3) : []);
-  setEngagementMetrics(data.engagementMetrics ?? null);
+  setEngagementMetrics(normalizeEngagementMetrics(data.engagementMetrics));
       toast({
         title: "🎯 Analysis Complete!",
         description: finalScore >= 90 ? "Excellent viral potential!" : finalScore >= 70 ? "Great engagement score!" : "Good foundation - check tips below",
@@ -162,7 +196,7 @@ export function ViralityScore({
       setInsights([]);
       setViewReasons([]);
       setQuickWins([]);
-      setEngagementMetrics(null);
+  setEngagementMetrics(null);
     } finally {
       setLoading(false);
       setAnalyzing(false);
@@ -176,7 +210,7 @@ export function ViralityScore({
       setInsights(initialDiagnostics.insights.slice(0, 3));
       setViewReasons(initialDiagnostics.viewReasons.slice(0, 3));
       setQuickWins(initialDiagnostics.quickWins.slice(0, 3));
-      setEngagementMetrics(initialDiagnostics.engagementMetrics ?? null);
+  setEngagementMetrics(normalizeEngagementMetrics(initialDiagnostics.engagementMetrics));
       setLoading(false);
       setAnalyzing(false);
       return;
