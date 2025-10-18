@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, TrendingUp, AlertCircle, Zap, Target, Lightbulb, ArrowRight } from "lucide-react";
+import { Sparkles, TrendingUp, AlertCircle, Zap, Target, Lightbulb, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import ViralityGauge from '../virality/ViralityGauge';
 import EngagementBreakdown from '../virality/EngagementBreakdown';
 import { edgeFunctionCache } from "@/utils/edge-function-cache";
 import type { EnhancePostResponse } from "../types";
@@ -44,6 +41,31 @@ const normalizeEngagementMetrics = (
     viralCoefficient: value.viralCoefficient ?? defaults.viralCoefficient,
   };
 };
+
+type Watchout = {
+  severity: "fix" | "boost" | "keep";
+  label: string;
+  message: string;
+  raw: string;
+};
+
+const parseWatchout = (reason: string): Watchout => {
+  const [rawLabel, rawMessage] = reason.includes("→") ? reason.split("→") : ["Fix now", reason];
+  const normalizedLabel = rawLabel.trim().toLowerCase();
+  let severity: Watchout["severity"] = "keep";
+
+  if (normalizedLabel.includes("fix")) {
+    severity = "fix";
+  } else if (normalizedLabel.includes("boost") || normalizedLabel.includes("test") || normalizedLabel.includes("next")) {
+    severity = "boost";
+  }
+
+  const label = severity === "fix" ? "Fix now" : severity === "boost" ? "Boost" : "Keep";
+  const message = (rawMessage ?? reason).trim();
+
+  return { severity, label, message, raw: reason };
+};
+
 interface ViralityScoreProps {
   post: string;
   category: string;
@@ -62,6 +84,8 @@ export function ViralityScore({
   const [analyzing, setAnalyzing] = useState(false);
   const [viewReasons, setViewReasons] = useState<string[]>([]);
   const [quickWins, setQuickWins] = useState<string[]>([]);
+  const [highlights, setHighlights] = useState<string[]>([]);
+  const [showWatchouts, setShowWatchouts] = useState(false);
   const [engagementMetrics, setEngagementMetrics] = useState<EngagementMetrics | null>(null);
   const {
     toast
@@ -90,6 +114,23 @@ export function ViralityScore({
     if (score >= 50) return "bg-gradient-to-r from-amber-500 to-orange-600";
     return "bg-gradient-to-r from-slate-400 to-slate-500";
   };
+  const watchouts = useMemo(() => viewReasons.map(parseWatchout), [viewReasons]);
+  const hasWatchouts = watchouts.length > 0;
+  const gaugeBreakdown = useMemo(() => {
+    if (!engagementMetrics) {
+      return null;
+    }
+
+    const engagement = Math.min(100, Math.round((engagementMetrics.comments + engagementMetrics.likes + engagementMetrics.timeSpent) / 3));
+    const reach = Math.min(100, Math.round((engagementMetrics.views + engagementMetrics.clickThrough) / 2));
+    const shareability = Math.min(100, Math.round((engagementMetrics.shares + engagementMetrics.saveRate + engagementMetrics.viralCoefficient) / 3));
+
+    return {
+      engagement,
+      reach,
+      shareability
+    };
+  }, [engagementMetrics]);
   const analyzePotential = async () => {
     if (!post.trim()) {
       toast({
@@ -109,6 +150,7 @@ export function ViralityScore({
     }
     setLoading(true);
     setAnalyzing(true);
+    setShowWatchouts(false);
     try {
       // Check cache first
       const cacheKey = edgeFunctionCache.generateKey('analyze-virality', { 
@@ -120,7 +162,7 @@ export function ViralityScore({
       if (cached) {
         const data = cached as any;
         let finalScore = data.score || 75;
-        
+
         // Apply same boosting logic
         if (post.length > 300) finalScore += 10;
         if (post.includes('✨') || post.includes('🚀') || post.includes('💡')) finalScore += 8;
@@ -130,12 +172,13 @@ export function ViralityScore({
         if (post.length > 200 && finalScore < 85) {
           finalScore = 85 + Math.random() * 10;
         }
-        
-  setScore(Math.min(100, Math.round(finalScore)));
-  setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
-  setViewReasons(Array.isArray(data.viewReasons) ? data.viewReasons.slice(0, 3) : []);
-  setQuickWins(Array.isArray(data.quickWins) ? data.quickWins.slice(0, 3) : []);
-  setEngagementMetrics(normalizeEngagementMetrics(data.engagementMetrics));
+
+        setScore(Math.min(100, Math.round(finalScore)));
+        setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
+        setViewReasons(Array.isArray(data.viewReasons) ? data.viewReasons.slice(0, 3) : []);
+        setQuickWins(Array.isArray(data.quickWins) ? data.quickWins.slice(0, 3) : []);
+        setHighlights(Array.isArray(data.highlights) ? data.highlights.slice(0, 3) : []);
+        setEngagementMetrics(normalizeEngagementMetrics(data.engagementMetrics));
         setLoading(false);
         setAnalyzing(false);
         return;
@@ -175,11 +218,12 @@ export function ViralityScore({
         finalScore = 85 + Math.random() * 10; // 85-95%
       }
       
-  setScore(Math.min(100, Math.round(finalScore)));
-  setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
-  setViewReasons(Array.isArray(data.viewReasons) ? data.viewReasons.slice(0, 3) : []);
-  setQuickWins(Array.isArray(data.quickWins) ? data.quickWins.slice(0, 3) : []);
-  setEngagementMetrics(normalizeEngagementMetrics(data.engagementMetrics));
+    setScore(Math.min(100, Math.round(finalScore)));
+    setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
+    setViewReasons(Array.isArray(data.viewReasons) ? data.viewReasons.slice(0, 3) : []);
+    setQuickWins(Array.isArray(data.quickWins) ? data.quickWins.slice(0, 3) : []);
+    setHighlights(Array.isArray(data.highlights) ? data.highlights.slice(0, 3) : []);
+    setEngagementMetrics(normalizeEngagementMetrics(data.engagementMetrics));
       toast({
         title: "🎯 Analysis Complete!",
         description: finalScore >= 90 ? "Excellent viral potential!" : finalScore >= 70 ? "Great engagement score!" : "Good foundation - check tips below",
@@ -196,7 +240,9 @@ export function ViralityScore({
       setInsights([]);
       setViewReasons([]);
       setQuickWins([]);
-  setEngagementMetrics(null);
+      setHighlights([]);
+      setEngagementMetrics(null);
+    setShowWatchouts(false);
     } finally {
       setLoading(false);
       setAnalyzing(false);
@@ -210,7 +256,9 @@ export function ViralityScore({
       setInsights(initialDiagnostics.insights.slice(0, 3));
       setViewReasons(initialDiagnostics.viewReasons.slice(0, 3));
       setQuickWins(initialDiagnostics.quickWins.slice(0, 3));
-  setEngagementMetrics(normalizeEngagementMetrics(initialDiagnostics.engagementMetrics));
+      setHighlights(initialDiagnostics.highlights?.slice(0, 3) ?? []);
+      setEngagementMetrics(normalizeEngagementMetrics(initialDiagnostics.engagementMetrics));
+      setShowWatchouts(false);
       setLoading(false);
       setAnalyzing(false);
       return;
@@ -249,48 +297,80 @@ export function ViralityScore({
       </div>
 
       {/* Results */}
-      {score !== null && <div className="p-8">
-          <div className="text-center mb-6">
-            <div className={`text-6xl font-bold ${getScoreColor(score)} mb-3`}>
+      {score !== null && (
+        <div className="p-8 space-y-6">
+          <div className="flex flex-col items-center gap-3 text-center">
+            <div className={`text-6xl font-bold ${getScoreColor(score)}`}>
               {score}%
             </div>
-            
+            <Badge variant={getBadgeVariant(score)} className="px-3 py-1 text-sm">
+              {getScoreBadge(score)}
+            </Badge>
           </div>
-          
-          <div className="w-full bg-gray-100 rounded-full h-4 mb-6 overflow-hidden">
-            <div className={`h-4 rounded-full transition-all duration-1000 ${getProgressBarColor(score)}`} style={{
-          width: `${score}%`
-        }} />
+
+          <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
+            <div
+              className={`h-4 rounded-full transition-all duration-1000 ${getProgressBarColor(score)}`}
+              style={{ width: `${score}%` }}
+            />
           </div>
-          
-          <p className="text-center text-gray-600 mb-6">
+
+          <p className="text-center text-sm text-muted-foreground">
             {score >= 90 ? "🔥 Exceptional viral potential!" : score >= 70 ? "✨ Strong engagement expected!" : score >= 50 ? "📈 Good foundation for growth!" : "💡 Optimization recommended"}
           </p>
 
-          {insights.length > 0 && <div className="bg-blue-50 rounded-lg p-6">
-              <h4 className="flex items-center gap-2 text-lg font-semibold text-blue-900 mb-4">
+          {gaugeBreakdown && (
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[{
+                label: "Engagement readiness",
+                value: gaugeBreakdown.engagement
+              }, {
+                label: "Reach projection",
+                value: gaugeBreakdown.reach
+              }, {
+                label: "Shareability",
+                value: gaugeBreakdown.shareability
+              }].map((metric) => (
+                <div key={metric.label} className="rounded-lg border border-slate-100 bg-slate-50/60 p-4 text-center">
+                  <span className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                    {metric.label}
+                  </span>
+                  <div className="mt-2 text-2xl font-semibold text-slate-800">
+                    {metric.value}%
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {insights.length > 0 && (
+            <div className="rounded-lg border border-blue-100 bg-blue-50 p-6">
+              <h4 className="mb-4 flex items-center gap-2 text-base font-semibold text-blue-900">
                 <Lightbulb className="h-5 w-5" />
-                Optimization Tips
+                Optimization tips
               </h4>
               <div className="space-y-3">
-                {insights.map((insight, index) => <div key={index} className="flex items-start gap-3 text-blue-800">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                {insights.map((insight, index) => (
+                  <div key={index} className="flex items-start gap-3 text-blue-800">
+                    <div className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-500" />
                     <span className="text-sm leading-relaxed">{insight}</span>
-                  </div>)}
+                  </div>
+                ))}
               </div>
-            </div>}
+            </div>
+          )}
 
-          {viewReasons.length > 0 && (
-            <div className="mt-6 rounded-lg border border-destructive/30 bg-destructive/5 p-6">
-              <h4 className="mb-3 flex items-center gap-2 text-base font-semibold text-destructive">
-                <AlertCircle className="h-5 w-5" />
-                Why reach might stall
+          {highlights.length > 0 && (
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-6">
+              <h4 className="mb-3 flex items-center gap-2 text-base font-semibold text-emerald-700">
+                <Target className="h-5 w-5" />
+                What is already working
               </h4>
               <ul className="space-y-2">
-                {viewReasons.map((reason, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm text-destructive">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-destructive" />
-                    <span>{reason}</span>
+                {highlights.map((item, index) => (
+                  <li key={index} className="flex items-start gap-2 text-sm text-emerald-800">
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -298,7 +378,7 @@ export function ViralityScore({
           )}
 
           {quickWins.length > 0 && (
-            <div className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 p-6">
+            <div className="rounded-lg border border-emerald-200/60 bg-emerald-50/60 p-6">
               <h4 className="mb-3 flex items-center gap-2 text-base font-semibold text-emerald-700">
                 <Zap className="h-5 w-5" />
                 Quick wins to test next
@@ -314,11 +394,54 @@ export function ViralityScore({
             </div>
           )}
 
+          {hasWatchouts && (
+            <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-6">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-sm font-semibold text-destructive">
+                  <AlertCircle className="h-5 w-5" />
+                  Potential slowdowns
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 px-2 text-xs text-destructive hover:text-destructive"
+                  onClick={() => setShowWatchouts((prev) => !prev)}
+                >
+                  {showWatchouts ? "Hide checks" : "Show checks"}
+                </Button>
+              </div>
+              {showWatchouts ? (
+                <ul className="mt-3 space-y-3">
+                  {watchouts.map((item, index) => (
+                    <li key={index} className="flex flex-col gap-1 rounded-md bg-white/80 p-3 text-sm text-muted-foreground shadow-sm">
+                      <div className="flex items-center gap-2">
+                        <Badge
+                          variant={item.severity === "fix" ? "destructive" : item.severity === "boost" ? "default" : "secondary"}
+                          className="text-xs"
+                        >
+                          {item.label}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground/70">{item.raw.split("→")[0]?.trim()}</span>
+                      </div>
+                      <span className="leading-relaxed text-slate-700">{item.message}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-3 flex items-center gap-2 text-xs text-destructive/80">
+                  <EyeOff className="h-3.5 w-3.5" />
+                  Checks tucked away. Open to see what to adjust.
+                </p>
+              )}
+            </div>
+          )}
+
           {engagementMetrics && (
-            <div className="mt-6">
+            <div>
               <EngagementBreakdown metrics={engagementMetrics} />
             </div>
           )}
-        </div>}
+        </div>
+      )}
     </div>;
 }

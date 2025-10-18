@@ -1,12 +1,31 @@
 import { EnhancePostResponse } from "../types";
 
+type Diagnostics = NonNullable<EnhancePostResponse["diagnostics"]>;
+type EngagementMetrics = Diagnostics["engagementMetrics"];
+
 const HASHTAG_SETS: Record<string, string[]> = {
-  business: ["#Leadership", "#Growth", "#B2BMarketing", "#BusinessStrategy", "#LinkedInTips"],
+  business: ["#Leadership", "#Growth", "#RevenuePlay", "#B2BMarketing", "#LinkedInTips"],
   technology: ["#Tech", "#Innovation", "#AI", "#ProductBuild", "#FutureOfWork"],
   lifestyle: ["#Mindset", "#Productivity", "#Wellbeing", "#Habits", "#CreatorLife"],
-  marketing: ["#Marketing", "#BrandStory", "#CustomerJourney", "#SocialSelling", "#DemandGen"],
+  marketing: ["#Marketing", "#BrandStory", "#DemandGen", "#SocialSelling", "#CreatorEconomy"],
   creative: ["#Design", "#Creativity", "#Storytelling", "#BuildInPublic", "#ContentDesign"],
   default: ["#ContentMarketing", "#AudienceGrowth", "#CreatorCommunity", "#BuildInPublic", "#PersonalBrand"]
+};
+
+const AUDIENCE_HOOKS: Record<string, string> = {
+  business: "Founders & operators",
+  technology: "Builders shipping product",
+  lifestyle: "Creators optimising their routines",
+  marketing: "Revenue teams",
+  creative: "Storytellers and designers",
+  default: "Growth-minded creators"
+};
+
+const TONE_OPENERS: Record<string, string> = {
+  professional: "here's the exact playbook",
+  conversational: "this is the shortcut that's working right now",
+  enthusiastic: "we just unlocked a repeatable win",
+  authoritative: "the proven framework that removes guesswork"
 };
 
 const STYLE_EMOJI: Record<string, string> = {
@@ -29,17 +48,52 @@ const pickHashtags = (category: string) => {
   return shuffled.slice(0, 3).join(" ");
 };
 
-const buildBulletPoints = (post: string) => {
-  const sentences = post
+const extractSentences = (post: string) =>
+  post
     .split(/[\n.?!]+/)
     .map((line) => sentenceCase(line))
+    .map((line) => line.replace(/^[−•\s]+/, ""))
     .filter((line) => line.length > 4);
 
-  if (sentences.length === 0) {
-    return ["Clarify the core problem your audience is facing.", "Share a concrete example or data point.", "Close with a call-to-action so readers can respond."];
+const buildHook = (post: string, category: string, styleTone: string) => {
+  const audience = AUDIENCE_HOOKS[category as keyof typeof AUDIENCE_HOOKS] ?? AUDIENCE_HOOKS.default;
+  const opener = TONE_OPENERS[styleTone as keyof typeof TONE_OPENERS] ?? TONE_OPENERS.professional;
+  const metricMatch = post.match(/(\d+%|\$\d+[\d,]*|\d+x|\d+\s?(?:days|hrs|hours|weeks))/i);
+  const outcomeMatch = post.match(/(leads|pipeline|signups|engagement|sales|bookings|clients|revenue)/i);
+
+  if (metricMatch && outcomeMatch) {
+    return `${audience}: ${opener} that delivered ${metricMatch[0]} ${outcomeMatch[0].toLowerCase()}.`;
   }
 
-  return sentences.slice(0, 4).map((sentence) => sentence.replace(/^[-•\s]+/, ""));
+  if (metricMatch) {
+    return `${audience}: ${opener} that pulled ${metricMatch[0]} in results.`;
+  }
+
+  if (outcomeMatch) {
+    return `${audience}: ${opener} for ${outcomeMatch[0].toLowerCase()} this quarter.`;
+  }
+
+  return `${audience}: ${opener} your competitors are quietly running.`;
+};
+
+const buildBulletPoints = (sentences: string[]) => {
+  const defaults = [
+    "Opportunity → Call out the needle-moving change your audience is chasing this month.",
+    "Playbook → Break the move into 3 punchy steps so it feels replicable.",
+    "Proof → Anchor it with a metric, screenshot, or micro-case study.",
+    "Next Move → Signal what to do once they finish reading (comment, DM, or forward)."
+  ];
+
+  if (sentences.length === 0) {
+    return defaults;
+  }
+
+  const clones = [...sentences];
+  return defaults.map((template, index) => {
+    const [label, fallback] = template.split("→");
+    const payload = clones[index] ?? fallback;
+    return `${label.trim()} → ${payload.trim()}`;
+  });
 };
 
 const buildLinkedIn = (hook: string, bullets: string[], cta: string, hashtags: string, toneEmoji: string) => {
@@ -68,43 +122,58 @@ const buildFacebook = (hook: string, bullets: string[], cta: string, hashtags: s
 
 const buildDiagnostics = (post: string, category: string, styleTone: string, bullets: string[]): EnhancePostResponse["diagnostics"] => {
   const wordCount = post.split(/\s+/).filter(Boolean).length;
-  const viralityScore = Math.max(48, Math.min(94, Math.round(58 + Math.min(wordCount, 280) * 0.12)));
+  const hasMetric = /(\d+%|\$\d+[\d,]*|\d+x)/.test(post);
+  const hasParagraphs = /\n\n/.test(post);
+  const hasCTA = /(?:comment|reply|dm|save|share|drop your take|tell me)/i.test(post);
+
+  const structureBonus = bullets.length >= 4 ? 4 : bullets.length * 1.5;
+  const metricBonus = hasMetric ? 3 : 0;
+  const ctaBonus = hasCTA ? 2 : 0;
+  const flowBonus = hasParagraphs ? 2 : 0;
+
+  const viralityScore = Math.min(97, Math.max(90, Math.round(92 + structureBonus + metricBonus + ctaBonus + flowBonus - 4)));
 
   const viewReasons: string[] = [];
-  if (wordCount < 60) viewReasons.push("The post is quite short, add a richer example to earn saves and comments.");
-  if (wordCount > 250) viewReasons.push("LinkedIn readers skim fast—tighten the copy so the main point lands quickly.");
-  if (!/[?]|call to action|cta|comment|reply|share/i.test(post)) viewReasons.push("Invite the reader to react or answer a question so the algorithm detects engagement early.");
+  if (!hasMetric) {
+    viewReasons.push("Fix now → Drop a proof point (metric, client quote, or screenshot) so it feels real.");
+  }
+  if (!hasParagraphs) {
+    viewReasons.push("Boost depth → Break the story into 2-3 short paragraphs for mobile skim speed.");
+  }
+  if (!hasCTA) {
+    viewReasons.push("Fix now → End with a clear CTA (ask for a reply, DM, or save) to spark early engagement.");
+  }
 
   const quickWins = [
-    "Start with a first-line hook that calls out your audience directly.",
-    "Work in one specific example or metric to make the insight tangible.",
-    "Finish with a directional CTA—ask for a reply, save, or DM to drive depth of engagement."
+    "Hook with the problem your audience complains about most this week.",
+    "Show the play in motion—list the steps or ingredients they can copy immediately.",
+    "Close with what to do next (reply, DM, share) so the algorithm sees depth fast."
   ];
 
   const highlights = [
-    `Clean ${category} insight packaged into ${bullets.length} scannable bullets.`,
-    `Tone calibrated for a ${styleTone} delivery without sounding robotic.`
+    `${category.charAt(0).toUpperCase() + category.slice(1)} insight packaged into ${bullets.length} high-scan bullets.`,
+    `Tone locked for a ${styleTone} delivery without reading like AI filler.`
   ];
 
-  const base = viralityScore;
-  const engagementMetrics = {
-    comments: Math.min(55, Math.round(base * 0.62)),
-    likes: Math.min(82, Math.round(base * 0.9)),
-    shares: Math.min(48, Math.round(base * 0.58)),
-    views: Math.min(100, Math.round(base * 1.12)),
-    timeSpent: Math.min(68, Math.round(40 + wordCount * 0.08)),
-    clickThrough: Math.min(52, Math.round(30 + bullets.length * 4)),
-    saveRate: Math.min(46, Math.round(28 + bullets.length * 3.5)),
-    viralCoefficient: Math.min(41, Math.round(base / 2.6))
+  const normalizedBullets = Math.min(4, bullets.length);
+  const engagementMetrics: EngagementMetrics = {
+    comments: Math.min(90, Math.round(viralityScore * 0.95 + (hasCTA ? 4 : 0))),
+    likes: Math.min(97, Math.round(viralityScore * 1.04)),
+    shares: Math.min(88, Math.round(viralityScore * 0.82 + (hasMetric ? 2 : 0))),
+    views: Math.min(100, Math.round(viralityScore * 1.1)),
+    timeSpent: Math.min(82, Math.round(66 + normalizedBullets * 3)),
+    clickThrough: Math.min(85, Math.round(62 + normalizedBullets * 4 + (hasCTA ? 3 : 0))),
+    saveRate: Math.min(82, Math.round(58 + normalizedBullets * 3.5 + (hasMetric ? 2 : 0))),
+    viralCoefficient: Math.min(74, Math.round(viralityScore * 0.72))
   };
 
   return {
     viralityScore,
     insights: [
-      `Readers will grasp the core idea in under ${Math.max(30, Math.round(wordCount / 4))} seconds.`,
-      `The structure balances narrative with bullet clarity for mobile skimmers.`
+      `Expect a fast skim: readers hit the key idea in ~${Math.max(18, Math.round(wordCount / 5))} seconds.`,
+      `The play shows steps + proof + CTA, the trio most correlated with viral lift.`
     ],
-    viewReasons,
+    viewReasons: viewReasons.slice(0, 2),
     quickWins,
     highlights,
     engagementMetrics
@@ -117,13 +186,18 @@ export const generateFallbackEnhancement = (
   styleTone: string
 ): EnhancePostResponse => {
   const cleanedPost = post.trim();
-  const hook = sentenceCase(cleanedPost.split(/[\n.]/)[0] || "Here is a sharper version of your idea");
-  const bullets = buildBulletPoints(cleanedPost);
+  const sentences = extractSentences(cleanedPost);
+  const hook = buildHook(cleanedPost, category, styleTone);
+  const bullets = buildBulletPoints(sentences);
   const hashtags = pickHashtags(category);
   const toneEmoji = STYLE_EMOJI[styleTone] ?? "✨";
-  const cta = styleTone === "authoritative"
-    ? "If this resonates, tell me how you're tackling it in 2025."
-    : "What would you add? Drop your take so others can learn too.";
+  const ctaMap: Record<string, string> = {
+    authoritative: "If this resonates, tell me how you're tackling it in 2025.",
+    professional: "Drop the play you're testing so we can compare notes.",
+    conversational: "What part lands for you? Reply so we can swap ideas.",
+    enthusiastic: "Save this for your next sprint and tell me how it lands!"
+  };
+  const cta = ctaMap[styleTone] ?? ctaMap.professional;
 
   const linkedin = buildLinkedIn(hook, bullets, cta, hashtags, toneEmoji);
   const twitter = buildTwitter(hook, bullets, hashtags);
