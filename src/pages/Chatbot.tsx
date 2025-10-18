@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ChatMessageList } from "@/components/ui/chat-message-list";
 import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from "@/components/ui/chat-bubble";
 import { ChatInput } from "@/components/ui/chat-input";
+import { generateChatFallbackResponse } from "@/components/chatbot/fallbackResponse";
 
 interface Message {
   id: number;
@@ -31,13 +32,14 @@ const Chatbot = () => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const userMessage: Message = {
-      id: messages.length + 1,
-      content: input,
-      sender: "user",
-    };
-    
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: prev.length + 1,
+        content: input,
+        sender: "user",
+      },
+    ]);
     setInput("");
     setIsLoading(true);
     
@@ -53,20 +55,39 @@ const Chatbot = () => {
       });
       
       if (error) throw error;
-      
-      const assistantMessage: Message = {
-        id: messages.length + 2,
-        content: data.response,
-        sender: "ai",
-      };
-      
-      setMessages((prev) => [...prev, assistantMessage]);
+      if (!data || typeof data !== "object") {
+        throw new Error("Invalid response format");
+      }
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      if (!data.response) {
+        throw new Error("No response returned");
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          content: data.response,
+          sender: "ai",
+        },
+      ]);
     } catch (error: any) {
       console.error('Chatbot error:', error);
+      const fallbackResponse = generateChatFallbackResponse(input);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          content: fallbackResponse,
+          sender: "ai",
+        },
+      ]);
       toast({
-        title: "Error",
-        description: "Failed to get a response. Please try again.",
-        variant: "destructive",
+        title: "Using quick-start assistance",
+        description: "The primary AI service is slow, so we generated a rapid playbook instead.",
+        variant: "default",
       });
     } finally {
       setIsLoading(false);

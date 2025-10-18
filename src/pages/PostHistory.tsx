@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle, Clock, Sparkles } from "lucide-react";
 import type { EnhancePostResponse } from "@/components/post-enhancer/types";
+import { loadEnhancementsLocally, type LocalEnhancementRecord } from "@/components/post-enhancer/services/localHistory";
 
 type PostEnhancementRow = Database["public"]["Tables"]["post_enhancements"]["Row"];
 
@@ -83,6 +84,19 @@ const PostHistory = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const mapLocalRecord = useCallback((record: LocalEnhancementRecord): EnhancementHistoryItem => ({
+    id: record.id,
+    original_post: record.original_post,
+    enhanced_platforms: record.enhanced_platforms,
+    category: record.category,
+    style_tone: record.style_tone,
+    virality_score: record.virality_score,
+    insights: record.insights ?? [],
+    view_reasons: record.view_reasons ?? [],
+    quick_wins: record.quick_wins ?? [],
+    created_at: record.created_at,
+  }), []);
+
   const fetchHistory = useCallback(async () => {
     if (!user) return;
     setLoading(true);
@@ -97,8 +111,14 @@ const PostHistory = () => {
 
     if (queryError) {
       console.error("Post history query failed", queryError);
-      setError("Failed to load enhancement history. Please try again.");
-      setItems([]);
+      const localRecords = loadEnhancementsLocally(user.id);
+      if (localRecords.length) {
+        setItems(localRecords.map(mapLocalRecord));
+        setError(null);
+      } else {
+        setError("Failed to load enhancement history. Please try again.");
+        setItems([]);
+      }
     } else {
       const parsed = (data ?? []).map((item: PostEnhancementRow) => ({
         id: item.id,
@@ -112,11 +132,17 @@ const PostHistory = () => {
         quick_wins: toStringArray(item.quick_wins),
         created_at: item.created_at,
       }));
-      setItems(parsed);
+
+      if (parsed.length === 0) {
+        const localRecords = loadEnhancementsLocally(user.id);
+        setItems(localRecords.length ? localRecords.map(mapLocalRecord) : []);
+      } else {
+        setItems(parsed);
+      }
     }
 
     setLoading(false);
-  }, [user]);
+  }, [user, mapLocalRecord]);
 
   useEffect(() => {
     if (user) {
