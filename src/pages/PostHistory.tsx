@@ -91,10 +91,12 @@ const PostHistory = () => {
     const { data, error: queryError } = await supabase
       .from("post_enhancements")
       .select("id, original_post, enhanced_platforms, category, style_tone, virality_score, insights, view_reasons, quick_wins, created_at")
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(50);
 
     if (queryError) {
+      console.error("Post history query failed", queryError);
       setError("Failed to load enhancement history. Please try again.");
       setItems([]);
     } else {
