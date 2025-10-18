@@ -1,21 +1,33 @@
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
+// @ts-ignore: provided by Deno runtime
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { generatePostDiagnostics } from "../_shared/postDiagnostics.ts";
+
+// deno-lint-ignore-file no-explicit-any
+// @ts-ignore: Deno runtime provides these globals
+declare const Deno: any;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-serve(async (req) => {
+serve(async (req: Request) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
+  let postContent = '';
+  let categoryValue = 'general';
+  let diagnostics: ReturnType<typeof generatePostDiagnostics> | null = null;
+
   try {
-    const requestData = await req.json();
+  const requestData = await req.json();
     const { post, category } = requestData;
+    postContent = post ?? '';
+    categoryValue = category || 'general';
     
     console.log("🔍 Received analyze-virality request:", { 
       postLength: post?.length, 
@@ -59,6 +71,12 @@ serve(async (req) => {
         }
       );
     }
+
+    diagnostics = generatePostDiagnostics({
+      originalPost: post,
+      category: categoryValue,
+      styleTone: 'professional',
+    });
 
     // Gemini API configuration
     const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
@@ -130,6 +148,9 @@ Make insights specific, actionable, and focused on viral growth tactics. No gene
         JSON.stringify({ 
           score: fallbackScore,
           insights: fallbackInsights,
+          viewReasons: diagnostics?.viewReasons ?? [],
+          engagementMetrics: diagnostics?.engagementMetrics ?? {},
+          quickWins: diagnostics?.quickWins ?? [],
           source: "fallback_analysis"
         }),
         {
@@ -178,6 +199,9 @@ Make insights specific, actionable, and focused on viral growth tactics. No gene
         JSON.stringify({
           score: Math.round(parsedResult.score),
           insights: parsedResult.insights.slice(0, 5), // Max 5 insights
+          viewReasons: diagnostics?.viewReasons ?? [],
+          engagementMetrics: diagnostics?.engagementMetrics ?? {},
+          quickWins: diagnostics?.quickWins ?? [],
           source: "ai_analysis"
         }),
         {
@@ -197,6 +221,9 @@ Make insights specific, actionable, and focused on viral growth tactics. No gene
         JSON.stringify({ 
           score: fallbackScore,
           insights: fallbackInsights,
+          viewReasons: diagnostics?.viewReasons ?? [],
+          engagementMetrics: diagnostics?.engagementMetrics ?? {},
+          quickWins: diagnostics?.quickWins ?? [],
           source: "fallback_after_parse_error"
         }),
         {
@@ -210,15 +237,19 @@ Make insights specific, actionable, and focused on viral growth tactics. No gene
     console.error('❌ Error in analyze-virality function:', error);
     
     // Final fallback
+    const fallbackDiagnostics = diagnostics ?? generatePostDiagnostics({
+      originalPost: postContent,
+      category: categoryValue,
+      styleTone: 'professional',
+    });
+
     return new Response(
       JSON.stringify({ 
-        score: 65,
-        insights: [
-          "Add a compelling hook in the first sentence",
-          "Include relevant hashtags to increase discoverability", 
-          "Add a clear call-to-action to boost engagement",
-          "Consider adding emojis to make your post more visually appealing"
-        ],
+        score: fallbackDiagnostics.viralityScore,
+        insights: fallbackDiagnostics.insights.slice(0, 4),
+        viewReasons: fallbackDiagnostics.viewReasons,
+        engagementMetrics: fallbackDiagnostics.engagementMetrics,
+        quickWins: fallbackDiagnostics.quickWins,
         source: "error_fallback",
         error: "Analysis service temporarily unavailable"
       }),

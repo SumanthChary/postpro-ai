@@ -26,6 +26,7 @@ const Blogs = lazy(() => import("./pages/Blogs"));
 const BlogArticle = lazy(() => import("./pages/BlogArticle"));
 const Chatbot = lazy(() => import("./pages/Chatbot"));
 const ChatHistory = lazy(() => import("./pages/ChatHistory"));
+const PostHistory = lazy(() => import("./pages/PostHistory"));
 const Affiliate = lazy(() => import("./pages/Affiliate"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Support = lazy(() => import("./pages/Support"));
@@ -84,6 +85,7 @@ function App() {
                     <Route path="/blog/:id" element={<BlogArticle />} />
                      <Route path="/chatbot" element={<Chatbot />} />
                      <Route path="/chat-history" element={<ChatHistory />} />
+                    <Route path="/post-history" element={<PostHistory />} />
                      <Route path="/affiliate" element={<Affiliate />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/support" element={<Support />} />

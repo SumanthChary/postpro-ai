@@ -74,9 +74,10 @@ export async function enhancePost(
     }
 
     type SupabaseResponse = {
-  data?: {
-    platforms: EnhancePostResponse['platforms'];
-  };
+      data?: {
+        platforms: EnhancePostResponse['platforms'];
+        diagnostics?: EnhancePostResponse['diagnostics'];
+      };
   error?: Error;
 };
 
@@ -132,9 +133,14 @@ const { data, error } = result as SupabaseResponse;
       throw new Error('No enhanced content was generated. Please try again.');
     }
 
+    const responsePayload: EnhancePostResponse = {
+      platforms: data.platforms,
+      diagnostics: data.diagnostics,
+    };
+
     // Cache the successful result
     enhanceCache.set(cacheKey, {
-      data,
+      data: responsePayload,
       timestamp: Date.now()
     });
 
@@ -144,7 +150,7 @@ const { data, error } = result as SupabaseResponse;
       enhanceCache.delete(oldestKey);
     }
 
-    return data;
+  return responsePayload;
   } catch (error) {
     const err = error as Error;
     console.error('Error in enhancePost function:', error);

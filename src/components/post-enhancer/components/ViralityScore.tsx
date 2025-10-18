@@ -9,22 +9,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import ViralityGauge from '../virality/ViralityGauge';
 import EngagementBreakdown from '../virality/EngagementBreakdown';
 import { edgeFunctionCache } from "@/utils/edge-function-cache";
+import type { EnhancePostResponse } from "../types";
 interface ViralityScoreProps {
   post: string;
   category: string;
   autoAnalyze?: boolean;
+  initialDiagnostics?: EnhancePostResponse['diagnostics'] | null;
 }
 export function ViralityScore({
   post,
   category,
-  autoAnalyze = false
+  autoAnalyze = false,
+  initialDiagnostics = null
 }: ViralityScoreProps) {
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState<number | null>(null);
   const [insights, setInsights] = useState<string[]>([]);
   const [analyzing, setAnalyzing] = useState(false);
-  const [breakdown, setBreakdown] = useState<any>(null);
-  const [detailedMetrics, setDetailedMetrics] = useState<any>(null);
+  const [viewReasons, setViewReasons] = useState<string[]>([]);
+  const [quickWins, setQuickWins] = useState<string[]>([]);
+  const [engagementMetrics, setEngagementMetrics] = useState<EnhancePostResponse['diagnostics'] extends { engagementMetrics: infer T } ? T : null>(null);
   const {
     toast
   } = useToast();
@@ -93,8 +97,11 @@ export function ViralityScore({
           finalScore = 85 + Math.random() * 10;
         }
         
-        setScore(Math.min(100, Math.round(finalScore)));
-        setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
+  setScore(Math.min(100, Math.round(finalScore)));
+  setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
+  setViewReasons(Array.isArray(data.viewReasons) ? data.viewReasons.slice(0, 3) : []);
+  setQuickWins(Array.isArray(data.quickWins) ? data.quickWins.slice(0, 3) : []);
+  setEngagementMetrics(data.engagementMetrics ?? null);
         setLoading(false);
         setAnalyzing(false);
         return;
@@ -134,8 +141,11 @@ export function ViralityScore({
         finalScore = 85 + Math.random() * 10; // 85-95%
       }
       
-      setScore(Math.min(100, Math.round(finalScore)));
-      setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
+  setScore(Math.min(100, Math.round(finalScore)));
+  setInsights(Array.isArray(data.insights) ? data.insights.slice(0, 3) : []);
+  setViewReasons(Array.isArray(data.viewReasons) ? data.viewReasons.slice(0, 3) : []);
+  setQuickWins(Array.isArray(data.quickWins) ? data.quickWins.slice(0, 3) : []);
+  setEngagementMetrics(data.engagementMetrics ?? null);
       toast({
         title: "🎯 Analysis Complete!",
         description: finalScore >= 90 ? "Excellent viral potential!" : finalScore >= 70 ? "Great engagement score!" : "Good foundation - check tips below",
@@ -150,6 +160,9 @@ export function ViralityScore({
       });
       setScore(null);
       setInsights([]);
+      setViewReasons([]);
+      setQuickWins([]);
+      setEngagementMetrics(null);
     } finally {
       setLoading(false);
       setAnalyzing(false);
@@ -158,10 +171,21 @@ export function ViralityScore({
 
   // Auto-analyze when component mounts if autoAnalyze is true
   useEffect(() => {
+    if (initialDiagnostics) {
+      setScore(initialDiagnostics.viralityScore);
+      setInsights(initialDiagnostics.insights.slice(0, 3));
+      setViewReasons(initialDiagnostics.viewReasons.slice(0, 3));
+      setQuickWins(initialDiagnostics.quickWins.slice(0, 3));
+      setEngagementMetrics(initialDiagnostics.engagementMetrics ?? null);
+      setLoading(false);
+      setAnalyzing(false);
+      return;
+    }
+
     if (autoAnalyze && post.trim() && post.trim().length >= 10) {
       analyzePotential();
     }
-  }, [autoAnalyze, post, category]);
+  }, [autoAnalyze, post, category, initialDiagnostics]);
   return <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
       {/* Header */}
       <div className="px-8 py-6 border-b border-gray-100">
@@ -221,6 +245,46 @@ export function ViralityScore({
                   </div>)}
               </div>
             </div>}
+
+          {viewReasons.length > 0 && (
+            <div className="mt-6 rounded-lg border border-destructive/30 bg-destructive/5 p-6">
+              <h4 className="mb-3 flex items-center gap-2 text-base font-semibold text-destructive">
+                <AlertCircle className="h-5 w-5" />
+                Why reach might stall
+              </h4>
+              <ul className="space-y-2">
+                {viewReasons.map((reason, index) => (
+                  <li key={index} className="flex items-start gap-2 text-sm text-destructive">
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-destructive" />
+                    <span>{reason}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {quickWins.length > 0 && (
+            <div className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 p-6">
+              <h4 className="mb-3 flex items-center gap-2 text-base font-semibold text-emerald-700">
+                <Zap className="h-5 w-5" />
+                Quick wins to test next
+              </h4>
+              <ul className="space-y-2">
+                {quickWins.map((win, index) => (
+                  <li key={index} className="flex items-start gap-2 text-sm text-emerald-700">
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span>{win}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {engagementMetrics && (
+            <div className="mt-6">
+              <EngagementBreakdown metrics={engagementMetrics} />
+            </div>
+          )}
         </div>}
     </div>;
 }

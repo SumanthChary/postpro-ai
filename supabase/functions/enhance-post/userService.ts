@@ -1,4 +1,6 @@
-
+// deno-lint-ignore-file no-explicit-any
+// @ts-ignore: Deno globals available in edge runtime
+declare const Deno: any;
 export async function getUserPlanAndPostCount(userId: string) {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
@@ -9,7 +11,8 @@ export async function getUserPlanAndPostCount(userId: string) {
       return { plan: 'Starter Plan', postCount: 0 };
     }
 
-    const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.48.1');
+  // @ts-ignore: esm import resolved by Deno at runtime
+  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.48.1');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     const { data: subscription, error } = await supabase
@@ -73,7 +76,8 @@ export async function incrementPostCount(userId: string) {
       return;
     }
 
-    const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.48.1');
+  // @ts-ignore: esm import resolved by Deno at runtime
+  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.48.1');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     await supabase
@@ -101,7 +105,8 @@ export async function checkUserPlanLimits(userId: string) {
       return;
     }
 
-    const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.48.1');
+  // @ts-ignore: esm import resolved by Deno at runtime
+  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.48.1');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Get user's subscription info with limits
@@ -173,5 +178,69 @@ export async function checkUserPlanLimits(userId: string) {
   } catch (error: any) {
     console.error('Error in checkUserPlanLimits:', error);
     throw error;
+  }
+}
+
+interface LogEnhancementPayload {
+  originalPost: string;
+  enhancedPlatforms: Record<string, string | undefined>;
+  category: string;
+  styleTone: string;
+  diagnostics?: {
+    viralityScore?: number;
+    insights?: string[];
+    viewReasons?: string[];
+    quickWins?: string[];
+    highlights?: string[];
+    engagementMetrics?: Record<string, number>;
+  };
+}
+
+export async function logPostEnhancement(userId: string | undefined, payload: LogEnhancementPayload) {
+  if (!userId) {
+    return;
+  }
+
+  try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('Supabase configuration missing for logging enhancements');
+      return;
+    }
+
+  // @ts-ignore: esm import resolved by Deno at runtime
+  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.48.1');
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { data, error } = await supabase
+      .from('post_enhancements')
+      .insert([
+        {
+          user_id: userId,
+          original_post: payload.originalPost,
+          enhanced_platforms: payload.enhancedPlatforms,
+          category: payload.category,
+          style_tone: payload.styleTone,
+          virality_score: payload.diagnostics?.viralityScore ?? null,
+          insights: payload.diagnostics?.insights ?? [],
+          view_reasons: payload.diagnostics?.viewReasons ?? [],
+          quick_wins: payload.diagnostics?.quickWins ?? [],
+          highlights: payload.diagnostics?.highlights ?? [],
+          engagement_metrics: payload.diagnostics?.engagementMetrics ?? {},
+        }
+      ])
+      .select('id')
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error logging post enhancement:', error);
+      return;
+    }
+
+    console.log('Logged post enhancement history record:', data?.id);
+  } catch (error) {
+    console.error('Error in logPostEnhancement:', error);
   }
 }

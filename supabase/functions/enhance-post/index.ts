@@ -2,8 +2,9 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { corsHeaders } from './config.ts';
-import { checkUserPlanLimits } from './userService.ts';
+import { checkUserPlanLimits, logPostEnhancement } from './userService.ts';
 import { ContentGenerator } from './contentGenerator.ts';
+import { generatePostDiagnostics } from '../_shared/postDiagnostics.ts';
 
 serve(async (req) => {
   console.log('Request received:', req.method, req.url);
@@ -77,8 +78,23 @@ serve(async (req) => {
       const contentGenerator = new ContentGenerator(apiKey);
       const platforms = await contentGenerator.generateAllPlatforms(post, category, styleTone);
 
+      const diagnostics = generatePostDiagnostics({
+        originalPost: post,
+        category,
+        styleTone,
+        enhancedPlatforms: platforms,
+      });
+
+      await logPostEnhancement(userId, {
+        originalPost: post,
+        enhancedPlatforms: platforms,
+        category,
+        styleTone,
+        diagnostics,
+      });
+
       console.log('Successfully enhanced post for platforms:', Object.keys(platforms));
-      return new Response(JSON.stringify({ platforms }), {
+      return new Response(JSON.stringify({ platforms, diagnostics }), {
         status: 200,
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
       });

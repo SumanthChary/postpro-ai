@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { WhyNoViews } from "./WhyNoViews";
 type Platform = keyof EnhancePostResponse['platforms'];
 interface PostEnhancerLogicProps {
   post: string;
@@ -45,6 +46,7 @@ export const PostEnhancerLogic = ({
   const [showViralityScore, setShowViralityScore] = useState(false);
   const [originalPost, setOriginalPost] = useState("");
   const [copied, setCopied] = useState(false);
+  const [diagnostics, setDiagnostics] = useState<EnhancePostResponse["diagnostics"] | null>(null);
   const onEnhance = async () => {
     setOriginalPost(post);
     const result = await handleEnhancePost(post, category, styleTone);
@@ -52,6 +54,7 @@ export const PostEnhancerLogic = ({
       setPost(result.platforms.linkedin);
       setIsEnhanced(true);
       setShowViralityScore(true);
+      setDiagnostics(result.diagnostics ?? null);
     }
   };
   
@@ -61,6 +64,7 @@ export const PostEnhancerLogic = ({
     setOriginalPost("");
     setIsEnhanced(false);
     setShowViralityScore(false);
+    setDiagnostics(null);
   };
   
   const copyToClipboard = async () => {
@@ -160,7 +164,18 @@ export const PostEnhancerLogic = ({
         </div>
       )}
       
-      {showViralityScore && <ViralityScore post={post} category={category} autoAnalyze={true} />}
+      {diagnostics && (
+        <WhyNoViews diagnostics={diagnostics} />
+      )}
+
+      {showViralityScore && (
+        <ViralityScore 
+          post={post} 
+          category={category} 
+          autoAnalyze={!diagnostics}
+          initialDiagnostics={diagnostics}
+        />
+      )}
 
       <FeedbackPopup 
         isOpen={showFeedback} 

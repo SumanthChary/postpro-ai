@@ -15,6 +15,23 @@ export interface EnhancePostResponse {
     instagram?: string;
     facebook?: string;
   };
+  diagnostics?: {
+    viralityScore: number;
+    insights: string[];
+    viewReasons: string[];
+    quickWins: string[];
+    highlights: string[];
+    engagementMetrics: {
+      comments: number;
+      likes: number;
+      shares: number;
+      views: number;
+      timeSpent: number;
+      clickThrough: number;
+      saveRate: number;
+      viralCoefficient: number;
+    };
+  };
 }
 
 export interface EnhancerFormProps {

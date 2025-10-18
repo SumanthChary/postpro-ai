@@ -6,6 +6,15 @@ export interface PlatformContent {
   facebook?: string;
 }
 
+export interface EnhancementDiagnostics {
+  viralityScore: number;
+  insights: string[];
+  viewReasons: string[];
+  quickWins: string[];
+  highlights: string[];
+  engagementMetrics: Record<string, number>;
+}
+
 export interface ApiResponse {
   candidates?: Array<{
     content?: {
