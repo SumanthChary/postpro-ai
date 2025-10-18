@@ -128,6 +128,66 @@ export type Database = {
         }
         Relationships: []
       }
+      public_post_analyses: {
+        Row: {
+          author_avatar_url: string | null
+          author_followers: number | null
+          author_handle: string | null
+          author_name: string | null
+          created_at: string
+          email: string | null
+          id: string
+          metrics: Json
+          platform: string | null
+          post_text: string | null
+          post_url: string | null
+          posted_at: string | null
+          replicate_tips: Json
+          slug: string
+          source: string | null
+          virality_score: number
+          why_it_worked: Json
+        }
+        Insert: {
+          author_avatar_url?: string | null
+          author_followers?: number | null
+          author_handle?: string | null
+          author_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          metrics?: Json
+          platform?: string | null
+          post_text?: string | null
+          post_url?: string | null
+          posted_at?: string | null
+          replicate_tips: Json
+          slug: string
+          source?: string | null
+          virality_score: number
+          why_it_worked: Json
+        }
+        Update: {
+          author_avatar_url?: string | null
+          author_followers?: number | null
+          author_handle?: string | null
+          author_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          metrics?: Json
+          platform?: string | null
+          post_text?: string | null
+          post_url?: string | null
+          posted_at?: string | null
+          replicate_tips?: Json
+          slug?: string
+          source?: string | null
+          virality_score?: number
+          why_it_worked?: Json
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

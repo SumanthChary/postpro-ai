@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon, History } from "lucide-react";
+import { MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon, History } from "lucide-react";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { HeaderStreakCounter } from "./HeaderStreakCounter";
 
@@ -62,6 +62,10 @@ const Navigation = memo(({
     startTransition(() => navigate("/profile"));
   }, [navigate]);
 
+  const handleAnalyzeClick = useCallback(() => {
+    startTransition(() => navigate("/analyze"));
+  }, [navigate]);
+
   const handleMobileMenuToggle = useCallback(() => {
     setMobileMenuOpen(!mobileMenuOpen);
   }, [mobileMenuOpen, setMobileMenuOpen]);
@@ -97,6 +101,13 @@ const Navigation = memo(({
   const handleMobileProfileClick = useCallback(() => {
     startTransition(() => {
       navigate("/profile");
+      setMobileMenuOpen(false);
+    });
+  }, [navigate, setMobileMenuOpen]);
+
+  const handleMobileAnalyzeClick = useCallback(() => {
+    startTransition(() => {
+      navigate("/analyze");
       setMobileMenuOpen(false);
     });
   }, [navigate, setMobileMenuOpen]);
@@ -152,6 +163,12 @@ const Navigation = memo(({
               onClick={handlePricingClick}
             >
               Pricing
+            </Button>
+            <Button
+              className="bg-blue-600 hover:bg-blue-700 text-white font-opensans"
+              onClick={handleAnalyzeClick}
+            >
+              Paste & Analyze
             </Button>
             {session && (
               <Button
@@ -240,6 +257,12 @@ const Navigation = memo(({
                 onClick={handleMobilePricingClick}
               >
                 Pricing
+              </Button>
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 text-white w-full font-opensans"
+                onClick={handleMobileAnalyzeClick}
+              >
+                Paste & Analyze
               </Button>
               {session && (
                 <Button

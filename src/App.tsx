@@ -19,6 +19,8 @@ const Auth = lazy(() => import("./pages/Auth"));
 const Enhance = lazy(() => import("./pages/Enhance"));
 const Features = lazy(() => import("./pages/Features"));
 const Pricing = lazy(() => import("./pages/Pricing"));
+const Analyze = lazy(() => import("./pages/Analyze"));
+const AnalysisShare = lazy(() => import("./pages/AnalysisShare"));
 const Subscription = lazy(() => import("./pages/Subscription"));
 const Payment = lazy(() => import("./pages/Payment"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -76,6 +78,7 @@ function App() {
                     <Route path="/" element={<Index />} />
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/enhance" element={<Enhance />} />
+                    <Route path="/analyze" element={<Analyze />} />
                     <Route path="/features" element={<Features />} />
                     <Route path="/pricing" element={<Pricing />} />
                     <Route path="/subscription" element={<Subscription />} />
@@ -98,6 +101,7 @@ function App() {
                     <Route path="/refund-policy" element={<RefundPolicy />} />
                     <Route path="/cancellation-policy" element={<CancellationPolicy />} />
                     <Route path="/faq" element={<FAQPage />} />
+                    <Route path="/analysis/:slug" element={<AnalysisShare />} />
                   </Routes>
                   </Suspense>
                   <Suspense fallback={null}>
