@@ -153,14 +153,16 @@ const Navigation = memo(({
             >
               Pricing
             </Button>
-            <Button
-              variant="ghost"
-              className="text-custom-text hover:text-blue-600 font-opensans"
-              onClick={handleHistoryClick}
-            >
-              <History className="w-4 h-4 mr-2" />
-              History
-            </Button>
+            {session && (
+              <Button
+                variant="ghost"
+                className="text-custom-text hover:text-blue-600 font-opensans"
+                onClick={handleHistoryClick}
+              >
+                <History className="w-4 h-4 mr-2" />
+                History
+              </Button>
+            )}
             {session ? (
               <div className="flex items-center space-x-3">
                 <HeaderStreakCounter userId={session?.user?.id} />
@@ -239,14 +241,16 @@ const Navigation = memo(({
               >
                 Pricing
               </Button>
-              <Button
-                variant="ghost"
-                className="text-custom-text hover:text-blue-600 w-full font-opensans"
-                onClick={handleMobileHistoryClick}
-              >
-                <History className="w-4 h-4 mr-2" />
-                History
-              </Button>
+              {session && (
+                <Button
+                  variant="ghost"
+                  className="text-custom-text hover:text-blue-600 w-full font-opensans"
+                  onClick={handleMobileHistoryClick}
+                >
+                  <History className="w-4 h-4 mr-2" />
+                  History
+                </Button>
+              )}
               {session ? (
                 <>
                   <div className="flex items-center justify-center mb-2">
