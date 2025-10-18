@@ -47,10 +47,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // Apply brand color for default variant
     const defaultStyle = variant === "default" ? {
       backgroundColor: 'rgba(57,107,255,1)',
-      fontFamily: "'Europa Grotesk', 'Inter', system-ui, sans-serif",
+      fontFamily: "'Bricolage Grotesque', 'Inter', system-ui, sans-serif",
       ...style
     } : {
-      fontFamily: "'Europa Grotesk', 'Inter', system-ui, sans-serif",
+      fontFamily: "'Bricolage Grotesque', 'Inter', system-ui, sans-serif",
       ...style
     };
 
@@ -58,7 +58,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(
           buttonVariants({ variant, size, className }),
-          "font-europa font-medium"
+          "font-bricolage font-medium"
         )}
         style={defaultStyle}
         ref={ref}

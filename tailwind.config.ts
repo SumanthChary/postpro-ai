@@ -54,6 +54,8 @@ export default {
         clash: ["Bricolage Grotesque", "Inter", "system-ui", "sans-serif"],
         cabinet: ["Bricolage Grotesque", "Inter", "system-ui", "sans-serif"],
         europa: ["Bricolage Grotesque", "Inter", "system-ui", "sans-serif"],
+        montserrat: ["Bricolage Grotesque", "Inter", "system-ui", "sans-serif"],
+        opensans: ["Bricolage Grotesque", "Inter", "system-ui", "sans-serif"],
         bricolage: ["Bricolage Grotesque", "Inter", "system-ui", "sans-serif"],
       },
       borderRadius: {
