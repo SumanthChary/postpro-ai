@@ -43,19 +43,67 @@ const formatDate = (timestamp: string) => {
   });
 };
 
-const EmptyState = () => (
-  <Card className="border-dashed">
+const getTimestampBucket = (timestamp: string) => {
+  const parsed = Date.parse(timestamp);
+  if (Number.isNaN(parsed)) return 0;
+  return Math.floor(parsed / 60000);
+};
+
+const createHistoryKey = (item: EnhancementHistoryItem) => {
+  const normalizedPost = item.original_post.trim();
+  const normalizedCategory = item.category?.trim() ?? "";
+  const normalizedTone = item.style_tone?.trim() ?? "";
+  return `${normalizedPost}|${normalizedCategory}|${normalizedTone}|${getTimestampBucket(item.created_at)}`;
+};
+
+const sortHistoryItems = (items: EnhancementHistoryItem[]) =>
+  [...items].sort((a, b) => {
+    const first = Date.parse(b.created_at);
+    const second = Date.parse(a.created_at);
+    if (Number.isNaN(first) && Number.isNaN(second)) return 0;
+    if (Number.isNaN(first)) return 1;
+    if (Number.isNaN(second)) return -1;
+    return first - second;
+  });
+
+const mergeHistoryRecords = (
+  remote: EnhancementHistoryItem[],
+  local: EnhancementHistoryItem[],
+) => {
+  const merged = new Map<string, EnhancementHistoryItem>();
+
+  const addRecord = (record: EnhancementHistoryItem) => {
+    merged.set(createHistoryKey(record), record);
+  };
+
+  local.forEach(addRecord);
+  remote.forEach(addRecord);
+
+  return sortHistoryItems(Array.from(merged.values()));
+};
+
+const EmptyState = ({ isGuest }: { isGuest: boolean }) => (
+  <Card className="border-dashed shadow-sm">
     <CardContent className="flex flex-col items-center justify-center gap-4 py-16 text-center">
       <Sparkles className="h-8 w-8 text-primary" />
       <div className="space-y-1">
         <h3 className="text-lg font-semibold">No enhancements saved yet</h3>
         <p className="text-sm text-muted-foreground">
-          Enhance a post and we\'ll keep the full history here automatically.
+          {isGuest
+            ? "Enhance a post to start a local history. Sign in to sync it forever."
+            : "Enhance a post and we'll keep the full history here automatically."}
         </p>
       </div>
-      <Link to="/enhance">
-        <Button>Enhance your first post</Button>
-      </Link>
+      <div className="flex flex-col items-center gap-2 sm:flex-row">
+        <Link to="/enhance">
+          <Button>Enhance your first post</Button>
+        </Link>
+        {isGuest && (
+          <Link to="/auth">
+            <Button variant="outline">Sign in</Button>
+          </Link>
+        )}
+      </div>
     </CardContent>
   </Card>
 );
@@ -98,9 +146,17 @@ const PostHistory = () => {
   }), []);
 
   const fetchHistory = useCallback(async () => {
-    if (!user) return;
     setLoading(true);
     setError(null);
+
+    const localRecords = loadEnhancementsLocally(user?.id);
+    const mappedLocalRecords = localRecords.map(mapLocalRecord);
+
+    if (!user) {
+      setItems(sortHistoryItems(mappedLocalRecords));
+      setLoading(false);
+      return;
+    }
 
     const { data, error: queryError } = await supabase
       .from("post_enhancements")
@@ -111,75 +167,57 @@ const PostHistory = () => {
 
     if (queryError) {
       console.error("Post history query failed", queryError);
-      const localRecords = loadEnhancementsLocally(user.id);
-      if (localRecords.length) {
-        setItems(localRecords.map(mapLocalRecord));
+      if (mappedLocalRecords.length) {
+        setItems(sortHistoryItems(mappedLocalRecords));
         setError(null);
       } else {
-        setError("Failed to load enhancement history. Please try again.");
         setItems([]);
+        setError("Failed to load enhancement history. Please try again.");
       }
-    } else {
-      const parsed = (data ?? []).map((item: PostEnhancementRow) => ({
-        id: item.id,
-        original_post: item.original_post,
-        enhanced_platforms: (item.enhanced_platforms ?? {}) as EnhancePostResponse["platforms"],
-        category: item.category,
-        style_tone: item.style_tone,
-        virality_score: item.virality_score,
-        insights: toStringArray(item.insights),
-        view_reasons: toStringArray(item.view_reasons),
-        quick_wins: toStringArray(item.quick_wins),
-        created_at: item.created_at,
-      }));
-
-      if (parsed.length === 0) {
-        const localRecords = loadEnhancementsLocally(user.id);
-        setItems(localRecords.length ? localRecords.map(mapLocalRecord) : []);
-      } else {
-        setItems(parsed);
-      }
+      setLoading(false);
+      return;
     }
 
+    const remoteRecords = (data ?? []).map((item: PostEnhancementRow) => ({
+      id: item.id,
+      original_post: item.original_post,
+      enhanced_platforms: (item.enhanced_platforms ?? {}) as EnhancePostResponse["platforms"],
+      category: item.category,
+      style_tone: item.style_tone,
+      virality_score: item.virality_score,
+      insights: toStringArray(item.insights),
+      view_reasons: toStringArray(item.view_reasons),
+      quick_wins: toStringArray(item.quick_wins),
+      created_at: item.created_at,
+    }));
+
+    const combinedHistory = mergeHistoryRecords(remoteRecords, mappedLocalRecords);
+    setItems(combinedHistory);
     setLoading(false);
   }, [user, mapLocalRecord]);
 
   useEffect(() => {
-    if (user) {
-      fetchHistory();
-    } else {
-      setItems([]);
-      setLoading(false);
-    }
-  }, [user, fetchHistory]);
+    fetchHistory();
+  }, [fetchHistory]);
 
-  if (!user) {
-    return (
-      <div className="mx-auto flex min-h-screen max-w-4xl flex-col gap-6 px-4 py-16 text-center">
-        <AlertCircle className="mx-auto h-10 w-10 text-destructive" />
-        <div>
-          <h1 className="text-2xl font-semibold">Sign in to view your history</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            We securely store every enhancement you generate. Once you sign in, your full history will appear here.
-          </p>
-        </div>
-        <div className="flex justify-center">
-          <Link to="/auth">
-            <Button>Sign in</Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  const isGuest = !user;
+  const headerDescription = isGuest
+    ? "Review enhancements saved on this device. Sign in to sync them securely across sessions."
+    : "Track every AI upgrade you've generated and the tailored insights we delivered.";
 
   return (
     <div className="mx-auto min-h-screen max-w-5xl space-y-6 px-4 py-10">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold">Post enhancement history</h1>
-          <p className="text-sm text-muted-foreground">Track every AI upgrade you\'ve generated and the tailored insights we delivered.</p>
+          <p className="text-sm text-muted-foreground">{headerDescription}</p>
         </div>
         <div className="flex gap-2">
+          {isGuest && (
+            <Link to="/auth">
+              <Button variant="secondary">Sign in</Button>
+            </Link>
+          )}
           <Button variant="outline" onClick={fetchHistory} disabled={loading}>
             Refresh
           </Button>
@@ -198,38 +236,42 @@ const PostHistory = () => {
           </CardContent>
         </Card>
       )}
-      {!loading && !error && items.length === 0 && <EmptyState />}
+      {!loading && !error && items.length === 0 && <EmptyState isGuest={isGuest} />}
 
       {!loading && !error && items.length > 0 && (
         <div className="space-y-4">
           {items.map((item) => (
-            <Card key={item.id}>
+            <Card key={item.id} className="shadow-sm border border-slate-100">
               <CardHeader className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-1">
-                  <CardTitle className="text-base font-semibold">{item.category} • {item.style_tone}</CardTitle>
+                  <CardTitle className="text-base font-semibold text-slate-900 break-words">
+                    {item.category} • {item.style_tone}
+                  </CardTitle>
                   <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                    <Badge variant="secondary">Virality {Math.round(item.virality_score ?? 0)}</Badge>
-                    <div className="flex items-center gap-1">
+                    <Badge variant="secondary" className="tracking-wide">
+                      Virality {Math.round(item.virality_score ?? 0)}
+                    </Badge>
+                    <div className="flex items-center gap-1 whitespace-nowrap">
                       <Clock className="h-3.5 w-3.5" />
                       {formatDate(item.created_at)}
                     </div>
                   </div>
                 </div>
-                <Link to="/enhance" className="text-sm text-primary hover:underline">
+                <Link to="/enhance" className="text-sm text-primary hover:underline whitespace-nowrap">
                   Re-run with fixes
                 </Link>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <h3 className="mb-1 text-sm font-medium text-muted-foreground">Original post</h3>
-                  <p className="rounded-md border border-dashed border-muted-foreground/30 bg-muted/40 p-3 text-sm text-muted-foreground whitespace-pre-wrap">
+                  <p className="rounded-md border border-dashed border-muted-foreground/30 bg-muted/40 p-3 text-sm text-muted-foreground whitespace-pre-wrap break-words">
                     {item.original_post}
                   </p>
                 </div>
 
                 {item.view_reasons?.length ? (
                   <div>
-                    <h4 className="mb-1 text-sm font-medium">Why it may not earn views</h4>
+                    <h4 className="mb-1 text-sm font-medium text-slate-800">Why it may not earn views</h4>
                     <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
                       {item.view_reasons.slice(0, 3).map((reason, index) => (
                         <li key={index}>{reason}</li>
@@ -240,7 +282,7 @@ const PostHistory = () => {
 
                 {item.quick_wins?.length ? (
                   <div>
-                    <h4 className="mb-1 text-sm font-medium">Quick wins delivered</h4>
+                    <h4 className="mb-1 text-sm font-medium text-slate-800">Quick wins delivered</h4>
                     <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
                       {item.quick_wins.slice(0, 3).map((tip, index) => (
                         <li key={index}>{tip}</li>
