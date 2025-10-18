@@ -28,26 +28,19 @@ export const RazorpayPaymentButton = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
 
-  // Safe currency handling with fallbacks
   const getCurrency = () => {
-    try {
-      // Try to use currency context
-      const { useCurrency } = require("@/contexts/CurrencyContext");
-      const { currency, convertPrice } = useCurrency();
-      return { currency: currency || 'USD', convertPrice };
-    } catch (error) {
-      console.warn('Currency context not available, using USD');
-      return { 
-        currency: 'USD', 
-        convertPrice: (price: string, targetCurrency: string) => {
-          // Simple fallback conversion
-          if (targetCurrency === 'INR') {
-            return (parseFloat(price) * 83).toFixed(0); // Approximate USD to INR
-          }
-          return price;
-        }
-      };
-    }
+    const fallbackConversion = (price: string, targetCurrency: string) => {
+      if (targetCurrency === "INR") {
+        const parsed = Number.parseFloat(price);
+        return Number.isFinite(parsed) ? Math.round(parsed * 83).toString() : price;
+      }
+      return price;
+    };
+
+    return {
+      currency: (planDetails as { currency?: string }).currency ?? "USD",
+      convertPrice: fallbackConversion,
+    };
   };
 
   const handlePayment = async () => {
