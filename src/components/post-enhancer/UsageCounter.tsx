@@ -5,47 +5,64 @@ import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 const UsageCounter = () => {
   const [usage, setUsage] = useState<{ current: number; limit: number } | null>(null);
   const [loading, setLoading] = useState(true);
+  const { user, loading: authLoading } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUsage();
-  }, []);
+    let isMounted = true;
 
-  const fetchUsage = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { data, error } = await supabase
-        .from('subscribers')
-        .select('monthly_post_count, plan_name')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) throw error;
-
-      if (data) {
-        // Determine limit based on plan
-        let limit = 30; // Default Starter plan
-        if (data.plan_name === 'PROFESSIONAL' || data.plan_name === 'PRO ANNUAL' || data.plan_name === 'LIFETIME CREATOR') {
-          limit = -1; // Unlimited
+    const fetchUsage = async () => {
+      if (!user) {
+        if (isMounted) {
+          setUsage(null);
+          setLoading(false);
         }
-        
-        setUsage({
-          current: data.monthly_post_count || 0,
-          limit: limit
-        });
+        return;
       }
-    } catch (error) {
-      console.error('Error fetching usage:', error);
-    } finally {
-      setLoading(false);
+
+      try {
+        const { data, error } = await supabase
+          .from('subscribers')
+          .select('monthly_post_count, plan_name')
+          .eq('user_id', user.id)
+          .single();
+
+        if (error) throw error;
+
+        if (isMounted && data) {
+          let limit = 30;
+          if (data.plan_name === 'PROFESSIONAL' || data.plan_name === 'PRO ANNUAL' || data.plan_name === 'LIFETIME CREATOR') {
+            limit = -1;
+          }
+
+          setUsage({
+            current: data.monthly_post_count || 0,
+            limit
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching usage:', error);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    if (!authLoading) {
+      setLoading(true);
+      fetchUsage();
     }
-  };
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user, authLoading]);
 
   if (loading || !usage) return null;
 

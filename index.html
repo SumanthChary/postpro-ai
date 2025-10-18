@@ -63,7 +63,15 @@
 </head>
   <body>
     <div id="root"></div>
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.addEventListener('load', () => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.gpteng.co/gptengineer.js';
+        script.type = 'module';
+        script.async = true;
+        document.body.appendChild(script);
+      });
+    </script>
+    <script type="module" src="/src/main.tsx" defer></script>
   </body>
 </html>

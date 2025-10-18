@@ -42,3 +42,5 @@ export function AnimatedTooltipPreview() {
       <AnimatedTooltip items={people} />
     </div>;
 }
+
+export default AnimatedTooltipPreview;

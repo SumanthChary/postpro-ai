@@ -7,6 +7,7 @@ interface PerformanceImageProps extends React.ImgHTMLAttributes<HTMLImageElement
   className?: string;
   fallback?: string;
   priority?: boolean;
+  fetchPriority?: "high" | "low" | "auto";
 }
 
 export const PerformanceImage: React.FC<PerformanceImageProps> = ({
@@ -15,9 +16,16 @@ export const PerformanceImage: React.FC<PerformanceImageProps> = ({
   className,
   fallback = '/placeholder.svg',
   priority = false,
+  fetchPriority,
+  loading,
+  decoding,
   ...props
 }) => {
   const [hasError, setHasError] = useState(false);
+
+  const resolvedLoading = loading ?? (priority ? "eager" : "lazy");
+  const resolvedDecoding = decoding ?? "async";
+  const resolvedFetchPriority = fetchPriority ?? (priority ? "high" : "auto");
 
   return (
     <img
@@ -25,8 +33,9 @@ export const PerformanceImage: React.FC<PerformanceImageProps> = ({
       alt={alt}
       className={cn("object-cover w-full h-full", className)}
       onError={() => setHasError(true)}
-      loading="eager"
-      decoding="sync"
+      loading={resolvedLoading}
+      decoding={resolvedDecoding}
+      fetchPriority={resolvedFetchPriority}
       {...props}
     />
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -13,12 +13,24 @@ export const usePostEnhancer = () => {
   const [loading, setLoading] = useState(false);
   const [enhancedPost, setEnhancedPost] = useState<EnhancePostResponse | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
+  const usageCacheRef = useRef<{ data: any; timestamp: number } | null>(null);
 
-  const checkUsageLimit = async () => {
+  const checkUsageLimit = useCallback(async () => {
+    if (!user) {
+      return { canUse: false, currentUsage: 0, monthlyLimit: 0, planName: 'Free Plan', isAdmin: false };
+    }
+
+    const cache = usageCacheRef.current;
+    if (cache && Date.now() - cache.timestamp < 60 * 1000) {
+      return cache.data;
+    }
+
     try {
       // Admin always has unlimited access
       if (user?.email === 'enjoywithpandu@gmail.com') {
-        return { canUse: true, isAdmin: true };
+  const adminResult = { canUse: true, isAdmin: true, currentUsage: 0, monthlyLimit: -1, planName: 'Admin Access' };
+        usageCacheRef.current = { data: adminResult, timestamp: Date.now() };
+        return adminResult;
       }
 
       const { data, error } = await supabase.functions.invoke('subscription-manager', {
@@ -31,24 +43,30 @@ export const usePostEnhancer = () => {
 
       if (error) throw error;
       
-      return {
+      const result = {
         canUse: data.canUse,
         currentUsage: data.currentCount,
         monthlyLimit: data.monthlyLimit,
-        planName: data.planName || 'Free Plan'
+        planName: data.planName || 'Free Plan',
+        isAdmin: false
       };
+      usageCacheRef.current = { data: result, timestamp: Date.now() };
+      return result;
     } catch (error) {
       console.error('Error checking usage limit:', error);
       // Be restrictive on error for non-admin users
-      return { 
+      const fallback = { 
         canUse: false, 
         currentUsage: 0, 
         monthlyLimit: 5,
         planName: 'Free Plan',
-        error: 'Unable to verify usage limits'
+        error: 'Unable to verify usage limits',
+        isAdmin: false
       };
+      usageCacheRef.current = { data: fallback, timestamp: Date.now() };
+      return fallback;
     }
-  };
+  }, [user]);
 
   const checkCreditsAvailable = async () => {
     try {
@@ -120,6 +138,13 @@ export const usePostEnhancer = () => {
             userId: user.id
           }
         });
+        usageCacheRef.current = {
+          data: {
+            ...usageCheck,
+            currentUsage: (usageCheck.currentUsage || 0) + 1
+          },
+          timestamp: Date.now()
+        };
       }
       
       toast({

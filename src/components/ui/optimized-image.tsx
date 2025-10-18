@@ -6,6 +6,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   alt: string;
   className?: string;
   fallback?: string;
+  fetchPriority?: "high" | "low" | "auto";
 }
 
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
@@ -13,9 +14,16 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   alt,
   className,
   fallback = '/placeholder.svg',
+  fetchPriority,
+  loading,
+  decoding,
   ...props
 }) => {
   const [hasError, setHasError] = useState(false);
+
+  const resolvedLoading = loading ?? "lazy";
+  const resolvedDecoding = decoding ?? "async";
+  const resolvedFetchPriority = fetchPriority ?? "auto";
 
   return (
     <img
@@ -26,8 +34,9 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         className
       )}
       onError={() => setHasError(true)}
-      loading="eager"
-      decoding="sync"
+      loading={resolvedLoading}
+      decoding={resolvedDecoding}
+      fetchPriority={resolvedFetchPriority}
       {...props}
     />
   );

@@ -27,6 +27,7 @@ const VideoPlayer = ({ videoUrl, thumbnailUrl }: VideoPlayerProps) => {
               alt="PostPro AI demo video thumbnail showing LinkedIn post enhancement interface with before and after comparison"
               className="w-full h-full"
               priority={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 960px"
             />
             <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
               <Button 
