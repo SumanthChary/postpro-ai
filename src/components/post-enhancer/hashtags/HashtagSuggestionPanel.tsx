@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Hash, TrendingUp, Plus } from 'lucide-react';
@@ -82,8 +82,14 @@ const HashtagSuggestionPanel: React.FC<HashtagSuggestionPanelProps> = ({
     }
   };
 
-  // REMOVED auto-trigger to save edge function calls
-  // Users must explicitly click "Get Suggestions" button
+  useEffect(() => {
+    if (post.trim()) {
+      const debounceTimer = setTimeout(() => {
+        analyzeHashtags();
+      }, 1000);
+      return () => clearTimeout(debounceTimer);
+    }
+  }, [post, category]);
 
   const handleHashtagClick = (hashtag: string) => {
     if (!selectedHashtags.includes(hashtag)) {
@@ -97,21 +103,10 @@ const HashtagSuggestionPanel: React.FC<HashtagSuggestionPanelProps> = ({
 
   return (
     <div className="space-y-4 p-4 border rounded-lg bg-background/50">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Hash className="h-5 w-5 text-primary" />
-          <h3 className="text-lg font-semibold">Smart Hashtag Suggestions</h3>
-          {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-        </div>
-        {!loading && suggestions.length === 0 && post.trim().length >= 20 && (
-          <Button 
-            onClick={analyzeHashtags}
-            size="sm"
-            variant="outline"
-          >
-            Get Suggestions
-          </Button>
-        )}
+      <div className="flex items-center gap-2">
+        <Hash className="h-5 w-5 text-primary" />
+        <h3 className="text-lg font-semibold">Smart Hashtag Suggestions</h3>
+        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
       </div>
 
       {suggestions.length > 0 && (
