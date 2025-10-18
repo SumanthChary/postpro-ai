@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon } from "lucide-react";
+import { SparklesIcon, MenuIcon, XIcon, LogOutIcon, ChevronDownIcon, BookOpenIcon, History } from "lucide-react";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { HeaderStreakCounter } from "./HeaderStreakCounter";
 
@@ -46,6 +46,10 @@ const Navigation = memo(({
     startTransition(() => navigate("/pricing"));
   }, [navigate]);
 
+  const handleHistoryClick = useCallback(() => {
+    startTransition(() => navigate("/post-history"));
+  }, [navigate]);
+
   const handleLogoClick = useCallback(() => {
     startTransition(() => navigate("/"));
   }, [navigate]);
@@ -79,6 +83,13 @@ const Navigation = memo(({
   const handleMobilePricingClick = useCallback(() => {
     startTransition(() => {
       navigate("/pricing");
+      setMobileMenuOpen(false);
+    });
+  }, [navigate, setMobileMenuOpen]);
+
+  const handleMobileHistoryClick = useCallback(() => {
+    startTransition(() => {
+      navigate("/post-history");
       setMobileMenuOpen(false);
     });
   }, [navigate, setMobileMenuOpen]);
@@ -141,6 +152,14 @@ const Navigation = memo(({
               onClick={handlePricingClick}
             >
               Pricing
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-custom-text hover:text-blue-600 font-opensans"
+              onClick={handleHistoryClick}
+            >
+              <History className="w-4 h-4 mr-2" />
+              History
             </Button>
             {session ? (
               <div className="flex items-center space-x-3">
@@ -219,6 +238,14 @@ const Navigation = memo(({
                 onClick={handleMobilePricingClick}
               >
                 Pricing
+              </Button>
+              <Button
+                variant="ghost"
+                className="text-custom-text hover:text-blue-600 w-full font-opensans"
+                onClick={handleMobileHistoryClick}
+              >
+                <History className="w-4 h-4 mr-2" />
+                History
               </Button>
               {session ? (
                 <>
