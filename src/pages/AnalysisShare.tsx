@@ -137,7 +137,7 @@ const AnalysisShare = () => {
           </Alert>
           <Button asChild className="w-fit rounded-full bg-blue-600 font-semibold hover:bg-blue-700">
             <Link to="/analyze">
-              <RefreshCcw className="mr-2 h-4 w-4" /> Analyze your own post
+              <RefreshCcw className="mr-2 h-4 w-4" /> Run your own prediction
             </Link>
           </Button>
         </div>
@@ -149,7 +149,7 @@ const AnalysisShare = () => {
     <div className="min-h-screen bg-gradient-to-b from-white via-sky-50 to-white">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-3 text-center">
-          <Badge className="mx-auto w-fit bg-blue-600/10 text-blue-700">Shared analysis</Badge>
+          <Badge className="mx-auto w-fit bg-blue-600/10 text-blue-700">Shared prediction</Badge>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             {formatPlatformLabel(analysis.platform)} virality snapshot
           </h1>
@@ -272,7 +272,7 @@ const AnalysisShare = () => {
           </Button>
           <Button variant="outline" asChild className="rounded-full">
             <Link to="/analyze">
-              <RefreshCcw className="mr-2 h-4 w-4" /> Run your own analysis
+              <RefreshCcw className="mr-2 h-4 w-4" /> Run your own prediction
             </Link>
           </Button>
         </div>

@@ -169,7 +169,7 @@ const Navigation = memo(({
               className="text-custom-text hover:text-blue-600 font-opensans"
               onClick={handleAnalyzeClick}
             >
-              Paste & Analyze
+              Virality Predictor
             </Button>
             {session && (
               <Button
@@ -264,7 +264,7 @@ const Navigation = memo(({
                 className="text-custom-text hover:text-blue-600 w-full font-opensans"
                 onClick={handleMobileAnalyzeClick}
               >
-                Paste & Analyze
+                Virality Predictor
               </Button>
               {session && (
                 <Button

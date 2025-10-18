@@ -291,19 +291,21 @@ const Analyze = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-sky-50 to-white">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-16 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 text-center">
-          <Badge className="mx-auto w-fit bg-blue-600/10 text-blue-700">Paste &amp; Analyze</Badge>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Decode any LinkedIn or X post before you hit publish
+          <Badge className="mx-auto w-fit rounded-full bg-blue-600/10 px-4 py-1 text-sm font-semibold text-blue-700">
+            Virality Predictor
+          </Badge>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            Predict your post’s breakout potential instantly
           </h1>
-          <p className="mx-auto max-w-2xl text-base text-slate-600 sm:text-lg">
-            Paste a public post URL, run an instant virality score, and see why the content worked.
+          <p className="mx-auto max-w-3xl text-base text-slate-600 sm:text-lg">
+            Drop a LinkedIn or X URL, or paste the post copy. We translate it into a polished virality score with clear recommendations in seconds.
           </p>
         </div>
 
-        <Card className="border-0 bg-white/90 shadow-xl backdrop-blur">
-          <CardContent className="space-y-6 p-6 sm:p-8">
+        <Card className="border-0 bg-white/95 shadow-2xl backdrop-blur-xl">
+          <CardContent className="space-y-6 p-6 sm:p-9">
             <div className="flex flex-col gap-3">
               <Label htmlFor="post-url" className="text-sm font-semibold text-slate-700">
                 Public post URL
@@ -327,23 +329,26 @@ const Analyze = () => {
                   {loading ? (
                     <span className="flex items-center gap-2">
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      Scoring...
+                      Predicting...
                     </span>
                   ) : (
                     <span className="flex items-center gap-2">
                       <Sparkles className="h-4 w-4" />
-                      Check Virality &amp; Breakdown
+                      Run Prediction
                     </span>
                   )}
                 </Button>
               </div>
             </div>
 
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-blue-100 bg-blue-50/60 p-4 text-sm text-slate-600">
+            <div className="flex flex-col gap-2 rounded-2xl border border-blue-100 bg-blue-50/80 p-4 text-sm text-blue-800 sm:flex-row sm:items-center sm:justify-between">
               <span>
-                No API data? <button className="font-semibold text-blue-600 hover:underline" onClick={() => setManualMode(true)}>Paste the post text instead.</button>
+                Not public yet?{" "}
+                <button className="font-semibold text-blue-700 underline-offset-4 hover:underline" onClick={() => setManualMode(true)}>
+                  Paste the draft text instead.
+                </button>
               </span>
-              <div className="hidden items-center gap-2 text-xs font-medium text-slate-500 sm:flex">
+              <div className="flex items-center gap-2 text-xs font-medium text-blue-600">
                 <LinkIcon className="h-4 w-4" /> Supports LinkedIn &amp; X URLs
               </div>
             </div>
@@ -374,28 +379,28 @@ const Analyze = () => {
 
         {analysis && (
           <div className="space-y-8">
-            <Card className="border-0 bg-white/90 shadow-2xl">
+            <Card className="border-0 bg-gradient-to-tr from-blue-50/70 via-white to-white shadow-2xl">
               <CardHeader className="space-y-6">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <CardTitle className="text-lg text-slate-500">Virality Score</CardTitle>
-                    <p className={cn("text-4xl font-bold", scorePalette.text)}>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-blue-700">Virality score</p>
+                    <p className={cn("text-5xl font-semibold", scorePalette.text)}>
                       {analysis.viralityScore}
                     </p>
                   </div>
-                  <Badge className="bg-blue-600/10 text-blue-700">
+                  <Badge className="rounded-full bg-blue-600/10 px-3 py-1 text-sm font-medium text-blue-700">
                     {formatPlatformLabel(analysis.metadata.platform)} insight
                   </Badge>
                 </div>
-                <div className="space-y-3">
-                  <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
+                <div className="space-y-2">
+                  <div className="h-3 w-full overflow-hidden rounded-full bg-blue-100/60">
                     <div
                       className={cn("h-full rounded-full transition-all duration-500", scorePalette.progress)}
                       style={{ width: `${Math.min(Math.max(analysis.viralityScore, 0), 100)}%` }}
                     />
                   </div>
                   <p className="text-sm text-slate-500">
-                    Score factors: hook quality, storytelling, structure, engagement signals, publishing context, and author credibility.
+                    Balanced from hook strength, storytelling clarity, engagement signals, and creator credibility.
                   </p>
                 </div>
               </CardHeader>
@@ -439,9 +444,9 @@ const Analyze = () => {
               <CardContent className="flex flex-col gap-6 p-6 sm:p-8">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="space-y-1">
-                    <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">Post snapshot</p>
-                    <h2 className="text-2xl font-bold text-slate-900">{formatPlatformLabel(analysis.metadata.platform)} breakdown</h2>
-                    {formattedPostedAt && <p className="text-sm text-slate-500">Published {formattedPostedAt}</p>}
+                    <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Post snapshot</p>
+                    <h2 className="text-2xl font-bold text-blue-900">{formatPlatformLabel(analysis.metadata.platform)} breakdown</h2>
+                    {formattedPostedAt && <p className="text-sm text-blue-700">Published {formattedPostedAt}</p>}
                     {analysis.metadata.postUrl && (
                       <Button asChild variant="link" className="px-0 text-sm text-blue-600">
                         <a href={analysis.metadata.postUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
@@ -450,12 +455,12 @@ const Analyze = () => {
                       </Button>
                     )}
                   </div>
-                  <div className="flex flex-col items-start gap-2 rounded-2xl border border-blue-100 bg-white/80 p-4 text-sm text-slate-600">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Author</p>
-                    <p className="text-base font-semibold text-slate-900">{analysis.metadata.author.name || "Unknown"}</p>
+                  <div className="flex flex-col items-start gap-2 rounded-2xl border border-blue-100 bg-white/80 p-4 text-sm text-blue-800">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">Author</p>
+                    <p className="text-base font-semibold text-blue-900">{analysis.metadata.author.name || "Unknown"}</p>
                     {analysis.metadata.author.handle && <p>@{analysis.metadata.author.handle}</p>}
                     {analysis.metadata.author.followers && (
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-blue-700">
                         {formatEngagementNumber(analysis.metadata.author.followers)} followers
                       </p>
                     )}
@@ -464,23 +469,23 @@ const Analyze = () => {
                 <Separator />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-3">
-                    <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">Post content</p>
-                    <p className="rounded-2xl border border-blue-100 bg-white/80 p-4 text-sm leading-relaxed text-slate-700 whitespace-pre-wrap">
+                    <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Post content</p>
+                    <p className="rounded-2xl border border-blue-100 bg-white/80 p-4 text-sm leading-relaxed text-blue-900 whitespace-pre-wrap">
                       {analysis.metadata.postText}
                     </p>
                   </div>
                   <div className="space-y-3">
-                    <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">Engagement snapshot</p>
-                    <div className="grid gap-3 rounded-2xl border border-blue-100 bg-white/80 p-4 text-sm text-slate-600">
+                    <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Engagement snapshot</p>
+                    <div className="grid gap-3 rounded-2xl border border-blue-100 bg-white/80 p-4 text-sm text-blue-800">
                       {metricEntries.length ? (
                         metricEntries.map((metric) => (
                           <div key={metric.label} className="flex items-center justify-between">
-                            <span className="font-medium text-slate-700">{metric.label}</span>
-                            <span className="text-slate-500">{metric.value}</span>
+                            <span className="font-medium text-blue-900">{metric.label}</span>
+                            <span className="text-blue-600">{metric.value}</span>
                           </div>
                         ))
                       ) : (
-                        <p className="text-sm text-slate-500">No public metrics provided. We estimated engagement from content signals.</p>
+                        <p className="text-sm text-blue-700">No public metrics provided. We estimated engagement from content signals.</p>
                       )}
                     </div>
                   </div>
@@ -491,7 +496,7 @@ const Analyze = () => {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-wrap gap-3">
                 <Button variant="outline" className="rounded-full" onClick={handleReset}>
-                  <RefreshCcw className="mr-2 h-4 w-4" /> Analyze another post
+                  <RefreshCcw className="mr-2 h-4 w-4" /> Predict another post
                 </Button>
                 <Button
                   className="rounded-full bg-blue-600 font-semibold hover:bg-blue-700"
@@ -506,7 +511,7 @@ const Analyze = () => {
                   ) : (
                     <span className="flex items-center gap-2">
                       <Share2 className="h-4 w-4" />
-                      Share this analysis
+                      Share prediction
                     </span>
                   )}
                 </Button>
