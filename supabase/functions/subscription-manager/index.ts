@@ -1,6 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.48.1";
 
+declare const Deno: {
+  env: {
+    get: (key: string) => string | undefined;
+  };
+};
+
 type PlanConfig = {
   planName: string;
   monthlyPostLimit: number;
@@ -34,9 +40,22 @@ const PLAN_CONFIGS: Record<string, PlanConfig> = {
     hasPrioritySupport: true,
     creditsIncluded: -1,
   },
+  'Owner Unlimited': {
+    planName: 'Owner Unlimited',
+    monthlyPostLimit: -1,
+    hasPremiumTemplates: true,
+    hasViralityScore: true,
+    hasAbTesting: true,
+    hasAdvancedAI: true,
+    hasPrioritySupport: true,
+    creditsIncluded: -1,
+  },
 };
 
 const DEFAULT_PLAN = 'Post Enhancer';
+
+const UNLIMITED_EMAILS = new Set(['enjoywithpandu@gmail.com']);
+const UNLIMITED_PLAN = 'Owner Unlimited';
 
 const getPlanConfig = (planName?: string) => {
   if (!planName) return PLAN_CONFIGS[DEFAULT_PLAN];
@@ -64,6 +83,38 @@ const ensurePlanLimits = async (supabase: any, planName: string) => {
   if (error) throw error;
 
   return config;
+};
+
+const ensureUnlimitedSubscription = async (
+  supabase: any,
+  userId: string,
+  email?: string | null,
+) => {
+  if (!email) return null;
+  const normalized = email.toLowerCase();
+  if (!UNLIMITED_EMAILS.has(normalized)) return null;
+
+  await ensurePlanLimits(supabase, UNLIMITED_PLAN);
+
+  const { error } = await supabase
+    .from('subscribers')
+    .upsert({
+      user_id: userId,
+      email,
+      plan_name: UNLIMITED_PLAN,
+      subscription_tier: 'owner',
+      subscribed: true,
+      monthly_post_count: 0,
+      monthly_reset_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+      subscription_end: null,
+    }, {
+      onConflict: 'user_id'
+    })
+    .select('id');
+
+  if (error) throw error;
+
+  return await fetchSubscription(supabase, userId);
 };
 
 const fetchSubscription = async (
@@ -118,9 +169,15 @@ serve(async (req: Request) => {
     };
     console.log(`Subscription manager called with action: ${action}`, { userId, email, planName });
 
+    await ensureUnlimitedSubscription(supabase, userId, email);
+
     switch (action) {
       case 'getUserSubscription': {
         let subscription = await fetchSubscription(supabase, userId);
+
+        if (!subscription) {
+          subscription = await ensureUnlimitedSubscription(supabase, userId, email);
+        }
 
         if (!subscription) {
           return new Response(
@@ -196,7 +253,11 @@ serve(async (req: Request) => {
       }
 
       case 'checkUsageLimit': {
-        const subscriptionRecord = await fetchSubscription(supabase, userId);
+        let subscriptionRecord = await fetchSubscription(supabase, userId);
+
+        if (!subscriptionRecord || (subscriptionRecord.email && UNLIMITED_EMAILS.has(subscriptionRecord.email.toLowerCase()))) {
+          subscriptionRecord = await ensureUnlimitedSubscription(supabase, userId, subscriptionRecord?.email ?? email);
+        }
 
         if (!subscriptionRecord) {
           return new Response(
@@ -257,7 +318,11 @@ serve(async (req: Request) => {
       }
 
       case 'incrementUsage': {
-        const subscription = await fetchSubscription(supabase, userId);
+        let subscription = await fetchSubscription(supabase, userId);
+
+        if (!subscription || (subscription.email && UNLIMITED_EMAILS.has(subscription.email.toLowerCase()))) {
+          subscription = await ensureUnlimitedSubscription(supabase, userId, subscription?.email ?? email);
+        }
 
         if (!subscription) {
           return new Response(
