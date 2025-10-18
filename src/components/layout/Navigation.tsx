@@ -165,7 +165,8 @@ const Navigation = memo(({
               Pricing
             </Button>
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white font-opensans"
+              variant="ghost"
+              className="text-custom-text hover:text-blue-600 font-opensans"
               onClick={handleAnalyzeClick}
             >
               Paste & Analyze
@@ -259,7 +260,8 @@ const Navigation = memo(({
                 Pricing
               </Button>
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white w-full font-opensans"
+                variant="ghost"
+                className="text-custom-text hover:text-blue-600 w-full font-opensans"
                 onClick={handleMobileAnalyzeClick}
               >
                 Paste & Analyze
