@@ -5,7 +5,8 @@ import PlanToggle from "./pricing/PlanToggle";
 import CountdownTimer from "@/components/ui/CountdownTimer";
 import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
-import { Verified } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CheckCircle } from "lucide-react";
 
 const PricingSection = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const PricingSection = () => {
 
   const activePlans = isYearly ? yearlyPlans : monthlyPlans;
   const gridClasses = activePlans.length > 1 ? "md:grid-cols-2" : "md:grid-cols-1";
-  const lifetimeGridCols = oneTimePlans.length + lifetimePlans.length > 1 ? "md:grid-cols-2" : "md:grid-cols-1";
+  const lifetimePlan = lifetimePlans[0];
 
   const handleSubscribe = (plan: Plan) => {
     navigate("/payment", {
@@ -57,52 +58,82 @@ const PricingSection = () => {
           </div>
         </div>
 
-        {(oneTimePlans.length > 0 || lifetimePlans.length > 0) && (
+        {(lifetimePlan || oneTimePlans.length > 0) && (
           <div className="mt-20 max-w-5xl mx-auto px-4">
-            <div className="rounded-3xl border-2 border-red-200 bg-white shadow-sm">
-              <div className="grid gap-10 p-10 md:grid-cols-5">
-                <div className="md:col-span-2 text-center md:text-left">
-                  <span className="text-sm font-semibold text-red-600 tracking-wide uppercase">
-                    Limited Time • Limited to 300 Spots
-                  </span>
-                  <h3 className="mt-4 text-3xl font-bold text-gray-900 leading-tight">
-                    One payment, everything forever.
-                  </h3>
-                  <p className="mt-3 text-gray-600 text-base">
-                    Includes all future enhancements plus exclusive strategy resources. Offer disappears when the countdown hits zero.
-                  </p>
-                  <CountdownTimer className="mt-6 justify-center md:justify-start" />
-                </div>
+            <div className={`grid gap-8 ${lifetimePlan && oneTimePlans.length > 0 ? "lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]" : "lg:grid-cols-1"}`}>
+              {lifetimePlan && (
+                <div className="relative overflow-hidden rounded-[32px] border-[3px] border-red-200 bg-white shadow-xl">
+                  <div className="absolute top-6 right-6 rounded-full bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-white">
+                    Limited Time - Limited to 300 spots
+                  </div>
+                  <div className="p-8 sm:p-10 md:p-12">
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h3 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-wide">
+                          {lifetimePlan.name}
+                        </h3>
+                        <p className="mt-3 text-base md:text-lg text-gray-600">
+                          One payment, everything forever. Includes all future features.
+                        </p>
+                      </div>
 
-                <div className={`md:col-span-3 grid gap-6 ${lifetimeGridCols}`}>
-                  {oneTimePlans.map((plan) => (
-                    <PlanCard key={plan.name} plan={plan} onSubscribe={handleSubscribe} />
-                  ))}
-                  {lifetimePlans.map((plan) => (
-                    <PlanCard key={plan.name} plan={plan} onSubscribe={handleSubscribe} />
-                  ))}
+                      <div className="flex flex-wrap items-baseline gap-3">
+                        <span className="text-5xl md:text-6xl font-bold text-red-600">
+                          ${lifetimePlan.price}
+                        </span>
+                        {lifetimePlan.originalPrice && (
+                          <span className="text-2xl text-gray-400 line-through">
+                            ${lifetimePlan.originalPrice}
+                          </span>
+                        )}
+                      </div>
+
+                      <ul className="space-y-3">
+                        {lifetimePlan.features.slice(0, 2).map((feature) => (
+                          <li key={feature} className="flex items-start gap-3">
+                            <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
+                            <span className="text-base text-gray-700">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div>
+                        <p className="text-sm font-semibold uppercase tracking-wider text-red-600">
+                          Offer ends in:
+                        </p>
+                        <CountdownTimer className="mt-2 justify-center md:justify-start text-red-600" />
+                      </div>
+
+                      <Button
+                        className="mt-2 w-full rounded-xl bg-red-600 py-4 text-base font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-red-700"
+                        onClick={() => handleSubscribe(lifetimePlan)}
+                      >
+                        {lifetimePlan.cta}
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {oneTimePlans.length > 0 && (
+                <div className="flex flex-col gap-4 rounded-[32px] border-2 border-blue-100 bg-white/90 p-6 sm:p-8 shadow-lg">
+                  <div>
+                    <span className="inline-block rounded-full bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-700">
+                      One-time unlock
+                    </span>
+                    <h4 className="mt-3 text-2xl font-bold text-gray-900">
+                      Try the enhancer forever for just ${oneTimePlans[0].price}
+                    </h4>
+                    <p className="mt-2 text-sm text-gray-600">
+                      Perfect if you want lifetime access without a subscription. Pay once and keep improving posts forever.
+                    </p>
+                  </div>
+                  <PlanCard plan={oneTimePlans[0]} onSubscribe={handleSubscribe} />
+                </div>
+              )}
             </div>
           </div>
         )}
-
-        <div className="mt-16 max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-center items-center gap-8 text-center text-gray-600">
-            <div className="flex items-center space-x-6">
-              <div className="text-blue-600 font-semibold">PayPal</div>
-              <div className="text-blue-600 font-semibold">Razorpay</div>
-              <div className="flex items-center">
-                <Verified className="w-5 h-5 text-green-500 mr-2" />
-                <span>Secure one-time payment</span>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center text-sm text-gray-500 italic">
-              <p>"Pay once, keep shipping better posts forever"</p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
