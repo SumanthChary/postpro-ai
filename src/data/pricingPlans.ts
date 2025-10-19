@@ -2,32 +2,99 @@ import { Plan } from "@/types/pricing";
 
 export const pricingPlans: Plan[] = [
   {
-    name: "Post Enhancer",
+    name: "STARTER",
     price: "2.99",
-    period: "lifetime",
+    period: "month",
     features: [
-      "Unlimited AI post enhancing"
+      "30 LinkedIn post enhancements per month",
+      "5 professional tone options",
+      "Basic AI enhancement",
+      "Email support (48-72 hours)",
+      "Export to LinkedIn"
     ],
-  cta: "Unlock for $2.99",
+    cta: "Start with Starter",
     currency: "USD",
-    postLimit: -1,
-    badge: "Lifetime access",
-    limitedQuantity: "One-time payment"
+    postLimit: 30,
+    badge: "Best for Beginners"
   },
   {
-    name: "Post Enhancer Plus",
+    name: "PROFESSIONAL",
+    price: "9.99",
+    period: "month",
+    features: [
+      "UNLIMITED LinkedIn post enhancements",
+      "15+ professional tone options to match your executive presence",
+      "89% accurate virality predictor",
+      "Real-time trending hashtag research",
+      "Custom CTA generator for professional connections",
+      "50+ proven templates from industry leaders",
+      "Advanced analytics with engagement insights",
+      "AI strategy chat for content planning",
+      "Priority email support within 4-12 hours",
+      "Export to all major platforms with optimized formatting"
+    ],
+    cta: "Go Professional",
+    currency: "USD",
+    postLimit: -1,
+    popular: true,
+    badge: "Most Popular"
+  },
+  {
+    name: "PRO ANNUAL",
+    price: "59.99",
+    period: "year",
+    features: [
+      "Everything in Professional Plan",
+      "Save $60 vs monthly billing (6 months free)",
+      "Price locked for 12 months",
+      "Quarterly LinkedIn strategy updates",
+      "Early access to new AI models",
+      "Priority feature requests",
+      "Annual performance report"
+    ],
+    cta: "Claim Annual Deal",
+    currency: "USD",
+    postLimit: -1,
+    badge: "Save 50%",
+    originalPrice: "119.88",
+    savings: "Save $60",
+    limitedQuantity: "Best value for committed professionals"
+  },
+  {
+    name: "POST ENHANCER ONE-TIME",
     price: "4.99",
     period: "lifetime",
     features: [
-      "Unlimited AI post enhancing",
-      "Virality predictor insights"
+      "One-time unlock of unlimited post enhancements",
+      "Includes virality predictor insights for current campaigns",
+      "Keep every generated post forever",
+      "Premium templates and tone presets",
+      "Perfect for testing before upgrading"
     ],
-  cta: "Unlock for $4.99",
+    cta: "Unlock for $4.99",
     currency: "USD",
     postLimit: -1,
-    badge: "Best value",
-    limitedQuantity: "One-time payment",
-    popular: true
+    badge: "One-time boost",
+    limitedQuantity: "Single payment access"
+  },
+  {
+    name: "LIFETIME CREATOR",
+    price: "149",
+    period: "lifetime",
+    features: [
+      "All current and future Professional features forever",
+      "Monthly strategy guides from the founder",
+      "One-time personal profile optimization ($97 value)",
+      "Never pay again - lifetime access guaranteed",
+      "VIP community access with successful professionals",
+      "White-glove onboarding for immediate results"
+    ],
+    cta: "Secure Lifetime Access",
+    currency: "USD",
+    postLimit: -1,
+    badge: "Limited to 300 spots",
+    originalPrice: "299",
+    limitedQuantity: "Limited lifetime deal"
   }
 ];
 
