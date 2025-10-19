@@ -168,7 +168,7 @@ const Chatbot = () => {
           <div className="border-t border-gray-100 px-3 py-4 sm:px-4">
             <form
               onSubmit={handleSubmit}
-              className="relative rounded-xl border border-gray-200 bg-white focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500 p-1"
+              className="relative rounded-xl border border-gray-200 bg-white focus-within:border-gray-300 focus-within:ring-0 focus-within:shadow-sm p-1"
             >
               <ChatInput
                 value={input}
@@ -180,7 +180,7 @@ const Chatbot = () => {
                 <Button 
                   type="submit" 
                   size="sm" 
-                  className="ml-auto gap-1.5 bg-blue-600 hover:bg-blue-700" 
+                  className="ml-auto gap-1.5 bg-blue-600 text-white hover:bg-blue-700" 
                   disabled={!input.trim() || isLoading}
                 >
                   Send

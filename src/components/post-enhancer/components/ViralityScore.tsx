@@ -9,6 +9,7 @@ import { edgeFunctionCache } from "@/utils/edge-function-cache";
 import type { EnhancePostResponse } from "../types";
 import { useSubscription } from "@/hooks/useSubscription";
 import UpgradePrompt from "../UpgradePrompt";
+import SemiCircularGauge from "@/components/ui/SemiCircularGauge";
 
 type Diagnostics = NonNullable<EnhancePostResponse["diagnostics"]>;
 type EngagementMetrics = Diagnostics["engagementMetrics"];
@@ -118,11 +119,11 @@ export function ViralityScore({
     if (score >= 50) return "outline";
     return "destructive";
   };
-  const getProgressBarColor = (score: number) => {
-    if (score >= 85) return "bg-gradient-to-r from-emerald-500 to-green-600";
-    if (score >= 70) return "bg-gradient-to-r from-slate-400 to-slate-600";
-    if (score >= 50) return "bg-gradient-to-r from-amber-500 to-orange-600";
-    return "bg-gradient-to-r from-slate-400 to-slate-500";
+  const getGaugeColor = (score: number) => {
+    if (score >= 85) return "#10B981";
+    if (score >= 70) return "#475569";
+    if (score >= 50) return "#F97316";
+    return "#94A3B8";
   };
   const watchouts = useMemo(() => viewReasons.map(parseWatchout), [viewReasons]);
   const hasWatchouts = watchouts.length > 0;
@@ -327,12 +328,13 @@ export function ViralityScore({
             </Badge>
           </div>
 
-          <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
-            <div
-              className={`h-4 rounded-full transition-all duration-1000 ${getProgressBarColor(score)}`}
-              style={{ width: `${score}%` }}
-            />
-          </div>
+          <SemiCircularGauge
+            value={score}
+            indicatorColor={getGaugeColor(score)}
+            trackColor="#e2e8f0"
+            label="Virality Score"
+            className="mx-auto w-full max-w-xs"
+          />
 
           <p className="text-center text-sm text-muted-foreground">
             {score >= 90 ? "🔥 Exceptional viral potential!" : score >= 70 ? "✨ Strong engagement expected!" : score >= 50 ? "📈 Good foundation for growth!" : "💡 Optimization recommended"}

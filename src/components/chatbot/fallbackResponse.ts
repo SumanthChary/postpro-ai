@@ -50,6 +50,12 @@ export const generateChatFallbackResponse = (message: string) => {
   const theme = extractTheme(message);
   const suggestions = buildSuggestions(theme);
   const tidyMessage = normalize(message).slice(0, 220);
+  const normalized = normalize(message).toLowerCase();
+  const simpleGreeting = /^(hi|hey|hello|yo|hiya|hola|sup|good\s*(morning|afternoon|evening)?)$/i;
 
-  return `I’m having trouble reaching the full AI assistant right now, so here’s a rapid-fire playbook you can use immediately.\n\nFocus area: ${theme}\n\nReader prompt: “${tidyMessage || "What should I post?"}”\n\nNext moves:\n1. ${suggestions[0]}\n2. ${suggestions[1]}\n3. ${suggestions[2]}\n\nTry one of these in your next post and loop back with the result — I’ll be ready with a deeper dive once the main model is back online.`;
+  if (simpleGreeting.test(normalized)) {
+    return "Hey! I’m your social growth partner. Ask me what you’re working on and I’ll give you sharp, platform-ready ideas.";
+  }
+
+  return `Signal check: the main model is warming up, so here’s a quick, high-IQ plan you can run with right now.\n\nFocus: ${theme}\nReader prompt: “${tidyMessage || "What should I post?"}”\n\nTry this:\n• ${suggestions[0]}\n• ${suggestions[1]}\n• ${suggestions[2]}\n\nCome back with a result and I’ll riff deeper once the full assistant is ready.`;
 };

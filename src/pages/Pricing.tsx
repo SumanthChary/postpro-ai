@@ -6,8 +6,10 @@ import { pricingPlans } from "@/data/pricingPlans";
 import { Plan } from "@/types/pricing";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Verified } from "lucide-react";
+import { CheckCircle, Verified } from "lucide-react";
 import PlanCard from "@/components/pricing/PlanCard";
+import CountdownTimer from "@/components/ui/CountdownTimer";
+import { Button } from "@/components/ui/button";
 
 const Pricing: React.FC = () => {
   const navigate = useNavigate();
@@ -86,6 +88,12 @@ const Pricing: React.FC = () => {
     navigate("/payment", { state: { plan } });
   };
 
+  const lifetimePlan = pricingPlans.find((plan) => plan.name === "LIFETIME CREATOR");
+  const oneTimePlan = pricingPlans.find(
+    (plan) => plan.name.toLowerCase().includes("one-time") || plan.badge?.toLowerCase().includes("one-time"),
+  );
+  const subscriptionPlans = pricingPlans.filter((plan) => plan.period !== "lifetime");
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       <Navigation
@@ -109,7 +117,7 @@ const Pricing: React.FC = () => {
             </p>
           </div>
           <div className="mt-16 max-w-5xl mx-auto grid gap-8 md:grid-cols-2">
-            {pricingPlans.map((plan) => (
+            {subscriptionPlans.map((plan) => (
               <PlanCard
                 key={plan.name}
                 plan={plan}
@@ -118,12 +126,101 @@ const Pricing: React.FC = () => {
             ))}
           </div>
 
+          {(lifetimePlan || oneTimePlan) && (
+            <div className="mt-20 max-w-5xl mx-auto grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+              {lifetimePlan && (
+                <div className="relative overflow-hidden rounded-[32px] border-[3px] border-red-200 bg-white shadow-xl">
+                  <div className="absolute top-6 right-6 rounded-full bg-red-600 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-white">
+                    Limited Time • 300 Spots
+                  </div>
+                  <div className="p-8 sm:p-10">
+                    <div className="flex flex-col gap-6">
+                      <div>
+                        <h2 className="text-3xl font-bold text-gray-900">{lifetimePlan.name}</h2>
+                        <p className="mt-3 text-base text-gray-600">
+                          One payment. Every feature forever. Includes all upcoming launches.
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap items-baseline gap-3">
+                        <span className="text-5xl font-extrabold text-red-600">${lifetimePlan.price}</span>
+                        {lifetimePlan.originalPrice && (
+                          <span className="text-2xl text-gray-400 line-through">
+                            ${lifetimePlan.originalPrice}
+                          </span>
+                        )}
+                      </div>
+
+                      <ul className="space-y-3">
+                        {lifetimePlan.features.slice(0, 3).map((feature) => (
+                          <li key={feature} className="flex items-start gap-3 text-sm text-gray-700">
+                            <CheckCircle className="mt-0.5 h-4 w-4 text-green-500" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div>
+                        <p className="text-sm font-semibold uppercase tracking-wide text-red-600">
+                          Offer ends in
+                        </p>
+                        <div className="mt-3 inline-flex w-full flex-wrap items-center justify-center gap-3 rounded-2xl border border-red-100 bg-red-50/70 px-5 py-4 md:justify-start">
+                          <CountdownTimer className="text-red-600" />
+                        </div>
+                      </div>
+
+                      <Button
+                        className="w-full rounded-xl bg-red-600 py-4 text-base font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-red-700"
+                        onClick={() => handleSubscribe(lifetimePlan)}
+                      >
+                        {lifetimePlan.cta}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {oneTimePlan && (
+                <div className="flex flex-col gap-5 rounded-[32px] border-2 border-blue-100 bg-white/95 p-6 sm:p-8 shadow-lg">
+                  <span className="w-fit rounded-full bg-blue-600/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700">
+                    One-time unlock
+                  </span>
+                  <div className="space-y-3">
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      Try the enhancer forever for just ${oneTimePlan.price}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Lifetime access without a subscription. Perfect for testing the full experience at your own pace.
+                    </p>
+                  </div>
+
+                  <div className="space-y-3">
+                    {oneTimePlan.features.slice(0, 3).map((feature) => (
+                      <div key={feature} className="flex items-start gap-3">
+                        <CheckCircle className="mt-0.5 h-4 w-4 text-blue-600" />
+                        <span className="text-sm text-gray-700">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Button
+                    className="w-full rounded-xl bg-blue-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-blue-700"
+                    onClick={() => handleSubscribe(oneTimePlan)}
+                  >
+                    {oneTimePlan.cta}
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Trust Indicators */}
           <div className="mt-16 max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row justify-center items-center gap-8 text-center text-gray-600">
               <div className="flex items-center space-x-6">
                 <div className="text-blue-600 font-semibold">PayPal</div>
                 <div className="text-blue-600 font-semibold">Razorpay</div>
+                <div className="text-blue-600 font-semibold">DoDo Payments</div>
                 <div className="flex items-center">
                   <Verified className="w-5 h-5 text-green-500 mr-2" />
                   <span>Secure one-time payment</span>

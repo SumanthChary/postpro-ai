@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import SemiCircularGauge from "@/components/ui/SemiCircularGauge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -81,6 +82,21 @@ const AnalysisShare = () => {
   }, [slug]);
 
   const scorePalette = useMemo(() => paletteForScore(analysis?.viralityScore ?? 70), [analysis]);
+  const gaugeColor = useMemo(() => {
+    const progressClass = scorePalette.progress || "";
+    if (progressClass.includes("emerald")) return "#10B981";
+    if (progressClass.includes("amber")) return "#F59E0B";
+    if (progressClass.includes("rose")) return "#F43F5E";
+    return "#2563EB";
+  }, [scorePalette]);
+  const scoreDescriptor = useMemo(() => {
+    if (!analysis) return "Optimize your hook to boost reach.";
+    const score = analysis.viralityScore;
+    if (score >= 85) return "Viral-ready copy";
+    if (score >= 70) return "Strong potential with light tweaks";
+    if (score >= 50) return "Solid foundation for growth";
+    return "Needs polishing to break through";
+  }, [analysis]);
 
   const metricEntries = useMemo(() => {
     if (!analysis) return [] as Array<{ label: string; value: string }>;
@@ -158,26 +174,24 @@ const AnalysisShare = () => {
 
         <Card className="border-0 bg-white/90 shadow-2xl">
           <CardHeader className="space-y-6">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <CardTitle className="text-lg text-slate-500">Virality Score</CardTitle>
-                <p className={cn("text-4xl font-bold", scorePalette.text)}>{analysis.viralityScore}</p>
+            <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <SemiCircularGauge
+                value={analysis.viralityScore}
+                indicatorColor={gaugeColor}
+                trackColor="#e2e8f0"
+                label="Virality Score"
+                className="w-full lg:w-auto"
+              />
+              <div className="flex flex-col items-center gap-2 text-center lg:items-end lg:text-right">
+                <Badge className="bg-blue-600/10 text-blue-700">
+                  {formatPlatformLabel(analysis.platform)} insight
+                </Badge>
+                <p className={cn("text-base font-semibold", scorePalette.text)}>{scoreDescriptor}</p>
               </div>
-              <Badge className="bg-blue-600/10 text-blue-700">
-                {formatPlatformLabel(analysis.platform)} insight
-              </Badge>
             </div>
-            <div className="space-y-3">
-              <div className="h-3 w-full overflow-hidden rounded-full bg-slate-100">
-                <div
-                  className={cn("h-full rounded-full transition-all duration-500", scorePalette.progress)}
-                  style={{ width: `${Math.min(Math.max(analysis.viralityScore, 0), 100)}%` }}
-                />
-              </div>
-              <p className="text-sm text-slate-500">
-                Scored from hook strength, structure, engagement metrics, author credibility, and topical relevance.
-              </p>
-            </div>
+            <p className="text-sm text-slate-500 text-center lg:text-left">
+              Scored from hook strength, structure, engagement metrics, author credibility, and topical relevance.
+            </p>
           </CardHeader>
         </Card>
 
