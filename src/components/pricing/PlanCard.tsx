@@ -12,26 +12,45 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
   const isFree = plan.name === "START FREE";
   const isLifetime = plan.period === "lifetime";
   const isAnnual = plan.period === "year";
+  const isLifetimeCreator = plan.name === "LIFETIME CREATOR";
+  const isOneTime = plan.name.toLowerCase().includes("one-time");
+
+  const borderStyles = (() => {
+    if (plan.popular) {
+      return "border-blue-500 shadow-sm ring-2 ring-blue-100 scale-105";
+    }
+    if (isLifetimeCreator) {
+      return "border-2 border-red-200 hover:border-red-300";
+    }
+    if (isOneTime) {
+      return "border-2 border-blue-200 hover:border-blue-300";
+    }
+    return "border-gray-200 hover:border-gray-300";
+  })();
+
+  const badgeColor = (() => {
+    if (plan.popular) return "bg-blue-600 text-white";
+    if (isLifetimeCreator) return "bg-red-600 text-white";
+    if (isOneTime) return "bg-blue-600 text-white";
+    if (isFree) return "bg-green-600 text-white";
+    return "bg-orange-600 text-white";
+  })();
+
+  const buttonColor = (() => {
+    if (plan.popular) return "bg-blue-600 text-white hover:bg-blue-700 shadow-sm";
+    if (isLifetimeCreator) return "bg-red-600 text-white hover:bg-red-700 shadow-sm";
+    if (isOneTime) return "bg-blue-600 text-white hover:bg-blue-700 shadow-sm";
+    if (isLifetime) return "bg-orange-600 text-white hover:bg-orange-700 shadow-sm";
+    return "bg-blue-600 text-white hover:bg-blue-700 shadow-sm";
+  })();
 
   return (
     <Card
-      className={`p-8 flex flex-col relative bg-white border rounded-xl hover:shadow-md transition-all duration-300 ${
-        plan.popular
-          ? "border-blue-500 shadow-sm ring-2 ring-blue-100 scale-105"
-          : "border-gray-200 hover:border-gray-300"
-      }`}
+      className={`p-8 flex flex-col relative bg-white rounded-2xl transition-all duration-300 ${borderStyles}`}
     >
       {plan.badge && (
         <div className="absolute -top-3 left-6">
-          <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold ${
-              plan.popular
-                ? "bg-blue-600 text-white"
-                : isFree
-                  ? "bg-green-600 text-white"
-                  : "bg-orange-600 text-white"
-            }`}
-          >
+          <span className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase ${badgeColor}`}>
             {plan.badge}
           </span>
         </div>
@@ -94,13 +113,7 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
       </div>
 
       <Button
-        className={`w-full py-3 text-sm font-semibold rounded-lg transition-all duration-200 ${
-          plan.popular
-            ? "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
-            : isLifetime
-              ? "bg-orange-600 text-white hover:bg-orange-700 shadow-sm"
-              : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
-        }`}
+        className={`w-full py-3 text-sm font-semibold rounded-lg transition-all duration-200 ${buttonColor}`}
         onClick={() => onSubscribe(plan)}
       >
         {plan.cta}

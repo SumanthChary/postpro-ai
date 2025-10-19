@@ -21,6 +21,10 @@ const PricingSection = () => {
     (plan) => !oneTimePlans.some((oneTimePlan) => oneTimePlan.name === plan.name)
   );
 
+  const activePlans = isYearly ? yearlyPlans : monthlyPlans;
+  const gridClasses = activePlans.length > 1 ? "md:grid-cols-2" : "md:grid-cols-1";
+  const lifetimeGridCols = oneTimePlans.length + lifetimePlans.length > 1 ? "md:grid-cols-2" : "md:grid-cols-1";
+
   const handleSubscribe = (plan: Plan) => {
     navigate("/payment", {
       state: { plan }
@@ -31,70 +35,53 @@ const PricingSection = () => {
     <section className="py-24 bg-gradient-to-br from-blue-50/50 via-white to-purple-50/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Choose Your Perfect Post Enhancer Plan
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            Simple, Transparent Pricing
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Flexible plans for every LinkedIn creator. Start monthly, commit annually for huge savings, or secure lifetime access while the deal lasts.
+            Choose the perfect plan to supercharge your social media presence.
           </p>
         </div>
 
         <PlanToggle isYearly={isYearly} setIsYearly={setIsYearly} />
 
         <div className="w-full mx-auto px-4 max-w-5xl">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {(isYearly ? yearlyPlans : monthlyPlans).map((plan) => (
-              <PlanCard key={plan.name} plan={plan} onSubscribe={handleSubscribe} />
+          <div
+            className={`grid gap-6 justify-items-center ${gridClasses}`}
+          >
+            {activePlans.map((plan) => (
+              <div key={plan.name} className="w-full max-w-xl">
+                <PlanCard plan={plan} onSubscribe={handleSubscribe} />
+              </div>
             ))}
           </div>
         </div>
 
-        {oneTimePlans.length > 0 && (
-          <div className="mt-16 max-w-4xl mx-auto px-4">
-            <div className="bg-white/80 backdrop-blur border border-blue-100 rounded-3xl shadow-sm p-8 md:p-12">
-              <div className="flex flex-col md:flex-row items-start md:items-center md:justify-between gap-8">
-                <div className="max-w-xl">
-                  <span className="text-sm font-semibold text-blue-600 tracking-wide uppercase">
-                    New One-Time Unlock
+        {(oneTimePlans.length > 0 || lifetimePlans.length > 0) && (
+          <div className="mt-20 max-w-5xl mx-auto px-4">
+            <div className="rounded-3xl border-2 border-red-200 bg-white shadow-sm">
+              <div className="grid gap-10 p-10 md:grid-cols-5">
+                <div className="md:col-span-2 text-center md:text-left">
+                  <span className="text-sm font-semibold text-red-600 tracking-wide uppercase">
+                    Limited Time • Limited to 300 Spots
                   </span>
-                  <h3 className="mt-3 text-2xl md:text-3xl font-bold text-gray-900">
-                    Try the Post Enhancer forever for just $4.99
+                  <h3 className="mt-4 text-3xl font-bold text-gray-900 leading-tight">
+                    One payment, everything forever.
                   </h3>
-                  <p className="mt-3 text-gray-600 text-base md:text-lg">
-                    Perfect if you want lifetime access without a subscription. Pay once, keep generating better posts anytime inspiration hits.
+                  <p className="mt-3 text-gray-600 text-base">
+                    Includes all future enhancements plus exclusive strategy resources. Offer disappears when the countdown hits zero.
                   </p>
+                  <CountdownTimer className="mt-6 justify-center md:justify-start" />
                 </div>
 
-                <div className="w-full md:w-auto grid gap-6 sm:grid-cols-2 md:grid-cols-1">
+                <div className={`md:col-span-3 grid gap-6 ${lifetimeGridCols}`}>
                   {oneTimePlans.map((plan) => (
                     <PlanCard key={plan.name} plan={plan} onSubscribe={handleSubscribe} />
                   ))}
+                  {lifetimePlans.map((plan) => (
+                    <PlanCard key={plan.name} plan={plan} onSubscribe={handleSubscribe} />
+                  ))}
                 </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {lifetimePlans.length > 0 && (
-          <div className="mt-20 bg-white/70 backdrop-blur rounded-3xl border border-gray-100 shadow-sm">
-            <div className="grid md:grid-cols-5 gap-10 p-10 items-center">
-              <div className="md:col-span-2 text-center md:text-left">
-                <span className="text-sm font-semibold text-orange-600 tracking-wide uppercase">
-                  Limited Lifetime Offer
-                </span>
-                <h3 className="mt-4 text-3xl font-bold text-gray-900 leading-tight">
-                  Pay once, keep every future upgrade
-                </h3>
-                <p className="mt-3 text-gray-600 text-base">
-                  Lifetime Creator is back for a short time only. Lock in permanent access to every current and upcoming feature with a single payment.
-                </p>
-                <CountdownTimer className="mt-6 justify-center md:justify-start" />
-              </div>
-
-              <div className="md:col-span-3 grid gap-6 md:grid-cols-2">
-                {lifetimePlans.map((plan) => (
-                  <PlanCard key={plan.name} plan={plan} onSubscribe={handleSubscribe} />
-                ))}
               </div>
             </div>
           </div>
