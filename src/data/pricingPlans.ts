@@ -11,8 +11,8 @@ export const pricingPlans: Plan[] = [
       "Basic AI enhancement",
       "Email support (48-72 hours)",
       "Export to LinkedIn"
-    ],
-    cta: "Start with Starter",
+  ],
+  cta: "Start 7-day Trial",
     currency: "USD",
     postLimit: 30,
     badge: "Best for Beginners"
@@ -32,8 +32,8 @@ export const pricingPlans: Plan[] = [
       "AI strategy chat for content planning",
       "Priority email support within 4-12 hours",
       "Export to all major platforms with optimized formatting"
-    ],
-    cta: "Go Professional",
+  ],
+  cta: "Start 7-day Trial",
     currency: "USD",
     postLimit: -1,
     popular: true,
@@ -51,8 +51,8 @@ export const pricingPlans: Plan[] = [
       "Early access to new AI models",
       "Priority feature requests",
       "Annual performance report"
-    ],
-    cta: "Claim Annual Deal",
+  ],
+  cta: "Start 7-day Trial",
     currency: "USD",
     postLimit: -1,
     badge: "Save 50%",
