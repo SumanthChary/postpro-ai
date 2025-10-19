@@ -37,25 +37,25 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ className = "" }) => {
   }, []);
 
   return (
-    <div className={`flex items-center space-x-2 text-xl font-mono ${className}`}>
+    <div className={`flex items-center space-x-3 font-mono ${className}`}>
       <div className="text-center">
-        <span className="text-2xl font-bold">{String(timeLeft.days).padStart(2, '0')}</span>
-        <span className="block text-xs font-sans text-gray-500">Days</span>
+        <span className="text-4xl font-extrabold text-red-600">{String(timeLeft.days).padStart(2, '0')}</span>
+        <span className="block text-xs font-sans uppercase tracking-wide text-gray-500">Days</span>
       </div>
-      <div className="text-red-600">:</div>
+      <div className="text-3xl font-extrabold text-red-600">:</div>
       <div className="text-center">
-        <span className="text-2xl font-bold">{String(timeLeft.hours).padStart(2, '0')}</span>
-        <span className="block text-xs font-sans text-gray-500">Hours</span>
+        <span className="text-4xl font-extrabold text-red-600">{String(timeLeft.hours).padStart(2, '0')}</span>
+        <span className="block text-xs font-sans uppercase tracking-wide text-gray-500">Hours</span>
       </div>
-      <div className="text-red-600">:</div>
+      <div className="text-3xl font-extrabold text-red-600">:</div>
       <div className="text-center">
-        <span className="text-2xl font-bold">{String(timeLeft.minutes).padStart(2, '0')}</span>
-        <span className="block text-xs font-sans text-gray-500">Mins</span>
+        <span className="text-4xl font-extrabold text-red-600">{String(timeLeft.minutes).padStart(2, '0')}</span>
+        <span className="block text-xs font-sans uppercase tracking-wide text-gray-500">Mins</span>
       </div>
-      <div className="text-red-600">:</div>
+      <div className="text-3xl font-extrabold text-red-600">:</div>
       <div className="text-center">
-        <span className="text-2xl font-bold">{String(timeLeft.seconds).padStart(2, '0')}</span>
-        <span className="block text-xs font-sans text-gray-500">Secs</span>
+        <span className="text-4xl font-extrabold text-red-600">{String(timeLeft.seconds).padStart(2, '0')}</span>
+        <span className="block text-xs font-sans uppercase tracking-wide text-gray-500">Secs</span>
       </div>
     </div>
   );
