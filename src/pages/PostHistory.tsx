@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
@@ -133,6 +133,13 @@ const PostHistory = () => {
   const [items, setItems] = useState<EnhancementHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const isMountedRef = useRef(true);
+
+  const runIfMounted = useCallback((callback: () => void) => {
+    if (isMountedRef.current) {
+      callback();
+    }
+  }, []);
 
   const mapLocalRecord = useCallback((record: LocalEnhancementRecord): EnhancementHistoryItem => ({
     id: record.id,
@@ -148,59 +155,77 @@ const PostHistory = () => {
   }), []);
 
   const fetchHistory = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+    runIfMounted(() => {
+      setLoading(true);
+      setError(null);
+    });
 
     const localRecords = loadEnhancementsLocally(user?.id);
     const mappedLocalRecords = localRecords.map(mapLocalRecord);
 
     if (!user) {
-      setItems(sortHistoryItems(mappedLocalRecords));
-      setLoading(false);
-      return;
-    }
-
-    const { data, error: queryError } = await supabase
-      .from("post_enhancements")
-      .select("id, original_post, enhanced_platforms, category, style_tone, virality_score, insights, view_reasons, quick_wins, created_at")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(50);
-
-    if (queryError) {
-      console.error("Post history query failed", queryError);
-      if (mappedLocalRecords.length) {
+      runIfMounted(() => {
         setItems(sortHistoryItems(mappedLocalRecords));
-        setError(null);
-      } else {
-        setItems([]);
-        setError("Failed to load enhancement history. Please try again.");
-      }
-      setLoading(false);
+        setLoading(false);
+      });
       return;
     }
 
-    const remoteRecords = (data ?? []).map((item: PostEnhancementRow) => ({
-      id: item.id,
-      original_post: item.original_post,
-      enhanced_platforms: (item.enhanced_platforms ?? {}) as EnhancePostResponse["platforms"],
-      category: item.category,
-      style_tone: item.style_tone,
-      virality_score: item.virality_score,
-      insights: toStringArray(item.insights),
-      view_reasons: toStringArray(item.view_reasons),
-      quick_wins: toStringArray(item.quick_wins),
-      created_at: item.created_at,
-    }));
+    try {
+      const { data, error: queryError } = await supabase
+        .from("post_enhancements")
+        .select("id, original_post, enhanced_platforms, category, style_tone, virality_score, insights, view_reasons, quick_wins, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(50);
 
-    const combinedHistory = mergeHistoryRecords(remoteRecords, mappedLocalRecords);
-    setItems(combinedHistory);
-    setLoading(false);
-  }, [user, mapLocalRecord]);
+      if (queryError) {
+        throw queryError;
+      }
+
+      const remoteRecords = (data ?? []).map((item: PostEnhancementRow) => ({
+        id: item.id,
+        original_post: item.original_post,
+        enhanced_platforms: (item.enhanced_platforms ?? {}) as EnhancePostResponse["platforms"],
+        category: item.category,
+        style_tone: item.style_tone,
+        virality_score: item.virality_score,
+        insights: toStringArray(item.insights),
+        view_reasons: toStringArray(item.view_reasons),
+        quick_wins: toStringArray(item.quick_wins),
+        created_at: item.created_at,
+      }));
+
+      const combinedHistory = mergeHistoryRecords(remoteRecords, mappedLocalRecords);
+      runIfMounted(() => {
+        setItems(combinedHistory);
+        setError(null);
+      });
+    } catch (err) {
+      console.error("Post history query failed", err);
+      runIfMounted(() => {
+        if (mappedLocalRecords.length) {
+          setItems(sortHistoryItems(mappedLocalRecords));
+          setError(null);
+        } else {
+          setItems([]);
+          setError("Failed to load enhancement history. Please try again.");
+        }
+      });
+    } finally {
+      runIfMounted(() => {
+        setLoading(false);
+      });
+    }
+  }, [user, mapLocalRecord, runIfMounted]);
 
   useEffect(() => {
     fetchHistory();
   }, [fetchHistory]);
+
+  useEffect(() => () => {
+    isMountedRef.current = false;
+  }, []);
 
   const isGuest = !user;
   const headerDescription = isGuest

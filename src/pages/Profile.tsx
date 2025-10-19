@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, History } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -62,17 +62,6 @@ const Profile = () => {
               Back to Home
             </Button>
 
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2 bg-white/80 backdrop-blur-sm border-blue-200 hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl rounded-full px-6"
-              asChild
-            >
-              <Link to="/post-history">
-                <History className="h-4 w-4" />
-                Enhancement History
-              </Link>
-            </Button>
           </div>
 
           <div className="text-center sm:text-right">
