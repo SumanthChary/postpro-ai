@@ -101,12 +101,6 @@ export function ViralityScore({
   const baseEnhancerPlan = hasSubscription && normalizedPlanName.includes('post enhancer') && !normalizedPlanName.includes('plus');
   const showLimitedVirality = baseEnhancerPlan && !hasFullViralityAccess;
   const viralityLocked = (!hasSubscription || baseEnhancerPlan) && !hasFullViralityAccess;
-  const getScoreColor = (score: number) => {
-    if (score >= 85) return "text-emerald-600";
-    if (score >= 70) return "text-slate-600";
-    if (score >= 50) return "text-amber-600";
-    return "text-slate-500";
-  };
   const getScoreBadge = (score: number) => {
     if (score >= 85) return "🚀 Viral Ready";
     if (score >= 70) return "⚡ High Potential";
@@ -319,22 +313,18 @@ export function ViralityScore({
 
       {score !== null && !viralityLocked && (
         <div className="p-8 space-y-6">
-          <div className="flex flex-col items-center gap-3 text-center">
-            <div className={`text-6xl font-bold ${getScoreColor(score)}`}>
-              {score}%
-            </div>
+          <div className="flex flex-col items-center gap-4 text-center">
+            <SemiCircularGauge
+              value={score}
+              indicatorColor={getGaugeColor(score)}
+              trackColor="#e2e8f0"
+              label="Virality Score"
+              className="mx-auto w-full max-w-xs"
+            />
             <Badge variant={getBadgeVariant(score)} className="px-3 py-1 text-sm">
               {getScoreBadge(score)}
             </Badge>
           </div>
-
-          <SemiCircularGauge
-            value={score}
-            indicatorColor={getGaugeColor(score)}
-            trackColor="#e2e8f0"
-            label="Virality Score"
-            className="mx-auto w-full max-w-xs"
-          />
 
           <p className="text-center text-sm text-muted-foreground">
             {score >= 90 ? "🔥 Exceptional viral potential!" : score >= 70 ? "✨ Strong engagement expected!" : score >= 50 ? "📈 Good foundation for growth!" : "💡 Optimization recommended"}
