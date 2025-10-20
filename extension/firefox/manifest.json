@@ -20,7 +20,12 @@
     "https://*.supabase.co/*"
   ],
   "options_ui": {
-    "page": "options.html",
-    "browser_style": true
+    "page": "options.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "postpro-ai@postpro.ai",
+      "strict_min_version": "109.0"
+    }
   }
 }
