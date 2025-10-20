@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">PostPro AI</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#396BFF" />
+      <stop offset="100%" stop-color="#6C5CE7" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)" />
+  <path d="M42 90V38h26c15 0 24 9 24 22s-9 22-24 22h-12v8zM54 70h14c7 0 12-4 12-10s-5-10-12-10H54z" fill="#f8fafc" />
+</svg>
