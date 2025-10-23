@@ -108,7 +108,10 @@ const PricingSection = () => {
                     {pack.savings && <li className="text-emerald-600 font-medium">{pack.savings}</li>}
                     <li>${pack.pricePerCredit}/credit</li>
                   </ul>
-                  <Button className="mt-6 w-full bg-blue-600 text-white hover:bg-blue-700" onClick={() => navigate("/payment", { state: { plan: {
+                  <Button
+                    className="mt-6 w-full bg-blue-600 text-white hover:bg-blue-700"
+                    onClick={() => {
+                      const creditPlan: Plan = {
                         name: `${pack.name} Credit Pack`,
                         price: pack.price,
                         period: "lifetime",
@@ -117,8 +120,12 @@ const PricingSection = () => {
                           "Enhance + analyze with each credit",
                           "Extension + web access included"
                         ],
-                        cta: `Buy ${pack.name}`
-                      } as Plan } )}>
+                        cta: `Buy ${pack.name}`,
+                        currency: "USD"
+                      };
+                      navigate("/payment", { state: { plan: creditPlan } });
+                    }}
+                  >
                     Buy Credits
                   </Button>
                 </div>
