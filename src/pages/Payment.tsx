@@ -9,7 +9,6 @@ import { ContactSupport } from "@/components/payment/ContactSupport";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
 import { Plan } from "@/types/pricing";
-import { pricingPlans } from "@/data/pricingPlans";
 
 const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
@@ -22,8 +21,15 @@ const Payment = () => {
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
   
-  const defaultPlan = pricingPlans.find((plan) => plan.popular) ?? pricingPlans[0];
-  const planDetails = (location.state?.plan as Plan | undefined) ?? defaultPlan;
+  const planDetails = location.state?.plan || {
+    name: "Post Enhancer",
+    price: "2.99",
+    period: "lifetime",
+    features: [
+      "Unlimited AI post enhancing"
+    ],
+    cta: "Unlock for $2.99"
+  } as Plan;
 
   useEffect(() => {
     let mounted = true;

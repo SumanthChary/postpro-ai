@@ -9,25 +9,10 @@
   <body>
     <div class="app">
       <header class="app__header">
-  <img src="icons/logo-48.png" alt="PostPro AI" class="app__logo" />
-        <div class="app__heading">
-          <span class="app__badge">Social AI Suite</span>
+        <img src="icons/icon.svg" alt="PostPro AI" class="app__logo" />
+        <div>
           <h1 class="app__title">PostPro AI</h1>
-          <p class="app__tagline">Enhance your voice, forecast virality, win more reach.</p>
-          <div class="app__meta">
-            <span>
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9.5 16.25 5.75 12.5l1.5-1.5 2.25 2.25 7-7 1.5 1.5-8.5 8.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              Supabase Secure
-            </span>
-            <span>
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 21c4.97 0 9-3.582 9-8s-4.03-8-9-8-9 3.582-9 8c0 2.966 1.735 5.58 4.404 7.039-.074.608-.358 1.984-.408 2.216 0 0-.008.088.046.121.053.032.119.02.119.02.157-.02 2.107-.686 3.074-1.072.911.24 1.875.376 2.865.376Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              Live support
-            </span>
-          </div>
+          <p class="app__tagline">Enhance posts • Predict virality</p>
         </div>
       </header>
 
@@ -41,10 +26,7 @@
       </nav>
 
       <main class="panel" id="panel-enhance" role="tabpanel">
-        <div class="panel__topline">
-          <label class="panel__label" for="enhance-input">Draft your post</label>
-          <span class="panel__hint">AI rewrite tuned for engagement</span>
-        </div>
+        <label class="panel__label" for="enhance-input">Draft your post</label>
         <textarea id="enhance-input" class="panel__textarea" rows="6" placeholder="Paste your LinkedIn or X post here..."></textarea>
         <div class="panel__controls">
           <label class="panel__control">
@@ -76,19 +58,10 @@
         <section class="panel__output panel__output--empty" aria-live="polite" id="enhance-output">
           Your enhanced copy will appear here.
         </section>
-        <div class="panel__cta">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 3v18m9-9H3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          Need fresh inspiration? Add prompts to nudge tone or audience.
-        </div>
       </main>
 
       <main class="panel panel--hidden" id="panel-virality" role="tabpanel" aria-hidden="true">
-        <div class="panel__topline">
-          <label class="panel__label" for="virality-input">Check virality potential</label>
-          <span class="panel__hint">Score + instant optimization playbook</span>
-        </div>
+        <label class="panel__label" for="virality-input">Check virality potential</label>
         <textarea id="virality-input" class="panel__textarea" rows="6" placeholder="Paste your draft post for a virality score..."></textarea>
         <div class="panel__controls">
           <label class="panel__control">
@@ -109,18 +82,12 @@
         <section class="panel__output panel__output--empty" aria-live="polite" id="virality-output">
           Your virality score and insights will appear here.
         </section>
-        <div class="panel__cta">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 12a8 8 0 0 1 14.32-4.906M20 12a8 8 0 0 1-14.32 4.906m0 0H4m1.68 0H12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          Share wins with your team directly from the dashboard.
-        </div>
       </main>
 
       <footer class="app__footer">
-        <button id="open-dashboard" class="link-button"><span>Open dashboard<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></button>
-  <button id="open-plans" class="link-button"><span>Plans &amp; pricing<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></button>
-        <button id="open-options" class="link-button"><span>Extension settings<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M4.322 17.641a1.78 1.78 0 0 0 2.436.649 1.78 1.78 0 0 1 2.598 1.915 1.78 1.78 0 0 0 1.695 2.219h1.898a1.78 1.78 0 0 0 1.695-2.219 1.78 1.78 0 0 1 2.598-1.915 1.78 1.78 0 0 0 2.436-.649l.95-1.644a1.78 1.78 0 0 0-.471-2.301 1.78 1.78 0 0 1 0-2.828 1.78 1.78 0 0 0 .471-2.301l-.95-1.644a1.78 1.78 0 0 0-2.436-.649 1.78 1.78 0 0 1-2.598-1.915A1.78 1.78 0 0 0 13.95 2h-1.898a1.78 1.78 0 0 0-1.695 2.219 1.78 1.78 0 0 1-2.598 1.915 1.78 1.78 0 0 0-2.436.649l-.95 1.644a1.78 1.78 0 0 0 .471 2.301 1.78 1.78 0 0 1 0 2.828 1.78 1.78 0 0 0-.471 2.301l.95 1.644Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></button>
+        <button id="open-dashboard" class="link-button">Open dashboard →</button>
+        <button id="open-plans" class="link-button">Plans & billing</button>
+        <button id="open-options" class="link-button">Extension settings</button>
       </footer>
 
       <template id="loading-template">

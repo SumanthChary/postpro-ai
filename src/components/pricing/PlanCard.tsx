@@ -9,40 +9,40 @@ interface PlanCardProps {
 }
 
 const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
+  const isFree = plan.name === "START FREE";
   const isLifetime = plan.period === "lifetime";
   const isAnnual = plan.period === "year";
-  const isPopular = Boolean(plan.popular);
-  const isStarter = plan.name.toLowerCase().includes("starter");
+  const isLifetimeCreator = plan.name === "LIFETIME CREATOR";
+  const isOneTime = plan.name.toLowerCase().includes("one-time");
 
   const borderStyles = (() => {
-    if (isPopular) {
+    if (plan.popular) {
       return "border-blue-500 shadow-sm ring-2 ring-blue-100 scale-105";
     }
-    if (isLifetime) {
-      return "border-purple-400 hover:border-purple-500 shadow-sm";
+    if (isLifetimeCreator) {
+      return "border-2 border-red-200 hover:border-red-300";
     }
-    if (isAnnual) {
-      return "border-emerald-300 hover:border-emerald-400";
+    if (isOneTime) {
+      return "border-2 border-blue-200 hover:border-blue-300";
     }
-    return "border-slate-200 hover:border-slate-300";
+    return "border-gray-200 hover:border-gray-300";
   })();
 
   const badgeColor = (() => {
-    if (isPopular) return "bg-blue-600 text-white";
-    if (isLifetime) return "bg-purple-600 text-white";
-    if (isAnnual) return "bg-emerald-600 text-white";
-    if (isStarter) return "bg-sky-600 text-white";
-    return "bg-slate-700 text-white";
+    if (plan.popular) return "bg-blue-600 text-white";
+    if (isLifetimeCreator) return "bg-red-600 text-white";
+    if (isOneTime) return "bg-blue-600 text-white";
+    if (isFree) return "bg-green-600 text-white";
+    return "bg-orange-600 text-white";
   })();
 
   const buttonColor = (() => {
-    if (isPopular) return "bg-blue-600 text-white hover:bg-blue-700 shadow-sm";
-    if (isLifetime) return "bg-purple-600 text-white hover:bg-purple-700 shadow-sm";
-    if (isAnnual) return "bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm";
-    return "bg-sky-600 text-white hover:bg-sky-700 shadow-sm";
+    if (plan.popular) return "bg-blue-600 text-white hover:bg-blue-700 shadow-sm";
+    if (isLifetimeCreator) return "bg-red-600 text-white hover:bg-red-700 shadow-sm";
+    if (isOneTime) return "bg-blue-600 text-white hover:bg-blue-700 shadow-sm";
+    if (isLifetime) return "bg-orange-600 text-white hover:bg-orange-700 shadow-sm";
+    return "bg-blue-600 text-white hover:bg-blue-700 shadow-sm";
   })();
-
-  const periodLabel = isLifetime ? "once" : plan.period;
 
   return (
     <Card
@@ -72,12 +72,23 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
               </span>
             )}
             <span className="text-3xl font-bold text-gray-900">
-              ${plan.price}
+              {isFree ? "Free" : `$${plan.price}`}
             </span>
-            <span className="text-gray-600">
-              /{periodLabel}
-            </span>
+            {!isFree && (
+              <span className="text-gray-600">
+                /{plan.period === "lifetime" ? "once" : plan.period}
+              </span>
+            )}
           </div>
+
+          {isFree && (
+            <p className="text-sm text-gray-600">7 days only • Full feature access</p>
+          )}
+
+          {plan.name === "PROFESSIONAL" && (
+            <p className="text-sm text-gray-600">Billed monthly • Cancel anytime</p>
+          )}
+
           {isAnnual && (
             <p className="text-sm text-gray-600">Billed annually • Cancel anytime</p>
           )}
@@ -86,12 +97,8 @@ const PlanCard = ({ plan, onSubscribe }: PlanCardProps) => {
             <p className="text-sm text-gray-600">One-time payment • Lifetime access</p>
           )}
 
-          {!isAnnual && !isLifetime && (
-            <p className="text-sm text-gray-600">Billed monthly • Cancel anytime</p>
-          )}
-
           {plan.savings && (
-            <p className="text-sm font-medium text-emerald-600 mt-1">{plan.savings}</p>
+            <p className="text-sm font-medium text-green-600 mt-1">{plan.savings}</p>
           )}
         </div>
       </div>

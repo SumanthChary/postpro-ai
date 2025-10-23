@@ -1,22 +1,17 @@
 {
   "manifest_version": 3,
-  "name": "PostPro AI",
-  "version": "0.1.1",
-  "description": "Enhance posts and predict virality with the official PostPro AI browser companion.",
+  "name": "PostPro AI Companion",
+  "version": "0.1.0",
+  "description": "Post Enhancer and Virality Predictor from PostPro AI, now one click away in Firefox.",
   "icons": {
-    "16": "icons/logo-32.png",
-    "32": "icons/logo-32.png",
-    "48": "icons/logo-48.png",
-    "128": "icons/logo-128.png"
+    "16": "icons/icon.svg",
+    "32": "icons/icon.svg",
+    "48": "icons/icon.svg",
+    "128": "icons/icon.svg"
   },
   "action": {
     "default_title": "PostPro AI",
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/logo-32.png",
-      "32": "icons/logo-32.png",
-      "48": "icons/logo-48.png"
-    }
+    "default_popup": "popup.html"
   },
   "permissions": [
     "storage"
@@ -25,8 +20,7 @@
     "https://*.supabase.co/*"
   ],
   "options_ui": {
-    "page": "options.html",
-    "browser_style": false
+    "page": "options.html"
   },
   "browser_specific_settings": {
     "gecko": {

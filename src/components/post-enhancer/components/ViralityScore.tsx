@@ -98,10 +98,9 @@ export function ViralityScore({
   const normalizedPlanName = planName.toLowerCase();
   const hasSubscription = Boolean(subscription);
   const hasFullViralityAccess = Boolean(subscription?.subscription_limits?.has_virality_score);
-  const isStarterPlan = hasSubscription && normalizedPlanName.includes('starter');
-  const hasProLevelAccess = normalizedPlanName.includes('pro') || normalizedPlanName.includes('lifetime');
-  const showLimitedVirality = isStarterPlan && !hasFullViralityAccess;
-  const viralityLocked = !hasSubscription || (!hasProLevelAccess && !hasFullViralityAccess && !showLimitedVirality);
+  const baseEnhancerPlan = hasSubscription && normalizedPlanName.includes('post enhancer') && !normalizedPlanName.includes('plus');
+  const showLimitedVirality = baseEnhancerPlan && !hasFullViralityAccess;
+  const viralityLocked = (!hasSubscription || baseEnhancerPlan) && !hasFullViralityAccess;
   const getScoreBadge = (score: number) => {
     if (score >= 85) return "🚀 Viral Ready";
     if (score >= 70) return "⚡ High Potential";
@@ -358,7 +357,7 @@ export function ViralityScore({
           {showLimitedVirality && (
             <div className="rounded-lg border border-blue-200 bg-blue-50/70 p-5 text-center">
               <p className="text-sm text-blue-900">
-                Starter includes the overall score and one optimization insight per post. Upgrade to Pro for unlimited deep dives, segment breakdowns, and trend tracking.
+                Detailed engagement breakdowns unlock once you upgrade. During the trial we reveal the overall score plus one optimization insight so you get a taste of the signal.
               </p>
             </div>
           )}

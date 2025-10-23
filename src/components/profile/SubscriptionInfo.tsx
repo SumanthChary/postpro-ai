@@ -22,8 +22,7 @@ const SubscriptionInfo = () => {
   if (!subscription) return null;
 
   const normalizedPlanName = subscription.plan_name.toLowerCase();
-  const isStarterPlan = normalizedPlanName.includes('starter');
-  const isLifetimePlan = normalizedPlanName.includes('lifetime');
+  const isBasePlan = normalizedPlanName.includes('post enhancer') && !normalizedPlanName.includes('plus');
   const progressValue = usageStats.monthlyLimit === -1 ? 100 : 
     (usageStats.currentCount / (usageStats.monthlyLimit || 1)) * 100;
   const hasVirality = subscription.subscription_limits?.has_virality_score;
@@ -35,7 +34,7 @@ const SubscriptionInfo = () => {
           <Crown className="w-5 h-5 mr-2 text-yellow-600" />
           Current Plan
         </h3>
-        <Badge variant={isStarterPlan ? "secondary" : "default"} className="font-cabinet">
+        <Badge variant={isBasePlan ? "secondary" : "default"} className="font-cabinet">
           {subscription.plan_name}
         </Badge>
       </div>
@@ -93,26 +92,18 @@ const SubscriptionInfo = () => {
           </div>
         </div>
 
-        {(!hasVirality || isStarterPlan) && (
+        {!hasVirality && (
           <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
             <p className="text-sm text-blue-800 mb-2 font-cabinet">
-              Upgrade to Pro for unlimited virality reporting, analytics, and priority support. Lifetime members keep it forever.
+              Upgrade once to unlock the virality predictor alongside unlimited post enhancing.
             </p>
             <Button 
               size="sm"
               onClick={() => navigate("/pricing")}
               className="w-full font-cabinet"
             >
-              View plans
+              View Lifetime Plans
             </Button>
-          </div>
-        )}
-
-        {isLifetimePlan && (
-          <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
-            <p className="text-sm text-purple-800 font-cabinet">
-              Lifetime access locked. Enjoy every new feature and extension update as soon as it ships.
-            </p>
           </div>
         )}
       </div>
