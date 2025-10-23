@@ -30,8 +30,8 @@ const state = {
     supabaseAnonKey: "",
     userToken: "",
     userId: "",
-    dashboardUrl: "https://app.postpro.ai",
-    plansUrl: "https://postpro.ai/pricing",
+    dashboardUrl: "https://postproai.app",
+    plansUrl: "https://postproai.app/pricing",
   },
 };
 
@@ -164,7 +164,7 @@ function formatEnhancedContent(payload) {
     `
     : "";
 
-  return blocks + diagnosticsBlock;
+  return `<div class="results">${blocks}${diagnosticsBlock}</div>`;
 }
 
 function formatViralityContent(payload) {
@@ -201,7 +201,8 @@ function formatViralityContent(payload) {
     `
     : "";
 
-  return scoreBlock + insightBlock + quickWinsBlock || "No analysis available.";
+  const sections = `${scoreBlock}${insightBlock}${quickWinsBlock}`;
+  return sections.trim().length > 0 ? `<div class="results">${sections}</div>` : "No analysis available.";
 }
 
 function escapeHtml(value) {
@@ -302,94 +303,7 @@ function registerEvents() {
   });
 }
 
-function hydrateStyles() {
-  const style = document.createElement("style");
-  style.textContent = `
-    .result {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 12px;
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      padding: 12px;
-      margin-bottom: 10px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
-    }
-    .result__heading {
-      margin: 0 0 8px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #334155;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .result__content {
-      margin: 0;
-      font-family: "Inter", system-ui, sans-serif;
-      font-size: 0.88rem;
-      white-space: pre-wrap;
-      line-height: 1.45;
-    }
-    .result__list {
-      margin: 0;
-      padding-left: 18px;
-      display: grid;
-      gap: 6px;
-    }
-    .result__chips {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .result__chips li {
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(57, 107, 255, 0.12);
-      color: #1d4ed8;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-    .result--tips {
-      background: rgba(57, 107, 255, 0.08);
-    }
-    .result--wins {
-      background: rgba(30, 64, 175, 0.08);
-    }
-    .score {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 12px;
-      border-radius: 14px;
-      background: rgba(57, 107, 255, 0.08);
-      margin-bottom: 12px;
-    }
-    .score__value {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #1d4ed8;
-    }
-    .score__label {
-      font-size: 0.85rem;
-      color: #475569;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .error {
-      padding: 12px;
-      border-radius: 12px;
-      background: rgba(239, 68, 68, 0.12);
-      color: #b91c1c;
-      font-weight: 600;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
 (async function init() {
-  hydrateStyles();
   registerEvents();
   await loadSettings();
 })();

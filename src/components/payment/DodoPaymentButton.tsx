@@ -9,6 +9,11 @@ interface DodoPaymentButtonProps {
 }
 
 const DODO_PAYMENT_URLS = {
+  "Starter": "https://checkout.dodopayments.com/buy/pdt_KlYc9kipBF9o2R7uWqnfX?quantity=1",
+  "Pro": "https://checkout.dodopayments.com/buy/pdt_m5JEQlYnYdhFKGxFlNhO9?quantity=1",
+  "Starter Annual": "https://checkout.dodopayments.com/buy/pdt_KlYc9kipBF9o2R7uWqnfX?quantity=1",
+  "Pro Annual": "https://checkout.dodopayments.com/buy/pdt_m5JEQlYnYdhFKGxFlNhO9?quantity=1",
+  "Lifetime Access": "https://checkout.dodopayments.com/buy/pdt_6toZQV9LZ4kI5V4attlVL?quantity=1",
   "Post Enhancer": "https://checkout.dodopayments.com/buy/pdt_KlYc9kipBF9o2R7uWqnfX?quantity=1",
   "Post Enhancer Plus": "https://checkout.dodopayments.com/buy/pdt_6toZQV9LZ4kI5V4attlVL?quantity=1",
   // Legacy mappings retained for backwards compatibility
@@ -50,8 +55,10 @@ export const DodoPaymentButton = ({
     if (!paymentUrl) {
       console.error('DoDo Payment - No URL found for plan:', planDetails.name);
       console.log('Available URLs:', Object.keys(DODO_PAYMENT_URLS));
-      onError(`Payment URL not found for plan: ${planDetails.name}`);
-      return;
+  console.error('DoDo Payment - No URL found for plan:', planDetails.name);
+  onError(`Payment URL not found for plan: ${planDetails.name}. Redirecting to pricing.`);
+  window.open('/pricing', '_blank');
+  return;
     }
 
     console.log('Opening DoDo checkout:', paymentUrl);

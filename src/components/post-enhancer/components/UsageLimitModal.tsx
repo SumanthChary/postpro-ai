@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { AlertTriangle, Zap, Crown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { pricingPlans } from '@/data/pricingPlans';
+import { Plan } from '@/types/pricing';
 
 interface UsageLimitModalProps {
   isOpen: boolean;
@@ -25,9 +27,14 @@ export const UsageLimitModal: React.FC<UsageLimitModalProps> = ({
   const effectiveLimit = isUnlimited ? currentUsage || 1 : monthlyLimit || 1;
   const progressPercentage = Math.min(100, (currentUsage / effectiveLimit) * 100);
   const isAtLimit = !isUnlimited && currentUsage >= monthlyLimit;
+  const proPlan: Plan | undefined = pricingPlans.find((plan) => plan.popular) || pricingPlans.find((plan) => plan.name === "Pro");
 
   const handleUpgrade = () => {
-    navigate('/pricing');
+    if (proPlan) {
+      navigate('/payment', { state: { plan: proPlan } });
+    } else {
+      navigate('/pricing');
+    }
     onClose();
   };
 
@@ -70,10 +77,10 @@ export const UsageLimitModal: React.FC<UsageLimitModalProps> = ({
               <div>
                 <h4 className="font-semibold text-blue-900 mb-1">Upgrade Benefits</h4>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Lifetime unlock — no recurring fees</li>
-                  <li>• Full virality predictor with actionable insights</li>
-                  <li>• Unlimited AI post enhancing included</li>
-                  <li>• Future upgrades to diagnostics bundled in</li>
+                  <li>• Start a 7-day Pro trial — cancel anytime</li>
+                  <li>• Unlimited virality intelligence and diagnostics</li>
+                  <li>• Unlimited AI enhancements on web + extension</li>
+                  <li>• Priority support with roadmap voting access</li>
                 </ul>
               </div>
             </div>
@@ -82,7 +89,7 @@ export const UsageLimitModal: React.FC<UsageLimitModalProps> = ({
           <div className="flex flex-col gap-3">
             <Button onClick={handleUpgrade} className="w-full">
               <Zap className="h-4 w-4 mr-2" />
-              Unlock Virality for $4.99
+              Unlock Pro – $14/mo after trial
             </Button>
             <Button variant="outline" onClick={onClose} className="w-full">
               Continue with Current Plan
