@@ -30,7 +30,7 @@ const PlanToggle = ({
             Annual
           </span>
           <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full uppercase tracking-wide">
-            Save 50%
+            Save up to 30%
           </span>
         </div>
       </div>

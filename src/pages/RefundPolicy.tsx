@@ -33,8 +33,8 @@ const RefundPolicy = () => {
               <h2 className="text-2xl font-bold">7-Day Money-Back Guarantee</h2>
             </div>
             <p className="text-gray-700 leading-relaxed mb-4">
-              We offer a <strong>7-day money-back guarantee</strong> for every lifetime license (Post Enhancer and Post Enhancer Plus).
-              If you're not satisfied with PostPro AI within the first 7 days of your purchase, we'll provide a full refund—no questions asked.
+              Every paid plan starts with a <strong>7-day money-back guarantee</strong>. Cancel before the trial ends to avoid charges, or if you
+              upgrade immediately (annual or lifetime) you can request a full refund within the first 7 days—no questions asked.
             </p>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800">
@@ -50,18 +50,27 @@ const RefundPolicy = () => {
               <li className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                 <div>
-                  <strong className="text-gray-900">Post Enhancer ($2.99 one-time)</strong>
+                  <strong className="text-gray-900">Starter &amp; Pro subscriptions</strong>
                   <p className="text-gray-700 text-sm mt-1">
-                    Full refund if requested within 7 days of purchase
+                    Cancel any time during the 7-day trial to prevent the first charge. If a charge went through accidentally, request a refund within 7 days.
                   </p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                 <div>
-                  <strong className="text-gray-900">Post Enhancer Plus ($4.99 one-time)</strong>
+                  <strong className="text-gray-900">Starter Annual &amp; Pro Annual</strong>
                   <p className="text-gray-700 text-sm mt-1">
-                    Full refund if requested within 7 days of purchase
+                    Full refund if requested within 7 days of the initial annual payment.
+                  </p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <div>
+                  <strong className="text-gray-900">Lifetime Access ($149 one-time)</strong>
+                  <p className="text-gray-700 text-sm mt-1">
+                    We will reverse the charge within 7 days if the product isn’t the right fit.
                   </p>
                 </div>
               </li>
@@ -74,9 +83,9 @@ const RefundPolicy = () => {
               <li className="flex items-start gap-3">
                 <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
                 <div>
-                  <strong className="text-gray-900">Credit Packs</strong>
+                  <strong className="text-gray-900">Credit packs (after use)</strong>
                   <p className="text-gray-700 text-sm mt-1">
-                    One-time credit purchases are non-refundable once credits have been used
+                    Credits are refundable only if no credits were consumed and the request is made within 24 hours.
                   </p>
                 </div>
               </li>

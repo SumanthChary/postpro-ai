@@ -75,11 +75,11 @@ const UsageCounter = () => {
       <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-amber-900">
-            No active plan detected
+            Trial required to start enhancing
           </span>
         </div>
         <p className="text-sm text-amber-800">
-          Unlock the Post Enhancer for a one-time payment to start enhancing posts.
+          Activate your 7-day trial or choose a plan to unlock unlimited enhancements across the web app and extension.
         </p>
         <Button 
           variant="outline" 
@@ -87,7 +87,7 @@ const UsageCounter = () => {
           onClick={() => navigate('/pricing')}
           className="mt-3"
         >
-          View Lifetime Plans
+          View plans
         </Button>
       </div>
     );

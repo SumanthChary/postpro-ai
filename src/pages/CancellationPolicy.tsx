@@ -101,10 +101,10 @@ const CancellationPolicy = () => {
                 <div className="flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
                   <div>
-                    <strong className="text-orange-900">No Renewals to Worry About</strong>
+                    <strong className="text-orange-900">Simple billing, zero surprises</strong>
                     <p className="text-sm text-orange-800 mt-1">
-                      PostPro AI plans are one-time purchases. If you request a cancellation or refund within the eligibility window, 
-                      your access is removed immediately and no further charges occur.
+                      Trials last 7 days and can be cancelled instantly. Monthly and annual plans finish out the paid period when cancelled, while
+                      lifetime is a single payment you own forever. No hidden renewals or prorated math.
                     </p>
                   </div>
                 </div>
@@ -113,22 +113,39 @@ const CancellationPolicy = () => {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold mb-4">Cancellation by Plan Type</h2>
+            <h2 className="text-2xl font-bold mb-4">Cancellation by plan type</h2>
             <div className="space-y-4">
               <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="font-bold text-gray-900 mb-2">Post Enhancer ($2.99 one-time)</h3>
+                <h3 className="font-bold text-gray-900 mb-2">Starter &amp; Pro subscriptions ($7 / $14 per month)</h3>
                 <p className="text-sm text-gray-700">
-                  Cancel within 7 days of purchase for a full refund. After 7 days, purchases are non-refundable, but you keep lifetime access.
+                  You can cancel anytime from the billing portal. Cancelling during the 7-day trial stops the first charge. After your trial, service
+                  remains active through the end of the paid period (monthly or annual) and will not renew.
                 </p>
               </div>
 
               <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="font-bold text-gray-900 mb-2">Post Enhancer Plus ($4.99 one-time)</h3>
+                <h3 className="font-bold text-gray-900 mb-2">Starter Annual &amp; Pro Annual ($59 / $119 per year)</h3>
                 <p className="text-sm text-gray-700">
-                  Includes virality insights. Cancel within 7 days for a full refund. After that, the purchase is final and access remains active for life.
+                  Annual plans can be cancelled at any time. Access continues until the current term ends and will not renew. Refunds are available
+                  within the first 7 days of the initial charge, matching our trial guarantee.
                 </p>
               </div>
 
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-bold text-gray-900 mb-2">Lifetime Access ($149 one-time)</h3>
+                <p className="text-sm text-gray-700">
+                  Lifetime purchases are fully refundable within 7 days. After that, the payment is final and your access remains live forever across
+                  the web app and extensions.
+                </p>
+              </div>
+
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-bold text-gray-900 mb-2">Credit packs</h3>
+                <p className="text-sm text-gray-700">
+                  Credits are non-recurring. If you purchase by mistake, contact us within 24 hours before any credits are used and we will reverse the
+                  transaction.
+                </p>
+              </div>
             </div>
           </section>
 
