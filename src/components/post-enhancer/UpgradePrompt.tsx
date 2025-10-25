@@ -11,7 +11,7 @@ interface UpgradePromptProps {
 
 const UpgradePrompt = ({ featureName, message }: UpgradePromptProps) => {
   const navigate = useNavigate();
-  const proPlan: Plan | undefined = pricingPlans.find((plan) => plan.popular) || pricingPlans.find((plan) => plan.name === "Pro");
+  const enhancedPlan: Plan | undefined = pricingPlans.find((plan) => plan.name === "Post Enhancer Plus");
 
   return (
     <div className="bg-gradient-to-br from-primary/5 to-primary/10 border-2 border-primary/20 rounded-xl p-6 text-center">
@@ -25,15 +25,15 @@ const UpgradePrompt = ({ featureName, message }: UpgradePromptProps) => {
       <p className="text-muted-foreground mb-4">
         {message}
       </p>
-      <Button
-        onClick={() => proPlan ? navigate('/payment', { state: { plan: proPlan } }) : navigate('/pricing')}
+      <Button 
+        onClick={() => enhancedPlan ? navigate('/payment', { state: { plan: enhancedPlan } }) : navigate('/pricing')}
         className="bg-primary hover:bg-primary/90"
         size="lg"
       >
-        Unlock Pro – $14/mo after trial
+        Unlock Virality – One-Time $4.99
       </Button>
       <p className="text-xs text-muted-foreground mt-3">
-        Includes unlimited virality predictions, analytics, and extension priority support
+        Gain full virality analytics alongside unlimited post enhancing
       </p>
     </div>
   );

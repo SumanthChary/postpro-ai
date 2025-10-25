@@ -75,7 +75,7 @@ const ComparisonTable = () => {
 
               <tr className="border-t border-border">
                 <td className="p-4 font-semibold">Monthly Cost</td>
-                <td className="text-center p-4 font-bold text-primary">$7 - $14 (after 7-day trial)</td>
+                <td className="text-center p-4 font-bold text-primary">$2.99 - $9.99</td>
                 <td className="text-center p-4 text-muted-foreground">$20+</td>
                 <td className="text-center p-4 text-muted-foreground">$15-30</td>
                 <td className="text-center p-4 text-muted-foreground">$500-2000</td>

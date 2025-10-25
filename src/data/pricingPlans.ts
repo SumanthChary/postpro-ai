@@ -2,33 +2,37 @@ import { Plan } from "@/types/pricing";
 
 export const pricingPlans: Plan[] = [
   {
-    name: "Starter",
-    price: "7",
+    name: "STARTER",
+    price: "2.99",
     period: "month",
     features: [
-  "Unlimited LinkedIn post enhancements on web + browser extension",
-      "Virality predictor with 10 insights per day",
-      "10 tone and persona presets tuned for LinkedIn",
-      "Weekly trending hashtag suggestions",
-      "Chrome + Firefox extension access included",
-      "Standard support with 24-hour response"
+      "30 LinkedIn post enhancements per month",
+      "5 professional tone options",
+      "Basic AI enhancement",
+  "Email support (48-72 hours)",
+  "Export to LinkedIn"
     ],
     cta: "Start 7-day Trial",
     currency: "USD",
-    postLimit: -1,
-    badge: "For growing creators"
+    postLimit: 30,
+    badge: "Best for Beginners"
   },
   {
-    name: "Pro",
-    price: "14",
+    name: "PROFESSIONAL",
+    price: "9.99",
     period: "month",
     features: [
-  "Unlimited LinkedIn enhancements everywhere + instant rewrite shortcuts",
-      "Unlimited virality predictions with accuracy guardrails",
-      "20+ advanced tones, persona swaps, and CTA boosters",
-      "Real-time hashtag intelligence and audience targeting",
-      "Advanced analytics, post history, and PDF exports",
-      "Priority inbox support (under 4 hours) + roadmap voting"
+      "UNLIMITED LinkedIn post enhancements",
+      "15+ professional tone options to match your executive presence",
+      "89% accurate virality predictor",
+      "Real-time trending hashtag research",
+      "Custom CTA generator for professional connections",
+      "50+ proven templates from industry leaders",
+      "Advanced analytics with engagement insights",
+      "AI strategy chat for content planning",
+      "Priority email support within 4-12 hours",
+      "Export to all major platforms with optimized formatting",
+      "Chrome + Firefox extension with unlimited enhancements"
     ],
     cta: "Start 7-day Trial",
     currency: "USD",
@@ -37,85 +41,88 @@ export const pricingPlans: Plan[] = [
     badge: "Most Popular"
   },
   {
-    name: "Starter Annual",
-    price: "59",
+    name: "PRO ANNUAL",
+    price: "59.99",
     period: "year",
     features: [
-      "Everything in Starter for 12 months",
-      "Save 30% vs paying monthly",
-      "Trial rolls into $59/year after 7 days",
-  "Unlimited LinkedIn web + extension enhancements",
-      "10 virality reports per day with insight summaries",
-      "Standard support with 24-hour response"
+      "Everything in Professional Plan",
+      "Save $60 vs monthly billing (6 months free)",
+      "Price locked for 12 months",
+      "Quarterly LinkedIn strategy updates",
+      "Early access to new AI models",
+      "Priority feature requests",
+      "Annual performance report",
+      "Chrome + Firefox extension included"
     ],
     cta: "Start 7-day Trial",
     currency: "USD",
     postLimit: -1,
-    badge: "Best Value",
-    savings: "Save 30% annually"
+    badge: "Save 50%",
+    originalPrice: "119.88",
+    savings: "Save $60",
+    limitedQuantity: "Best value for committed professionals"
   },
   {
-    name: "Pro Annual",
-    price: "119",
-    period: "year",
+    name: "POST ENHANCER ONE-TIME",
+    price: "4.99",
+    period: "lifetime",
     features: [
-      "Everything in Pro locked in for the year",
-      "Save 29% vs monthly billing",
-  "Unlimited LinkedIn virality, analytics, and exports",
-      "Advanced collaboration + campaign tagging",
-      "Quarterly strategy reviews + VIP webinar access",
-      "Priority inbox support (under 4 hours)"
+      "One-time unlock of unlimited post enhancements",
+      "Includes virality predictor insights for current campaigns",
+      "Keep every generated post forever",
+  "Premium templates and tone presets",
+  "Perfect for testing before upgrading"
     ],
-    cta: "Start 7-day Trial",
+    cta: "Unlock for $4.99",
     currency: "USD",
     postLimit: -1,
-    badge: "Save 29%",
-    originalPrice: "168",
-    savings: "Save 29% vs monthly"
+    badge: "One-time boost",
+    limitedQuantity: "Single payment access"
   },
   {
-    name: "Lifetime Access",
+    name: "LIFETIME CREATOR",
     price: "149",
     period: "lifetime",
     features: [
-      "All current and future Pro features forever",
-  "Lifetime LinkedIn updates across web + extension",
-      "Early access to experimental AI models",
-      "Private creator circle + success playbooks",
-      "VIP support line with quarterly check-ins",
-      "License is yours even as pricing increases"
+      "All current and future Professional features forever",
+      "Monthly strategy guides from the founder",
+      "One-time personal profile optimization ($97 value)",
+      "Never pay again - lifetime access guaranteed",
+      "VIP community access with successful professionals",
+      "White-glove onboarding for immediate results",
+      "Perpetual Chrome + Firefox extension usage"
     ],
     cta: "Secure Lifetime Access",
     currency: "USD",
     postLimit: -1,
-    badge: "Limited to 500 seats",
+    badge: "Limited to 300 spots",
     originalPrice: "299",
-    limitedQuantity: "Only 500 lifetime seats available"
+    limitedQuantity: "Limited lifetime deal"
   }
 ];
 
 export const creditPacks = [
   {
     name: "10 Credits",
-    price: "9.99",
+    price: "5.99",
     credits: 10,
-    pricePerCredit: "0.99",
+    pricePerCredit: "0.60",
+    popular: false
+  },
+  {
+    name: "25 Credits",
+    price: "12.99",
+    credits: 25,
+    pricePerCredit: "0.52",
+    savings: "Save 13%",
     popular: false
   },
   {
     name: "50 Credits",
-    price: "39.99",
+    price: "19.99",
     credits: 50,
-    pricePerCredit: "0.80",
-    savings: "Save 19%",
+    pricePerCredit: "0.40",
+    savings: "Save 33%",
     popular: true
-  },
-  {
-    name: "100 Credits",
-    price: "69.99",
-    credits: 100,
-    pricePerCredit: "0.70",
-    savings: "Save 29%",
-    popular: false
   }
 ];
