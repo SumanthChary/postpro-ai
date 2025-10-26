@@ -15,7 +15,7 @@
   --shadow-card: 0 18px 50px rgba(37, 56, 150, 0.14);
   --shadow-glow: 0 0 80px rgba(21, 209, 255, 0.15);
   --transition: all 0.2s ease;
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: "Bricolage Grotesque", "Inter", system-ui, -apple-system, sans-serif;
 }
 
 * {
@@ -146,6 +146,33 @@ body::before {
   width: 14px;
   height: 14px;
   color: var(--brand-primary);
+}
+
+.app__trial {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.app__trial-badge {
+  align-self: flex-start;
+  background: rgba(63, 96, 255, 0.14);
+  border: 1px solid rgba(63, 96, 255, 0.24);
+  color: var(--brand-primary);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.app__trial-copy {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
 .tabs {

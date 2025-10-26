@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PostPro AI Companion</title>
-    <link rel="stylesheet" href="popup.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PostPro AI Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
     <div class="app">
       <header class="app__header">
-  <img src="icons/logo-48.png" alt="PostPro AI" class="app__logo" />
+        <img src="icons/logo-48.png" alt="PostPro AI" class="app__logo" />
         <div class="app__heading">
-          <span class="app__badge">Social AI Suite</span>
+          <span class="app__badge">LinkedIn AI Suite</span>
           <h1 class="app__title">PostPro AI</h1>
-          <p class="app__tagline">Enhance your voice, forecast virality, win more reach.</p>
+          <p class="app__tagline">Craft LinkedIn posts, forecast reach, stay top of feed.</p>
           <div class="app__meta">
             <span>
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -27,6 +30,10 @@
               </svg>
               Live support
             </span>
+          </div>
+          <div class="app__trial">
+            <span class="app__trial-badge">7-day Pro trial</span>
+            <span class="app__trial-copy">Unlock everything with a paid PostPro AI plan after trial.</span>
           </div>
         </div>
       </header>
@@ -45,17 +52,16 @@
           <label class="panel__label" for="enhance-input">Draft your post</label>
           <span class="panel__hint">AI rewrite tuned for engagement</span>
         </div>
-        <textarea id="enhance-input" class="panel__textarea" rows="6" placeholder="Paste your LinkedIn or X post here..."></textarea>
+  <textarea id="enhance-input" class="panel__textarea" rows="6" placeholder="Paste your LinkedIn draft here..."></textarea>
         <div class="panel__controls">
           <label class="panel__control">
             <span>Category</span>
             <select id="enhance-category" class="panel__select">
-              <option value="linkedin">LinkedIn</option>
-              <option value="twitter">X / Twitter</option>
-              <option value="instagram">Instagram</option>
-              <option value="business">Business</option>
-              <option value="technology">Technology</option>
-              <option value="career">Career</option>
+              <option value="linkedin_update">LinkedIn update</option>
+              <option value="thought_leadership">Thought leadership</option>
+              <option value="personal_story">Personal story</option>
+              <option value="product_launch">Product launch</option>
+              <option value="hiring">Hiring announcement</option>
             </select>
           </label>
           <label class="panel__control">
@@ -80,25 +86,25 @@
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M12 3v18m9-9H3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          Need fresh inspiration? Add prompts to nudge tone or audience.
+          Need more context? Add prompts to nudge tone or CTA.
         </div>
       </main>
 
       <main class="panel panel--hidden" id="panel-virality" role="tabpanel" aria-hidden="true">
         <div class="panel__topline">
           <label class="panel__label" for="virality-input">Check virality potential</label>
-          <span class="panel__hint">Score + instant optimization playbook</span>
+          <span class="panel__hint">Score + LinkedIn optimization playbook</span>
         </div>
-        <textarea id="virality-input" class="panel__textarea" rows="6" placeholder="Paste your draft post for a virality score..."></textarea>
+  <textarea id="virality-input" class="panel__textarea" rows="6" placeholder="Paste your LinkedIn draft for a virality score..."></textarea>
         <div class="panel__controls">
           <label class="panel__control">
             <span>Category</span>
             <select id="virality-category" class="panel__select">
-              <option value="general">General</option>
-              <option value="business">Business</option>
-              <option value="technology">Technology</option>
-              <option value="marketing">Marketing</option>
-              <option value="career">Career</option>
+              <option value="linkedin_update">LinkedIn update</option>
+              <option value="thought_leadership">Thought leadership</option>
+              <option value="founder_story">Founder story</option>
+              <option value="product_launch">Product launch</option>
+              <option value="hiring">Hiring announcement</option>
             </select>
           </label>
         </div>
@@ -118,8 +124,8 @@
       </main>
 
       <footer class="app__footer">
-        <button id="open-dashboard" class="link-button"><span>Open dashboard<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></button>
-  <button id="open-plans" class="link-button"><span>Plans &amp; pricing<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></button>
+        <button id="open-dashboard" class="link-button"><span>Open LinkedIn workspace<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></button>
+        <button id="open-plans" class="link-button"><span>Manage subscription<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></button>
         <button id="open-options" class="link-button"><span>Extension settings<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M4.322 17.641a1.78 1.78 0 0 0 2.436.649 1.78 1.78 0 0 1 2.598 1.915 1.78 1.78 0 0 0 1.695 2.219h1.898a1.78 1.78 0 0 0 1.695-2.219 1.78 1.78 0 0 1 2.598-1.915 1.78 1.78 0 0 0 2.436-.649l.95-1.644a1.78 1.78 0 0 0-.471-2.301 1.78 1.78 0 0 1 0-2.828 1.78 1.78 0 0 0 .471-2.301l-.95-1.644a1.78 1.78 0 0 0-2.436-.649 1.78 1.78 0 0 1-2.598-1.915A1.78 1.78 0 0 0 13.95 2h-1.898a1.78 1.78 0 0 0-1.695 2.219 1.78 1.78 0 0 1-2.598 1.915 1.78 1.78 0 0 0-2.436.649l-.95 1.644a1.78 1.78 0 0 0 .471 2.301 1.78 1.78 0 0 1 0 2.828 1.78 1.78 0 0 0-.471 2.301l.95 1.644Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></button>
       </footer>
 

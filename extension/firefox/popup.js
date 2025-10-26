@@ -137,11 +137,14 @@ function formatEnhancedContent(payload) {
   const platformEntries = Object.entries(platforms)
     .filter(([, value]) => typeof value === "string" && value.trim().length > 0);
 
-  if (platformEntries.length === 0) {
-    return "<div>No enhanced copy returned. Try adjusting your prompt.";
+  const preferredPlatforms = platformEntries.filter(([key]) => key.toLowerCase().includes("linkedin"));
+  const visibleEntries = preferredPlatforms.length > 0 ? preferredPlatforms : platformEntries.slice(0, 1);
+
+  if (visibleEntries.length === 0) {
+    return "<div>No LinkedIn-ready copy returned. Try adjusting your prompt.";
   }
 
-  const blocks = platformEntries
+  const blocks = visibleEntries
     .map(([platform, value]) => {
       const title = platform.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
       return `
@@ -175,7 +178,7 @@ function formatViralityContent(payload) {
   const scoreBlock = score !== null
     ? `<div class="score">
         <div class="score__value">${score}%</div>
-        <div class="score__label">Virality potential</div>
+        <div class="score__label">LinkedIn virality potential</div>
       </div>`
     : "";
 
