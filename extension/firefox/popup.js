@@ -20,11 +20,23 @@ const selectors = {
   openDashboard: document.getElementById("open-dashboard"),
   openPlans: document.getElementById("open-plans"),
   openOptions: document.getElementById("open-options"),
+  planPill: document.getElementById("plan-pill"),
+  authGate: document.getElementById("auth-gate"),
+  planUpsell: document.getElementById("plan-upsell"),
+  mainShell: document.getElementById("main-shell"),
+  authCopy: document.getElementById("auth-gate-copy"),
+  upgradeCopy: document.getElementById("upgrade-copy"),
+  upgradeTitle: document.getElementById("upgrade-title"),
+  loginCta: document.getElementById("cta-login"),
+  trialCta: document.getElementById("cta-trial"),
+  upgradeCta: document.getElementById("cta-upgrade"),
   loadingTemplate: document.getElementById("loading-template"),
 };
 
 const state = {
   activeTab: "enhance",
+  access: "unknown",
+  subscription: null,
   settings: {
     supabaseUrl: "",
     supabaseAnonKey: "",
@@ -32,8 +44,92 @@ const state = {
     userId: "",
     dashboardUrl: "https://postproai.app",
     plansUrl: "https://postproai.app/pricing",
+    userEmail: "",
   },
 };
+
+function toggleElement(element, shouldShow) {
+  if (!element) return;
+  element.classList.toggle("is-hidden", !shouldShow);
+}
+
+function updatePlanPill(tone, label) {
+  if (!selectors.planPill) return;
+  selectors.planPill.dataset.tone = tone;
+  selectors.planPill.textContent = label;
+}
+
+function setInteractiveState(enabled) {
+  const disabled = !enabled;
+
+  selectors.tabs.forEach((button) => {
+    if (!(button instanceof HTMLButtonElement)) return;
+    button.disabled = disabled;
+    button.tabIndex = disabled ? -1 : 0;
+  });
+
+  [
+    selectors.enhanceBtn,
+    selectors.clearEnhance,
+    selectors.viralityBtn,
+    selectors.clearVirality,
+  ].forEach((button) => {
+    if (button) button.disabled = disabled;
+  });
+
+  if (selectors.enhanceInput) selectors.enhanceInput.readOnly = disabled;
+  if (selectors.viralityInput) selectors.viralityInput.readOnly = disabled;
+  if (selectors.enhanceCategory) selectors.enhanceCategory.disabled = disabled;
+  if (selectors.enhanceTone) selectors.enhanceTone.disabled = disabled;
+  if (selectors.viralityCategory) selectors.viralityCategory.disabled = disabled;
+}
+
+function updateAccessState(status, details = {}) {
+  state.access = status;
+  if (status !== "active") {
+    state.subscription = null;
+  }
+
+  toggleElement(selectors.authGate, status === "signedOut");
+  toggleElement(selectors.planUpsell, status === "trialRequired" || status === "error");
+  toggleElement(selectors.mainShell, status === "active");
+
+  if (selectors.upgradeTitle) {
+    selectors.upgradeTitle.textContent = status === "error" ? "Unable to verify access" : "Upgrade required";
+  }
+
+  if (selectors.authCopy && details.authMessage) {
+    selectors.authCopy.textContent = details.authMessage;
+  }
+
+  if (selectors.upgradeCopy) {
+    selectors.upgradeCopy.textContent = status === "error"
+      ? details.errorMessage || "We could not verify your subscription. Reopen the dashboard and try again."
+      : details.upgradeMessage || "Your account needs an active PostPro AI plan before you can enhance posts.";
+  }
+
+  const tone = status === "active" ? "positive" : status === "trialRequired" || status === "error" ? "warning" : "neutral";
+  const label = (() => {
+    if (status === "active") {
+      return details.planName ? `${details.planName} active` : "Premium active";
+    }
+    if (status === "trialRequired") return "Upgrade required";
+    if (status === "error") return "Check access";
+    return "Sign in required";
+  })();
+
+  updatePlanPill(tone, label);
+  setInteractiveState(status === "active");
+
+  const nextTab = status === "active" ? state.activeTab || "enhance" : "enhance";
+  setActiveTab(nextTab);
+}
+
+function openInTab(url, fallback) {
+  const target = url || fallback;
+  if (!target) return;
+  api.tabs.create({ url: target });
+}
 
 function setActiveTab(tab) {
   state.activeTab = tab;
@@ -75,6 +171,7 @@ async function loadSettings() {
     "userId",
     "dashboardUrl",
     "plansUrl",
+    "userEmail",
   ]);
   state.settings = {
     ...state.settings,
@@ -129,6 +226,47 @@ async function invokeFunction(name, payload) {
     throw error;
   } finally {
     clearTimeout(timeout);
+  }
+}
+
+async function hydrateAccessState() {
+  const settings = state.settings;
+
+  if (!settings.supabaseUrl || !settings.supabaseAnonKey) {
+    updateAccessState("error", { errorMessage: "Add your Supabase credentials in Extension settings." });
+    return;
+  }
+
+  if (!settings.userToken || !settings.userId) {
+    updateAccessState("signedOut", {
+      authMessage: "Sign in from the PostPro AI dashboard to unlock the LinkedIn toolkit.",
+    });
+    return;
+  }
+
+  try {
+    const response = await invokeFunction("subscription-manager", {
+      action: "getUserSubscription",
+      userId: settings.userId,
+      email: settings.userEmail || undefined,
+    });
+
+    const subscription = response?.subscription;
+    if (response?.success && subscription && subscription.subscribed !== false) {
+      state.subscription = subscription;
+      const planName = subscription.plan_name || "PostPro AI";
+      updateAccessState("active", { planName });
+      return;
+    }
+
+    if (response?.requiresPurchase || !subscription) {
+      updateAccessState("trialRequired");
+      return;
+    }
+
+    updateAccessState("trialRequired");
+  } catch (error) {
+    updateAccessState("error", { errorMessage: error?.message });
   }
 }
 
@@ -223,6 +361,8 @@ function handleError(element, error) {
 }
 
 async function onEnhance() {
+  if (state.access !== "active") return;
+
   const post = selectors.enhanceInput.value.trim();
   if (!post) {
     handleError(selectors.enhanceOutput, new Error("Add a post to enhance."));
@@ -248,6 +388,8 @@ async function onEnhance() {
 }
 
 async function onPredict() {
+  if (state.access !== "active") return;
+
   const post = selectors.viralityInput.value.trim();
   if (!post) {
     handleError(selectors.viralityOutput, new Error("Add a post to analyze."));
@@ -275,38 +417,46 @@ function registerEvents() {
     button.addEventListener("click", () => setActiveTab(button.dataset.tab));
   });
 
-  selectors.enhanceBtn.addEventListener("click", onEnhance);
-  selectors.clearEnhance.addEventListener("click", () => {
-    selectors.enhanceInput.value = "";
-    setOutput(selectors.enhanceOutput, "Your enhanced copy will appear here.");
-  });
+  if (selectors.enhanceBtn) selectors.enhanceBtn.addEventListener("click", onEnhance);
+  if (selectors.clearEnhance) {
+    selectors.clearEnhance.addEventListener("click", () => {
+      selectors.enhanceInput.value = "";
+      setOutput(selectors.enhanceOutput, "Your enhanced copy will appear here.");
+    });
+  }
 
-  selectors.viralityBtn.addEventListener("click", onPredict);
-  selectors.clearVirality.addEventListener("click", () => {
-    selectors.viralityInput.value = "";
-    setOutput(selectors.viralityOutput, "Your virality score and insights will appear here.");
-  });
+  if (selectors.viralityBtn) selectors.viralityBtn.addEventListener("click", onPredict);
+  if (selectors.clearVirality) {
+    selectors.clearVirality.addEventListener("click", () => {
+      selectors.viralityInput.value = "";
+      setOutput(selectors.viralityOutput, "Your virality score and insights will appear here.");
+    });
+  }
 
-  selectors.openDashboard.addEventListener("click", () => {
-    const url = state.settings.dashboardUrl || "https://app.postpro.ai";
-    api.tabs.create({ url });
-  });
+  const openWorkspace = () => openInTab(state.settings.dashboardUrl, "https://postproai.app");
+  const openPlans = () => openInTab(state.settings.plansUrl, "https://postproai.app/pricing");
 
-  selectors.openPlans.addEventListener("click", () => {
-    const url = state.settings.plansUrl || "https://postpro.ai/pricing";
-    api.tabs.create({ url });
-  });
+  if (selectors.openDashboard) selectors.openDashboard.addEventListener("click", openWorkspace);
+  if (selectors.openPlans) selectors.openPlans.addEventListener("click", openPlans);
 
-  selectors.openOptions.addEventListener("click", () => {
-    if (api.runtime.openOptionsPage) {
-      api.runtime.openOptionsPage();
-    } else {
-      api.tabs.create({ url: "options.html" });
-    }
-  });
+  if (selectors.loginCta) selectors.loginCta.addEventListener("click", openWorkspace);
+  if (selectors.trialCta) selectors.trialCta.addEventListener("click", openPlans);
+  if (selectors.upgradeCta) selectors.upgradeCta.addEventListener("click", openPlans);
+
+  if (selectors.openOptions) {
+    selectors.openOptions.addEventListener("click", () => {
+      if (api.runtime.openOptionsPage) {
+        api.runtime.openOptionsPage();
+      } else {
+        api.tabs.create({ url: "options.html" });
+      }
+    });
+  }
 }
 
 (async function init() {
+  setInteractiveState(false);
   registerEvents();
   await loadSettings();
+  await hydrateAccessState();
 })();
