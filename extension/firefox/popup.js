@@ -1,22 +1,22 @@
 const api = typeof browser !== "undefined" ? browser : chrome;
 
 const selectors = {
-  tabs: document.querySelectorAll(".tabs__button"),
-  panels: {
-    enhance: document.getElementById("panel-enhance"),
-    virality: document.getElementById("panel-virality"),
-  },
   enhanceInput: document.getElementById("enhance-input"),
   enhanceCategory: document.getElementById("enhance-category"),
   enhanceTone: document.getElementById("enhance-tone"),
   enhanceBtn: document.getElementById("enhance-btn"),
-  clearEnhance: document.getElementById("clear-enhance"),
-  enhanceOutput: document.getElementById("enhance-output"),
-  viralityInput: document.getElementById("virality-input"),
-  viralityCategory: document.getElementById("virality-category"),
   viralityBtn: document.getElementById("virality-btn"),
-  clearVirality: document.getElementById("clear-virality"),
+  clearEnhance: document.getElementById("clear-enhance"),
+  copyEnhanced: document.getElementById("copy-enhanced"),
+  enhanceOutput: document.getElementById("enhance-output"),
   viralityOutput: document.getElementById("virality-output"),
+  meterFill: document.getElementById("meter-fill"),
+  meterScore: document.getElementById("meter-score"),
+  meterStatus: document.getElementById("meter-status"),
+  analyticsCard: document.getElementById("analytics-card"),
+  profileName: document.getElementById("profile-name"),
+  profilePlan: document.getElementById("profile-plan"),
+  profileAvatar: document.getElementById("profile-avatar"),
   openDashboard: document.getElementById("open-dashboard"),
   openPlans: document.getElementById("open-plans"),
   openOptions: document.getElementById("open-options"),
@@ -29,12 +29,16 @@ const selectors = {
   upgradeTitle: document.getElementById("upgrade-title"),
   loginCta: document.getElementById("cta-login"),
   trialCta: document.getElementById("cta-trial"),
+  planTrialCta: document.getElementById("cta-plan-trial"),
   upgradeCta: document.getElementById("cta-upgrade"),
   loadingTemplate: document.getElementById("loading-template"),
+  charCount: document.getElementById("char-count"),
+  drawerBackdrop: document.getElementById("drawer-backdrop"),
+  viralityDrawer: document.getElementById("virality-drawer"),
+  closeDrawer: document.getElementById("close-drawer"),
 };
 
 const state = {
-  activeTab: "enhance",
   access: "unknown",
   subscription: null,
   settings: {
@@ -48,6 +52,8 @@ const state = {
   },
 };
 
+const VIRALITY_PLACEHOLDER = "Run a prediction to see reach, quick wins, and headline ideas.";
+
 function toggleElement(element, shouldShow) {
   if (!element) return;
   element.classList.toggle("is-hidden", !shouldShow);
@@ -59,107 +65,215 @@ function updatePlanPill(tone, label) {
   selectors.planPill.textContent = label;
 }
 
+function deriveInitials(source) {
+  if (!source) return "PP";
+  const words = source.trim().split(/[\s_]+/).filter(Boolean);
+  if (words.length === 0) return "PP";
+  const initials = words.slice(0, 2).map((part) => part[0]).join("");
+  return initials.toUpperCase();
+}
+
+function updateProfile(details = {}) {
+  const email = state.settings.userEmail || "";
+  const fallbackName = email ? email.split("@")[0] : "PostPro member";
+
+  if (selectors.profileName) {
+    selectors.profileName.textContent = details.name || fallbackName;
+  }
+
+  if (selectors.profilePlan) {
+    selectors.profilePlan.textContent = details.plan || "Plan pending";
+  }
+
+  if (selectors.profileAvatar) {
+    const initialsSource = details.name || fallbackName;
+    selectors.profileAvatar.textContent = deriveInitials(initialsSource);
+  }
+}
+
 function setInteractiveState(enabled) {
   const disabled = !enabled;
 
-  selectors.tabs.forEach((button) => {
-    if (!(button instanceof HTMLButtonElement)) return;
-    button.disabled = disabled;
-    button.tabIndex = disabled ? -1 : 0;
-  });
-
-  [
-    selectors.enhanceBtn,
-    selectors.clearEnhance,
-    selectors.viralityBtn,
-    selectors.clearVirality,
-  ].forEach((button) => {
+  [selectors.enhanceBtn, selectors.viralityBtn, selectors.clearEnhance, selectors.copyEnhanced].forEach((button) => {
     if (button) button.disabled = disabled;
   });
 
   if (selectors.enhanceInput) selectors.enhanceInput.readOnly = disabled;
-  if (selectors.viralityInput) selectors.viralityInput.readOnly = disabled;
   if (selectors.enhanceCategory) selectors.enhanceCategory.disabled = disabled;
   if (selectors.enhanceTone) selectors.enhanceTone.disabled = disabled;
-  if (selectors.viralityCategory) selectors.viralityCategory.disabled = disabled;
 }
 
-function updateAccessState(status, details = {}) {
-  state.access = status;
-  if (status !== "active") {
-    state.subscription = null;
+function resetMeter() {
+  if (selectors.meterFill) {
+    selectors.meterFill.style.setProperty("--score-scale", "0");
+    selectors.meterFill.dataset.tier = "idle";
   }
-
-  toggleElement(selectors.authGate, status === "signedOut");
-  toggleElement(selectors.planUpsell, status === "trialRequired" || status === "error");
-  toggleElement(selectors.mainShell, status === "active");
-
-  if (selectors.upgradeTitle) {
-    selectors.upgradeTitle.textContent = status === "error" ? "Unable to verify access" : "Upgrade required";
-  }
-
-  if (selectors.authCopy && details.authMessage) {
-    selectors.authCopy.textContent = details.authMessage;
-  }
-
-  if (selectors.upgradeCopy) {
-    selectors.upgradeCopy.textContent = status === "error"
-      ? details.errorMessage || "We could not verify your subscription. Reopen the dashboard and try again."
-      : details.upgradeMessage || "Your account needs an active PostPro AI plan before you can enhance posts.";
-  }
-
-  const tone = status === "active" ? "positive" : status === "trialRequired" || status === "error" ? "warning" : "neutral";
-  const label = (() => {
-    if (status === "active") {
-      return details.planName ? `${details.planName} active` : "Premium active";
-    }
-    if (status === "trialRequired") return "Upgrade required";
-    if (status === "error") return "Check access";
-    return "Sign in required";
-  })();
-
-  updatePlanPill(tone, label);
-  setInteractiveState(status === "active");
-
-  const nextTab = status === "active" ? state.activeTab || "enhance" : "enhance";
-  setActiveTab(nextTab);
+  if (selectors.meterScore) selectors.meterScore.textContent = "--%";
+  if (selectors.meterStatus) selectors.meterStatus.textContent = "Virality meter idle";
+  if (selectors.analyticsCard) selectors.analyticsCard.dataset.state = "idle";
 }
 
-function openInTab(url, fallback) {
-  const target = url || fallback;
-  if (!target) return;
-  api.tabs.create({ url: target });
+function applyScore(score) {
+  if (!selectors.meterFill || !selectors.meterScore || !selectors.meterStatus || !selectors.analyticsCard) return;
+
+  const bounded = Math.min(Math.max(Number(score) || 0, 0), 100);
+  const scale = bounded / 100;
+
+  selectors.meterFill.style.setProperty("--score-scale", String(scale));
+
+  let tier = "low";
+  let status = "Needs a stronger hook";
+  let gradient = "linear-gradient(90deg, #f97316 0%, #fb7185 100%)";
+
+  if (bounded >= 80) {
+    tier = "high";
+    status = "High reach potential";
+    gradient = "linear-gradient(90deg, #22c55e 0%, #0ea5e9 100%)";
+  } else if (bounded >= 55) {
+    tier = "medium";
+    status = "Promising but refine";
+    gradient = "linear-gradient(90deg, #f59e0b 0%, #22c55e 100%)";
+  }
+
+  selectors.meterFill.dataset.tier = tier;
+  selectors.meterFill.style.background = gradient;
+  selectors.meterScore.textContent = `${Math.round(bounded)}%`;
+  selectors.meterStatus.textContent = status;
+  selectors.analyticsCard.dataset.state = "active";
 }
 
-function setActiveTab(tab) {
-  state.activeTab = tab;
-  selectors.tabs.forEach((button) => {
-    const isActive = button.dataset.tab === tab;
-    button.classList.toggle("tabs__button--active", isActive);
-    button.setAttribute("aria-selected", String(isActive));
-  });
+function setViralityPlaceholder() {
+  setOutput(selectors.viralityOutput, VIRALITY_PLACEHOLDER);
+  if (selectors.viralityOutput) selectors.viralityOutput.classList.add("panel__output--empty");
+  resetMeter();
+  closeDrawer();
+}
 
-  Object.entries(selectors.panels).forEach(([key, panel]) => {
-    const isActive = key === tab;
-    panel.classList.toggle("panel--hidden", !isActive);
-    panel.setAttribute("aria-hidden", String(!isActive));
-  });
+function openDrawer() {
+  if (selectors.drawerBackdrop) {
+    selectors.drawerBackdrop.classList.add("is-visible");
+    selectors.drawerBackdrop.removeAttribute("hidden");
+  }
+  if (selectors.viralityDrawer) {
+    selectors.viralityDrawer.classList.add("is-open");
+    selectors.viralityDrawer.setAttribute("aria-hidden", "false");
+  }
+}
+
+function closeDrawer() {
+  if (selectors.drawerBackdrop) {
+    selectors.drawerBackdrop.classList.remove("is-visible");
+    selectors.drawerBackdrop.setAttribute("hidden", "");
+  }
+  if (selectors.viralityDrawer) {
+    selectors.viralityDrawer.classList.remove("is-open");
+    selectors.viralityDrawer.setAttribute("aria-hidden", "true");
+  }
 }
 
 function setOutput(element, content, opts = {}) {
   if (!element) return;
-  element.classList.toggle("panel__output--empty", !content || content.trim().length === 0);
+  const isEmpty = !content || content.trim().length === 0 || content === VIRALITY_PLACEHOLDER;
+  element.classList.toggle("panel__output--empty", isEmpty);
   element.innerHTML = content || "";
-  if (opts.scrollTop) {
-    element.scrollTop = 0;
-  }
+  if (opts.scrollTop) element.scrollTop = 0;
 }
 
 function showLoading(element) {
+  if (!element || !selectors.loadingTemplate) return;
   const node = selectors.loadingTemplate.content.cloneNode(true);
   element.classList.remove("panel__output--empty");
   element.innerHTML = "";
   element.appendChild(node);
+}
+
+function setButtonBusy(button, isBusy, label) {
+  if (!button) return;
+
+  if (isBusy) {
+    if (!button.dataset.originalLabel) {
+      button.dataset.originalLabel = button.textContent.trim();
+    }
+    if (label) {
+      button.textContent = label;
+    }
+    button.classList.add("is-busy");
+    button.setAttribute("aria-busy", "true");
+    button.disabled = true;
+  } else {
+    if (button.dataset.originalLabel) {
+      button.textContent = button.dataset.originalLabel;
+      delete button.dataset.originalLabel;
+    }
+    button.classList.remove("is-busy");
+    button.removeAttribute("aria-busy");
+    button.disabled = false;
+  }
+}
+
+function formatShortDate(date) {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return null;
+  try {
+    return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  } catch (error) {
+    return date.toISOString().split("T")[0];
+  }
+}
+
+function evaluateSubscriptionAccess(subscription) {
+  if (!subscription) {
+    return {
+      status: "trialRequired",
+    };
+  }
+
+  const planName = subscription.plan_name || "PostPro AI";
+  const displayName =
+    subscription.full_name || subscription.name || state.settings.userEmail?.split("@")[0] || "PostPro member";
+  const tier = String(subscription.subscription_tier || "").toLowerCase();
+  const subscribed = subscription.subscribed === true;
+  const ownerTier = tier.includes("owner") || planName.toLowerCase().includes("owner");
+  const rawEnd = subscription.subscription_end;
+  const endTime = rawEnd ? Date.parse(rawEnd) : NaN;
+  const hasExpiry = !Number.isNaN(endTime);
+  const inWindow = !hasExpiry || endTime > Date.now();
+  const isTrialTier = tier.includes("trial");
+  const trialActive = isTrialTier && inWindow;
+  const paidActive = subscribed && inWindow && !isTrialTier;
+  const unlimitedActive = ownerTier && inWindow;
+  const canAccess = paidActive || trialActive || unlimitedActive;
+
+  if (canAccess) {
+    const expiresAt = hasExpiry ? new Date(endTime) : null;
+    const expiryLabel = expiresAt ? formatShortDate(expiresAt) : null;
+    const isTrial = trialActive && !paidActive && !unlimitedActive;
+    const planLabel = isTrial ? `${planName} trial` : `${planName} active`;
+    const profilePlan = isTrial
+      ? `Trial active${expiryLabel ? ` (ends ${expiryLabel})` : ""}`
+      : `${planName} member`;
+
+    return {
+      status: "active",
+      planLabel,
+      planName,
+      profilePlan,
+      displayName,
+      expiresAt,
+      isTrial,
+    };
+  }
+
+  const expiresAt = hasExpiry ? new Date(endTime) : null;
+  const expiredTrial = isTrialTier && hasExpiry && endTime <= Date.now();
+
+  return {
+    status: "trialRequired",
+    planName,
+    displayName,
+    expiresAt,
+    isTrial: isTrialTier,
+    expiredTrial,
+  };
 }
 
 async function loadSettings() {
@@ -177,6 +291,7 @@ async function loadSettings() {
     ...state.settings,
     ...stored,
   };
+  updateProfile();
   return state.settings;
 }
 
@@ -229,6 +344,77 @@ async function invokeFunction(name, payload) {
   }
 }
 
+function updateAccessState(status, details = {}) {
+  state.access = status;
+
+  toggleElement(selectors.authGate, status === "signedOut");
+  toggleElement(selectors.planUpsell, status === "trialRequired" || status === "error");
+  toggleElement(selectors.mainShell, status === "active");
+  toggleElement(selectors.planTrialCta, status === "trialRequired");
+
+  if (selectors.upgradeTitle) {
+    selectors.upgradeTitle.textContent = details.upgradeTitle || (status === "error" ? "Unable to verify access" : "Upgrade required");
+  }
+
+  if (selectors.authCopy) {
+    selectors.authCopy.textContent =
+      details.authMessage || "Connect PostPro AI to unlock your LinkedIn toolkit.";
+  }
+
+  if (selectors.upgradeCopy) {
+    selectors.upgradeCopy.textContent =
+      status === "error"
+        ? details.errorMessage || "We could not verify your subscription. Reopen the dashboard and try again."
+        : details.upgradeMessage || "Activate a PostPro AI plan or trial to unlock enhancements.";
+  }
+
+  const tone =
+    details.pillTone || (status === "active" ? "positive" : status === "trialRequired" || status === "error" ? "warning" : "neutral");
+  const label =
+    details.planLabel ||
+    (status === "active"
+      ? details.planName
+        ? `${details.planName} active`
+        : "Premium active"
+      : status === "trialRequired"
+        ? details.expiredTrial
+          ? "Trial ended"
+          : "Upgrade required"
+        : status === "error"
+          ? "Check access"
+          : "Sign in required");
+
+  updatePlanPill(tone, label);
+  setInteractiveState(status === "active");
+
+  if (status === "active") {
+    updateProfile({ plan: details.profilePlan || label, name: details.displayName });
+  } else if (status === "signedOut") {
+    updateProfile({ plan: "Sign in required" });
+    setOutput(selectors.enhanceOutput, "Your enhanced copy will appear here.");
+    setViralityPlaceholder();
+  } else if (status === "trialRequired") {
+    const plan = details.expiredTrial
+      ? "Trial ended"
+      : details.planName
+        ? `${details.planName} pending`
+        : "Upgrade required";
+    updateProfile({ plan, name: details.displayName });
+    setOutput(selectors.enhanceOutput, "Your enhanced copy will appear here.");
+    setViralityPlaceholder();
+  } else {
+    updateProfile({ plan: details.planName ? `${details.planName} pending` : "Upgrade required", name: details.displayName });
+    setViralityPlaceholder();
+  }
+
+  if (selectors.trialCta) {
+    selectors.trialCta.disabled = status === "active";
+  }
+  if (selectors.planTrialCta) {
+    selectors.planTrialCta.disabled = status === "active";
+  }
+}
+
 async function hydrateAccessState() {
   const settings = state.settings;
 
@@ -251,23 +437,56 @@ async function hydrateAccessState() {
       email: settings.userEmail || undefined,
     });
 
-    const subscription = response?.subscription;
-    if (response?.success && subscription && subscription.subscribed !== false) {
-      state.subscription = subscription;
-      const planName = subscription.plan_name || "PostPro AI";
-      updateAccessState("active", { planName });
+    const subscription = response?.subscription || null;
+    state.subscription = subscription;
+
+    if (!response?.success) {
+      updateAccessState("error", { errorMessage: "Unable to verify your access right now." });
       return;
     }
 
-    if (response?.requiresPurchase || !subscription) {
-      updateAccessState("trialRequired");
+    const access = evaluateSubscriptionAccess(subscription);
+
+    if (access.status === "active") {
+      const expiryLabel = access.isTrial && access.expiresAt ? formatShortDate(access.expiresAt) : null;
+      updateAccessState("active", {
+        planName: access.planName,
+        planLabel: access.planLabel,
+        profilePlan: access.profilePlan,
+        displayName: access.displayName,
+        upgradeMessage: expiryLabel ? `Trial active until ${expiryLabel}.` : undefined,
+        pillTone: access.isTrial ? "positive" : undefined,
+        isTrial: access.isTrial,
+      });
       return;
     }
 
-    updateAccessState("trialRequired");
+    const upgradeMessage = access.expiredTrial
+      ? "Your trial has ended. Activate a PostPro AI plan to keep enhancing and predicting performance."
+      : response?.requiresPurchase || !subscription
+        ? "Select a PostPro AI Pro plan or trial to unlock enhancements."
+        : "Activate a PostPro AI plan or trial to unlock enhancements.";
+
+    updateAccessState("trialRequired", {
+      planName: access.planName,
+      displayName: access.displayName,
+      upgradeMessage,
+      expiredTrial: access.expiredTrial,
+      pillTone: access.expiredTrial ? "warning" : undefined,
+      planLabel: access.expiredTrial ? "Trial ended" : undefined,
+    });
   } catch (error) {
     updateAccessState("error", { errorMessage: error?.message });
   }
+}
+
+function escapeHtml(value) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function formatEnhancedContent(payload) {
@@ -275,8 +494,8 @@ function formatEnhancedContent(payload) {
   const platformEntries = Object.entries(platforms)
     .filter(([, value]) => typeof value === "string" && value.trim().length > 0);
 
-  const preferredPlatforms = platformEntries.filter(([key]) => key.toLowerCase().includes("linkedin"));
-  const visibleEntries = preferredPlatforms.length > 0 ? preferredPlatforms : platformEntries.slice(0, 1);
+  const preferred = platformEntries.filter(([key]) => key.toLowerCase().includes("linkedin"));
+  const visibleEntries = preferred.length > 0 ? preferred : platformEntries.slice(0, 1);
 
   if (visibleEntries.length === 0) {
     return "<div>No LinkedIn-ready copy returned. Try adjusting your prompt.";
@@ -287,7 +506,7 @@ function formatEnhancedContent(payload) {
       const title = platform.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
       return `
         <article class="result">
-          <header class="result__heading">${title}</header>
+          <header class="result__heading">${escapeHtml(title)}</header>
           <pre class="result__content">${escapeHtml(value.trim())}</pre>
         </article>
       `;
@@ -296,7 +515,7 @@ function formatEnhancedContent(payload) {
 
   const diagnosticsBlock = diagnostics?.insights?.length
     ? `
-      <section class="result result--tips">
+      <section class="result">
         <header class="result__heading">Optimization tips</header>
         <ul class="result__list">
           ${diagnostics.insights.slice(0, 3).map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}
@@ -314,9 +533,9 @@ function formatViralityContent(payload) {
   const quickWins = Array.isArray(payload.quickWins) ? payload.quickWins.slice(0, 3) : [];
 
   const scoreBlock = score !== null
-    ? `<div class="score">
-        <div class="score__value">${score}%</div>
-        <div class="score__label">LinkedIn virality potential</div>
+    ? `<div class="result">
+        <header class="result__heading">Virality score</header>
+        <p class="result__content"><strong>${Math.round(score)}%</strong> projected reach potential.</p>
       </div>`
     : "";
 
@@ -333,7 +552,7 @@ function formatViralityContent(payload) {
 
   const quickWinsBlock = quickWins.length
     ? `
-      <section class="result result--wins">
+      <section class="result">
         <header class="result__heading">Quick wins</header>
         <ul class="result__chips">
           ${quickWins.map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}
@@ -346,15 +565,6 @@ function formatViralityContent(payload) {
   return sections.trim().length > 0 ? `<div class="results">${sections}</div>` : "No analysis available.";
 }
 
-function escapeHtml(value) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
 function handleError(element, error) {
   const message = error?.message || "Unexpected error. Please try again.";
   setOutput(element, `<div class="error">${escapeHtml(message)}</div>`);
@@ -363,19 +573,21 @@ function handleError(element, error) {
 async function onEnhance() {
   if (state.access !== "active") return;
 
-  const post = selectors.enhanceInput.value.trim();
+  const post = selectors.enhanceInput?.value.trim();
   if (!post) {
     handleError(selectors.enhanceOutput, new Error("Add a post to enhance."));
     return;
   }
 
+  setButtonBusy(selectors.enhanceBtn, true, "Enhancing...");
+  setInteractiveState(false);
   showLoading(selectors.enhanceOutput);
 
   try {
     const payload = {
       post,
-      category: selectors.enhanceCategory.value,
-      styleTone: selectors.enhanceTone.value,
+      category: selectors.enhanceCategory?.value,
+      styleTone: selectors.enhanceTone?.value,
       userId: state.settings.userId || undefined,
     };
 
@@ -384,53 +596,83 @@ async function onEnhance() {
     setOutput(selectors.enhanceOutput, content, { scrollTop: true });
   } catch (error) {
     handleError(selectors.enhanceOutput, error);
+  } finally {
+    setButtonBusy(selectors.enhanceBtn, false);
+    setInteractiveState(state.access === "active");
   }
 }
 
 async function onPredict() {
   if (state.access !== "active") return;
 
-  const post = selectors.viralityInput.value.trim();
+  const post = selectors.enhanceInput?.value.trim();
   if (!post) {
     handleError(selectors.viralityOutput, new Error("Add a post to analyze."));
+    openDrawer();
     return;
   }
 
+  setButtonBusy(selectors.viralityBtn, true, "Predicting...");
+  setInteractiveState(false);
   showLoading(selectors.viralityOutput);
+  openDrawer();
 
   try {
     const payload = {
       post,
-      category: selectors.viralityCategory.value,
+      category: selectors.enhanceCategory?.value,
     };
 
     const data = await invokeFunction("analyze-virality", payload);
+    if (typeof data.score === "number") {
+      applyScore(data.score);
+    }
     const content = formatViralityContent(data);
     setOutput(selectors.viralityOutput, content, { scrollTop: true });
   } catch (error) {
     handleError(selectors.viralityOutput, error);
+    resetMeter();
+  } finally {
+    setButtonBusy(selectors.viralityBtn, false);
+    setInteractiveState(state.access === "active");
+  }
+}
+
+function updateCharCount() {
+  if (!selectors.charCount || !selectors.enhanceInput) return;
+  const current = selectors.enhanceInput.value.length;
+  selectors.charCount.textContent = `${current}/3000`;
+}
+
+async function copyEnhancedToClipboard() {
+  const text = selectors.enhanceOutput?.textContent?.trim();
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    selectors.copyEnhanced?.classList.add("is-success");
+    setTimeout(() => selectors.copyEnhanced?.classList.remove("is-success"), 1200);
+  } catch (error) {
+    console.error("Copy failed", error);
   }
 }
 
 function registerEvents() {
-  selectors.tabs.forEach((button) => {
-    button.addEventListener("click", () => setActiveTab(button.dataset.tab));
-  });
-
   if (selectors.enhanceBtn) selectors.enhanceBtn.addEventListener("click", onEnhance);
+  if (selectors.viralityBtn) selectors.viralityBtn.addEventListener("click", onPredict);
   if (selectors.clearEnhance) {
     selectors.clearEnhance.addEventListener("click", () => {
-      selectors.enhanceInput.value = "";
+      if (selectors.enhanceInput) selectors.enhanceInput.value = "";
+      updateCharCount();
       setOutput(selectors.enhanceOutput, "Your enhanced copy will appear here.");
+      setViralityPlaceholder();
     });
   }
+  if (selectors.copyEnhanced) {
+    selectors.copyEnhanced.addEventListener("click", copyEnhancedToClipboard);
+  }
 
-  if (selectors.viralityBtn) selectors.viralityBtn.addEventListener("click", onPredict);
-  if (selectors.clearVirality) {
-    selectors.clearVirality.addEventListener("click", () => {
-      selectors.viralityInput.value = "";
-      setOutput(selectors.viralityOutput, "Your virality score and insights will appear here.");
-    });
+  if (selectors.enhanceInput) {
+    selectors.enhanceInput.addEventListener("input", updateCharCount);
   }
 
   const openWorkspace = () => openInTab(state.settings.dashboardUrl, "https://postproai.app");
@@ -438,9 +680,9 @@ function registerEvents() {
 
   if (selectors.openDashboard) selectors.openDashboard.addEventListener("click", openWorkspace);
   if (selectors.openPlans) selectors.openPlans.addEventListener("click", openPlans);
-
   if (selectors.loginCta) selectors.loginCta.addEventListener("click", openWorkspace);
   if (selectors.trialCta) selectors.trialCta.addEventListener("click", openPlans);
+  if (selectors.planTrialCta) selectors.planTrialCta.addEventListener("click", openPlans);
   if (selectors.upgradeCta) selectors.upgradeCta.addEventListener("click", openPlans);
 
   if (selectors.openOptions) {
@@ -452,11 +694,34 @@ function registerEvents() {
       }
     });
   }
+
+  if (selectors.drawerBackdrop) {
+    selectors.drawerBackdrop.addEventListener("click", closeDrawer);
+  }
+  if (selectors.closeDrawer) {
+    selectors.closeDrawer.addEventListener("click", closeDrawer);
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeDrawer();
+    }
+  });
+}
+
+function openInTab(url, fallback) {
+  const target = url || fallback;
+  if (!target) return;
+  api.tabs.create({ url: target });
 }
 
 (async function init() {
+  resetMeter();
+  setViralityPlaceholder();
   setInteractiveState(false);
   registerEvents();
   await loadSettings();
   await hydrateAccessState();
+  updateCharCount();
 })();
+

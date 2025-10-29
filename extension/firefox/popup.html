@@ -6,125 +6,151 @@
     <title>PostPro AI Companion</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
     <div class="app">
       <header class="masthead">
-        <img src="icons/logo-48.png" alt="PostPro AI" class="masthead__logo" />
-        <div class="masthead__copy">
+        <div class="masthead__brand">
+          <img src="icons/logo-48.png" alt="PostPro AI" class="masthead__logo" />
+          <div class="masthead__copy">
+            <span class="masthead__eyebrow">LinkedIn companion</span>
+            <h1 class="masthead__title">PostPro AI</h1>
+          </div>
+        </div>
+        <div class="masthead__side">
           <span class="masthead__pill" id="plan-pill" data-tone="neutral">Checking access...</span>
-          <h1 class="masthead__title">PostPro for LinkedIn</h1>
-          <p class="masthead__tagline">Polish posts. Forecast reach. Stay consistent.</p>
+          <button id="open-options" class="masthead__icon" type="button" aria-label="Extension settings">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M4.322 17.641a1.78 1.78 0 0 0 2.436.649 1.78 1.78 0 0 1 2.598 1.915 1.78 1.78 0 0 0 1.695 2.219h1.898a1.78 1.78 0 0 0 1.695-2.219 1.78 1.78 0 0 1 2.598-1.915 1.78 1.78 0 0 0 2.436-.649l.95-1.644a1.78 1.78 0 0 0-.471-2.301 1.78 1.78 0 0 1 0-2.828 1.78 1.78 0 0 0 .471-2.301l-.95-1.644a1.78 1.78 0 0 0-2.436-.649 1.78 1.78 0 0 1-2.598-1.915A1.78 1.78 0 0 0 13.95 2h-1.898a1.78 1.78 0 0 0-1.695 2.219 1.78 1.78 0 0 1-2.598 1.915 1.78 1.78 0 0 0-2.436.649l-.95 1.644a1.78 1.78 0 0 0 .471 2.301 1.78 1.78 0 0 1 0 2.828 1.78 1.78 0 0 0-.471 2.301l.95 1.644Z"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
         </div>
       </header>
 
-      <div class="app__scroll">
+      <section class="status" aria-live="polite">
+        <div class="status__identity">
+          <div class="status__avatar" id="profile-avatar" aria-hidden="true">PP</div>
+          <div class="status__meta">
+            <span class="status__name" id="profile-name">Welcome back</span>
+            <span class="status__plan" id="profile-plan">Sign in to personalize</span>
+          </div>
+        </div>
+        <div class="status__links">
+          <button id="open-dashboard" class="status__link" aria-label="Open dashboard">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </button>
+          <button id="open-plans" class="status__link" aria-label="Manage subscription">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </button>
+        </div>
+      </section>
+
+      <div class="app__body">
         <section id="auth-gate" class="card card--gate is-hidden" aria-live="polite">
           <h2 class="card__title">Sign in to continue</h2>
-          <p class="card__note" id="auth-gate-copy">Connect your PostPro AI workspace to unlock the LinkedIn toolkit.</p>
+          <p class="card__note" id="auth-gate-copy">Connect PostPro AI to unlock your LinkedIn toolkit.</p>
           <div class="card__actions">
             <button id="cta-login" class="button button--primary">Sign in</button>
-            <button id="cta-trial" class="button button--ghost">Start 7-day trial</button>
+            <button id="cta-trial" class="button button--ghost">Start free trial</button>
           </div>
         </section>
 
         <section id="plan-upsell" class="card card--gate is-hidden" aria-live="polite">
           <h2 class="card__title" id="upgrade-title">Upgrade required</h2>
-          <p class="card__note" id="upgrade-copy">Your account needs an active PostPro AI plan before you can enhance posts.</p>
+          <p class="card__note" id="upgrade-copy">Activate a paid plan or trial to enhance and predict performance.</p>
           <div class="card__actions">
-            <button id="cta-upgrade" class="button button--primary">Manage subscription</button>
+            <button id="cta-upgrade" class="button button--primary">Manage plan</button>
+            <button id="cta-plan-trial" class="button button--secondary">Start free trial</button>
           </div>
         </section>
 
         <section id="main-shell" class="card card--shell is-hidden" aria-live="polite">
-          <nav class="tabs" role="tablist">
-            <button class="tabs__button tabs__button--active" data-tab="enhance" role="tab" aria-selected="true">
-              Enhance
-            </button>
-            <button class="tabs__button" data-tab="virality" role="tab" aria-selected="false">
-              Predict
-            </button>
-          </nav>
+          <header class="composer__header">
+            <div>
+              <span class="composer__eyebrow">LinkedIn draft</span>
+              <h2 class="composer__title">Craft a post your audience saves</h2>
+            </div>
+            <span class="composer__count" id="char-count">0/3000</span>
+          </header>
 
-          <div class="panel" id="panel-enhance" role="tabpanel">
-            <header class="panel__header">
-              <div>
-                <span class="panel__eyebrow">LinkedIn rewrite</span>
-                <h2 class="panel__title">Lift the hook, tone, and structure</h2>
-              </div>
-              <span class="panel__meta">Avg. 65s saved</span>
-            </header>
-            <textarea id="enhance-input" class="panel__textarea" rows="5" placeholder="Paste your LinkedIn draft here..."></textarea>
-            <div class="panel__controls">
-              <label class="panel__field">
-                <span>Category</span>
-                <select id="enhance-category" class="panel__select">
-                  <option value="linkedin_update">LinkedIn update</option>
-                  <option value="thought_leadership">Thought leadership</option>
-                  <option value="personal_story">Personal story</option>
-                  <option value="product_launch">Product launch</option>
-                  <option value="hiring">Hiring announcement</option>
-                </select>
-              </label>
-              <label class="panel__field">
-                <span>Tone</span>
-                <select id="enhance-tone" class="panel__select">
-                  <option value="professional">Professional</option>
-                  <option value="friendly">Friendly</option>
-                  <option value="bold">Bold</option>
-                  <option value="story">Story-driven</option>
-                  <option value="executive">Executive</option>
-                </select>
-              </label>
+          <textarea
+            id="enhance-input"
+            class="composer__textarea"
+            rows="6"
+            maxlength="3000"
+            placeholder="Paste your LinkedIn draft here..."
+          ></textarea>
+
+          <div class="analytics" id="analytics-card" data-state="idle">
+            <div class="analytics__label">
+              <span id="meter-status">Virality meter idle</span>
+              <span id="meter-score">--%</span>
             </div>
-            <div class="panel__actions">
-              <button id="enhance-btn" class="button button--primary">Enhance</button>
-              <button id="clear-enhance" class="button button--ghost">Clear</button>
+            <div class="analytics__meter" role="img" aria-label="Predicted virality score">
+              <div class="analytics__fill" id="meter-fill" data-tier="idle"></div>
+              <div class="analytics__pulse"></div>
             </div>
-            <section class="panel__output panel__output--empty" aria-live="polite" id="enhance-output">
-              Your enhanced copy will appear here.
-            </section>
+            <p class="analytics__hint">Scores update after prediction. Aim for 80%+</p>
           </div>
 
-          <div class="panel panel--hidden" id="panel-virality" role="tabpanel" aria-hidden="true">
-            <header class="panel__header">
-              <div>
-                <span class="panel__eyebrow">LinkedIn score</span>
-                <h2 class="panel__title">Forecast reach in seconds</h2>
-              </div>
-              <span class="panel__meta">Predictive heuristics</span>
-            </header>
-            <textarea id="virality-input" class="panel__textarea" rows="5" placeholder="Paste your LinkedIn draft for a virality score..."></textarea>
-            <div class="panel__controls">
-              <label class="panel__field">
-                <span>Category</span>
-                <select id="virality-category" class="panel__select">
-                  <option value="linkedin_update">LinkedIn update</option>
-                  <option value="thought_leadership">Thought leadership</option>
-                  <option value="founder_story">Founder story</option>
-                  <option value="product_launch">Product launch</option>
-                  <option value="hiring">Hiring announcement</option>
-                </select>
-              </label>
-            </div>
-            <div class="panel__actions">
-              <button id="virality-btn" class="button button--primary">Predict</button>
-              <button id="clear-virality" class="button button--ghost">Clear</button>
-            </div>
-            <section class="panel__output panel__output--empty" aria-live="polite" id="virality-output">
-              Your LinkedIn virality prediction will appear here.
-            </section>
+          <div class="composer__controls">
+            <label class="field" for="enhance-category">
+              <span>Category</span>
+              <select id="enhance-category" class="field__select">
+                <option value="linkedin_update">LinkedIn update</option>
+                <option value="thought_leadership">Thought leadership</option>
+                <option value="personal_story">Personal story</option>
+                <option value="product_launch">Product launch</option>
+                <option value="hiring">Hiring announcement</option>
+              </select>
+            </label>
+            <label class="field" for="enhance-tone">
+              <span>Tone</span>
+              <select id="enhance-tone" class="field__select">
+                <option value="professional">Professional</option>
+                <option value="friendly">Friendly</option>
+                <option value="bold">Bold</option>
+                <option value="story">Story-driven</option>
+                <option value="executive">Executive</option>
+              </select>
+            </label>
           </div>
+
+          <div class="composer__actions">
+            <button id="enhance-btn" class="button button--primary">Enhance post</button>
+            <button id="virality-btn" class="button button--secondary">Predict reach</button>
+            <button id="clear-enhance" class="button button--ghost" aria-label="Clear draft">Clear</button>
+          </div>
+
+          <section class="output" aria-live="polite">
+            <header class="output__header">
+              <div>
+                <span class="output__eyebrow">Optimization playbook</span>
+                <h3 class="output__title">Your revised LinkedIn copy</h3>
+              </div>
+              <button id="copy-enhanced" class="output__copy" aria-label="Copy enhanced post">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 9V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M5 9h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </header>
+            <div class="output__body panel__output panel__output--empty" id="enhance-output">Your enhanced copy will appear here.</div>
+          </section>
         </section>
       </div>
-
-      <footer class="app__footer">
-        <button id="open-dashboard" class="link-button"><span>Open workspace</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></button>
-        <button id="open-plans" class="link-button"><span>Manage plan</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></button>
-        <button id="open-options" class="link-button"><span>Extension settings</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><path d="M4.322 17.641a1.78 1.78 0 0 0 2.436.649 1.78 1.78 0 0 1 2.598 1.915 1.78 1.78 0 0 0 1.695 2.219h1.898a1.78 1.78 0 0 0 1.695-2.219 1.78 1.78 0 0 1 2.598-1.915 1.78 1.78 0 0 0 2.436-.649l.95-1.644a1.78 1.78 0 0 0-.471-2.301 1.78 1.78 0 0 1 0-2.828 1.78 1.78 0 0 0 .471-2.301l-.95-1.644a1.78 1.78 0 0 0-2.436-.649 1.78 1.78 0 0 1-2.598-1.915A1.78 1.78 0 0 0 13.95 2h-1.898a1.78 1.78 0 0 0-1.695 2.219 1.78 1.78 0 0 1-2.598 1.915 1.78 1.78 0 0 0-2.436.649l-.95 1.644a1.78 1.78 0 0 0 .471 2.301 1.78 1.78 0 0 1 0 2.828 1.78 1.78 0 0 0-.471 2.301l.95 1.644Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></button>
-      </footer>
 
       <template id="loading-template">
         <div class="loading">
@@ -132,6 +158,25 @@
           <span class="loading__label">Working on it...</span>
         </div>
       </template>
+
+      <div id="drawer-backdrop" class="drawer__backdrop" hidden></div>
+      <aside id="virality-drawer" class="drawer" aria-hidden="true">
+        <header class="drawer__header">
+          <div>
+            <span class="drawer__eyebrow">Virality predictor</span>
+            <h2 class="drawer__title">LinkedIn reach forecast</h2>
+          </div>
+          <button id="close-drawer" class="drawer__close" aria-label="Close virality results">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M6 18 18 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </button>
+        </header>
+        <section class="drawer__body panel__output panel__output--empty" id="virality-output" aria-live="polite">
+          Run a prediction to see reach, quick wins, and headline ideas.
+        </section>
+        <footer class="drawer__footer">
+          <p>Scores update in real time using PostPro AI training data.</p>
+        </footer>
+      </aside>
     </div>
 
     <script src="popup.js" defer></script>
