@@ -2,11 +2,16 @@ const api = typeof browser !== "undefined" ? browser : chrome;
 
 const form = document.getElementById("options-form");
 const status = document.getElementById("status");
+const DEFAULTS = {
+  supabaseUrl: "https://rskzizedzagohmvyhuyu.supabase.co",
+  supabaseAnonKey:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJza3ppemVkemFnb2htdnlodXl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcwMzg3NzksImV4cCI6MjA1MjYxNDc3OX0.7sbPmg3ms4_JKXILGYLb76TCPakwI9ngzApdifhVeo4",
+  dashboardUrl: "https://postproai.app",
+  plansUrl: "https://postproai.app/pricing",
+};
 const fields = {
   supabaseUrl: document.getElementById("supabase-url"),
   supabaseAnonKey: document.getElementById("supabase-key"),
-  userToken: document.getElementById("user-token"),
-  userId: document.getElementById("user-id"),
   dashboardUrl: document.getElementById("dashboard-url"),
   plansUrl: document.getElementById("plans-url"),
 };
@@ -15,7 +20,9 @@ async function loadSettings() {
   if (!api?.storage?.sync) return;
   const stored = await api.storage.sync.get(Object.keys(fields));
   Object.entries(fields).forEach(([key, input]) => {
-    input.value = stored[key] || "";
+    const fallback = DEFAULTS[key] ?? "";
+    const value = stored[key];
+    input.value = typeof value === "string" && value.trim().length > 0 ? value : fallback;
   });
 }
 
@@ -45,7 +52,9 @@ const resetButton = document.getElementById("reset-settings");
 resetButton.addEventListener("click", async () => {
   await api.storage.sync.remove(Object.keys(fields));
   Object.values(fields).forEach((input) => {
-    input.value = "";
+    const entry = Object.entries(fields).find(([, node]) => node === input);
+    const key = entry ? entry[0] : undefined;
+    input.value = key && DEFAULTS[key] ? DEFAULTS[key] : "";
   });
   showStatus("Settings cleared.");
 });

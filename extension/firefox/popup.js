@@ -1,5 +1,13 @@
 const api = typeof browser !== "undefined" ? browser : chrome;
 
+const DEFAULT_SETTINGS = {
+  supabaseUrl: "https://rskzizedzagohmvyhuyu.supabase.co",
+  supabaseAnonKey:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJza3ppemVkemFnb2htdnlodXl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcwMzg3NzksImV4cCI6MjA1MjYxNDc3OX0.7sbPmg3ms4_JKXILGYLb76TCPakwI9ngzApdifhVeo4",
+  dashboardUrl: "https://postproai.app",
+  plansUrl: "https://postproai.app/pricing",
+};
+
 const selectors = {
   enhanceInput: document.getElementById("enhance-input"),
   enhanceCategory: document.getElementById("enhance-category"),
@@ -20,6 +28,7 @@ const selectors = {
   openDashboard: document.getElementById("open-dashboard"),
   openPlans: document.getElementById("open-plans"),
   openOptions: document.getElementById("open-options"),
+  logoutBtn: document.getElementById("logout-btn"),
   planPill: document.getElementById("plan-pill"),
   authGate: document.getElementById("auth-gate"),
   planUpsell: document.getElementById("plan-upsell"),
@@ -36,19 +45,29 @@ const selectors = {
   drawerBackdrop: document.getElementById("drawer-backdrop"),
   viralityDrawer: document.getElementById("virality-drawer"),
   closeDrawer: document.getElementById("close-drawer"),
+  loginSheet: document.getElementById("login-sheet"),
+  loginBackdrop: document.getElementById("login-backdrop"),
+  loginClose: document.getElementById("login-close"),
+  loginForm: document.getElementById("login-form"),
+  loginEmail: document.getElementById("login-email"),
+  loginPassword: document.getElementById("login-password"),
+  loginToggle: document.getElementById("toggle-password"),
+  loginSubmit: document.getElementById("login-submit"),
+  loginForgot: document.getElementById("login-forgot"),
+  loginOpenPlans: document.getElementById("login-open-plans"),
+  loginMessage: document.getElementById("login-message"),
 };
 
 const state = {
   access: "unknown",
   subscription: null,
   settings: {
-    supabaseUrl: "",
-    supabaseAnonKey: "",
+    ...DEFAULT_SETTINGS,
     userToken: "",
     userId: "",
-    dashboardUrl: "https://postproai.app",
-    plansUrl: "https://postproai.app/pricing",
     userEmail: "",
+    refreshToken: "",
+    tokenExpiresAt: 0,
   },
 };
 
@@ -171,6 +190,219 @@ function closeDrawer() {
   }
 }
 
+function setLoginMessage(message, tone = "error") {
+  if (!selectors.loginMessage) return;
+  if (!message) {
+    selectors.loginMessage.hidden = true;
+    selectors.loginMessage.textContent = "";
+    selectors.loginMessage.className = "login__message";
+    delete selectors.loginMessage.dataset.tone;
+    return;
+  }
+  selectors.loginMessage.hidden = false;
+  selectors.loginMessage.textContent = message;
+  selectors.loginMessage.className = "login__message";
+  selectors.loginMessage.dataset.tone = tone;
+}
+
+function openLoginSheet() {
+  if (!selectors.loginSheet) return;
+  selectors.loginSheet.hidden = false;
+  selectors.loginSheet.classList.add("is-open");
+  setLoginMessage("");
+  if (selectors.loginEmail) {
+    selectors.loginEmail.value = state.settings.userEmail || selectors.loginEmail.value || "";
+  }
+  if (selectors.loginPassword) {
+    selectors.loginPassword.value = "";
+    selectors.loginPassword.type = "password";
+  }
+  if (selectors.loginToggle) {
+    selectors.loginToggle.classList.remove("is-active");
+    const showIcon = selectors.loginToggle.querySelector(".login__toggle-icon--show");
+    const hideIcon = selectors.loginToggle.querySelector(".login__toggle-icon--hide");
+    showIcon?.classList.add("is-visible");
+    hideIcon?.classList.remove("is-visible");
+  }
+  requestAnimationFrame(() => {
+    selectors.loginEmail?.focus();
+  });
+}
+
+function closeLoginSheet() {
+  if (!selectors.loginSheet) return;
+  selectors.loginSheet.classList.remove("is-open");
+  setTimeout(() => {
+    if (!selectors.loginSheet?.classList.contains("is-open")) {
+      selectors.loginSheet.hidden = true;
+    }
+  }, 220);
+  setLoginMessage("");
+  selectors.loginPassword?.setAttribute("type", "password");
+}
+
+function togglePasswordVisibility() {
+  if (!selectors.loginPassword || !selectors.loginToggle) return;
+  const isHidden = selectors.loginPassword.type === "password";
+  selectors.loginPassword.type = isHidden ? "text" : "password";
+  selectors.loginToggle.classList.toggle("is-active", isHidden);
+  const showIcon = selectors.loginToggle.querySelector(".login__toggle-icon--show");
+  const hideIcon = selectors.loginToggle.querySelector(".login__toggle-icon--hide");
+  showIcon?.classList.toggle("is-visible", isHidden === false);
+  hideIcon?.classList.toggle("is-visible", isHidden);
+}
+
+function isLoginOpen() {
+  return selectors.loginSheet?.classList.contains("is-open");
+}
+
+function setLoginBusy(isBusy, label) {
+  const busyLabel = isBusy ? label || "Signing in..." : undefined;
+  setButtonBusy(selectors.loginSubmit, isBusy, busyLabel);
+  if (selectors.loginEmail) selectors.loginEmail.disabled = isBusy;
+  if (selectors.loginPassword) selectors.loginPassword.disabled = isBusy;
+  if (selectors.loginForgot) selectors.loginForgot.disabled = isBusy;
+  if (selectors.loginOpenPlans) selectors.loginOpenPlans.disabled = isBusy;
+  if (selectors.loginToggle) selectors.loginToggle.disabled = isBusy;
+}
+
+async function revokeSession() {
+  if (!state.settings.userToken) return;
+  try {
+    const settings = await ensureSettings();
+    await fetch(`${settings.supabaseUrl}/auth/v1/logout`, {
+      method: "POST",
+      headers: {
+        apikey: settings.supabaseAnonKey,
+        Authorization: `Bearer ${state.settings.userToken}`,
+      },
+    }).catch(() => undefined);
+  } catch (error) {
+    // Ignore logout errors silently.
+  }
+}
+
+async function signInWithPassword(email, password) {
+  const trimmedEmail = email.trim().toLowerCase();
+  const trimmedPassword = password.trim();
+
+  if (!trimmedEmail || !trimmedPassword) {
+    setLoginMessage("Enter your email and password.");
+    return null;
+  }
+
+  const settings = await ensureSettings();
+
+  const endpoint = `${settings.supabaseUrl}/auth/v1/token?grant_type=password`;
+  const body = JSON.stringify({ email: trimmedEmail, password: trimmedPassword });
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: settings.supabaseAnonKey,
+    },
+    body,
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => ({}));
+    const message = errorBody?.error_description || errorBody?.error || response.statusText || "Sign in failed.";
+    throw new Error(message);
+  }
+
+  const data = await response.json();
+  const expiresAt = calculateExpiry(data.expires_in);
+  await persistSession({
+    userToken: data.access_token,
+    refreshToken: data.refresh_token,
+    tokenExpiresAt: expiresAt,
+    userId: data.user?.id,
+    userEmail: data.user?.email || trimmedEmail,
+  });
+
+  return {
+    userId: data.user?.id,
+    email: data.user?.email || trimmedEmail,
+    expiresAt,
+  };
+}
+
+async function sendPasswordReset(email) {
+  const trimmedEmail = email.trim().toLowerCase();
+  if (!trimmedEmail) {
+    setLoginMessage("Enter your email first to receive a reset link.");
+    selectors.loginEmail?.focus();
+    return;
+  }
+
+  const settings = await ensureSettings();
+  const endpoint = `${settings.supabaseUrl}/auth/v1/recover`;
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: settings.supabaseAnonKey,
+    },
+    body: JSON.stringify({
+      email: trimmedEmail,
+      redirect_to: `${settings.dashboardUrl || DEFAULT_SETTINGS.dashboardUrl}/auth`,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => ({}));
+    const message = errorBody?.error_description || errorBody?.error || response.statusText || "Reset request failed.";
+    throw new Error(message);
+  }
+
+  setLoginMessage("Check your email for a reset link.", "success");
+}
+
+async function handleLoginSubmit(event) {
+  event.preventDefault();
+  if (!selectors.loginEmail || !selectors.loginPassword) return;
+
+  setLoginMessage("");
+  setLoginBusy(true, "Signing in...");
+
+  try {
+    await signInWithPassword(selectors.loginEmail.value, selectors.loginPassword.value);
+    closeLoginSheet();
+    await hydrateAccessState();
+  } catch (error) {
+    const message = error?.message || "Sign in failed. Please try again.";
+    setLoginMessage(message);
+    selectors.loginPassword?.focus();
+    selectors.loginPassword?.select?.();
+  } finally {
+    setLoginBusy(false);
+  }
+}
+
+async function handleForgotPassword() {
+  if (!selectors.loginEmail) return;
+  setLoginMessage("");
+  setLoginBusy(true, "Sending link...");
+  try {
+    await sendPasswordReset(selectors.loginEmail.value);
+  } catch (error) {
+    const message = error?.message || "Unable to send reset link.";
+    setLoginMessage(message);
+  } finally {
+    setLoginBusy(false);
+  }
+}
+
+async function handleLogout() {
+  await revokeSession();
+  await clearSession();
+  state.subscription = null;
+  closeLoginSheet();
+  setLoginMessage("");
+  updateAccessState("signedOut", { authMessage: "Signed out. Sign in to continue." });
+}
+
 function setOutput(element, content, opts = {}) {
   if (!element) return;
   const isEmpty = !content || content.trim().length === 0 || content === VIRALITY_PLACEHOLDER;
@@ -208,6 +440,90 @@ function setButtonBusy(button, isBusy, label) {
     button.classList.remove("is-busy");
     button.removeAttribute("aria-busy");
     button.disabled = false;
+  }
+}
+
+const SESSION_KEYS = ["userToken", "refreshToken", "tokenExpiresAt", "userId", "userEmail"];
+
+async function persistSession(session = {}) {
+  if (!api?.storage?.sync) return;
+  const payload = {};
+  SESSION_KEYS.forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(session, key)) {
+      payload[key] = session[key];
+      state.settings[key] = session[key];
+    }
+  });
+  if (Object.keys(payload).length > 0) {
+    await api.storage.sync.set(payload);
+  }
+}
+
+async function clearSession() {
+  if (api?.storage?.sync) {
+    await api.storage.sync.remove(SESSION_KEYS);
+  }
+  SESSION_KEYS.forEach((key) => {
+    if (key === "tokenExpiresAt") {
+      state.settings[key] = 0;
+    } else {
+      state.settings[key] = "";
+    }
+  });
+}
+
+function calculateExpiry(expiresInSeconds) {
+  const fallback = 3600;
+  const windowSeconds = Math.max(Number(expiresInSeconds) || fallback, 60);
+  return Date.now() + Math.max(windowSeconds - 30, 30) * 1000;
+}
+
+function isSessionFresh() {
+  if (!state.settings.userToken) return false;
+  const expiresAt = Number(state.settings.tokenExpiresAt || 0);
+  if (!expiresAt) return false;
+  return Date.now() < expiresAt - 10 * 1000;
+}
+
+async function refreshSession() {
+  if (!state.settings.refreshToken) return false;
+  try {
+    const settings = await ensureSettings();
+    const endpoint = `${settings.supabaseUrl}/auth/v1/token?grant_type=refresh_token`;
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: settings.supabaseAnonKey,
+      },
+      body: JSON.stringify({ refresh_token: state.settings.refreshToken }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Session refresh failed");
+    }
+
+    const data = await response.json();
+    await persistSession({
+      userToken: data.access_token || state.settings.userToken,
+      refreshToken: data.refresh_token || state.settings.refreshToken,
+      tokenExpiresAt: calculateExpiry(data.expires_in),
+      userId: data.user?.id || state.settings.userId,
+      userEmail: data.user?.email || state.settings.userEmail,
+    });
+    return true;
+  } catch (error) {
+    await clearSession();
+    return false;
+  }
+}
+
+async function ensureSession() {
+  if (!state.settings.userToken) return;
+  if (isSessionFresh()) return;
+  const refreshed = await refreshSession();
+  if (!refreshed) {
+    throw new Error("Session expired. Sign in again.");
   }
 }
 
@@ -286,10 +602,14 @@ async function loadSettings() {
     "dashboardUrl",
     "plansUrl",
     "userEmail",
+    "refreshToken",
+    "tokenExpiresAt",
   ]);
   state.settings = {
+    ...DEFAULT_SETTINGS,
     ...state.settings,
     ...stored,
+    tokenExpiresAt: stored.tokenExpiresAt ? Number(stored.tokenExpiresAt) : state.settings.tokenExpiresAt || 0,
   };
   updateProfile();
   return state.settings;
@@ -413,6 +733,10 @@ function updateAccessState(status, details = {}) {
   if (selectors.planTrialCta) {
     selectors.planTrialCta.disabled = status === "active";
   }
+  if (selectors.logoutBtn) {
+    selectors.logoutBtn.classList.toggle("is-hidden", status !== "active");
+    selectors.logoutBtn.disabled = status !== "active";
+  }
 }
 
 async function hydrateAccessState() {
@@ -425,12 +749,14 @@ async function hydrateAccessState() {
 
   if (!settings.userToken || !settings.userId) {
     updateAccessState("signedOut", {
-      authMessage: "Sign in from the PostPro AI dashboard to unlock the LinkedIn toolkit.",
+      authMessage: "Sign in to your PostPro AI account to unlock the LinkedIn toolkit.",
     });
     return;
   }
 
   try {
+    await ensureSession();
+
     const response = await invokeFunction("subscription-manager", {
       action: "getUserSubscription",
       userId: settings.userId,
@@ -476,7 +802,13 @@ async function hydrateAccessState() {
       planLabel: access.expiredTrial ? "Trial ended" : undefined,
     });
   } catch (error) {
-    updateAccessState("error", { errorMessage: error?.message });
+    const message = error?.message || "Unable to verify access.";
+    if (message.toLowerCase().includes("sign in again")) {
+      await clearSession();
+      updateAccessState("signedOut", { authMessage: "Session expired. Sign in again." });
+      return;
+    }
+    updateAccessState("error", { errorMessage: message });
   }
 }
 
@@ -680,10 +1012,24 @@ function registerEvents() {
 
   if (selectors.openDashboard) selectors.openDashboard.addEventListener("click", openWorkspace);
   if (selectors.openPlans) selectors.openPlans.addEventListener("click", openPlans);
-  if (selectors.loginCta) selectors.loginCta.addEventListener("click", openWorkspace);
+  if (selectors.loginCta) selectors.loginCta.addEventListener("click", () => {
+    if (state.access === "active") {
+      openWorkspace();
+    } else {
+      openLoginSheet();
+    }
+  });
   if (selectors.trialCta) selectors.trialCta.addEventListener("click", openPlans);
   if (selectors.planTrialCta) selectors.planTrialCta.addEventListener("click", openPlans);
   if (selectors.upgradeCta) selectors.upgradeCta.addEventListener("click", openPlans);
+  if (selectors.logoutBtn) selectors.logoutBtn.addEventListener("click", handleLogout);
+
+  if (selectors.loginClose) selectors.loginClose.addEventListener("click", closeLoginSheet);
+  if (selectors.loginBackdrop) selectors.loginBackdrop.addEventListener("click", closeLoginSheet);
+  if (selectors.loginToggle) selectors.loginToggle.addEventListener("click", togglePasswordVisibility);
+  if (selectors.loginForm) selectors.loginForm.addEventListener("submit", handleLoginSubmit);
+  if (selectors.loginForgot) selectors.loginForgot.addEventListener("click", handleForgotPassword);
+  if (selectors.loginOpenPlans) selectors.loginOpenPlans.addEventListener("click", openPlans);
 
   if (selectors.openOptions) {
     selectors.openOptions.addEventListener("click", () => {
@@ -704,6 +1050,10 @@ function registerEvents() {
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
+      if (isLoginOpen()) {
+        closeLoginSheet();
+        return;
+      }
       closeDrawer();
     }
   });

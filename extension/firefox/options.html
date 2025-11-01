@@ -27,18 +27,6 @@
           </label>
 
           <label class="form__field">
-            <span>User access token (optional)</span>
-            <input type="text" id="user-token" placeholder="Paste session token for gated plans" />
-            <small>Paste the JWT from your logged-in session if your Edge Functions require authentication.</small>
-          </label>
-
-          <label class="form__field">
-            <span>Supabase user ID (optional)</span>
-            <input type="text" id="user-id" placeholder="00000000-0000-0000-0000-000000000000" />
-            <small>Provides quota tracking for enhance-post. Leave blank to run without quotas.</small>
-          </label>
-
-          <label class="form__field">
             <span>Dashboard URL</span>
             <input type="url" id="dashboard-url" placeholder="https://app.postpro.ai" />
           </label>
@@ -61,10 +49,8 @@
         <h2>Where to find these values</h2>
         <ul>
           <li>Supabase URL and anon key: <code>Project Settings → API → Project URL and anon key</code>.</li>
-          <li>User token: use the PostPro AI dashboard and copy the <code>access_token</code> stored in localStorage.</li>
-          <li>User ID: available in the Supabase dashboard under <code>Authentication → Users</code>.</li>
         </ul>
-        <p class="card__note">Never ship the service role key in the extension. The anon key is safe for client-side use.</p>
+        <p class="card__note">The popup now handles secure sign-in directly. Only the public anon key is required here—never paste the service role key.</p>
       </section>
     </main>
 
